@@ -15,4 +15,4 @@ shared_src/
 # Some extra personal ignore settings
 .bundle
 
-chef_private
+private
