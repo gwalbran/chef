@@ -181,7 +181,9 @@ class JenkinsArtifact
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
     request = Net::HTTP::Get.new(uri.request_uri)
-    request.basic_auth @username, @password
+    if @username && @password
+      request.basic_auth @username, @password
+    end
 
     http.request(request)
   end
