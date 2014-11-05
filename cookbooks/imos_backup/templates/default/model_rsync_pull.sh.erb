@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#
+# Copyright (C) 2013 Dan Fruehauf <malkodan@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+
+<%
+host_name               = @params[:rsync_parameters]['host_name']
+remote_backup_directory = @params[:rsync_parameters]['remote_backup_directory']
+ssh_user                = @params[:rsync_parameters]['ssh_user']
+ssh_port                = @params[:rsync_parameters]['ssh_port']
+ipaddress               = @params[:rsync_parameters]['ipaddress']
+%>
+log() {
+    logfile /var/log/backups/<%= @backup_name %>.log
+}
+
+backup() {
+    # simple rsync execution, straight to the correct directory!
+    execute rsync_<%= host_name %> rsync -rlptD <%= ssh_user %>@<%= ipaddress %>:<%= remote_backup_directory %>/* <%= node[:backup][:backup_dir] %>/<%= @backup_name %>
+}
+
+store() {
+    cycle '<%= node[:backup][:backup_dir] %>/<%= @backup_name %>/*' <%= node[:imos_backup][:server][:backups_to_keep] %>
+}
+
+notify() {
+    nagios_status "<%= node[:imos_backup][:status_dir] %>/<%= host_name %>"
+}

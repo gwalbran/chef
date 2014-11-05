@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# main
+main() {
+    service_state=$1; shift
+    service_state_type=$1; shift
+    service_attempt=$1; shift
+
+    # invoke given command if state is critical and hard
+    [ x"$service_state" = x"CRITICAL" ] && \
+        [ x"$service_state_type" = x"HARD" ] && \
+        eval "$@"
+}
+
+main "$@"

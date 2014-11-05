@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Written by Dan Fruehauf <dan.fruehauf@utas.edu.au>
+
+#
+# This script checks if a file exists
+#
+
+# prints usage and exit
+usage() {
+    echo "Usage: $0 [OPTIONS]... FILE"
+    echo "Checks if a file exists"
+    echo "
+Options:
+  -r, --reverse              Reverse operation, alert if file does exist."
+    exit 3
+}
+
+
+# "$@" - parameters, see usage
+main() {
+    # parse options with getopt
+    local tmp_getops=`getopt -o hr --long help,reverse -- "$@"`
+    [ $? != 0 ] && usage
+
+    eval set -- "$tmp_getops"
+    local reverse
+
+    # parse the options
+    while true ; do
+        case "$1" in
+            -h|--help) usage;;
+            -r|--reverse) reverse="yes"; shift 1;;
+            --) shift; break;;
+            *) usage;;
+        esac
+    done
+
+    local file=$1; shift
+    [ x"$file" = x ] && usage
+
+    local -i retval=0
+    test -e $file
+    retval=$?
+
+    if [ x"$reverse" != x ] && [ "$reverse" == "yes" ]; then
+        if [ $retval -ne 0 ]; then
+            echo "OK: File '$file' does not exist"
+            retval=0
+        else
+            echo "CRITICAL: File '$file' exists"
+            retval=2
+        fi
+    else
+        if [ $retval -eq 0 ]; then
+            echo "OK: File '$file' exists"
+            retval=0
+        else
+            echo "CRITICAL: File '$file' does not exist"
+            retval=2
+        fi
+    fi
+
+    return $retval
+}
+
+main "$@"

@@ -1,0 +1,5 @@
+# Use our vsftpd_pwdfile
+auth required /lib/security/pam_pwdfile.so pwdfile /etc/vsftpd_pwdfile
+
+# pam_pwdfile doesn't come with account, so we just permit, on success:
+account required /lib/x86_64-linux-gnu/security/pam_permit.so

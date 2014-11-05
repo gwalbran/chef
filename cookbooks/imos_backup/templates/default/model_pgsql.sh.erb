@@ -1,0 +1,35 @@
+
+# model to backup a database
+
+log() {
+    logfile <%= node[:backup][:log_dir] %>/<%= @backup_name %>.log
+}
+
+backup() {
+<%
+lock_file = node[:imos_backup][:imos_pgsql_lock_file]
+
+@params[:databases].each() do |database|
+  database_name     = database['database_name']
+  host              = database['host']
+  port              = database['port']
+  username          = database['username']
+  password          = database['password']
+%>
+<%= "    imos_pgsql #{database_name} #{database_name} #{host} #{port} #{username} #{password} #{lock_file}" %>
+<%
+end
+%>
+}
+
+store() {
+    # should be mv rather than cp
+    mv <%= node[:backup][:backup_dir] %>/<%= @backup_name %>
+    cycle <%= node[:backup][:backup_dir] %>/<%= @backup_name %> <%= node[:backup][:backups_to_keep] %>
+}
+
+notify() {
+    # backup or imos_backup
+    nagios_status "<%= node[:imos_backup][:status_dir] %>"
+}
+

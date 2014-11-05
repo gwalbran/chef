@@ -1,0 +1,36 @@
+# This properties file allows you to configure your RAMADDA installation
+# Its probably best to just define the ramadda_home property to point to
+# some directory  where ramadda looks for another repository.properties file,
+# and where it stores data, files, etc.
+# Copy this properties file into that directory in order to do a full
+# configuration. That way there is a minimal change to do in the tomcat
+# installation area
+
+# An alternative way to to define ramadda_home is as an environment variable
+# of the tomcat process.
+#ramadda_home=/some/directory/path/writable/by/tomcat
+
+# Here are the basic configuration options. See the installation documentation for more
+
+# Database configuration
+# What database to use
+#ramadda.db=derby
+ramadda.db=mysql
+#ramadda.db=postgres
+
+# If you are using mysql define the user name and password
+ramadda.db.mysql.driver=<%= @jndi['driver'] %>
+ramadda.db.mysql.url=<%= @jndi['url'].gsub("&amp;", "&") %>
+ramadda.db.mysql.user=<%= @jndi['username'] %>
+ramadda.db.mysql.password=<%= @jndi['password'] %>
+
+# If you are using postgres define the user name and password
+#ramadda.db.postgres.url=jdbc:postgresql://localhost/ramadda_lucene
+#ramadda.db.postgres.user=
+#ramadda.db.postgres.password=
+
+# If you have ssl enabled on your tomcat server then set this to true
+ramadda.sslenabled=false
+
+# The url root
+ramadda.html.urlbase=/repository

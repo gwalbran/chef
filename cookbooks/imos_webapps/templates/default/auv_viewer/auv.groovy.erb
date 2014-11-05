@@ -1,0 +1,24 @@
+grails.serverURL = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
+
+geoserver {
+    context = 'geoserver'
+    url = "https://geoserver-123.aodn.org.au/geoserver"
+    namespace = 'imos'
+    layerNames {
+        tracks = 'auv_tracks'
+        images = 'auv_images_vw'
+    }
+}
+
+baseLayer {
+    url = 'https://geoserver-static.aodn.org.au/geoserver/baselayers/wms'
+    name = 'default_basemap_simple'
+}
+
+imageFileServer {
+    url = 'https://data.aodn.org.au/IMOS/public/AUV/'
+}
+
+mest {
+    url = 'http://imosmest.emii.org.au/geonetwork'
+}

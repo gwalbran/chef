@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Helper script for backup rock
+# Written by Dan Fruehauf <dan.fruehauf@utas.edu.au>
+
+<% if node[:imos_backup][:tmp_dir] && node[:imos_backup][:tmp_dir] != "" %>
+export TMPDIR=<%= node[:imos_backup][:tmp_dir] %>
+<% end %>
+
+# make sure we run with the correct user
+check_correct_user() {
+    if [ `id -u` -ne `id -u <%= node[:backup][:username] %>` ]; then
+        echo 'Must run as <%= node[:backup][:username] %>'
+        exit 1
+    fi
+}
+
+# main
+main() {
+    local models="$@"
+
+    # verify user we run as
+    check_correct_user
+
+    if [ x"$models" = x ]; then
+        echo "No backup models specified - running all!"
+        models=`ls -1 <%= node[:backup][:models_dir] %>/*.sh | sed -e 's#\.sh$##'`
+    fi
+
+    local -i retval=0
+    for model in $models; do
+        model=`basename $model`
+
+        echo -n "$model: "
+        <%= node[:backup][:bin_dir] %>/backup.sh -m <%= node[:backup][:models_dir] %>/${model}.sh >& /dev/null
+        local -i exit_status=$?
+
+        if [ $exit_status -eq 0 ]; then
+            echo "GREAT SUCCESS :)"
+        else
+            echo "FAILURE :("
+        fi
+
+        let retval=$retval+$exit_status
+    done
+
+    # print summary
+    echo "--------------------"
+    if [ $retval -eq 0 ]; then
+        echo "All backups good."
+    else
+        echo "Some backups FAILED!"
+    fi
+
+    return $retval
+}
+
+main "$@"
+

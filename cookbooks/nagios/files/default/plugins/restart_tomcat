@@ -1,0 +1,105 @@
+#!/bin/bash
+
+# Written by Dan Fruehauf <dan.fruehauf@utas.edu.au>
+
+#
+# this script restarts a jammed tomcat instance
+# Example usage:
+# restart_tomcat -p 8080 -n geoserver-123
+#
+
+# time to wait after sending a kill (SIGTERM) and before sending a kill -9
+# (SIGKILL)
+declare -r kill_timeout=5
+
+# restarts a jammed tomcat instance
+# $1 - tomcat instance name
+# $2 - tomcat instance port
+restart_tomcat() {
+    local name=$1; shift
+    local -i port=$1; shift
+    local -i tomcat_pid=`lsof -i :$port | grep "\(LISTEN\)" | tr -s " " | cut -d' ' -f2`
+    if [ $tomcat_pid -eq 0 ]; then
+        /etc/init.d/tomcat7_$name start
+        return
+    fi
+
+    # attempt SIGTERM
+    kill $tomcat_pid
+
+    # let the process come down
+    if ! wait_for_process_to_die $tomcat_pid $kill_timeout; then
+        kill -9 $tomcat_pid
+    fi
+
+    if ! wait_for_process_to_die $tomcat_pid $kill_timeout; then
+        echo "ERROR: Couldn't kill tomcat instance '$name' on port '$port'"
+    else
+        /etc/init.d/tomcat7_$name start
+    fi
+}
+
+# returns 0 if process died or 1 if not
+# $1 - pid of process
+# $2 - timeout
+wait_for_process_to_die() {
+    local -i pid=$1; shift
+    local -i timeout=$1; shift
+    for i in `seq 1 $timeout`; do
+        ! is_process_up $pid && return 0
+        sleep 1
+    done
+
+    return 1
+}
+
+# returns 0 if process is up, 1 otherwise
+# $1 - pid of process
+is_process_up() {
+    local -i pid=$1; shift
+    test -d /proc/$pid
+}
+
+# prints usage and exit
+usage() {
+    echo "Usage: $0 -n <NAME> -p <PORT>"
+    echo "Restarts a jammed tomcat instance."
+    echo "
+Options:
+  -n, --name                 Name of tomcat instance.
+  -p, --port                 Port of tomcat instance."
+    exit 3
+}
+
+
+# "$@" - parameters, see usage
+main() {
+    # parse options with getopt
+    local tmp_getops=`getopt -o hn:p: --long help,name:,port: -- "$@"`
+    [ $? != 0 ] && usage
+
+    eval set -- "$tmp_getops"
+    local -i port
+    local name
+
+    # parse the options
+    while true ; do
+        case "$1" in
+            -h|--help) usage;;
+            -n|--name) name="$2"; shift 2;;
+            -p|--port) port="$2"; shift 2;;
+            --) shift; break;;
+            *) usage;;
+        esac
+    done
+
+    # if port is 0, do not proceed
+    [ $port -eq 0 ] && usage
+
+    # if instance name is not given, do not proceed
+    [ x"$name" = x ] && usage
+
+    restart_tomcat $name $port
+}
+
+main "$@"

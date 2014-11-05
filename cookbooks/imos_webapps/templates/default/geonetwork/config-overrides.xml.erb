@@ -1,0 +1,87 @@
+<overrides>
+    <!-- include common ANZMEST/IMOS overrides -->
+
+    <import file="/WEB-INF/imos-config-overrides.xml"/>
+
+    <%
+    geoserver_url = @custom_parameters['geoserver']
+    %>
+
+    <!-- set default map layers -->
+
+    <file name=".*WEB-INF/config-gui\.xml">
+        <replaceXML xpath="mapSearch/layers">
+            <layer server="<%= geoserver_url %>/wms" tocName="Borders"  params="{layers: 'gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline', transparent: 'true', format: 'image/png'}"  options="{}" />
+            <layer server="<%= geoserver_url %>/wms" tocName="Ortophoto" params="{layers: 'gn:world', format: 'image/jpeg'}" options="{isBaseLayer: true}" />
+        </replaceXML>
+        <replaceXML xpath="mapViewer/layers">
+            <layer server="<%= geoserver_url %>/wms" tocName="Borders"  params="{layers: 'gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline', transparent: 'true', format: 'image/png'}"  options="{}" />
+            <layer server="<%= geoserver_url %>/wms" tocName="Ortophoto" params="{layers: 'gn:world', format: 'image/jpeg'}" options="{isBaseLayer: true}" />
+        </replaceXML>
+    </file>
+
+    <!-- branding overrides -->
+    <file name=".*WEB-INF/config-gui\.xml">
+        <addXml xpath=".">
+            <banner>
+                <headerLeftImage><%= @custom_parameters['header_left_image'] || 'http://static.emii.org.au/images/mest/imos_123/AODN_123_logo_mest.png' %></headerLeftImage>
+                <headerRightImage><%= @custom_parameters['header_right_image'] || 'http://static.emii.org.au/images/mest/imos_123/IMOS-wide-logo-white.png' %></headerRightImage>
+            </banner>
+        </addXml>
+    </file>
+
+
+    <!-- configure geoserver endpoints -->
+
+    <file name=".*/WEB-INF/geoserver-nodes\.xml">
+        <replaceXML xpath="node">
+            <id><%= geoserver_url.gsub(/[:\/\.]/, "_") %></id>
+            <name>GeoServer (workspace: gn)</name>
+            <namespacePrefix>gn</namespacePrefix>
+            <namespaceUrl>http://geonetwork-opensource.org</namespaceUrl>
+            <adminUrl><%= geoserver_url %>/rest</adminUrl>
+            <wmsUrl><%= geoserver_url %>/wms</wmsUrl>
+            <wfsUrl><%= geoserver_url %>/wfs</wfsUrl>
+            <wcsUrl><%= geoserver_url %>/wcs</wcsUrl>
+            <stylerUrl><%= geoserver_url %>/www/styler/index.html</stylerUrl>
+            <user>admin</user>
+            <password>geoserver</password>
+        </replaceXML>
+    </file>
+
+    <!-- set database connection details
+
+         We use an ordinary tomcat configured Jndi resource here, but
+         have to expose the url for Geotools which needs to know the
+         the connection details.
+    -->
+
+    <file name=".*/WEB-INF/config\.xml">
+        <replaceXML xpath="resources">
+            <resource enabled="true">
+                <name>main-db</name>
+                <provider>jeeves.resources.dbms.JNDIPool</provider>
+                <config>
+                    <context>java:/comp/env</context>
+                    <resourceName><%= @jndi_resources[0]['resource'] %></resourceName>
+                    <url><%= @jndi_resources[0]['url'] %></url>
+                    <provideDataStore>true</provideDataStore>
+                    <maxOpenPreparedStatements>300</maxOpenPreparedStatements>
+                </config>
+            </resource>
+        </replaceXML>
+    </file>
+
+    <file name=".*WEB-INF/config-summary\.xml">
+        <replaceAtt xpath="dimensions/dimension[@name='parameterCategories']/param[@name='conceptScheme']" 
+          attName="value" value="<%= @custom_parameters['parameter_classification_scheme'] \
+          || 'http://vocab.aodn.org.au/ParameterClassificationScheme/SchemeNumber1' %>"/>
+    </file>
+
+    <file name=".*WEB-INF/config-summary\.xml">
+        <replaceAtt xpath="dimensions/dimension[@name='platformCategories']/param[@name='conceptScheme']" 
+          attName="value" value="<%= @custom_parameters['platform_classification_scheme'] \
+          || 'http://vocab.aodn.org.au/PlatformClassificationScheme/SchemeNumber1'  %>"/>
+    </file>
+
+</overrides>

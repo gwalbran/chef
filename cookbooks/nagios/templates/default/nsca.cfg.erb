@@ -1,0 +1,11 @@
+server_port=<%= node['nagios']['nsca']['port'] %>
+nsca_user=<%= node['nagios']['user'] %>
+nsca_group=<%= node['nagios']['group'] %>
+debug=0
+command_file=<%= node['nagios']['state_dir'] %>/rw/nagios.cmd
+alternate_dump_file=<%= node['nagios']['state_dir'] %>/rw/nsca.cmd
+aggregate_writes=0
+append_to_file=0
+max_packet_age=30
+password=<%= @nsca_password %>
+decryption_method=<%= node['nagios']['nsca']['encryption_method'] %>

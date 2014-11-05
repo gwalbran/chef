@@ -1,0 +1,8 @@
+filter {
+
+  kv {
+    field_split => "&? "
+    prefix => "url_param_"
+  }
+
+}

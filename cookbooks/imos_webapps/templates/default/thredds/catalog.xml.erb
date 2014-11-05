@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         name="Unidata THREDDS Data Server"
+         version="1.0.2">
+  <service name="regGriddedServices" serviceType="Compound" base="">
+    <service name="dapService" serviceType="OPENDAP" base="/thredds/dodsC/"/>
+    <service name="httpService" serviceType="HTTPServer" base="/thredds/fileServer/"/>
+    <service name="wmsService" serviceType="WMS" base="/thredds/wms/"/>
+  </service>
+  <datasetScan name="Integrated Marine Observing System" ID="IMOS" path="IMOS" location="<%= @root %>/1/IMOS/opendap/">
+    <metadata inherited="true">
+      <serviceName>regGriddedServices</serviceName>
+      <dataType>Grid</dataType>
+    </metadata>
+    <filter>
+      <include wildcard="*.nc"/>
+      <include wildcard="*.nc.gz"/>
+      <include wildcard="*.ncml"/>
+    </filter>
+  </datasetScan>
+  <catalogRef xlink:title="Climatology Datasets" name="Climatology datasets" xlink:href="climatology.xml" />
+  <catalogRef xlink:title="DEP Datasets" name="DEP datasets" xlink:href="dep.xml" />
+  <catalogRef xlink:title="DSTO Datasets" name="DSTO datasets" xlink:href="dsto.xml" />
+  <catalogRef xlink:title="IMAS Datasets" name="IMAS datasets" xlink:href="imas.xml" />
+  <catalogRef xlink:title="SRS Datasets" name="SRS datasets" xlink:href="srs.xml" />
+</catalog>

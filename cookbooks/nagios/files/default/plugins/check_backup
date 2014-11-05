@@ -1,0 +1,114 @@
+#!/bin/bash
+
+# Written by Dan Fruehauf <dan.fruehauf@utas.edu.au>
+
+# if the backup is older than 36 hours, consider it as old!
+declare -i -r BACKUP_VALID_HOURS_DEFAULT=36
+
+# checks if a file is older than $backup_valid_hours
+# $1 - file to check
+# $2 - valid hours
+_is_file_too_old() {
+    local file=$1; shift
+    local -i backup_valid_hours=$1; shift
+    local -i file_age_seconds=`date +%s`-`date -r $file +%s`
+    local -i file_age_hours=$file_age_seconds/3600
+
+    [ $file_age_hours -ge $backup_valid_hours ]
+}
+
+# check backup status
+# $1 - status directory
+check_backup() {
+    local status_dir=$1; shift
+    local -i backup_valid_hours=$1; shift
+    local -i retval=0
+    local status_file
+
+    [ ! -d $status_dir ] && \
+        ERROR_STRING=" Status directory '$status_dir' does not exist" && \
+        return 2
+
+    [ `ls -1 $status_dir | wc -l` -eq 0 ] && \
+        ERROR_STRING=" Status directory '$status_dir' is empty, did backup ever run?" && \
+        return 2
+
+    # iterate on all backup status files
+    for status_file in `find $status_dir -type f`; do
+        check_status_file $status_file $backup_valid_hours
+        let retval=$retval+$?
+    done
+
+    # remove last ',' char
+    ERROR_STRING=${ERROR_STRING%?}
+
+    return $retval
+}
+
+# check a single status file
+# $1 - status file
+check_status_file() {
+    local status_file=$1; shift
+    local -i backup_valid_hours=$1; shift
+    local backup_name=`basename $status_file | sed -e 's#\.sh$##'`
+    if _is_file_too_old $status_file $backup_valid_hours; then
+        ERROR_STRING="$ERROR_STRING $backup_name is too old,"
+        return 2
+    elif grep -q "^Critical:" $status_file; then
+        ERROR_STRING="$ERROR_STRING $backup_name failed,"
+        return 2
+    else
+        ERROR_STRING="$ERROR_STRING $backup_name is OK,"
+        return 0
+    fi
+}
+
+# prints usage and exit
+usage() {
+    echo "Usage: $0 [OPTIONS]"
+    echo "Checks backup status."
+    echo "
+Options:
+  -d, --status-dir           Backup status directory.
+  -H, --hours                Hours backup will be considered valid, the default
+                             is $BACKUP_VALID_HOURS_DEFAULT hours.
+"
+    exit 3
+}
+
+# "$@" - parameters, see usage
+main() {
+    # parse options with getopt
+    local tmp_getops=`getopt -o hd:H: --long help,status-dir:,hours: -- "$@"`
+    [ $? != 0 ] && usage
+
+    eval set -- "$tmp_getops"
+    local status_dir
+    local -i backup_valid_hours=$BACKUP_VALID_HOURS_DEFAULT
+
+    # parse the options
+    while true ; do
+        case "$1" in
+            -h|--help) usage;;
+            -d|--status-dir) status_dir="$2"; shift 2;;
+            -H|--hours) backup_valid_hours="$2"; shift 2;;
+            --) shift; break;;
+            *) usage;;
+        esac
+    done
+
+    # verify parameters
+    [ x"$status_dir" = x ] && usage
+
+    check_backup "$status_dir" $backup_valid_hours
+    local -i retval=$?
+
+    if [ $retval -eq 0 ]; then
+        echo "OK:$ERROR_STRING"
+    else
+        echo "CRITICAL:$ERROR_STRING"
+    fi
+    return $retval
+}
+
+main "$@"

@@ -1,0 +1,7 @@
+<%
+@items.each do |known_host_tuple|
+%>
+<%= known_host_tuple[0] %>,<%= known_host_tuple[1] %> ssh-rsa <%= known_host_tuple[2] %>
+<%
+end
+%>

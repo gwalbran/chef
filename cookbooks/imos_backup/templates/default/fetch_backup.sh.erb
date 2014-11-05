@@ -1,0 +1,115 @@
+#!/bin/bash
+
+# some constants which will help us decide where and how to retrieve the backups
+declare -r BACKUPS_USER=<%= @username %>
+declare -r BACKUPS_HOST=<%= node[:imos_backup][:restore][:from_host] %>
+
+# a bit of "slack" SSH options, but heck...
+declare -r SSH_OPTIONS='-o UserKnownHostsFile=<%= @known_hosts %> -o IdentityFile=<%= @id_rsa %>'
+
+# fetches the latest remote backup from the given destination
+# $1 - dir to put the backup in
+# $2 - host to get backup for
+# $3 - model of backup to retrieve
+# "$@" - files to download, must be specified
+fetch_backup() {
+    local dir=$1; shift
+    local host=$1; shift
+    local model=$1; shift
+
+    [ x"$@" = x ] && echo "Did not specify any files to files" && return 1
+
+    local backup_location="backups/$host/$model"
+    echo "Getting list of backups from '$BACKUPS_USER@$BACKUPS_HOST:$backup_location'"
+
+    local tmp_batch_sftp=`mktemp`
+    echo "cd $backup_location" > $tmp_batch_sftp
+    echo "ls -1t" >> $tmp_batch_sftp
+
+    local backup_list=`sftp -b $tmp_batch_sftp $SSH_OPTIONS $BACKUPS_USER@$BACKUPS_HOST | grep -v '^sftp>'`
+    rm -f $tmp_batch_sftp
+
+    if [ x"$backup_list" = x ]; then
+        echo "Could not find backups at '$backup_location'"
+        return 1
+    fi
+
+    local tmp_choice=`mktemp`
+    local dialog_items=`echo $backup_list | sed -e 's/ / - /g' -e 's/$/ -/'`
+
+    # interactive shell?
+    if tty -s; then
+        dialog --menu "Choose the desired backup for the restore operation ($host/$model):" 0 40 10 \
+            $dialog_items 2> $tmp_choice
+    else
+        # if the shell is not interactive, just take the latest backup
+        echo $backup_list | cut -d' ' -f1 > $tmp_choice
+        echo "Auto selecting latest backup for operation"
+    fi
+
+    local selected_backup=`cat $tmp_choice`
+
+    if [ x"$selected_backup" = x ]; then
+        echo "Could not determine latest backup for host '$host' and model '$model', aborting..."
+        return 1
+    fi
+
+    echo "Selected backup is '$selected_backup'"
+
+    local backup_file
+    for backup_file in "$@"; do
+        local base_dir=`dirname $dir/restore_operation/$backup_file`
+        echo "Downloading '$BACKUPS_USER@$BACKUPS_HOST:$backup_location/$selected_backup/$backup_file' -> '$dir/restore_operation/$backup_file'"
+        (mkdir -p $base_dir && cd $base_dir && echo "get -r $backup_location/$selected_backup/$backup_file" | sftp $SSH_OPTIONS $BACKUPS_USER@$BACKUPS_HOST)
+    done
+}
+
+# prints usage and exit
+usage() {
+    echo "Usage: $0 [OPTIONS] -- [FILES]"
+    echo "Fetches a backup of a host to the given directory"
+    echo
+    echo "Example: $0 -h 3-nec-mel.emii.org.au -m pgsql -d /tmp/restore-dir -- geonetwork/public.dump"
+    echo
+    echo "
+Options:
+  -H, --host                 Host to fetch backup for.
+  -m, --model                Model of backup to fetch.
+  -d, --dir                  Where to put all of those things.
+"
+    exit 3
+}
+
+# main
+# "$@" - parameters, see usage() for more info
+main() {
+    # parse options with getopt
+    local tmp_getops=`getopt -o hH:m:d: \
+--long help,host:,model:,dir: -- "$@"`
+    [ $? != 0 ] && usage
+
+    eval set -- "$tmp_getops"
+
+    local host model dir
+
+    # parse the options
+    while true ; do
+        case "$1" in
+            -h|--help) usage;;
+            -H|--host) host="$2"; shift 2;;
+            -m|--model) model="$2"; shift 2;;
+            -d|--dir) dir="$2"; shift 2;;
+            --) shift; break;;
+            *) usage;;
+        esac
+    done
+
+    # quit if any of these if unset
+    [ x"$host"  = x ] && usage
+    [ x"$model" = x ] && usage
+    [ x"$dir"   = x ] && usage
+
+    fetch_backup $dir $host $model "$@"
+}
+
+main "$@"

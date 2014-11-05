@@ -1,0 +1,157 @@
+#!/usr/bin/ruby
+
+require 'nokogiri'
+require 'open-uri'
+require 'trollop'
+require 'net/http'
+require 'net/https'
+
+# Downloads nagios current status as XML
+def get_nagios_status_xml(url, username, password)
+  uri = URI(url)
+
+  http_response_body = ""
+  Net::HTTP.start(uri.host, uri.port,
+    :use_ssl => uri.scheme == 'https',
+    :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
+      request = Net::HTTP::Get.new uri.request_uri
+      request.basic_auth username, password
+
+      response = http.request request
+      http_response_body = response.body
+  end
+
+  return Nokogiri::XML(http_response_body)
+end
+
+# Normalize list of given hosts for display
+def normalize_hosts(hosts)
+  hosts = hosts.sort.uniq.join(', ')
+  hosts.gsub!('|', ',')
+  return hosts
+end
+
+# Generate performance data
+def generates_perf_data(total_services_count, faulty_services_count)
+  perf_data  = "ok_services_percent=#{(total_services_count-faulty_services_count)*100/total_services_count}"
+  perf_data += ", total_services=#{total_services_count}"
+
+  return perf_data
+end
+
+# Given a host_name and monitor_name, returns its status
+def get_nagios_monitor_status(opts)
+  nagios_url      = opts[:nagios_url]
+  nagios_username = opts[:nagios_username]
+  nagios_password = opts[:nagios_password]
+
+  @nagios_status_xml = get_nagios_status_xml(nagios_url, nagios_username, nagios_password)
+  faulty_services = []
+  all_hosts = []
+  total_service_count = 0
+
+  opts[:regexp].each do |regexp|
+    host_name_regex    = regexp.split(':')[0]
+    service_name_regex = regexp.slice(regexp.index(":")+1..-1)
+    # In case user did not specify which services - include all!
+    if ! service_name_regex
+      service_name_regex = ".*"
+    end
+    all_hosts << host_name_regex
+    last_total_service_count, last_faulty_services = get_faulty_services(@nagios_status_xml, host_name_regex, service_name_regex)
+    faulty_services += last_faulty_services
+    total_service_count += last_total_service_count
+  end
+
+  perf_data = generates_perf_data(total_service_count, faulty_services.length)
+  message = ""
+
+  if faulty_services.length > 0
+    message = "CRITICAL: #{faulty_services.length} out of #{total_service_count} failed:"
+    faulty_services.each do |faulty_service|
+      message += " '#{faulty_service[:host_name]}:::#{faulty_service[:service_name]}'"
+    end
+    retval = 2
+  else
+    message = "OK: All services (#{total_service_count} in total) on '#{normalize_hosts(all_hosts)}' appear to be in OK state"
+    retval = 0
+  end
+
+  puts "#{message} | #{perf_data}"
+  return retval
+end
+
+# Returns all faulty services from xml given a host name regular expression and
+# a service name regular expression
+# Returns the total number of services checked and also an array with all the
+# ones that failed
+def get_faulty_services(nagios_status_xml, host_name_regex, service_name_regex)
+  faulty_services = []
+  total_service_count = 0
+
+  @nagios_status_xml.at_xpath("/nagios/hosts").children.each do |host|
+    host_name = host['host_name'].to_s
+    next unless host_name != ""
+    next unless host_name.match /^#{host_name_regex}$/
+    host.children.each do |service|
+      service_name = service['service_description'].to_s
+      next unless service_name != ""
+      next unless service_name.match /^#{service_name_regex}$/
+      # If the service is equal to 0, set current_service_state to true, as 0
+      # in nagios means success
+      current_service_state = service['current_state'] == '0'
+      total_service_count += 1
+
+      # We're after a logical AND of all results here
+      if ! current_service_state
+        faulty_services << { :host_name => host_name, :service_name => service_name }
+      end
+    end
+  end
+
+  return [ total_service_count, faulty_services ]
+end
+
+# Arguments parsing
+opts = Trollop::options do
+  banner <<-EOS
+    Get result of nagios monitors based on regular expressions.
+
+    Examples:
+        All monitors on 1-nec-mel.emii.org.au:
+           check_nagios_monitors -u username -p password -r '1-nec-mel.emii.org.au:.*'
+           check_nagios_monitors -u username -p password -r '1-nec-mel.emii.org.au'
+        Disks monitors on all hosts:
+           check_nagios_monitors -u username -p password -r '.*:disks'
+        Geoserver monitors on 11-nsp-mel:
+           check_nagios_monitors -u username -p password -r '11-nsp-mel.emii.org.au:geoserver .*'
+        All monitors on 1-nec-mel.emii.org.au and 2-nec-mel.emii.org.au:
+           check_nagios_monitors -u username -p password -r '1-nec-mel.emii.org.au:.*' '2-nec-mel.emii.org.au:.*'
+        CPU monitors on *-its-hob hosts:
+           check_nagios_monitors -u username -p password -r '*-its-hob.emii.org.au:.*'
+
+    Options:
+EOS
+  opt :nagios_url, "Nagios URL to use",
+    :type => :string,
+    :short   => '-U'
+  opt :nagios_username,
+    "Nagios username for login",
+    :type  => :string,
+    :short => '-u'
+  opt :nagios_password,
+    "Nagios password for login",
+    :type  => :string,
+    :short => '-p'
+  opt :regexp,
+    "Regular expressions to match monitors on",
+    :type  => :strings,
+    :short => '-r'
+end
+
+Trollop::die :nagios_url,      "Must specify nagios url"          if ! opts[:nagios_username]
+Trollop::die :nagios_username, "Must specify nagios username"     if ! opts[:nagios_username]
+Trollop::die :nagios_password, "Must specify nagios password"     if ! opts[:nagios_password]
+Trollop::die :nagios_regexp,   "Must specify at least one regex " if ! opts[:regexp_given]
+
+exit(get_nagios_monitor_status(opts))

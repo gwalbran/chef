@@ -1,0 +1,18 @@
+grails.serverURL = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
+
+grails.mail.default.from = "emiioffice@emii.org.au"
+
+worker {
+    fileLimit = 3 * 31 * 24
+    outputFilename = 'output.nc'
+    outputPath = '<%= @tomcat_data_directory %>'
+    cmd = {
+        // Script from exploded war is not executable, hence '/bin/bash' is necessary.
+        "/bin/bash <%= File.join(
+                @tomcat_base_directory,
+                "webapps",
+                @custom_parameters['name'],
+                "/resources/worker/gogoduck.sh ${it}")
+        %>"
+    }
+}

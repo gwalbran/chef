@@ -1,0 +1,52 @@
+// AATAMS configuration
+
+// Mail plugin config
+grails.mail.disabled            = <%= !@custom_parameters['mail_enabled'] || (node['vagrant'] == true) %>
+grails.mail.adminEmailAddress   = "aatams_admin@emii.org.au"
+grails.mail.systemEmailAddress  = "aatams_system@emii.org.au"
+grails.mail.supportEmailAddress = "info@emii.org.au"
+grails.mail.port                = 25
+grails.mail.username            = "aatams_system@utas.edu.au"
+grails.mail.props               = [ "mail.smtp.auth": "false" ]
+
+grails.serverURL  = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
+grails.serverHost = "<%= @custom_parameters['vhost'] %>"
+fileimport.path   = "<%= @custom_parameters['data_dir'] || @tomcat_data_directory %>/<%= @custom_parameters['fileimports'] || 'fileimports' %>"
+bulkimport.path   = "<%= @custom_parameters['data_dir'] || @tomcat_data_directory %>/<%= @custom_parameters['bulkimports'] || 'fileimports/bulkimports' %>"
+grails.mail.host  = "localhost"
+
+dataSource {
+    jndiName = "java:comp/env/<%= @jndi_resources[0]['resource'] %>"
+}
+
+searchable {
+    compassConnection = new File(
+        "<%= @tomcat_data_directory %>/<%= @custom_parameters['search'] || 'search' %>/${grailsEnv}"
+    ).absolutePath
+}
+
+log4j = {
+    appenders {
+        console name: 'stdout', layout: pattern(conversionPattern: "<%= node['imos_webapps']['log4j']['pattern'] %>")
+        'null' name: "stacktrace"
+    }
+
+    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
+           'org.codehaus.groovy.grails.web.pages', //  GSP
+           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+           'org.codehaus.groovy.grails.web.mapping', // URL mapping
+           'org.codehaus.groovy.grails.commons', // core / classloading
+           'org.codehaus.groovy.grails.plugins', // plugins
+           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+           'org.springframework',
+           'net.sf.ehcache.hibernate'
+
+    warn   'org.mortbay.log'
+
+    info   "grails.app"
+
+    root {
+        info 'stdout', 'null'
+    }
+}

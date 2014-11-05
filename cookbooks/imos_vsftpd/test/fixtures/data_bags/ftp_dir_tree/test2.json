@@ -1,0 +1,7 @@
+{
+  "id": "test2",
+  "directory": "test1/test2",
+  "mode": "02775",
+  "owner": "ftp",
+  "group": "users"
+}

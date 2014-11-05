@@ -1,0 +1,7 @@
+source "https://supermarket.getchef.com"
+metadata
+
+group :unit do
+  cookbook 'squid'
+  cookbook 'logrotate'
+end

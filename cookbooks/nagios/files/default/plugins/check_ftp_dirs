@@ -1,0 +1,90 @@
+#!/bin/bash
+
+# Written by Dan Fruehauf <dan.fruehauf@utas.edu.au>
+
+# configuration directory for vsftpd
+declare -r CONF_DIR=/etc/vsftpd/
+
+# We need 02575 permissions on those directories!!
+declare -r FTP_PERMISSION=2575
+
+# checks permissions on a single ftp directory
+# $1 - directory to check
+check_ftp_dir() {
+    local dir=$1; shift
+
+    # obtain permissions in octal format
+    local perms=`stat --format=%a $dir 2> /dev/null`
+
+    # compare to required permissions
+    [ "$perms" = "$FTP_PERMISSION" ]
+}
+
+# check ftp directory permissions for all defined directories
+# $1 - configuration directory
+check_ftp_dirs() {
+    local conf_dir=$1; shift
+    local -i retval=0
+
+    local ftp_dir ftp_config_file
+    for ftp_config_file in `find $conf_dir -maxdepth 1 -type f`; do
+        ftp_dir=`grep "local_root=" $ftp_config_file | cut -d= -f2`
+        if ! check_ftp_dir $ftp_dir; then
+            ERROR_STRING="'$ftp_dir' $ERROR_STRING"
+            retval=2
+        fi
+    done
+    return $retval
+}
+
+# prints usage and exit
+usage() {
+    echo "Usage: $0 [OPTIONS]"
+    echo "Checks ftp users directory permissions."
+    echo "
+Options:
+  -c, --conf-dir             Configuration directory for vsftpd, default is
+                             /etc/vsftpd/
+"
+    exit 3
+}
+
+
+# "$@" - parameters, see usage
+main() {
+    # parse options with getopt
+    local tmp_getops=`getopt -o hc: --long help,conf-dir: -- "$@"`
+    [ $? != 0 ] && usage
+
+    eval set -- "$tmp_getops"
+    local conf_dir=$CONF_DIR
+
+    # parse the options
+    while true ; do
+        case "$1" in
+            -h|--help) usage;;
+            -c|--conf-dir) conf_dir="$2"; shift 2;;
+            --) shift; break;;
+            *) usage;;
+        esac
+    done
+
+    # verify parameters
+    [ x"$conf_dir" = x ] && usage
+
+    check_ftp_dirs $conf_dir
+    local -i retval=$?
+
+    if [ $retval -eq 0 ]; then
+        echo "OK: All users OK"
+    elif [ $retval -eq 1 ]; then
+        echo "WARNING: $ERROR_STRING"
+    elif [ $retval -eq 2 ]; then
+        echo "CRITICAL: $ERROR_STRING"
+    else
+        echo "UNKNOWN: $ERROR_STRING"
+    fi
+    return $retval
+}
+
+main "$@"

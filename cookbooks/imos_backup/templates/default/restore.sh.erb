@@ -1,0 +1,62 @@
+#!/bin/bash
+
+declare -r BACKUP_USERNAME=<%= node[:backup][:username] %>
+declare -r BACKUP_GROUP=<%= node[:backup][:group] %>
+declare -r BACKUP_DIR=<%= node[:backup][:backup_dir] %>
+
+<%
+def get_backups
+  if node[:imos_backup] && node[:imos_backup][:restore] && node[:imos_backup][:restore][:directives]
+    return node[:imos_backup][:restore][:directives]
+  else
+    return nil
+  end
+end
+%>
+
+# clears given model from backups, before we start fetching
+# $1 - model
+clear_backups() {
+    local model=$1; shift
+    test -d $BACKUP_DIR/$model && sudo rm -rf --preserve-root $BACKUP_DIR/$model
+}
+
+# fetches a given model from a given host
+# $1 - host to restore from
+# $2 - model to restore from
+# $3 - model to restore to
+fetch_backup() {
+    local from_host=$1; shift
+    local from_model=$1; shift
+    local to_model=$1; shift
+    test -d $BACKUP_DIR/$from_model || sudo mkdir $BACKUP_DIR/$from_model
+    sudo chown $BACKUP_USERNAME:$BACKUP_GROUP $BACKUP_DIR/$from_model
+    sudo -u $BACKUP_USERNAME <%= @fetch_backup %> -H $from_host -m $from_model -d $BACKUP_DIR/$to_model -- "$@"
+}
+
+<%
+get_backups().each do |directive|
+  to_model = directive['to_model'] || directive['from_model']
+%>
+clear_backups <%= to_model %>
+<%
+end
+%>
+
+<%
+backups_to_restore = []
+get_backups().each do |directive|
+  from_model = directive['from_model']
+  to_model   = directive['to_model']   || from_model
+  from_host  = directive['from_host']  || node['fqdn']
+  files      = directive['files']      || [ '\*' ]
+%>
+fetch_backup <%= from_host %> <%= from_model %> <%= to_model %> <%= files.join(" ") %>
+<%
+  backups_to_restore << to_model
+end
+%>
+
+<% backups_to_restore.sort.uniq.each do |to_model| %>
+sudo -u $BACKUP_USERNAME <%= ::File.join(node[:backup][:bin_dir], 'backup.sh') %> -r -m <%= File.join(node[:backup][:models_dir], "#{to_model}.sh") %>
+<% end %>

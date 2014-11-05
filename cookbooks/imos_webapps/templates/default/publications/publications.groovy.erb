@@ -1,0 +1,41 @@
+grails.serverUrl = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
+grails.serverHost = "<%= @custom_parameters['vhost'] %>"
+
+dataSource {
+    jndiName = "java:comp/env/<%= @jndi_resources[0]['resource'] %>"
+}
+
+searchable {
+    compassConnection = new File(
+        "<%= @tomcat_data_directory %>/<%= @custom_parameters['name'] || 'publications' %>/${grailsEnv}"
+    ).absolutePath
+}
+
+// log4j configuration
+log4j = {
+    appenders {
+
+        console name:'stdout', layout: pattern(conversionPattern: '%d [%t] [%X{username}] %-5p %c{1} - %m%n')
+        'null' name: "stacktrace"
+    }
+
+    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
+    'org.codehaus.groovy.grails.web.pages', //  GSP
+    'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+    'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+    'org.codehaus.groovy.grails.web.mapping', // URL mapping
+    'org.codehaus.groovy.grails.commons', // core / classloading
+    'org.codehaus.groovy.grails.plugins', // plugins
+    'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+    'org.springframework',
+    'net.sf.ehcache.hibernate'
+
+    warn   'org.mortbay.log'
+
+    info   "grails.app"
+
+    root
+    {
+        info 'stdout', 'null'
+    }
+}

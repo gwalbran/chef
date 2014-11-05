@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Written by Dan Fruehauf <dan.fruehauf@utas.edu.au>
+# With help by Craig Jones <craig.jones@utas.edu.au>
+# Updated Julian <jfca@utas.edu.au>
+
+
+# checks for errors in talend file (console.txt)
+# $1 - talend console.txt file
+talend_file_has_errors() {
+    local talend_console_file=$1; shift
+    # Avoid false positives on Liquibase errors that are marked as having run
+    cat $talend_console_file | grep -i -E 'exception|error|fail' | grep -v -q 'MARK_RAN'
+}
+
+# check talend status for a job
+# $1 - job name
+# $2 - console log file for job
+check_talend() {
+    local job_name=$1; shift
+    local console_file=$1; shift
+
+    # check if the job ever ran
+    if [ ! -f $console_file ]; then
+        ERROR_STRING="Job '$job_name' never ran"
+        return 0
+    fi
+
+    # console first and last lines have start/finish
+    local first_log_line=`head -1 $console_file`
+    local last_log_line=`tail -1 $console_file`
+    local first_log_line_timestamp=`echo $first_log_line | cut -d';' -f2`
+    local last_log_line_timestamp=`echo $last_log_line | cut -d';' -f2`
+    local last_log_line_runtime=`echo $last_log_line | cut -d';' -f3`
+
+    if `echo $last_log_line | grep -q finish`; then
+        if talend_file_has_errors $console_file; then
+            ERROR_STRING="Job '$job_name' had errors, finished at '$last_log_line_timestamp', $last_log_line_runtime"
+            return 2
+        else
+            ERROR_STRING="Job '$job_name' succeeded at '$last_log_line_timestamp', $last_log_line_runtime"
+            return 0
+        fi
+    else
+        ERROR_STRING="job '$job_name' is running, started at $first_log_line_timestamp"
+        return 0
+    fi
+}
+
+# prints usage and exit
+usage() {
+    echo "Usage: $0 [OPTIONS]"
+    echo "Checks talend job status."
+    echo "
+Options:
+  -n, --job-name             Talend job name.
+  -c, --console-file         Console file for job.
+"
+    exit 3
+}
+
+
+# "$@" - parameters, see usage
+main() {
+    # parse options with getopt
+    local tmp_getops=`getopt -o hn:c: --long help,job-name:,console-file: -- "$@"`
+    [ $? != 0 ] && usage
+
+    eval set -- "$tmp_getops"
+    local job_name stats_file console_file
+
+    # parse the options
+    while true ; do
+        case "$1" in
+            -h|--help) usage;;
+            -n|--job-name) job_name="$2"; shift 2;;
+            -c|--console-file) console_file="$2"; shift 2;;
+            --) shift; break;;
+            *) usage;;
+        esac
+    done
+
+    # verify parameters
+    [ x"$job_name" = x ] && usage
+    [ x"$console_file" = x ] && usage
+
+    check_talend "$job_name" $console_file
+    local -i retval=$?
+
+    if [ $retval -eq 0 ]; then
+        echo "OK: $ERROR_STRING"
+    elif [ $retval -eq 1 ]; then
+        echo "WARNING: $ERROR_STRING"
+    elif [ $retval -eq 2 ]; then
+        echo "CRITICAL: $ERROR_STRING"
+    else
+        echo "UNKNOWN: $ERROR_STRING"
+    fi
+    return $retval
+}
+
+main "$@"

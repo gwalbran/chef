@@ -1,0 +1,149 @@
+grails.serverURL = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
+spatialsearch.url = "<%= @custom_parameters['spatialsearch_url'] || 'http://search-123.aodn.org.au/search/search/index' %>"
+wmsScanner.url = "<%= @custom_parameters['wms_scanner_url'] || 'http://wmsscanner.aodn.org.au/wmsscanner/' %>"
+wfsScanner.url = "<%= @custom_parameters['wfs_scanner_url'] || 'http://wfsscanner.aodn.org.au/wfsscanner/' %>"
+gogoduck.url = "<%= @custom_parameters['gogoduck_url'] || 'https://gogoduck.aodn.org.au/gogoduck' %>"
+geonetwork.url = "<%= @custom_parameters['geonetwork_url'] || 'https://catalogue-123.aodn.org.au/geonetwork' %>"
+depthService.url = "<%= @custom_parameters['depth_service_url'] || 'https://depthservice.aodn.org.au/depth' %>"
+aodaacAggregator.url = "<%= @custom_parameters['aodaac_aggregator_url'] || 'http://aodaac.aodn.org.au' %>"
+
+featureToggles {
+    <% if @custom_parameters['feature_toggles'] %>
+      <% @custom_parameters['feature_toggles'].each do |feature_name, enabled| %>
+        <%= "#{feature_name} = #{enabled}" %>
+      <% end %>
+    <% end %>
+}
+geonetwork.searchPath = '<%= @custom_parameters['feature_toggles'] && @custom_parameters['feature_toggles']['hierarchicalFacets'] ? 'xml.search.imos' : 'xml.search.summary' %>'
+
+knownServers = [
+<%
+if @custom_parameters['known_servers']
+  @custom_parameters['known_servers'].each do |known_server_data_bag|
+    known_server = Chef::DataBagItem.load('imos_webapps_portal_known_servers', known_server_data_bag)
+%>
+    [
+<% known_server.each do |k, v| %>
+<%= "        #{k}: \"#{v}\"," %>
+<% end %>
+    ],
+<%
+  end
+end
+%>
+]
+
+<% if @custom_parameters['google_analytics_tracking_id'] %>
+<%= "googleAnalytics.trackingId = '#{@custom_parameters['google_analytics_tracking_id']}'" =%>
+<% end %>
+
+proxyWmsRequests = <%= @custom_parameters['proxyWmsRequests'] || false %>
+
+downloadAuth {
+    whitelistClients = [
+        <%=
+        if @custom_parameters['white_list_clients']
+          @custom_parameters['white_list_clients'].join(", ")
+        else
+          node['imos_core']['network']['utas']['regex']
+        end
+        %>
+    ]
+
+    blacklistClients = [
+        <%=
+        if @custom_parameters['black_list_clients']
+          @custom_parameters['black_list_clients'].join(", ")
+        else
+          ''
+        end
+        %>
+    ]
+}
+
+dataSource {
+    jndiName = "java:comp/env/<%= @jndi_resources[0]['resource'] %>"
+}
+
+portal {
+
+    instance {
+        // The name is used to load instance specific data migrations, in most
+        // cases this should not be an issue for you so feel free to put any
+        // suitable name for your instance here. The application will default
+        // to IMOS if no name is set
+        name = "<%= @custom_parameters['portal_instance_name'] || @custom_parameters['name'].upcase %>"
+
+        // URL to serve your site CSS from, this does not have to be from within
+        // portal's context e.g. http://me.example.com/static/css/portal.css
+        css = "/<%= @custom_parameters['name'] %>/css/<%= @custom_parameters['css_name'] || @custom_parameters['name'].upcase %>.css"
+    }
+
+    header {
+        logo = "<%= @custom_parameters['header_logo'] || @custom_parameters['name'].upcase + '_logo.png' %>"
+        externalLinks = [
+            [
+                linkText: "eMII",
+                tooltipText: "e-Marine Information Infrastructure",
+                href: "http://www.emii.org.au"
+            ],
+            [
+                linkText: "<%= @custom_parameters['header_link_text'] || @custom_parameters['name'].upcase %>",
+                tooltipText: "<%= @custom_parameters['header_tooltip_text'] || 'Integrated Marine Observing System' %>",
+                href: "<%= @custom_parameters['header_href'] || 'http://imos.org.au/' + @custom_parameters['name'] + '.html' %>"
+            ],
+            [
+                linkText: "Help",
+                tooltipText: "Portal help files",
+                href: help.url
+            ]
+        ]
+    }
+
+    // Change authentication emails for IMOS
+    systemEmail {
+        fromAddress = "<%= @custom_parameters['system_email_from_address'] || 'info@emii.org.au' %>"
+    }
+}
+
+log4j = {
+
+    appenders {
+        console name: 'stdout', layout: pattern(conversionPattern: "<%= node['imos_webapps']['log4j']['pattern'] %>")
+    }
+
+    root {
+        info 'stdout'
+    }
+
+    error   'org.codehaus.groovy.grails.web.servlet',  //  controllers
+            'org.codehaus.groovy.grails.web.pages', //  GSP
+            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+            'org.codehaus.groovy.grails.web.mapping', // URL mapping
+            'org.codehaus.groovy.grails.commons', // core / classloading
+            'org.codehaus.groovy.grails.plugins', // plugins
+            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+            'org.springframework',
+            'org.hibernate',
+            'net.sf.ehcache.hibernate',
+            'org.grails.plugin.resource.ResourceMeta'
+
+    warn    'org.mortbay.log'
+
+    info    'grails.app.tagLib.au.org.emii.portal.UserTagLib',
+            'grails.app.filters.shiro.SecurityFilters',
+            'grails.app.controller.au.org.emii.portal.LayerController',
+            'grails.app.controller.au.org.emii.portal.AuthController',
+            'grails.app.service.au.org.emii.portal.LayerService',
+            'au.org.emii.portal.display.MenuJsonCache',
+            'org.apache.shiro',
+            'grails.app.controller'
+
+    debug   'grails.app.job',
+            'grails.app.tagLib',
+            'grails.app.service.au.org.emii.portal.AodaacAggregatorService',
+            'grails.app.controller.au.org.emii.portal.SystemController',
+            'grails.app.domain',
+            'grails.app.realms'
+}

@@ -1,0 +1,114 @@
+<%
+main_app_path = @params[:apps].first.keys.first
+
+# Logs
+error_log     = File.join(node['apache']['log_dir'], "#{@params[:name]}-error.log")
+rewrite_log   = File.join(node['apache']['log_dir'], "#{@params[:name]}-rewrite.log")
+# Have the same access log for both http and https hosts, so use the vhost which
+# will not include the '_ssl' suffix, so awstats and friends can parse it
+access_log    = File.join(node['apache']['log_dir'], "#{@params[:vhost]}-access.log")
+
+if @params[:https]
+  protocol = "https"
+  port     = 443
+else
+  protocol = "http"
+  port     = 80
+end
+%>
+
+# HTTP vhost
+<VirtualHost *:<%= port %>>
+<% if @params[:server_admin] %>
+  ServerAdmin <%= @params[:server_admin] %>
+<% end %>
+  ServerName <%= @params[:vhost] %>
+<% if @params[:server_aliases] %>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+<% end %>
+
+<% if @params[:docroot] %>
+  DocumentRoot <%= @params[:docroot] %>
+
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+<% end -%>
+
+<%
+if @params[:cached]
+  @params[:apps].each do |app|
+    app_name = app.keys.first
+%>
+  ProxyRemote http://localhost:<%= @params[:app_port] %>/<%= app_name %> http://localhost:3128
+<%
+  end
+end
+-%>
+
+  TraceEnable off
+  LogLevel info
+  ErrorLog <%= error_log %>
+  CustomLog <%= access_log %> combined
+
+  # redirects, use first app for that
+  RewriteRule ^/index.html$ <%= protocol %>://<%= @params[:vhost] %>/<%= main_app_path %>
+  RewriteRule ^/$ <%= protocol %>://<%= @params[:vhost] %>/<%= main_app_path %>
+
+  # proxy and reverse proxy handling
+  ProxyPreserveHost On
+
+  # Enable proxying (disabled by default)
+  <Proxy *>
+    Order deny,allow
+    Deny from all
+    Allow from all
+  </Proxy>
+
+<% @params[:apps].each do |app|
+     app_name = app.keys.first
+     aliases  = app.values.first
+%>
+  ProxyPass           /<%= app_name %> http://localhost:<%= @params[:app_port] %>/<%= app_name %>
+  ProxyPassReverse    /<%= app_name %> http://localhost:<%= @params[:app_port] %>/<%= app_name %>
+
+  # take care of extra aliases per app
+  # forward all aliases to /name
+<%   aliases.each do |_alias| %>
+  RewriteRule ^/<%= _alias %>/*$ http://%{HTTP_HOST}/<%= app_name %>
+<%   end if aliases -%>
+
+<% end -%>
+
+  RewriteEngine On
+  RewriteOptions inherit
+  RewriteLog <%= rewrite_log %>
+  RewriteLogLevel 0
+
+<% if @params[:rules] %>
+  <% @params[:rules].each do |rule| %>
+  <%= rule %>
+  <% end %>
+<% end %>
+
+<% if @params[:redirect_to_https] %>
+  ReWriteCond %{SERVER_PORT} !^443$
+  RewriteRule ^/(.*) https://%{HTTP_HOST}/$1 [NC,NE,R,L]
+<% end %>
+
+<% if protocol && protocol == "https" %>
+  SSLEngine On
+  SSLCertificateFile /etc/ssl/certs/<%= @params[:domain] %>.crt
+  SSLCertificateKeyFile /etc/ssl/private/<%= @params[:domain] %>.key
+  SSLCertificateChainFile /etc/ssl/certs/<%= @params[:domain] %>.chain.crt
+<% end %>
+
+</VirtualHost>

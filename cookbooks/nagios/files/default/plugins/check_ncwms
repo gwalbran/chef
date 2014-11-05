@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# Written by Dan Fruehauf <dan.fruehauf@utas.edu.au>
+
+#
+# This script checks for the number of URLs served by NcWMS server. Usually
+# NcWMS server will provide us with many <href>s of type GetMap or
+# GetFeatureInfo. We will count them and alert if they are too low.
+# Example usage:
+# check_ncwms -c 800 -w 1000 -t GetMap -u https://ncwms.aodn.org.au/
+# This will alert if there are less than 1000 GetMap URLs as warning and as
+# critical if there are less than 800.
+#
+
+# how does the url looks like? usually something like:
+# 'a href="wms?REQUEST=GetMap&...'
+# 'a href="wms?REQUEST=GetFeatureInfo&...'
+declare WMS_REQUEST_PREFIX="<a href=\"wms?REQUEST="
+
+# checks ncwms layers
+# $1 - ncwms URL
+# $2 - request type (GetMap, GetFeatureInfo)
+# $3 - warning
+# $4 - critical
+check_ncwms() {
+    local url="$1"; shift
+    local request_type="$1"; shift
+    local -i warning=$1; shift
+    local -i critical=$1; shift
+
+    tmp_output=`mktemp`
+    curl -o $tmp_output -L -s $url
+    if [ $? -ne 0 ]; then
+        ERROR_STRING="curl error"
+        rm -f $tmp_output
+        return 2 # 2 for CRITICAL
+    fi
+
+    # see how many time this request is there
+    local -i request_nr=`grep -c "${WMS_REQUEST_PREFIX}${request_type}" $tmp_output`
+    rm -f $tmp_output
+
+    # format string for user
+    local error_string="${request_type}: serving $request_nr URLs"
+
+    if [ $request_nr -lt $critical ]; then
+        echo "Critical: $error_string"
+        return 2
+    elif [ $request_nr -lt $warning ]; then
+        echo "Warning: $error_string"
+        return 1
+    else
+        echo "OK: $error_string"
+        return 0
+    fi
+}
+
+# prints usage and exit
+usage() {
+    echo "Usage: $0 [OPTIONS]... NODE_NAME"
+    echo "Checks number of URLs served by NcWMS server."
+    echo "
+Options:
+  -u, --url                  Portal URL.
+  -t, --type                 Request type (GetMap, GetFeatureInfo).
+  -w, --warning              Warning threshold.
+  -c, --critical             Critical threshold."
+    exit 3
+}
+
+
+# "$@" - parameters, see usage
+main() {
+    # parse options with getopt
+    local tmp_getops=`getopt -o hu:t:w:c: --long help,url:,type:,warning:,critical: -- "$@"`
+    [ $? != 0 ] && usage
+
+    eval set -- "$tmp_getops"
+    local url type
+    local -i warning=0
+    local -i critical=0
+
+    # parse the options
+    while true ; do
+        case "$1" in
+            -h|--help) usage;;
+            -u|--url) url="$2"; shift 2;;
+            -t|--type) type="$2"; shift 2;;
+            -w|--warning) warning="$2"; shift 2;;
+            -c|--critical) critical="$2"; shift 2;;
+            --) shift; break;;
+            *) usage;;
+        esac
+    done
+
+    # if url is empty, do not proceed
+    [ x"$url" = x ] && usage
+    [ x"$type" = x ] && usage
+
+    check_ncwms "$url" "$type" $warning $critical
+}
+
+main "$@"

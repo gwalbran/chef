@@ -1,0 +1,46 @@
+date {
+  match => [ "timestamp" , "ISO8601" ]
+}
+
+grok {
+  match => [
+    "message", "%{TIMESTAMP_ISO8601:timestamp} %{LOGLEVEL:level}%{SPACE}\[%{NOTSPACE:thread_id}\]%{SPACE}\[%{DATA:user}\]%{SPACE}%{DATA:category}%{SPACE}- %{GREEDYDATA:log_msg}"
+  ]
+  break_on_match => false
+}
+
+grok {
+  match => [
+    "category", "client-log",
+    "log_msg", "session ID: %{WORD:session_id}, message: %{GREEDYDATA:client_msg}"
+  ]
+  break_on_match => false
+}
+
+grok {
+  match => [
+    "client_msg", 'Selected collection: {"title":"%{GREEDYDATA:collection_title}"}'
+  ]
+  break_on_match => false
+}
+
+grok {
+  match => [
+    "client_msg", 'Searching collections: {"facets":["%{GREEDYDATA:facets}"]}'
+  ]
+  break_on_match => false
+}
+
+grok {
+  match => [
+    "client_msg", 'Filtering collection: {"title":%{GREEDYDATA:collection_title},"filters":{%{GREEDYDATA:filters}}'
+  ]
+  break_on_match => false
+}
+
+grok {
+  match => [
+    "client_msg", 'Downloading collection: {"title":%{QUOTEDSTRING:collection_title},"download URL":"%{URI:download_url}"}'
+  ]
+  break_on_match => false
+}

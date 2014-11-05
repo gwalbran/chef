@@ -1,0 +1,58 @@
+{
+    "ipaddress": "192.168.0.1",
+    "network": {
+        "interfaces": {
+            "eth0": {
+                "addresses": {
+                    "192.168.0.1": {
+                        "netmask": "255.255.255.0"
+                    }
+                }
+            }
+        }
+    },
+    "webapps": {
+        "instances": [
+            {
+                "port": 8080,
+                "apps": [
+                    {
+                        "refresh_patterns": [
+                            {
+                                "regex":      "regex1",
+                                "extra_opts": "override-expire ignore-reload",
+                                "min":        7200,
+                                "max":        7200
+                            },
+                            {
+                                "regex":      "regex2",
+                                "extra_opts": "override-expire ignore-reload"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "port": 8081,
+                "apps": [
+                    {
+                        "refresh_patterns": [
+                            {
+                                "regex":      "regex3",
+                                "extra_opts": "override-expire ignore-reload",
+                                "min":        2628000,
+                                "max":        2628000
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "squid": {
+        "custom_config": [
+            "custom config line1",
+            "custom config line2"
+        ]
+    }
+}

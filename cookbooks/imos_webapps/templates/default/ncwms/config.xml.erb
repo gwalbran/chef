@@ -1,0 +1,649 @@
+<config>
+   <datasets>
+      <dataset id="ACORN_SAG_nonQC" location="<%= @root %>/1/IMOS/opendap/ACORN/gridded_1h-avg-current-map_non-QC/SAG/????/??/??/*.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Ocean current map (non Quality Controlled) - 1 hour average gridded product&lt;/h3&gt; Data product available as &lt;b&gt;NetCDF files per hour&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_non-QC/SAG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_QC/SAG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;br /&gt; &lt;br /&gt; Data product available as &lt;b&gt;monthly aggregated NetCDF files&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_non-QC/SAG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_QC/SAG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;hr /&gt; &lt;p&gt;The South Australian Gulf site is composed of two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Cape Spencer&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/CSP/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/CSP/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;Cape Wiles&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/CWI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/CWI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;    &lt;br /&gt;   &lt;br /&gt;  " moreInfo="" disabled="false" title="Radar data - South Australia Gulf (non QC data)" updateInterval="60">
+         <variables>
+            <variable id="SPEED" title="sea_water_speed" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="eastward_sea_water_velocity" colorScaleRange="-0.8 0.8" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="northward_sea_water_velocity" colorScaleRange="-0.8 0.8" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED_quality_control" title="sea_water_speed status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_quality_control" title="eastward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_quality_control" title="northward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity" title="sea_water_velocity" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity status_flag" title="sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_sd" title="Standard deviation of sea water velocity U component values in 1 hour, after rejection of obvious bad data (see abstract)." colorScaleRange="0.0022284556 0.3934998" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_sd" title="Standard deviation of sea water velocity V component values in 1 hour, after rejection of obvious bad data (see abstract)." colorScaleRange="0.0031800894 0.3435579" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NOBS1" title="Number of observations of sea water velocity in 1 hour from station 1, after rejection of obvious bad data (see abstract)." colorScaleRange="2.85 6.15" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NOBS2" title="Number of observations of sea water velocity in 1 hour from station 2, after rejection of obvious bad data (see abstract)." colorScaleRange="2.9 5.1" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="GDOP" title="radar beam intersection angle" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="ACORN_SAG_QC" location="<%= @root %>/1/IMOS/opendap/ACORN/gridded_1h-avg-current-map_QC/SAG/????/??/??/*.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Ocean current map (Quality Controlled) - 1 hour average gridded product&lt;/h3&gt; Data product available as &lt;b&gt;NetCDF files per hour&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_non-QC/SAG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_QC/SAG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;br /&gt; &lt;br /&gt; Data product available as &lt;b&gt;monthly aggregated NetCDF files&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_non-QC/SAG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_QC/SAG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;hr /&gt; &lt;p&gt;The South Australian Gulf site is composed of two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Cape Spencer&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/CSP/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/CSP/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;Cape Wiles&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/CWI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/CWI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;    &lt;br /&gt;   &lt;br /&gt;  " moreInfo="" disabled="false" title="Radar data - South Australia Gulf (QC data)" updateInterval="1440">
+         <variables>
+            <variable id="SPEED" title="sea_water_speed" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="eastward_sea_water_velocity" colorScaleRange="-0.8 0.8" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="northward_sea_water_velocity" colorScaleRange="-0.8 0.8" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED_quality_control" title="sea_water_speed status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_quality_control" title="eastward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_quality_control" title="northward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity" title="sea_water_velocity" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity status_flag" title="sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="ACORN_CBG_nonQC" location="<%= @root %>/1/IMOS/opendap/ACORN/gridded_1h-avg-current-map_non-QC/CBG/????/??/??/*.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Ocean current map (non Quality Controlled) - 1 hour average gridded product&lt;/h3&gt; Data product available as &lt;b&gt;NetCDF files per hour&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_non-QC/CBG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_QC/CBG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;br /&gt; &lt;br /&gt; Data product available as &lt;b&gt;monthly aggregated NetCDF files&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_non-QC/CBG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_QC/CBG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;hr /&gt; &lt;p&gt;The Capricorn Bunker Group site is composed of two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Tannum Sands&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/TAN/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/TAN/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;Lady Elliot Island&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/LEI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/LEI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;    &lt;br /&gt;   &lt;br /&gt;  " moreInfo="" disabled="false" title="Radar data - Capricorn Bunker Group (non QC data)" updateInterval="60">
+         <variables>
+            <variable id="SPEED" title="sea_water_speed" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="eastward_sea_water_velocity" colorScaleRange="-1.0 1.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="northward_sea_water_velocity" colorScaleRange="-1.0 1.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED_quality_control" title="sea_water_speed status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_quality_control" title="eastward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_quality_control" title="northward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity" title="sea_water_velocity" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity status_flag" title="sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_sd" title="Standard deviation of sea water velocity U component values in 1 hour, after rejection of obvious bad data (see abstract)." colorScaleRange="0.03075588 0.15756702" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_sd" title="Standard deviation of sea water velocity V component values in 1 hour, after rejection of obvious bad data (see abstract)." colorScaleRange="0.055291813 0.13378695" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NOBS1" title="Number of observations of sea water velocity in 1 hour from station 1, after rejection of obvious bad data (see abstract)." colorScaleRange="2.9 5.1" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NOBS2" title="Number of observations of sea water velocity in 1 hour from station 2, after rejection of obvious bad data (see abstract)." colorScaleRange="2.9 5.1" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="GDOP" title="radar beam intersection angle" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="ACORN_CBG_QC" location="<%= @root %>/1/IMOS/opendap/ACORN/gridded_1h-avg-current-map_QC/CBG/????/??/??/*.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Ocean current map (Quality Controlled) - 1 hour average gridded product&lt;/h3&gt; Data product available as &lt;b&gt;NetCDF files per hour&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_non-QC/CBG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_QC/CBG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;br /&gt; &lt;br /&gt; Data product available as &lt;b&gt;monthly aggregated NetCDF files&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_non-QC/CBG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_QC/CBG/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;hr /&gt; &lt;p&gt;The Capricorn Bunker Group site is composed of two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Tannum Sands&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/TAN/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/TAN/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;Lady Elliot Island&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/LEI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/LEI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;    &lt;br /&gt;   &lt;br /&gt;    " moreInfo="" disabled="false" title="Radar data - Capricorn Bunker Group (QC data)" updateInterval="1440">
+         <variables>
+            <variable id="SPEED" title="sea_water_speed" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="eastward_sea_water_velocity" colorScaleRange="-1.0 1.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="northward_sea_water_velocity" colorScaleRange="-1.0 1.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED_quality_control" title="sea_water_speed status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_quality_control" title="eastward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_quality_control" title="northward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity" title="sea_water_velocity" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity status_flag" title="sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="ACORN_ROT_nonQC" location="<%= @root %>/1/IMOS/opendap/ACORN/gridded_1h-avg-current-map_non-QC/ROT/????/??/??/*.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Ocean current map (non Quality Controlled) - 1 hour average gridded product&lt;/h3&gt; Data product available as &lt;b&gt;NetCDF files per hour&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_non-QC/ROT/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_QC/ROT/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;br /&gt; &lt;br /&gt; Data product available as &lt;b&gt;monthly aggregated NetCDF files&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_non-QC/ROT/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_QC/ROT/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;hr /&gt; &lt;p&gt;The Rottnest Shelf site is composed of two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Fremantle&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/FRE/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/FRE/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;Guilderton&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/GUI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/GUI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;    &lt;br /&gt;   &lt;br /&gt;  " moreInfo="" disabled="false" title="Radar data - Rottnest Shelf (non QC data)" updateInterval="60">
+         <variables>
+            <variable id="SPEED" title="sea_water_speed" colorScaleRange="0.0 1.8" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="eastward_sea_water_velocity" colorScaleRange="-1.3 1.3" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="northward_sea_water_velocity" colorScaleRange="-1.4 1.4" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED_quality_control" title="sea_water_speed status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_quality_control" title="eastward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_quality_control" title="northward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity" title="sea_water_velocity" colorScaleRange="0.0 1.8" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity status_flag" title="sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_sd" title="Standard deviation of sea water velocity U component values in 1 hour, after rejection of obvious bad data (see abstract)." colorScaleRange="0.016381634 0.1461763" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_sd" title="Standard deviation of sea water velocity V component values in 1 hour, after rejection of obvious bad data (see abstract)." colorScaleRange="0.010918122 0.22655615" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NOBS1" title="Number of observations of sea water velocity in 1 hour from station 1, after rejection of obvious bad data (see abstract)." colorScaleRange="6.0 7.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NOBS2" title="Number of observations of sea water velocity in 1 hour from station 2, after rejection of obvious bad data (see abstract)." colorScaleRange="3.0 4.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="GDOP" title="radar beam intersection angle" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="ACORN_ROT_QC" location="<%= @root %>/1/IMOS/opendap/ACORN/gridded_1h-avg-current-map_QC/ROT/????/??/??/*.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Ocean current map (Quality Controlled) - 1 hour average gridded product&lt;/h3&gt; Data product available as &lt;b&gt;NetCDF files per hour&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_non-QC/ROT/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_QC/ROT/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;br /&gt; &lt;br /&gt; Data product available as &lt;b&gt;monthly aggregated NetCDF files&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_non-QC/ROT/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_QC/ROT/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;hr /&gt; &lt;p&gt;The Rottnest Shelf site is composed of two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Fremantle&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/FRE/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/FRE/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;Guilderton&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/GUI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/GUI/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;    &lt;br /&gt;   &lt;br /&gt;  " moreInfo="" disabled="false" title="Radar data - Rottnest Shelf (QC data)" updateInterval="1440">
+         <variables>
+            <variable id="SPEED" title="sea_water_speed" colorScaleRange="0.0 1.8" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="eastward_sea_water_velocity" colorScaleRange="-1.3 1.3" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="northward_sea_water_velocity" colorScaleRange="-1.4 1.4" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED_quality_control" title="sea_water_speed status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_quality_control" title="eastward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_quality_control" title="northward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity" title="sea_water_velocity" colorScaleRange="0.0 1.8" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity status_flag" title="sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="ACORN_COF_nonQC" location="<%= @root %>/1/IMOS/opendap/ACORN/gridded_1h-avg-current-map_non-QC/COF/????/??/??/*.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Ocean current map (non Quality Controlled) - 1 hour average gridded product&lt;/h3&gt; Data product available as &lt;b&gt;NetCDF files per hour&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_non-QC/COF/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt;  &lt;br /&gt; &lt;br /&gt; Data product available as &lt;b&gt;monthly aggregated NetCDF files&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_non-QC/COF/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;hr /&gt; &lt;p&gt;The Coffs Harbour site is composed of two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Red Rock&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/RRK/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/RRK/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;North Nambucca&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/NNB/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/NNB/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;    &lt;br /&gt;   &lt;br /&gt;  " moreInfo="" disabled="false" title="Radar data - Coffs Harbour (non QC data)" updateInterval="60">
+         <variables>
+            <variable id="SPEED" title="sea_water_speed" colorScaleRange="0.0 3.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED_quality_control" title="sea_water_speed status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="eastward_sea_water_velocity" colorScaleRange="-1.6 1.6" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_quality_control" title="eastward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="northward_sea_water_velocity" colorScaleRange="-2.7 2.7" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_quality_control" title="northward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity" title="sea_water_velocity" colorScaleRange="0.0 3.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity status_flag" title="sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="ACORN_COF_QC" location="<%= @root %>/1/IMOS/opendap/ACORN/gridded_1h-avg-current-map_QC/COF/????/??/??/*.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Ocean current map (Quality Controlled) - 1 hour average gridded product&lt;/h3&gt; Data product available as &lt;b&gt;NetCDF files per hour&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_non-QC/COF/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt;  &lt;br /&gt; &lt;br /&gt; Data product available as &lt;b&gt;monthly aggregated NetCDF files&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_non-QC/COF/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;hr /&gt; &lt;p&gt;The Coffs Harbour site is composed of two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Red Rock&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/RRK/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/RRK/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;North Nambucca&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/NNB/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial_quality_controlled/NNB/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;    &lt;br /&gt;   &lt;br /&gt;  " moreInfo="" disabled="false" title="Radar data - Coffs Harbour (QC data)" updateInterval="1440">
+         <variables>
+            <variable id="SPEED" title="sea_water_speed" colorScaleRange="0.0 3.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="eastward_sea_water_velocity" colorScaleRange="-1.6 1.6" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="northward_sea_water_velocity" colorScaleRange="-2.7 2.7" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED_quality_control" title="sea_water_speed status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_quality_control" title="eastward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_quality_control" title="northward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity" title="sea_water_velocity" colorScaleRange="0.0 3.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity status_flag" title="sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="ACORN_TURQ_nonQC" location="<%= @root %>/1/IMOS/opendap/ACORN/gridded_1h-avg-current-map_non-QC/TURQ/????/??/??/*.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Ocean current map (non Quality Controlled) - 1 hour average gridded product&lt;/h3&gt; Data product available as &lt;b&gt;NetCDF files per hour&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_non-QC/TURQ/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;br /&gt; &lt;br /&gt; Data product available as &lt;b&gt;monthly aggregated NetCDF files&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_non-QC/TURQ/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;hr /&gt; &lt;p&gt;&lt;b&gt;Before 2012-12-15T11:00:00&lt;/b&gt;, the Turquoise Coast site is composed of the following two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Cervantes&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/CRVT/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;SeaBird&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/SBRD/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;  &lt;br /&gt; &lt;p&gt;&lt;b&gt;From 2012-12-15T11:00:00 to 2013-03-19T00:00:00&lt;/b&gt;, the Turquoise Coast site is composed of the following two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Green Head&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/GHED/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;SeaBird&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/SBRD/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;   &lt;br /&gt; &lt;p&gt;&lt;b&gt;After 2013-03-19T00:00:00&lt;/b&gt;, the Turquoise Coast site is composed of the following two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Green Head&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/GHED/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;Lancelin&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/LANC/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;    &lt;br /&gt;   &lt;br /&gt;" moreInfo="" disabled="false" title="Radar data - Turquoise Coast (non QC data)" updateInterval="60">
+         <variables>
+            <variable id="LATITUDE_quality_control" title="latitude status_flag" colorScaleRange="1.0 2.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="LONGITUDE_quality_control" title="longitude status_flag" colorScaleRange="1.0 2.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED" title="sea_water_speed" colorScaleRange="0.0 1.8" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="eastward_sea_water_velocity" colorScaleRange="-1.3 1.3" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="northward_sea_water_velocity" colorScaleRange="-1.4 1.4" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED_quality_control" title="sea_water_speed status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_quality_control" title="eastward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_quality_control" title="northward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity" title="sea_water_velocity" colorScaleRange="0.0 1.8" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity status_flag" title="sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_sd" title="Standard deviation of sea water velocity U component values in 1 hour." colorScaleRange="-0.020864997 0.6933649" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_sd" title="Standard deviation of sea water velocity V component values in 1 hour." colorScaleRange="-0.050825 1.417125" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NOBS1" title="Number of observations of sea water velocity in 1 hour from station 1." colorScaleRange="-4.4500003 115.45" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NOBS2" title="Number of observations of sea water velocity in 1 hour from station 2." colorScaleRange="-138.4 134.4" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="GDOP" title="radar beam intersection angle" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="ACORN_BONC_nonQC" location="<%= @root %>/1/IMOS/opendap/ACORN/gridded_1h-avg-current-map_non-QC/BONC/????/??/??/*.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Ocean current map (non Quality Controlled) - 1 hour average gridded product&lt;/h3&gt; Data product available as &lt;b&gt;NetCDF files per hour&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/gridded_1h-avg-current-map_non-QC/BONC/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;br /&gt; &lt;br /&gt; Data product available as &lt;b&gt;monthly aggregated NetCDF files&lt;/b&gt; on OPeNDAP: &lt;br /&gt; &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/monthly_gridded_1h-avg-current-map_non-QC/BONC/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;hr /&gt; &lt;p&gt;The Bonney Coast site is composed of two radar stations: &lt;/p&gt;  &lt;ul&gt;    &lt;li&gt;&lt;b&gt;Blackfellows cave&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/BFCV/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;/li&gt;  &lt;li&gt;&lt;b&gt;Nora Creina&lt;/b&gt; Radial data on OPeNDAP: &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/ACORN/radial/NOCR/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Non QC &lt;/a&gt; &lt;/li&gt;   &lt;/ul&gt;    &lt;br /&gt;   &lt;br /&gt;  " moreInfo="" disabled="false" title="Radar data - Bonney Coast (non QC data)" updateInterval="60">
+         <variables>
+            <variable id="LATITUDE_quality_control" title="latitude status_flag" colorScaleRange="1.0 2.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="LONGITUDE_quality_control" title="longitude status_flag" colorScaleRange="1.0 2.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED" title="sea_water_speed" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="eastward_sea_water_velocity" colorScaleRange="-0.8 0.8" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="northward_sea_water_velocity" colorScaleRange="-0.8 0.8" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SPEED_quality_control" title="sea_water_speed status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_quality_control" title="eastward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_quality_control" title="northward_sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity" title="sea_water_velocity" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="sea_water_velocity status_flag" title="sea_water_velocity status_flag" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR_sd" title="Standard deviation of sea water velocity U component values in 1 hour." colorScaleRange="-0.0097199995 0.54952" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR_sd" title="Standard deviation of sea water velocity V component values in 1 hour." colorScaleRange="-0.031445 0.92874503" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NOBS1" title="Number of observations of sea water velocity in 1 hour from station 1." colorScaleRange="-0.95000005 41.95" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NOBS2" title="Number of observations of sea water velocity in 1 hour from station 2." colorScaleRange="-1.2 47.2" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="GDOP" title="radar beam intersection angle" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="CARS_2009_World_Monthly" location="<%= @root %>/1/climatology/CARS/2009/eMII-product/CARS2009_World_monthly.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Monthly World CSIRO Atlas of Regional Seas (CARS) 2009&lt;/h3&gt;  &lt;a rel=&apos;external&apos; href=&apos;https://imosmest.aodn.org.au/geonetwork/srv/en/metadata.show?uuid=c128be27-296e-4e1b-8537-6285d1e11fce&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;IMOS CARS2009 metadata record &lt;/a&gt;   &lt;br /&gt;   &lt;br /&gt; Original data available as &lt;b&gt;NetCDF files&lt;/b&gt; at:   &lt;br /&gt;   &lt;a rel=&apos;external&apos; href=&apos;https://www.marine.csiro.au/~dunn/cars2009/#access&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Access &lt;/a&gt;   &lt;br /&gt;   &lt;br /&gt;   Data product available as &lt;b&gt;monthly/weekly NetCDF files&lt;/b&gt; on OPeNDAP:   &lt;br /&gt;   &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/climatology/CARS/2009/eMII-product/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;eMII-product&lt;/a&gt;  &lt;hr /&gt;  &lt;p&gt;CARS is a digital climatology, or atlas of seasonal ocean water properties. It comprises gridded fields of mean ocean properties over the period of modern ocean measurement, and average seasonal cycles for that period. Full details can be found &lt;/p&gt; &lt;a rel=&apos;external&apos; href=&apos;https://www.marine.csiro.au/~dunn/cars2009/&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;here &lt;/a&gt; " moreInfo="" disabled="false" title="CARS 2009 - World Monthly" updateInterval="-1">
+         <variables>
+            <variable id="TEMP" title="sea_water_temperature" colorScaleRange="-7.613612 33.200397" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL" title="sea_water_salinity" colorScaleRange="-0.97585523 53.182957" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2" title="moles_of_oxygen_per_unit_mass_in_sea_water" colorScaleRange="149.35701 542.85504" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DENS" title="sea_water_density" colorScaleRange="996.46655 1043.3263" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2" title="moles_of_nitrate_per_unit_mass_in_sea_water" colorScaleRange="-3.1183195 40.087246" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2" title="moles_concentration_of_silicate_in_sea_water" colorScaleRange="-5.584631 91.784386" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS" title="moles_of_phosphate_per_unit_mass_in_sea_water" colorScaleRange="-0.24636012 2.7949808" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_mean" title="intra_and_inter-seasonal_mean_of_sea_water_temperature" colorScaleRange="-4.8793917 31.41344" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_std_dev" title="intra_and_inter-seasonal_weighted_standard_deviation_of_sea_water_temperature" colorScaleRange="-0.38192514 8.135241" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_sea_water_temperature" colorScaleRange="-0.465454 10.463408" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_sea_water_temperature" colorScaleRange="-0.17558177 3.904085" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_sumofwgts" title="sum_of_weights_for_sea_water_temperature" colorScaleRange="-60.25 1265.25" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_map_error" title="intra_and_inter-seasonal_Standard_Error_of_mapping_for_sea_water_temperature" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_mean" title="intra_and_inter-seasonal_mean_of_sea_water_salinity" colorScaleRange="-0.7753476 42.77014" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_std_dev" title="intra_and_inter-seasonal_weighted_standard_deviation_of_sea_water_salinity" colorScaleRange="-0.5874045 12.349761" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_sea_water_salinity" colorScaleRange="-0.7203203 15.526219" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_sea_water_salinity" colorScaleRange="-0.41946805 9.022843" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_sumofwgts" title="sum_of_weights_for_sea_water_salinity" colorScaleRange="-61.4 1289.4" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_map_error" title="intra_and_inter-seasonal_Standard_Error_of_mapping_for_sea_water_salinity" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2_mean" title="intra_and_inter-seasonal_mean_of_moles_of_oxygen_per_unit_mass_in_sea_water" colorScaleRange="163.99191 434.22177" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_moles_of_oxygen_per_unit_mass_in_sea_water" colorScaleRange="-0.23353171 61.37314" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_moles_of_oxygen_per_unit_mass_in_sea_water" colorScaleRange="-0.3569404 44.702564" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2_sumofwgts" title="sum_of_weights_for_moles_of_oxygen_per_unit_mass_in_sea_water" colorScaleRange="-1638.35 34405.35" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DENS_mean" title="intra_and_inter-seasonal_mean_of_sea_water_density" colorScaleRange="997.90826 1030.362" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2_mean" title="intra_and_inter-seasonal_mean_of_moles_of_nitrate_per_unit_mass_in_sea_water" colorScaleRange="-2.0859644 43.80657" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_moles_of_nitrate_per_unit_mass_in_sea_water" colorScaleRange="-0.8084765 16.9977" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_moles_of_nitrate_per_unit_mass_in_sea_water" colorScaleRange="-0.54337066 11.430477" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2_sumofwgts" title="sum_of_weights_for_moles_of_nitrate_per_unit_mass_in_sea_water" colorScaleRange="-48.0 1008.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2_mean" title="intra_and_inter-seasonal_mean_of_moles_concentration_of_silicate_in_sea_water" colorScaleRange="-3.6010334 85.15242" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_moles_concentration_of_silicate_in_sea_water" colorScaleRange="-1.7253662 39.222504" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_moles_concentration_of_silicate_in_sea_water" colorScaleRange="-1.1432983 26.213106" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2_sumofwgts" title="sum_of_weights_for_moles_concentration_of_silicate_in_sea_water" colorScaleRange="-53.65 1126.65" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS_mean" title="intra_and_inter-seasonal_mean_of_moles_of_phosphate_per_unit_mass_in_sea_water" colorScaleRange="-0.10724441 2.2536414" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_moles_of_phosphate_per_unit_mass_in_sea_water" colorScaleRange="-0.024092216 0.7742252" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_moles_of_phosphate_per_unit_mass_in_sea_water" colorScaleRange="-0.020575063 0.65916914" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS_sumofwgts" title="sum_of_weights_for_moles_of_phosphate_per_unit_mass_in_sea_water" colorScaleRange="-54.0 1134.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_anomaly" title="sea_water_temperature_anomaly" colorScaleRange="-10.0 10.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_anomaly" title="sea_water_salinity_anomaly" colorScaleRange="-3.0 3.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2_anomaly" title="moles_of_oxygen_per_unit_mass_in_sea_water_anomaly" colorScaleRange="-100.0 100.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="DENS_anomaly" title="sea_water_density_anomaly" colorScaleRange="-10.0 10.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2_anomaly" title="moles_of_nitrate_per_unit_mass_in_sea_water_anomaly" colorScaleRange="-10.0 10.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2_anomaly" title="moles_of_silicate_per_unit_mass_in_sea_water_anomaly" colorScaleRange="-20.0 20.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS_anomaly" title="moles_of_phosphate_per_unit_mass_in_sea_water_anomaly" colorScaleRange="-1.0 1.0" palette="redblue" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="CARS_2009_Australia_Weekly" location="<%= @root %>/1/climatology/CARS/2009/eMII-product/CARS2009_Australia_weekly.nc" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Weekly Australia CSIRO Atlas of Regional Seas (CARS) 2009&lt;/h3&gt;  &lt;a rel=&apos;external&apos; href=&apos;https://imosmest.aodn.org.au/geonetwork/srv/en/metadata.show?uuid=c128be27-296e-4e1b-8537-6285d1e11fce&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;IMOS CARS2009 metadata record &lt;/a&gt;   &lt;br /&gt;   &lt;br /&gt; Original data available as &lt;b&gt;NetCDF files&lt;/b&gt; at:   &lt;br /&gt;   &lt;a rel=&apos;external&apos; href=&apos;https://www.marine.csiro.au/~dunn/cars2009/#access&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Access &lt;/a&gt;   &lt;br /&gt;   &lt;br /&gt;   Data product available as &lt;b&gt;monthly/weekly NetCDF files&lt;/b&gt; on OPeNDAP:   &lt;br /&gt;   &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/climatology/CARS/2009/eMII-product/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;eMII-product&lt;/a&gt;  &lt;hr /&gt;  &lt;p&gt;CARS is a digital climatology, or atlas of seasonal ocean water properties. It comprises gridded fields of mean ocean properties over the period of modern ocean measurement, and average seasonal cycles for that period. Full details can be found &lt;/p&gt; &lt;a rel=&apos;external&apos; href=&apos;https://www.marine.csiro.au/~dunn/cars2009/&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;here &lt;/a&gt; " moreInfo="" disabled="false" title="CARS 2009 - Australia Weekly" updateInterval="-1">
+         <variables>
+            <variable id="TEMP" title="sea_water_temperature" colorScaleRange="3.9956748 32.87001" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL" title="sea_water_salinity" colorScaleRange="29.374725 41.89474" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2" title="moles_of_oxygen_per_unit_mass_in_sea_water" colorScaleRange="162.57567 322.0083" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DENS" title="sea_water_density" colorScaleRange="1017.79193 1029.1357" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2" title="moles_of_nitrate_per_unit_mass_in_sea_water" colorScaleRange="-1.0361336 20.720549" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2" title="moles_concentration_of_silicate_in_sea_water" colorScaleRange="-0.86800516 16.00165" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS" title="moles_of_phosphate_per_unit_mass_in_sea_water" colorScaleRange="-0.08764413 1.477741" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_mean" title="intra_and_inter-seasonal_mean_of_sea_water_temperature" colorScaleRange="3.251762 31.436289" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_std_dev" title="intra_and_inter-seasonal_weighted_standard_deviation_of_sea_water_temperature" colorScaleRange="0.21559215 4.364146" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_sea_water_temperature" colorScaleRange="0.249485 4.341271" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_sea_water_temperature" colorScaleRange="0.21521522 1.6293211" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_sumofwgts" title="sum_of_weights_for_sea_water_temperature" colorScaleRange="-59.05 1240.05" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_map_error" title="intra_and_inter-seasonal_Standard_Error_of_mapping_for_sea_water_temperature" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_mean" title="intra_and_inter-seasonal_mean_of_sea_water_salinity" colorScaleRange="29.873934 41.934357" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_std_dev" title="intra_and_inter-seasonal_weighted_standard_deviation_of_sea_water_salinity" colorScaleRange="-0.07448348 2.277534" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_sea_water_salinity" colorScaleRange="-0.07509958 2.3047397" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_sea_water_salinity" colorScaleRange="-0.0487369 1.6655178" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_sumofwgts" title="sum_of_weights_for_sea_water_salinity" colorScaleRange="-59.25 1244.25" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_map_error" title="intra_and_inter-seasonal_Standard_Error_of_mapping_for_sea_water_salinity" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2_mean" title="intra_and_inter-seasonal_mean_of_moles_of_oxygen_per_unit_mass_in_sea_water" colorScaleRange="167.81647 319.98376" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_moles_of_oxygen_per_unit_mass_in_sea_water" colorScaleRange="1.8471698 29.972322" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_moles_of_oxygen_per_unit_mass_in_sea_water" colorScaleRange="1.6905293 13.5699" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2_sumofwgts" title="sum_of_weights_for_moles_of_oxygen_per_unit_mass_in_sea_water" colorScaleRange="-1638.35 34405.35" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="DENS_mean" title="intra_and_inter-seasonal_mean_of_sea_water_density" colorScaleRange="1018.3568 1030.3822" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2_mean" title="intra_and_inter-seasonal_mean_of_moles_of_nitrate_per_unit_mass_in_sea_water" colorScaleRange="-0.87539655 18.463497" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_moles_of_nitrate_per_unit_mass_in_sea_water" colorScaleRange="-0.11700927 3.2252204" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_moles_of_nitrate_per_unit_mass_in_sea_water" colorScaleRange="-0.08402872 2.3752177" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2_sumofwgts" title="sum_of_weights_for_moles_of_nitrate_per_unit_mass_in_sea_water" colorScaleRange="-17.6 369.6" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2_mean" title="intra_and_inter-seasonal_mean_of_moles_concentration_of_silicate_in_sea_water" colorScaleRange="-0.37638032 14.285628" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_moles_concentration_of_silicate_in_sea_water" colorScaleRange="-0.408737 11.337959" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_moles_concentration_of_silicate_in_sea_water" colorScaleRange="-0.2351932 7.7722387" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2_sumofwgts" title="sum_of_weights_for_moles_concentration_of_silicate_in_sea_water" colorScaleRange="-25.050001 526.05" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS_mean" title="intra_and_inter-seasonal_mean_of_moles_of_phosphate_per_unit_mass_in_sea_water" colorScaleRange="-0.025918942 1.467541" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS_RMSspatialresid" title="inter-seasonal_RMS_of_residuals_wrt_spatial_mean_of_moles_of_phosphate_per_unit_mass_in_sea_water" colorScaleRange="0.012166089 0.295273" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS_RMSresid" title="intra_and_inter-seasonal_RMS_of_residuals_wrt_full_temporal_mapping_of_moles_of_phosphate_per_unit_mass_in_sea_water" colorScaleRange="0.010391733 0.20490792" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS_sumofwgts" title="sum_of_weights_for_moles_of_phosphate_per_unit_mass_in_sea_water" colorScaleRange="-33.7 707.7" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="TEMP_anomaly" title="sea_water_temperature_anomaly" colorScaleRange="-5.0 5.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="PSAL_anomaly" title="sea_water_salinity_anomaly" colorScaleRange="-1.0 1.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="DOX2_anomaly" title="moles_of_oxygen_per_unit_mass_in_sea_water_anomaly" colorScaleRange="-20.0 20.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="DENS_anomaly" title="sea_water_density_anomaly" colorScaleRange="-1.0 1.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="NTR2_anomaly" title="moles_of_nitrate_per_unit_mass_in_sea_water_anomaly" colorScaleRange="-4.0 4.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="SLC2_anomaly" title="moles_of_silicate_per_unit_mass_in_sea_water_anomaly" colorScaleRange="-5.0 5.0" palette="redblue" scaling="linear" numColorBands="254"/>
+            <variable id="PHOS_anomaly" title="moles_of_phosphate_per_unit_mass_in_sea_water_anomaly" colorScaleRange="-0.2 0.2" palette="redblue" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="GSLA_NRT" location="<%= @root %>/1/IMOS/opendap/OceanCurrent/GSLA/NRT00/????/*.nc.gz" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Gridded Sea Level Anomaly - Near Real Time&lt;/h3&gt;  Data is available as &lt;b&gt;NetCDF files&lt;/b&gt;:   &lt;br /&gt;   &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/OceanCurrent/GSLA/NRT00/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Near Real Time &lt;/a&gt;   &lt;br /&gt;   &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/OceanCurrent/GSLA/DM00/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Delayed Mode &lt;/a&gt;   &lt;br /&gt;   &lt;br /&gt;   Data is also visible on the &lt;a rel=&apos;external&apos; href=&apos;https://oceancurrent.imos.org.au/&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;OceanCurrent website&lt;/a&gt;." moreInfo="" disabled="false" title="Gridded Sea Level Anomaly - Near Real Time" updateInterval="720">
+         <variables>
+            <variable id="GSLA" title="sea_surface_height_above_sea_level" colorScaleRange="-0.3428578 0.52612424" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="GSL" title="sea_surface_height_above_geoid" colorScaleRange="-0.13419956 3.0129018" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="surface_geostrophic_eastward_sea_water_velocity" colorScaleRange="-0.9635222 1.0280699" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="surface_geostrophic_northward_sea_water_velocity" colorScaleRange="-1.0203714 1.1308502" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="surface_geostrophic_sea_water_velocity" title="surface_geostrophic_sea_water_velocity" colorScaleRange="-0.0662943 1.3921802" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="GSLA_DM" location="<%= @root %>/1/IMOS/opendap/OceanCurrent/GSLA/DM00/????/*.nc.gz" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="&lt;hr /&gt;  &lt;h3&gt;Gridded Sea Level Anomaly - Delayed Mode&lt;/h3&gt;  Data is available as &lt;b&gt;NetCDF files&lt;/b&gt;:   &lt;br /&gt;   &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/OceanCurrent/GSLA/NRT00/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Near Real Time &lt;/a&gt;   &lt;br /&gt;   &lt;a rel=&apos;external&apos; href=&apos;https://thredds.aodn.org.au/thredds/catalog/IMOS/OceanCurrent/GSLA/DM00/catalog.html&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;Delayed Mode &lt;/a&gt;   &lt;br /&gt;   &lt;br /&gt;   Data is also visible on the &lt;a rel=&apos;external&apos; href=&apos;https://oceancurrent.imos.org.au/&apos; target=&apos;_blank&apos; class=&apos;h3&apos;&gt;OceanCurrent website&lt;/a&gt;." moreInfo="" disabled="false" title="Gridded Sea Level Anomaly - Delayed Mode" updateInterval="1440">
+         <variables>
+            <variable id="GSLA" title="sea_surface_height_above_sea_level" colorScaleRange="-0.41446295 0.41171625" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="GSL" title="sea_surface_height_above_geoid" colorScaleRange="-0.09204523 2.977004" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="UCUR" title="surface_geostrophic_eastward_sea_water_velocity" colorScaleRange="-0.92052096 0.9072452" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="VCUR" title="surface_geostrophic_northward_sea_water_velocity" colorScaleRange="-0.9901195 0.8916958" palette="rainbow" scaling="linear" numColorBands="254"/>
+            <variable id="surface_geostrophic_sea_water_velocity" title="surface_geostrophic_sea_water_velocity" colorScaleRange="-0.059216 1.243536" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3S-1d.day" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3S-1d/day/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3S-1d.day" updateInterval="360">
+         <variables>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="-8.55 179.55" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-4.375 6.075" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-0.1 2.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="2.9 5.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-3.4 71.4" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_surface_temperature" title="sea_surface_skin_temperature" colorScaleRange="272.1085 309.5415" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-0.652 0.052" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="0.013999999 1.026" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-1065.75 26318.75" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="1.0 2.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-3.26 2.46" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.95197624 2.0519762" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="unweighted count of number of contributory SST measurements" colorScaleRange="0.95197624 2.0519762" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="sst unweighted mean of contributory SST measurements" colorScaleRange="269.91937 306.49243" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="standard deviation estimate of contributory SST measurements" colorScaleRange="-0.03364517 0.85760856" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3S-1d.ngt" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3S-1d/ngt/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3S-1d.ngt" updateInterval="360">
+         <variables>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="3.4499998 191.55" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-5.755 2.055" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-0.1 2.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="2.9 5.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-3.4 71.4" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_surface_temperature" title="sea_surface_skin_temperature" colorScaleRange="270.75848 305.99152" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-0.573 0.153" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="0.016999997 0.963" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-1237.65 25990.65" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="1.0 2.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-3.06 2.66" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.95197624 2.0519762" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="unweighted count of number of contributory SST measurements" colorScaleRange="0.95197624 2.0519762" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="sst unweighted mean of contributory SST measurements" colorScaleRange="269.64728 305.60837" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="standard deviation estimate of contributory SST measurements" colorScaleRange="-0.05154395 1.2813647" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3P.14d" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3P/14d/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3P.14d" updateInterval="360">
+         <variables>
+            <variable id="sea_surface_temperature" title="sea surface temperature" colorScaleRange="270.9 307.19998" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-1270080.0 60480.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3S-3d.day" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3S-3d/day/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3S-3d.day" updateInterval="360">
+         <variables>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="-6.1443086 271.4025" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="-0.008703041 0.31617033" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-5.177225 3.725614" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-665.60004 13977.6" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="2.9 5.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-1.9423684 72.52396" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="-0.042827524 1.0517268" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="-4.6991787 23.386599" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_surface_temperature" title="sea_surface_skin_temperature" colorScaleRange="271.09625 307.69827" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-0.7428318 0.42741296" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="0.27805406 0.9724284" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-96658.28 119076.98" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="-0.4720466 23.379234" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-3.2821689 3.4199245" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.7598814 6.2598815" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="unweighted count of number of contributory SST measurements" colorScaleRange="0.7598814 6.2598815" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="sst unweighted mean of contributory SST measurements" colorScaleRange="271.09625 307.69827" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="standard deviation estimate of contributory SST measurements" colorScaleRange="-0.12994884 2.95948" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3S-3d.ngt" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3S-3d/ngt/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3S-3d.ngt" updateInterval="360">
+         <variables>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="-185.775 205.275" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-6.16 3.96" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-0.2 4.2" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="2.9 5.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-3.4 71.4" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="-0.023500001 0.4935" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="-50.0 50.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_surface_temperature" title="sea_surface_skin_temperature" colorScaleRange="268.67853 306.33148" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-0.869 0.20899999" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="0.015999999 0.98399997" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-9786.05 205991.05" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="1.0 2.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-2.145 3.245" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.8102766 5.201581" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="unweighted count of number of contributory SST measurements" colorScaleRange="0.8102766 5.201581" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="sst unweighted mean of contributory SST measurements" colorScaleRange="269.63068 305.96127" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="standard deviation estimate of contributory SST measurements" colorScaleRange="-0.05123462 1.2969391" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.chl-oc3.1d.aqua" location="<%= @root %>/2/SRS/oc/aqua/1d/????/??/*chl_oc3.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="oc.chl-oc3.1d.aqua" updateInterval="360">
+         <variables>
+            <variable id="chl_oc3" title="Chlorophyll Concentration, OC3 Algorithm" colorScaleRange="0.0 5.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.chl-gsm.1d.aqua" location="<%= @root %>/2/SRS/oc/aqua/1d/????/??/*chl_gsm.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="oc.chl-gsm.1d.aqua" updateInterval="360">
+         <variables>
+            <variable id="npp" title="Eppley VGPM Net Primary Production" colorScaleRange="-169.83804 3566.5989" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="chl_gsm01" title="Chlorophyll Concentration, GSM model" colorScaleRange="1.0E-7 5.0" palette="rainbow" scaling="logarithmic" numColorBands="253"/>
+            <variable id="chl_gsm" title="Chlorophyll Concentration, GSM model" colorScaleRange="0.0 5.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.k490.1d.aqua" location="<%= @root %>/2/SRS/oc/aqua/1d/????/??/*K_490.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="oc.k490.1d.aqua" updateInterval="360">
+         <variables>
+            <variable id="K_490" title="Diffuse attenuation coefficient at 490 nm (OBPG)" colorScaleRange="0.001 2.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.sst.1d.aqua" location="<%= @root %>/2/SRS/oc/aqua/1d/????/??/*aust.sst.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="oc.sst.1d.aqua" updateInterval="360">
+         <variables>
+            <variable id="sst" title="Sea Surface Temperature" colorScaleRange="-1.61625 35.81125" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.Brewin2012in.pft.1d.aqua" location="<%= @root %>/2/SRS/oc/aqua/1d/????/??/*pftBrewin2012in.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="oc.Brewin2012in.pft.1d.aqua" updateInterval="360">
+         <variables>
+            <variable id="nanop" title="Nanoplankton fraction" colorScaleRange="0.0 100.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="picop" title="Picoplankton fraction" colorScaleRange="0.0 100.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.Brewin2010at.pft.1d.aqua" location="<%= @root %>/2/SRS/oc/aqua/1d/????/??/*pftBrewin2010at.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="oc.Brewin2010at.pft.1d.aqua" updateInterval="360">
+         <variables>
+            <variable id="nanop" title="Nanoplankton fraction" colorScaleRange="0.0 100.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="picop" title="Picoplankton fraction" colorScaleRange="0.0 100.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.SO-Johnson.chl.8d.aqua" location="<%= @root %>/2/SRS/oc/contributed/SO-Johnson/chl/8d/aqua/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="Southern Ocean Regional 8 Day MODIS-Aqua Chlorophyll Concentration, Johnson" updateInterval="360">
+         <variables>
+            <variable id="chlorophyll" title="Southern Ocean Regional 8 Day MODIS-Aqua Chlorophyll Concentration, Johnson et al 2013" colorScaleRange="0.0 5.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.SO-Johnson.chl.8d.seawifs" location="<%= @root %>/2/SRS/oc/contributed/SO-Johnson/chl/8d/seawifs/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="Southern Ocean Regional 8 Day SeaWiFS Chlorophyll Concentration, Johnson" updateInterval="360">
+         <variables>
+            <variable id="chlorophyll" title="Southern Ocean Regional 8 Day SeaWiFS Chlorophyll Concentration, Johnson et al 2013" colorScaleRange="1.0E-6 5.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.SO-Johnson.chl.1m.aqua" location="<%= @root %>/2/SRS/oc/contributed/SO-Johnson/chl/1m/aqua/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="Southern Ocean Regional Monthly MODIS-Aqua Chlorophyll Concentration, Johnson" updateInterval="360">
+         <variables>
+            <variable id="chlorophyll" title="Southern Ocean Regional Monthly MODIS-Aqua Chlorophyll Concentration, Johnson et al 2013" colorScaleRange="0.0 5.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.SO-Johnson.chl.1m.seawifs" location="<%= @root %>/2/SRS/oc/contributed/SO-Johnson/chl/1m/seawifs/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="Southern Ocean Regional Monthly SeaWiFS Chlorophyll Concentration, Johnson" updateInterval="360">
+         <variables>
+            <variable id="chlorophyll" title="Southern Ocean Regional Monthly SeaWiFS Chlorophyll Concentration, Johnson et al 2013" colorScaleRange="0.0 5.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="test_modis_gms_chl" location="<%= @root %>/2/SRS/oc/modis/aust.day/????/??/*.aust.chl_*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="test_modis_gms_chl" updateInterval="-1">
+         <variables>
+            <variable id="chl_oc3" title="Chlorophyll Concentration, OC3 Algorithm" colorScaleRange="0.0 5.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="chl_gsm01" title="Chlorophyll Concentration, GSM model" colorScaleRange="0.0 5.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="OC_MODIS_NPP" location="<%= @root %>/2/SRS/oc/modis/aust.day/????/??/*.aust.npp_*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="" updateInterval="360">
+         <variables>
+            <variable id="npp" title="Eppley VGPM Net Primary Production" colorScaleRange="-101.07067 2122.484" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3S-1d.dn" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3S-1d/dn/201[34]/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3S-1d.dn" updateInterval="360">
+         <variables>
+            <variable id="sea_surface_temperature" title="sea_surface_foundation_temperature" colorScaleRange="267.71527 307.51917" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-124023.8 142124.31" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-8.6894 3.5873897" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="1.3583572 23.531904" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-3.312638 3.1596828" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="-0.03851766 1.049431" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="-33.549435 86.71114" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="-0.005532424 0.3251486" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="-6.919767 284.77548" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-2.6088374 72.91292" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-561.3 11831.3" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="1.85 5.15" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-1.2536061 0.31408656" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="0.0029107444 1.0282917" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.8061264 6.245257" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="Number of SST measurements" colorScaleRange="0.8061264 6.245257" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="Unweighted SST mean" colorScaleRange="267.54526 307.34915" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="Unweighted SST standard deviation" colorScaleRange="-0.18953264 4.252716" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3S-3d.dn" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3S-3d/dn/201[34]/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3S-3d.dn" updateInterval="360">
+         <variables>
+            <variable id="sea_surface_temperature" title="sea_surface_foundation_temperature" colorScaleRange="267.97668 306.76782" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-122383.43 143444.73" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-10.160925 3.0363188" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="1.5623994 19.153896" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-3.2701783 3.3053093" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="-0.042625442 1.0475805" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="-23.130602 86.59711" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="-1.2894877 31.752268" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="-45.126514 334.19333" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-2.0181246 72.58288" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-561.10004 11827.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="1.85 5.15" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-1.0070204 0.25509718" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="-9.152368E-4 1.1126162" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.8061264 6.245257" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="Number of SST measurements" colorScaleRange="0.8061264 6.245257" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="Unweighted SST mean" colorScaleRange="267.80667 306.5978" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="Unweighted SST standard deviation" colorScaleRange="-0.20856145 4.6036124" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3S-6d.day" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3S-6d/day/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3S-6d.day" updateInterval="360">
+         <variables>
+            <variable id="sea_surface_temperature" title="sea_surface_skin_temperature" colorScaleRange="269.7827 308.16385" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-240796.75 263247.6" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-7.3441024 4.0162983" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="-0.5279567 21.516134" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-3.2858098 3.3377242" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="-0.042625442 1.0475805" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="-90.91331 147.37755" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="-1.3139273 31.834942" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="-6.8422837 298.3043" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-2.0327458 72.6896" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-625.10004 13171.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="1.85 5.15" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-0.9149768 0.059213184" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="0.023848731 0.9871235" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.6699605 8.365612" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="Number of SST measurements" colorScaleRange="0.6699605 8.365612" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="Unweighted SST mean" colorScaleRange="269.7827 308.16385" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="Unweighted SST standard deviation" colorScaleRange="-0.12692735 3.053308" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3S-6d.ngt" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3S-6d/ngt/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3S-6d.ngt" updateInterval="360">
+         <variables>
+            <variable id="sea_surface_temperature" title="sea_surface_skin_temperature" colorScaleRange="267.14508 306.62952" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-279910.56 264088.88" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-7.6203218 2.8961058" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="-0.49654108 18.803602" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-3.2475317 3.401571" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="-0.038516793 1.0494306" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="-98.604744 112.69824" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="-1.1646883 31.74497" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="-20.757353 333.1506" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-2.0181246 72.58288" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-573.9 12095.9" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="1.85 5.15" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-1.1961764 0.33190864" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="-8.345619E-4 1.1084037" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.6717391 8.371739" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="Number of SST measurements" colorScaleRange="0.6717391 8.371739" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="Unweighted SST mean" colorScaleRange="267.14508 306.62952" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="Unweighted SST standard deviation" colorScaleRange="-0.20844805 4.61877" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3S-6d.dn" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3S-6d/dn/201[34]/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3S-6d.dn" updateInterval="360">
+         <variables>
+            <variable id="sea_surface_temperature" title="sea_surface_foundation_temperature" colorScaleRange="267.31564 306.7991" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-263117.12 285917.78" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-7.6137505 2.9311016" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="1.5070295 18.408865" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-3.2475317 3.401571" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="-0.042687457 1.0496292" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="-100.937706 165.4315" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="-1.1646883 31.74497" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="-45.7642 334.6453" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-2.0210934 72.58053" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-561.10004 11827.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="1.85 5.15" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-1.1261647 0.32277668" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="-8.345619E-4 1.1084037" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.57549405 10.436363" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="Number of SST measurements" colorScaleRange="0.57549405 10.436363" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="Unweighted SST mean" colorScaleRange="267.14563 306.6291" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="Unweighted SST standard deviation" colorScaleRange="-0.19536406 4.3468504" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3C-1d.day.n19" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3C-1d/day/n19/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3C-1d.day.n19" updateInterval="360">
+         <variables>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-0.035 0.735" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-0.1 2.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="2.9 5.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_surface_temperature" title="sea_surface_skin_temperature" colorScaleRange="269.77948 308.0705" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-0.336 0.016" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="0.217 0.723" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-2049.0 43029.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="0.0 1.0" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="118.64496 369.01114" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="0.016254256 0.19602956" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="confidence_flag" title="confidence flag" colorScaleRange="0.95 2.05" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.8325957 5.247286" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3C-1d.ngt.n19" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3C-1d/ngt/n19/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3C-1d.ngt.n19" updateInterval="360">
+         <variables>
+            <variable id="sea_surface_temperature" title="sea_surface_skin_temperature" colorScaleRange="269.31445 306.2358" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-7969.3374 12488.27" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-6.4713664 1.629011" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="-0.0046336055 19.351612" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-3.2162263 1.6801224" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="-0.042851657 1.0475909" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="25.125412 30.694448" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="-9.5804036E-4 0.21642596" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="4.2900352 280.5308" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-2.3384085 72.19864" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-471.5 9945.5" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="1.85 5.15" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-0.7983638 0.2056364" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="0.049371462 0.93711084" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="confidence_flag" title="confidence flag" colorScaleRange="0.95 2.05" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.81587386 5.260682" palette="rainbow" scaling="linear" numColorBands="254"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3C-3d.day.n19" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3C-3d/day/n19/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3C-3d.day.n19" updateInterval="360">
+         <variables>
+            <variable id="sea_surface_temperature" title="sea_surface_skin_temperature" colorScaleRange="269.53122 308.08835" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-96992.96 112615.08" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-6.2311144 3.3586032" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="-0.5270285 25.132338" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-3.2254448 3.330952" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="-0.042826593 1.0517268" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="14.406338 20.584835" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="-0.00770396 0.286423" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="-6.6497817 271.27747" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-2.0657103 72.41375" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-586.7 12364.7" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="1.85 5.15" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-0.7532455 0.18254437" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="0.12923683 0.937946" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.847872 4.3848476" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="Number of SST measurements" colorScaleRange="0.8102766 5.201581" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="Unweighted SST mean" colorScaleRange="269.53122 308.08835" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="Unweighted SST standard deviation" colorScaleRange="-0.050094046 1.2453204" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="confidence_flag" title="confidence flag" colorScaleRange="0.85 4.15" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="sst.L3C-3d.ngt.n19" location="<%= @root %>/2/SRS/sst/ghrsst-fv01/L3C-3d/ngt/n19/????/*.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="sst.L3C-3d.ngt.n19" updateInterval="360">
+         <variables>
+            <variable id="sea_surface_temperature" title="sea_surface_skin_temperature" colorScaleRange="269.34534 304.8819" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_dtime" title="time difference from reference time" colorScaleRange="-129470.15 111770.664" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="dt_analysis" title="deviation from last SST analysis" colorScaleRange="-5.242175 1.7270104" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed" title="wind_speed" colorScaleRange="-0.7940643 24.38037" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="wind_speed_dtime_from_sst" title="time difference of wind speed measurement from sst measurement" colorScaleRange="-2.4517782 2.911273" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction" title="sea_ice_area_fraction" colorScaleRange="-0.042826593 1.0517268" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sea_ice_fraction_dtime_from_sst" title="time difference of sea ice fraction measurement from sst measurement" colorScaleRange="13.983914 82.2275" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="aerosol_dynamic_indicator" title="aerosol dynamic indicator" colorScaleRange="-0.0151453335 0.28364724" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="adi_dtime_from_sst" title="time difference of ADI measurement from sst measurement" colorScaleRange="3.679246 281.83652" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="satellite_zenith_angle" title="satellite zenith angle" colorScaleRange="-1.7586501 71.93387" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="l2p_flags" title="L2P flags" colorScaleRange="-561.10004 11827.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="quality_level" title="quality level of SST pixel" colorScaleRange="1.85 5.15" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_bias" title="SSES bias estimate" colorScaleRange="-1.1119552 0.24152124" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_standard_deviation" title="SSES standard deviation estimate" colorScaleRange="0.015508689 1.1811042" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sses_count" title="SSES count" colorScaleRange="0.88384014 3.6000805" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_count" title="Number of SST measurements" colorScaleRange="0.8102766 5.201581" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_mean" title="Unweighted SST mean" colorScaleRange="269.34534 304.8819" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="sst_standard_deviation" title="Unweighted SST standard deviation" colorScaleRange="-0.08463819 1.9654869" palette="rainbow" scaling="linear" numColorBands="253"/>
+            <variable id="confidence_flag" title="confidence flag" colorScaleRange="0.9 3.1" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+      <dataset id="oc.npp-VgpmEpp.gsm01.1d.aqua" location="<%= @root %>/2/SRS/oc/aqua/1d/????/??/*aust.npp_gsm01.nc4" queryable="true" intervalTime="false" dataReaderClass="" copyrightStatement="" moreInfo="" disabled="false" title="oc.npp-VgpmEpp.gsm01.1d.aqua" updateInterval="360">
+         <variables>
+            <variable id="npp" title="Eppley VGPM Net Primary Production" colorScaleRange="-101.07067 2122.484" palette="rainbow" scaling="linear" numColorBands="253"/>
+         </variables>
+      </dataset>
+   </datasets>
+   <threddsCatalog> </threddsCatalog>
+   <contact>
+      <name>System Administrator</name>
+      <organization>AODN</organization>
+      <telephone> </telephone>
+      <email><%= node[:email_forward][:email_address] %></email>
+   </contact>
+   <server>
+      <title>AODN ncWMS Server</title>
+      <allowFeatureInfo>true</allowFeatureInfo>
+      <maxImageWidth>1024</maxImageWidth>
+      <maxImageHeight>1024</maxImageHeight>
+      <abstract> </abstract>
+      <keywords> </keywords>
+      <url> </url>
+      <adminpassword><%= @password %></adminpassword>
+      <allowglobalcapabilities>true</allowglobalcapabilities>
+   </server>
+   <cache enabled="false">
+      <elementLifetimeMinutes>1440</elementLifetimeMinutes>
+      <maxNumItemsInMemory>200</maxNumItemsInMemory>
+      <enableDiskStore>true</enableDiskStore>
+      <maxNumItemsOnDisk>2000</maxNumItemsOnDisk>
+   </cache>
+</config>

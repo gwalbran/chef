@@ -1,0 +1,127 @@
+#!/usr/bin/python
+""" Taken from https://code.google.com/p/nagiosity/source/browse/status2xml.cgi
+This takes the nagios realtime status dada and outputs as XML.
+Changed script so it caches results in a temporary file and doesn't
+generate the XML every time it's called via CGI. """
+
+import time
+import stat
+import socket
+import os
+import re
+import sys
+import datetime
+import tempfile
+
+# config local access control permission to enable the file to be readbale by this script
+status_file = "<%= node['nagios']['cache_dir'] %>/status.dat"
+xml_file = "<%= @cache_dir %>/status.xml"
+xml_file_max_age_seconds = <%= node['nagios']['status2xml']['max_age'] %>
+
+# fixme - the following token change dependiong on the version of Nagios
+hosttoken = 'hoststatus'
+servicetoken = 'servicestatus'
+programtoken = 'programstatus'
+
+def GetDefinitions(filename,obj):
+    """ Parse the status.dat file and extract matching object definitions """
+    file = open(filename)
+    content = file.read().replace("\t"," ")
+    file.close
+    pat = re.compile(obj +' \{([\S\s]*?)\}',re.DOTALL)
+    finds = pat.findall(content)
+    return finds
+
+
+def GetDirective(item, directive):
+    """ parse an object definition, return the directives """
+    pat = re.compile(' '+directive + '[\s= ]*([\S, ]*)\n')
+    m = pat.search(item)
+    if m:
+        return m.group(1)
+
+def xmlattr(definition, directive):
+    """ returns directive='value' """
+    return "%s='%s' " % (directive,GetDirective(definition,directive).strip())
+
+def cache_file_is_too_new(path):
+    return os.path.isfile(path) and \
+        time.time() - os.stat(path)[stat.ST_MTIME] < xml_file_max_age_seconds
+
+""" Generates the xml output and stores it in xml_file """
+def generate_xml(status_file, xml_file):
+
+    if cache_file_is_too_new(xml_file):
+        return
+
+    output = "<?xml version='1.0'?>\n"
+    output += "<nagios name='nagios' "
+
+    # Information about Nagios running state
+    prog = GetDefinitions(status_file,programtoken)
+    for progdef in prog:
+        output += xmlattr(progdef,"last_command_check")+" >\n"
+    output += "  <hosts>\n"
+
+    # each host
+    hosts = GetDefinitions(status_file,hosttoken)
+    for hostdef in hosts:
+        output += "    <host"
+        output += "   "+xmlattr(hostdef,"host_name")
+        output += "   "+xmlattr(hostdef,"current_state")
+        output += "   "+xmlattr(hostdef,"current_attempt")
+        output += "   "+xmlattr(hostdef,"last_check")
+        output += "   >\n"
+
+        services = GetDefinitions(status_file,servicetoken)
+        for servicedef in services:
+            if(GetDirective(servicedef,"host_name").strip() == GetDirective(hostdef,"host_name").strip()):
+                output += "      <service"
+                output += " "+xmlattr(servicedef,"service_description")
+                output += " "+xmlattr(servicedef,"current_state")
+                output += " "+xmlattr(servicedef,"current_attempt")
+                output += " "+xmlattr(servicedef,"last_check")
+                output += "/>\n"
+        output += "    </host>\n"
+    output += "  </hosts>\n"
+    output += "</nagios>\n"
+
+
+    # Write to a temporary filename, then rename to target file
+    # This is done like that for the sake of atomicity, so if there is multiple
+    # access, the atomicity of the move operation (os.rename) will eliminate
+    # curroption
+    fh = tempfile.NamedTemporaryFile(delete=False)
+    temp_file_path = fh.name
+    fh.write(output)
+    fh.close()
+    os.rename(temp_file_path, xml_file)
+
+def output_xml(xml_file):
+    f = open(xml_file, 'r')
+    print f.read()
+    f.close()
+
+""" Stolen from http://stackoverflow.com/questions/788411/check-to-see-if-python-script-is-running """
+def get_lock(process_name):
+    global lock_socket
+    lock_socket = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+    try:
+        lock_socket.bind('\0' + process_name)
+        return True
+    except socket.error:
+        return False
+
+def main():
+    while not get_lock('status2xml'):
+        time.sleep(3)
+
+    generate_xml(status_file, xml_file)
+
+    """ This is the cgi header """
+    print "Content-type: text/plain\n"
+    output_xml(xml_file)
+
+if __name__ == "__main__":
+    sys.exit(main())
+

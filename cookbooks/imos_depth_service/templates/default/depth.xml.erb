@@ -1,0 +1,57 @@
+#!/usr/bin/perl -w
+
+use strict;
+use CGI::Simple;
+use File::Temp;
+use DBI;
+
+my $database_host = "<%= @database_host %>";
+my $database_name = "<%= @database_name %>";
+my $database_user = "<%= @database_user %>";
+my $database_pass = "<%= @database_pass %>";
+my $database_schema = "<%= @database_schema %>";
+
+sub get_depth {
+    my ($lat, $lon) = @_;
+    my $point = "POINT($lon $lat)";
+
+    my $dbh = DBI->connect("DBI:Pg:dbname=$database_name;host=$database_host", "$database_user", "$database_pass");
+
+    my $sql_query = "SELECT depth FROM $database_schema.world_depth WHERE ST_DWithin(geom, GeomFromText(?, 4326), 0.1) ORDER BY ST_Distance(geom, GeomFromText(?, 4326)) LIMIT 1";
+
+    my $sth = $dbh->prepare($sql_query);
+    $sth->execute($point, $point);
+
+    my $depth = $sth->fetchrow_array;
+    $sth->finish;
+    $dbh->disconnect();
+    return $depth;
+}
+
+sub output_xml {
+    my ($q, $lat, $lon, $depth) = @_;
+    $q->print ("<root>" . "\n");
+    $q->print ("    <latitude>" . $lat . "</latitude>" . "\n");
+    $q->print ("    <longitude>" . $lon . "</longitude>" . "\n");
+    $q->print ("    <depth>" . $depth . "</depth>" . "\n");
+    $q->print ("</root>" . "\n");
+}
+
+sub main {
+    my $q = new CGI::Simple;
+
+    my ($lat, $lon, $depth);
+
+    $lat = $q->param('lat');
+    $lon = $q->param('lon');
+    $depth = get_depth($lat, $lon);
+
+    # send result to client
+    print $q->header(
+        -type       => 'text/xml'
+    );
+
+    output_xml($q, $lat, $lon, $depth);
+}
+
+&main()

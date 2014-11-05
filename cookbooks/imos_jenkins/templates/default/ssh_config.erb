@@ -1,0 +1,11 @@
+Host 115.146.*.*
+  User <%= @user %>
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+
+Host github-chef
+  HostName       github.com
+  User           git
+  IdentityFile   ~/.ssh/github_chef_id_rsa
+  IdentitiesOnly yes

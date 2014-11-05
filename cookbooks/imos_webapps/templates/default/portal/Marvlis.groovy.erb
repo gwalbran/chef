@@ -1,0 +1,92 @@
+// MARVLIS environment-specific settings
+
+grails.serverURL = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
+spatialsearch.url = "http://115.146.85.122/geonetwork/srv/eng/q"
+wmsScanner.url = "http://wmsscanner.aodn.org.au/wmsscanner/"
+wfsScanner.url = "http://wfsscanner.aodn.org.au/wfsscanner/"
+
+dataSource {
+    jndiName = "java:comp/env/<%= @jndi_resources[0]['resource'] %>"
+}
+
+portal {
+    instance {
+        name = "MARVLIS"
+        css = "/<%= @custom_parameters['name'] %>/css/MARVLIS.css"
+    }
+
+    header {
+        logo = "MARVLIS_logo.png"
+        externalLinks = [
+            [
+                linkText: "eMII",
+                tooltipText: "e-Marine Information Infrastructure",
+                href: "http://www.emii.org.au"
+            ],
+            [
+                linkText: "MARVLIS",
+                tooltipText: "Marine Virtual Laboratory Information System",
+                href: "http://marvlis.blogspot.com.au/"
+            ],
+            [
+                linkText: "Help",
+                tooltipText: "Portal help files",
+                href: help.url
+            ]
+        ]
+    }
+    systemEmail {
+        fromAddress = "info@aodn.org.au"
+    }
+}
+
+openId {
+    // openID provider details to support login popup etc
+    providers = [
+        [name: "Google", iconHref: "images/openid_icons/Google.png", supportsProviderLogout: false, providerHref: "https://www.google.com/accounts/o8/id"],
+        [name: "Yahoo", iconHref: "images/openid_icons/Yahoo.png", supportsProviderLogout: false, providerHref: "https://me.yahoo.com/"]
+    ]
+
+    // Enable user to supply their their own OpenId url via textfield in popup list
+    enableUserSuppliedProvider = false
+
+    // Specify provider to work with register button/link (not an OpenId standard)
+    registerProvider = providers.first()
+}
+
+// log4j configuration
+log4j = {
+    appenders {
+        console name:'stdout', layout: pattern(conversionPattern: "%-5p %d [%-12t] %30.30c %X{userInfoForFile}- %m%n")
+    }
+
+    root {
+        error 'stdout'
+    }
+
+    error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+          'org.codehaus.groovy.grails.web.pages', //  GSP
+          'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+          'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+          'org.codehaus.groovy.grails.web.mapping', // URL mapping
+          'org.codehaus.groovy.grails.commons', // core / classloading
+          'org.codehaus.groovy.grails.plugins', // plugins
+          'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+          'org.springframework',
+          'org.hibernate',
+          'net.sf.ehcache.hibernate',
+          'org.grails.plugin.resource.ResourceMeta'
+
+    warn  'org.mortbay.log'
+
+    info  'grails.app.tagLib',
+          'grails.app.filters',
+          'grails.app.controller',
+          'grails.app.service',
+          'grails.app.job',
+          'grails.app.domain',
+          'grails.app.realms',
+          'au.org.emii.portal.display.MenuJsonCache',
+          'org.apache.shiro'
+}
+

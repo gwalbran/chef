@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Queues a job on task spooler only if it's not already queued
+
+# main
+# $1 - job name
+# "$@" - invocation parameters
+main() {
+    local name="$1"; shift
+
+    if ! `tsp -l | grep "\[$name\]" | grep -q queued`; then
+        tsp -L "$name" "$@"
+    fi
+}
+
+main "$@"

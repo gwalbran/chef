@@ -1,0 +1,16 @@
+date {
+  match => [ "timestamp" , "dd MMM HH:mm:ss" ]  # 10 Sep 15:23:12
+}
+
+multiline {
+  pattern => "<%= node['imos_logstash']['agent']['loglevels'].join('|') %>"
+  negate => true
+  what => "previous"
+}
+
+grok {
+  match => [
+    "message", "%{GREEDYDATA:timestamp} %{LOGLEVEL:level} \[%{NOTSPACE:class}\] - %{GREEDYDATA:log_message}"
+  ]
+  break_on_match => false
+}

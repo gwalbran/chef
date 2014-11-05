@@ -1,0 +1,9 @@
+# PostgreSQL Client Authentication Configuration File
+# This file was automatically generated and dropped off by Chef!
+# Please refer to the PostgreSQL documentation for details on
+# configuration settings.
+
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+<% @config.each do |auth| -%>
+<%= auth[:type] %>  <%= auth[:db] %>  <%= auth[:user] %>  <%= auth[:addr] %>  <%= auth[:method] %>
+<% end -%>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         name="Unidata THREDDS Data Server"
+         version="1.0.2">
+  <service name="regGriddedServices" serviceType="Compound" base="">
+    <service name="dapService" serviceType="OPENDAP" base="/thredds/dodsC/"/>
+    <service name="httpService" serviceType="HTTPServer" base="/thredds/fileServer/"/>
+    <service name="wmsService" serviceType="WMS" base="/thredds/wms/"/>
+    <service name="ncss" serviceType="NetcdfSubset" base="/thredds/ncss/grid/" />
+  </service>
+  <datasetScan name="DEP Datasets" ID="dep" path="dep" location="<%= @root %>/1/DEP/">
+    <metadata inherited="true">
+      <serviceName>regGriddedServices</serviceName>
+      <dataType>Grid</dataType>
+    </metadata>
+    <filter>
+      <include wildcard="*.nc"/>
+      <include wildcard="*.nc.gz"/>
+      <include wildcard="*.ncml"/>
+    </filter>
+  </datasetScan>
+</catalog>

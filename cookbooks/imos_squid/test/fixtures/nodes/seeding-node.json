@@ -1,0 +1,27 @@
+{
+    "ipaddress": "192.168.0.1",
+    "network": {
+        "interfaces": {
+            "eth0": {
+                "addresses": {
+                    "192.168.0.1": {
+                        "netmask": "255.255.255.0"
+                    }
+                }
+            }
+        }
+    },
+    "imos_squid": {
+        "layer_seeder": {
+            "duration":    "10m",
+            "geonetwork":  "geonetwork-test",
+            "geoserver":   "geoserver-test",
+            "start_zoom":  "4",
+            "end_zoom":    "10",
+            "threads":     "16",
+            "tile_size":   "256",
+            "gutter_size": "20",
+            "url_format":  "url-format-test%%"
+        }
+    }
+}

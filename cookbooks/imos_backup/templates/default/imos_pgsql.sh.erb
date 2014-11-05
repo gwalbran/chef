@@ -1,0 +1,175 @@
+#!/bin/bash
+
+#
+# Copyright (C) 2013 IMOS
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+
+# lock, so we don't run this backup more than once at the same time
+# $1 - lock_file
+_lock_or_abort() {
+    local pid_lock_file=$1; shift
+    local -i pid=`cat $pid_lock_file`
+
+    # make sure we don't lock ourself
+    if [ $pid -eq $$ ]; then
+        return
+    fi
+
+    # guard against cron running into already running job
+    if [ $pid -ne 0 ] && [ -d /proc/$pid ]; then
+        logger_fatal "Backup is already running with PID $pid"
+    fi
+
+    # create pid guard
+    echo $$ > $pid_lock_file
+}
+
+# backup for a pgsql database
+# $1 - database_name
+# $2 - host
+# $3 - port
+# $4 - username
+# $5 - password
+backup() {
+    local database_name=$1; shift
+    local host=$1; shift
+    local -i port=$1; shift
+    local username="$1"; shift
+    local password="$1"; shift
+    local pid_lock_file=$1; shift
+
+    _lock_or_abort $pid_lock_file
+
+    export PGPASSWORD="$password"
+
+    local schemas
+    schemas=$(psql -w -t -h $host -p $port -U $username -d $database_name -c \
+        'select nspname from pg_namespace where nspname !~ $$pg_.*$$ and nspname != $$information_schema$$' ) || \
+        logger_fatal "Failed to get schemas from database '$database_name'"
+
+    mkdir "$_BACKUP_DEST/$database_name"
+
+    local schema
+    for schema in $schemas; do
+        logger_info "Dumping schema '$schema'"
+        pg_dump -w -Fc -h $host -p $port -U $username -n $schema $database_name > "$_BACKUP_DEST/$database_name/$schema.dump" || \
+            logger_fatal "Failed to dump schema '$schema' from database '$database_name'"
+    done
+    return 0
+}
+
+# never restore any of those schemas, even if they are being backed up!
+declare -r IGNORED_SCHEMAS="chef admin postgis"
+
+# returns true if schema should be ignored
+# $1 - schema name
+_ignore_schema() {
+    echo $IGNORED_SCHEMAS | grep -q "\b$schema\b"
+}
+
+# disconnects all users accessing the given database
+# $1 - database name
+# $2 - host
+# $3 - port
+_disconnect_all_users() {
+    local database_name=$1; shift
+    local host=$1; shift
+    local -i port=$1; shift
+
+    logger_warn "Disconnecting all users from database '$database_name'"
+    sudo -u postgres psql -p $port -d $database_name -t -c \
+        "select pg_terminate_backend(pg_stat_activity.pid) from pg_stat_activity where pg_stat_activity.datname = '$database_name' and pid <> pg_backend_pid();"
+}
+
+# returns a list of extensions for given schema
+# $1 - database name
+# $2 - host
+# $3 - port
+# $4 - schema
+_get_extensions_on_schema() {
+    local database_name=$1; shift
+    local host=$1; shift
+    local -i port=$1; shift
+    local schema=$1; shift
+
+    sudo -u postgres psql -p $port -d $database_name -t -c \
+        "select e.extname as extension from pg_catalog.pg_extension e \
+            left join pg_catalog.pg_namespace n \
+            on n.oid = e.extnamespace where n.nspname = '$schema'" | xargs
+}
+
+# restore a pgsql database
+# $1 - database_name
+# $2 - host
+# $3 - port
+# $4 - username
+# $5 - password
+restore() {
+<% if node[:imos_backup][:restore][:allow] %>
+    local database_name=$1; shift
+    local host=$1; shift
+    local -i port=$1; shift
+    local username="$1"; shift
+    local password="$1"; shift
+
+    logger_info "Restoring database '$database_name'"
+
+    export PGPASSWORD="$password"
+
+    local -i retval=0
+
+    local schema_file
+    for schema_file in `ls -1 $_BACKUP_DEST/$database_name`; do
+        local schema=`echo $schema_file | cut -d. -f1`
+
+        if ! _ignore_schema $schema; then
+            _disconnect_all_users $database_name $host $port 2> /dev/null
+
+            # get all extensions
+            extensions=`_get_extensions_on_schema $database_name $host $port $schema`
+            logger_info "Probed extensions '$extensions' on database '$database_name'"
+
+            # recreate the schema
+            logger_info "Dropping and creating schema '$schema'"
+            sudo -u postgres psql -p $port -d $database_name -c "drop schema $schema cascade; create schema $schema"
+
+            # restore extensions after scehma drop
+            local extension
+            for extension in $extensions; do
+                logger_info "Installing extension '$extension'"
+                sudo -u postgres psql -p $port -d $database_name -c "create extension if not exists $extension schema $schema"
+            done
+
+            logger_info "Restoring schema '$schema'"
+            # note that user postgres will not have permissions to read the schema dump file
+            cat $_BACKUP_DEST/$database_name/$schema_file | \
+                sudo -u postgres pg_restore -p $port -d $database_name || \
+                logger_fatal "Failed to restore schema '$schema' from database '$database_name'"
+
+            let retval+=$?
+        else
+            logger_info "Ignoring schema '$schema'"
+        fi
+    done
+
+    return $retval
+<% else %>
+    logger_fatal "Restore functionality is disabled on node!"
+
+    return 1
+<% end %>
+}

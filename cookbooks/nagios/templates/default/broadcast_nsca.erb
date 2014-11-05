@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# nagios servers to notify
+NAGIOS_SERVERS="<%= @nagios_servers.join(" ") %>"
+
+main() {
+    local tmp_file=`mktemp`
+    cat > $tmp_file
+    local nagios_server
+    for nagios_server in $NAGIOS_SERVERS; do
+        <%= node['nagios']['nsca']['send_nsca'] %> "$@" -H $nagios_server < $tmp_file
+    done
+    rm -f $tmp_file
+}
+
+main "$@"
