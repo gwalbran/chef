@@ -1,6 +1,6 @@
 # Overview
-This chef repository contains some, but not all (some is still being migrated from puppet), of the configuration to provision the eMII infrastructure.
 
+This chef repository contains all cookbooks used for the IMOS infrastructure.
 
 # Getting Started
 
@@ -18,79 +18,63 @@ bundler |  | `gem`
 
 *See websites or documentation for more detailed insallation instructions*
 
-# Vagrant
+Once you have all the above prerequisites, you can install all the ruby modules using:
+```
+$ bundle install
+```
+
+## Optional Vagrant Plugins
 
 *Note*: in addition to the vagrant plugins listed above, the following are worth a look:
 
 * [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
 * [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier)
 
- 
+# Private Repository
+
+You may have noticed that `data_bags`, `roles` and `nodes` are referencing
+`private/SOMETHING`. We'll need to plug a chef private repository under
+`private/`. This repository will contain only private data which should not be
+exposed to the world. The way to do it is:
+```
+$ git clone git@github.com:YOUR_ORG/chef-private.git private
+```
+
+The symbolic links should look lively now.
 
 Run up a node with Vagrant
 --------------------------
 
 Running up a VM should be as simple as:
-
-	$ vagrant up <node_name>
-
-where `<node_name>` is the name of the node which you would like to run up, e.g.:
-
-	$ vagrant up edge.aodn.org.au
-
-will create a vagrant VM using VirtualBox as the provider and provision it according to the `edge` node definition. Alternatively, you may create and provision a Nectar VM as follows:
-
-	$ vagrant up edge.aodn.org.au --provider=openstack
+```
+$ vagrant up <node_name>
+```
 
 You can now ssh to the new VM:
-
-    $ vagrant ssh edge.aodn.org.au
+```
+$ vagrant ssh <node_name>
+```
 
 or check the status:
-
-	$ vagrant status edge.aodn.org.au
+```
+$ vagrant status <node_name>
+```
 
 
 The [Vagrantfile](Vagrantfile) contains some other overridable options - refer to *it* to see what they are.
 
 # Workflow
 
-Chef code lives in our Git repository at `git@github.com:aodn/chef.git`.
-There is only one long-lived branch, `production`, which as its names suggests, is the branch that is pushed to the Chef server and that provides the Single Point Of Truth (SPOT rule) for our infrastructure.
+If you wish to contribute to this repository, you will have to fork it.
 
-Apart from emergency hotfixes, all work should be done on a feature branch and must be reviewed before being merged in to production (see [workflow](#Workflow)).
+Before doing any new work, you should create a new branch:
+```
+$ git co -b new_feature
+```
 
+Work on the branch as needed, then push it:
+```
+$ git push origin new_feature
+```
 
-1. Get the latest production branch, and create a new topic branch from it:
-
-		$ git checkout production
-		$ git checkout -b amazing_new_feature
-
-2. Hack some codes (including bumping cookbook version numbers, where appropriate)...
-3. Test, e.g. using vagrant:
-
-		$ vagrant up node_with_amazing_feature
-
-4. Push to central repo:
-
-		$ git push -u origin amazing_new_feature
-
-5. Review (done by reviewer)…
-
-		$ git checkout amazing_new_feature
-
-6. Merge in to production and push (after possibly repeating steps 3-5) (again, done by reviewer):
-
-		$ git checkout production
-        $ git pull
-		$ git merge amazing_new_feature
-		$ git push
-
-7. Bask in your own glory as the change is automatically propogated to production (by jenkins and chef-client jobs running on the production servers).
-8. Clean up the branch from the remote repo when everything is good:
-
-		$ git push origin :amazing_new_feature
-
-# General info
-
-Some more general info (about chef, jenkins, git etc) is available from our [intranet](http://intranet.emii.org.au/content/chef).
+Submit a PR and see if we accept it.
