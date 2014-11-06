@@ -29,19 +29,14 @@ define :thredds do
   end
 
   # Configuration files
-  config_files = [
-    "catalog.xml",
-    "threddsConfig.xml",
-    "climatology.xml",
-    "dep.xml",
-    "dsto.xml",
-    "imas.xml",
-    "srs.xml",
-    "wms_config.xml"
-  ]
+  config_files = []
+  if app_parameters['config_files']
+    config_files = app_parameters['config_files']
+  end
 
   config_files.each do |config_file|
     template "#{thredds_config_base}/#{config_file}" do
+      cookbook "external_templates"
       source   "#{app_parameters['artifact']}/#{config_file}.erb"
       owner    node['tomcat']['user']
       group    node['tomcat']['group']

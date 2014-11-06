@@ -55,6 +55,7 @@ define :ncwms do
   ncwms_config_from_chef = ::File.join(app_parameters['cache_dir'], "config_base.xml")
 
   template ncwms_config_from_chef do
+    cookbook "external_templates"
     source   "#{app_name}/config.xml.erb"
     owner    node['tomcat']['user']
     group    node['tomcat']['group']
