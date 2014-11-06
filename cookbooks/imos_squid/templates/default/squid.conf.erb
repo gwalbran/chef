@@ -52,6 +52,7 @@ icp_access allow localnet
 icp_access deny all
 http_port <%= node['squid']['port'] %>
 
+logformat squid %ts.%03tu %6tr %>a,%{X-Forwarded-For}>h %Ss/%03>Hs %<st %rm %ru %un %Sh/%<A %mt
 access_log <%= File.join(node['squid']['log_dir'], 'access.log') %> squid
 hosts_file /etc/hosts
 cache_dir ufs <%= node['squid']['cache_dir'] %> <%= node['squid']['cache_size'] %> 16 256
@@ -65,7 +66,6 @@ cache_mem <%= node['squid']['cache_mem'] %> MB
 httpd_suppress_version_string on
 maximum_object_size <%= node['squid']['maximum_object_size'] %> KB
 strip_query_terms off
-logformat combined %>a %ui %un [%tl] "%rm %ru HTTP/%rv" %>Hs %<st "%{Referer}>h" "%{User-Agent}>h" %Ss:%Sh
 <% @refresh_patterns.each do |refresh_pattern| %>
 refresh_pattern <%= refresh_pattern['regex'] %> <%= refresh_pattern['min'] || node['squid']['cache_min'] %> <%= refresh_pattern['percent'] || node['squid']['cache_percent'] %> <%= refresh_pattern['max'] || node['squid']['cache_max'] %> <%= refresh_pattern['extra_opts'] || node['squid']['extra_opts'] %>
 <% end %>
