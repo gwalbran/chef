@@ -14,6 +14,7 @@ package 'heirloom-mailx'
 include_recipe "imos_core::git_deploy_key"
 
 data_services_dir = node['imos_po']['data_services']['dir']
+data_services_log_dir = node['imos_po']['data_services']['log_dir']
 data_services_cron_dir = File.join(data_services_dir, "cron.d")
 
 git data_services_dir do
@@ -26,6 +27,13 @@ git data_services_dir do
   notifies    :create, "ruby_block[data_services_cronjobs]", :immediately
 end
 
+directory data_services_log_dir do
+  user      'root'
+  group     'projectofficer'
+  mode      01777
+  recursive true
+end
+
 # Inject those variables to the cronjobs
 cron_vars = [
     "OPENDAP_DIR='#{node['imos_po']['data_services']['opendap_dir']}'",
@@ -33,7 +41,8 @@ cron_vars = [
     "ARCHIVE_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
     "INCOMING_DIR='#{node['imos_po']['data_services']['incoming_dir']}'",
     "WIP_DIR='#{node['imos_po']['wip_dir']}'",
-    "DATA_SERVICES_DIR='#{data_services_dir}'"
+    "DATA_SERVICES_DIR='#{data_services_dir}'",
+    "LOG_DIR='#{data_services_log_dir}'"
 ]
 
 if node['imos_po']['data_services']['cronjobs']
