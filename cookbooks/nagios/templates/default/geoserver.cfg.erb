@@ -14,7 +14,7 @@ geoserver_layers = {}
   if n['webapps'] and n['webapps']['instances']
     n['webapps']['instances'].each do |webapp_instance|
 
-      app_vhost       = webapp_instance['vhost']
+      app_vhost = webapp_instance['vhost']
       webapp_instance['apps'].each do |application|
         if application['name'].start_with?('geoserver')
 

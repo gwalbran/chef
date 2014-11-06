@@ -112,7 +112,8 @@ module Nagios
     def get_layers_for_application(application)
 
       if ! application['data_bag']
-        Chef::Application.fatal!("Node '#{n['fqdn']}' has a geoserver instance with no data bag defined!")
+        Chef::Log.warn("Node '#{n['fqdn']}' has a geoserver instance with no data bag defined!")
+        return []
       end
 
       geoserver_data_bag = Chef::DataBagItem.load("geoserver", application['data_bag']).to_hash
