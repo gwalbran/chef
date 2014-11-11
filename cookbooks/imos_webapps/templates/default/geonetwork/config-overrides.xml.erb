@@ -72,16 +72,18 @@
         </replaceXML>
     </file>
 
+<%
+if @custom_parameters['classification_scheme']
+  @custom_parameters['classification_scheme'].each do |k, v|
+    xpath = "dimensions/dimension[@name='#{k}']/param[@name='conceptScheme']"
+    value = v
+%>
     <file name=".*WEB-INF/config-summary\.xml">
-        <replaceAtt xpath="dimensions/dimension[@name='parameterCategories']/param[@name='conceptScheme']" 
-          attName="value" value="<%= @custom_parameters['parameter_classification_scheme'] \
-          || 'http://vocab.aodn.org.au/ParameterClassificationScheme/SchemeNumber1' %>"/>
+        <replaceAtt xpath="<%= xpath %>" attName="value" value="<%= value %>"/>
     </file>
-
-    <file name=".*WEB-INF/config-summary\.xml">
-        <replaceAtt xpath="dimensions/dimension[@name='platformCategories']/param[@name='conceptScheme']" 
-          attName="value" value="<%= @custom_parameters['platform_classification_scheme'] \
-          || 'http://vocab.aodn.org.au/PlatformClassificationScheme/SchemeNumber1'  %>"/>
-    </file>
+<%
+  end
+end
+%>
 
 </overrides>
