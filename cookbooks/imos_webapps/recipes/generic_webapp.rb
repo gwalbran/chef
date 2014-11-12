@@ -61,8 +61,9 @@ if node['webapps'] && node['webapps']['instances']
     dns_names = [ instance_vhost ] + (instance_aliases || [])
     dns_names.each do |dns_name|
       if not node['aliases'].include? dns_name
-        if instance_vhost == dns_name
-          Chef::Application.fatal!("DNS name '#{dns_name}' not defined in node")
+        if instance_vhost == dns_name && ! instance['ignore_vhost_dns']
+          Chef::Log.warn("DNS name '#{dns_name}' not defined in node")
+          Chef::Application.fatal!("You can define 'ignore_vhost_dns: true' for the instance if you know what you're doing")
         else
           Chef::Log.warn("DNS name (vhost alias) '#{dns_name}' not defined in node")
         end
