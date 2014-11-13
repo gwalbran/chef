@@ -1,0 +1,6 @@
+{
+    "id": "geoserver_systest",
+    "uri": "http://geoserver-systest.aodn.org.au/geoserver/wms",
+    "wmsVersion": "1.1.1",
+    "type": "GeoServer"
+}

@@ -1,0 +1,43 @@
+{
+    "name": "base",
+    "chef_type": "role",
+    "json_class": "Chef::Role",
+    "description": "Base role used by all nodes",
+    "default_attributes": {
+        "authorization": {
+            "sudo": {
+                "groups": ["admin","wheel","sysadmin"],
+                "include_sudoers_d": true,
+                "passwordless": true,
+                "users": []
+            }
+        }
+    },
+    "override_attributes": {
+        "omnibus_updater":
+        {
+            "version": "11.6.0"
+        }
+    },
+    "run_list": [
+        "recipe[ohai_plugins]",
+        "recipe[imos_core::chef_solo]",
+        "recipe[imos_core::lvm]",
+        "recipe[imos_mounts]",
+        "recipe[hostname]",
+        "recipe[apt]",
+        "recipe[imos_users]",
+        "recipe[sudo]",
+        "recipe[git]",
+        "recipe[ntp]",
+        "recipe[timezone-ii]",
+        "recipe[imos_core::root_access]",
+        "recipe[imos_core::email_forward]",
+        "recipe[imos_core::environment]",
+        "recipe[postfix]",
+        "recipe[imos_core::motd]",
+        "recipe[imos_core::unattended_upgrades]",
+        "recipe[imos_core::logrotate]",
+        "recipe[sysctl]"
+    ]
+}

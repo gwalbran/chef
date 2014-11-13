@@ -1,0 +1,9 @@
+{
+    "name": "backup",
+    "chef_type": "role",
+    "json_class": "Chef::Role",
+    "description": "Backup role",
+    "run_list": [
+        "recipe[imos_backup]"
+    ]
+}

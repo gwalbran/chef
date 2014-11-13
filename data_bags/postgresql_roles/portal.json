@@ -1,0 +1,10 @@
+{
+    "id": "portal",
+    "roles": [
+        {
+            "name": "portal",
+            "password": "portal",
+            "connection_limit": 15
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "id": "geonetwork",
+    "database_name": "geonetwork",
+    "backup_user": "backup",
+    "schemas": [
+        {
+            "name": "public",
+            "permissions": [
+                { "role": "geonetwork", "type": "write" },
+                { "role": "geonetwork_read_group", "type": "read" },
+                { "role": "geonetwork_write_group", "type": "write" }
+            ],
+            "extensions": [
+                { "name": "postgis" }
+            ]
+        }
+    ]
+}

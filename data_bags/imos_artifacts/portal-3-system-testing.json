@@ -1,0 +1,5 @@
+{
+    "id": "portal-3-system-testing",
+    "job": "Portal - 3.x System Testing",
+    "logstash_filter_config": "portal"
+}

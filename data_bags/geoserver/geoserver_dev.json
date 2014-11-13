@@ -1,0 +1,8 @@
+{
+    "id": "geoserver_dev",
+    "git_repo": "https://github.com/aodn/geoserver-config.git",
+    "git_branch": "master",
+    "git_deep_clone": true,
+    "username": "admin",
+    "password": "password"
+}

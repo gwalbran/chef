@@ -1,0 +1,5 @@
+{
+    "id": "geonetwork_systest",
+    "job": "GeoNetwork_systest",
+    "logstash_filter_config": "geonetwork"
+}
