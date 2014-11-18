@@ -37,8 +37,6 @@ end
 <%= "googleAnalytics.trackingId = '#{@custom_parameters['google_analytics_tracking_id']}'" =%>
 <% end %>
 
-proxyWmsRequests = <%= @custom_parameters['proxyWmsRequests'] || false %>
-
 downloadAuth {
     whitelistClients = [
         <%=
