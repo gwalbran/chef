@@ -66,6 +66,9 @@ dataSource {
 }
 
 portal {
+    <% if @custom_parameters['branding_base'] %>
+    brandingBase = "<%= @custom_parameters['branding_base'] %>"
+    <% end %>
 
     instance {
         // The name is used to load instance specific data migrations, in most
