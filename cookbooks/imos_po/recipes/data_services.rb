@@ -35,14 +35,16 @@ directory data_services_log_dir do
 end
 
 # Inject those variables to the cronjobs
+# Please note all variables here must be fully expanded to avoid scripts
+# needing to evaluate them at runtime
 cron_vars = [
     "OPENDAP_DIR='#{node['imos_po']['data_services']['opendap_dir']}'",
     "PUBLIC_DIR='#{node['imos_po']['data_services']['public_dir']}'",
     "ARCHIVE_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
     "INCOMING_DIR='#{node['imos_po']['data_services']['incoming_dir']}'",
-    "OPENDAP_IMOS_DIR=\"$OPENDAP_DIR/1/IMOS/opendap\"",
-    "PUBLIC_IMOS_DIR=\"$PUBLIC_DIR\"",
-    "ARCHIVE_IMOS_DIR=\"$ARCHIVE_DIR\"",
+    "OPENDAP_IMOS_DIR='#{node['imos_po']['data_services']['opendap_dir']}/1/IMOS/opendap'",
+    "PUBLIC_IMOS_DIR='#{node['imos_po']['data_services']['public_dir']}'",
+    "ARCHIVE_IMOS_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
     "WIP_DIR='#{node['imos_po']['wip_dir']}'",
     "DATA_SERVICES_DIR='#{data_services_dir}'",
     "LOG_DIR='#{data_services_log_dir}'"
