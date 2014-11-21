@@ -33,7 +33,7 @@ grok {
 
 grok {
   match => [
-    "client_msg", 'Searched collection: {"status":"%{WORD:status}","duration \(ms\)":%{NUMBER:duration_ms}}'
+    "client_msg", 'Searched collections: {"status":"%{WORD:status}","duration \(ms\)":%{NUMBER:duration_ms}}'
   ]
   break_on_match => false
 }
