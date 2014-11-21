@@ -33,6 +33,14 @@ grok {
 
 grok {
   match => [
+    "client_msg", 'Searched collections: {"status":"%{WORD:status}","duration \(ms\)":%{NUMBER:duration_ms}}'
+  ]
+  break_on_match => false
+}
+
+
+grok {
+  match => [
     "client_msg", 'Filtering collection: {"title":%{GREEDYDATA:collection_title},"filters":{%{GREEDYDATA:filters}}'
   ]
   break_on_match => false
