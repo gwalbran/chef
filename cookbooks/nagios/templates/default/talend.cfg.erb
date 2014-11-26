@@ -7,8 +7,15 @@
 talend_jobs = []
 @nodes.uniq.each do |n|
   host_name = node['nagios']['server']['normalize_hostname'] ? n[node['nagios']['host_name_attribute']].downcase : n[node['nagios']['host_name_attribute']]
+
+  talend_jobs_ignore = []
+  if n['nagios'] && n['nagios']['talend'] && n['nagios']['talend']['jobs_ignore']
+    talend_jobs_ignore = n['nagios']['talend']['jobs_ignore']
+  end
+
   if n['run_list'].include?("recipe[talend]") && n['talend'] && n['talend']['jobs']
     n['talend']['jobs'].each do |talend_job|
+      if ! talend_jobs_ignore.include?(talend_job)
 %>
 define service {
   service_description talend <%= talend_job %>
@@ -18,7 +25,8 @@ define service {
   use default-service
 }
 <%
-    talend_jobs.push(talend_job)
+        talend_jobs.push(talend_job)
+      end
     end
   end
 end
