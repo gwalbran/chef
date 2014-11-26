@@ -39,7 +39,8 @@ class ImosArtifactFetcher
     end
 
     # Get the jenkins api creds
-    uri = URI.escape("#{node[:imos_artifacts][:ci_url]}/job/#{artifact_manifest['job']}/lastSuccessfulBuild");
+    uri_base = artifact_manifest['ci_url'] || node[:imos_artifacts][:ci_url]
+    uri = URI.escape("#{uri_base}/job/#{artifact_manifest['job']}/lastSuccessfulBuild");
     jenkins = JenkinsArtifact.new(uri, nil, nil)
 
     begin
