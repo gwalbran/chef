@@ -1,0 +1,18 @@
+{
+    "id": "wfsscanner",
+    "roles": [
+        {
+            "name": "wfsscanner_read_group",
+            "privileges": [ "nologin" ]
+        },
+        {
+            "name": "wfsscanner_write_group",
+            "privileges": [ "nologin" ]
+        },
+        {
+            "name": "wfsscanner",
+            "password": "wfsscanner",
+            "connection_limit": 11
+        }
+    ]
+}

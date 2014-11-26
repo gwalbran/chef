@@ -1,0 +1,16 @@
+{
+    "id": "wmsscanner",
+    "roles": [
+        {
+            "name": "wmsscanner_read_group"
+        },
+        {
+            "name": "wmsscanner_write_group"
+        },
+        {
+            "name": "wmsscanner",
+            "password": "wmsscanner",
+            "connection_limit": 11
+        }
+    ]
+}

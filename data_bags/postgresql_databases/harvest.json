@@ -94,20 +94,6 @@
             ]
         },
         {
-            "name": "abos_pulse",
-            "owner": "abos_pulse",
-            "permissions": [
-                {
-                    "role": "harvest_read_group",
-                    "type": "read"
-                },
-                {
-                    "role": "harvest_write_group",
-                    "type": "write"
-                }
-            ]
-        },
-        {
             "name": "acorn_radial_nonqc",
             "owner": "acorn_radial_nonqc",
             "permissions": [
