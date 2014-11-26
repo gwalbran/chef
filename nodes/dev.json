@@ -29,7 +29,9 @@
             "roles": [
                 "db_dev_main",
                 "portal",
-                "geonetwork"
+                "geonetwork",
+                "wmsscanner",
+                "wfsscanner"
             ],
             "git_extension_support": [
                 {
