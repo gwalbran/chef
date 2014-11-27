@@ -1,24 +1,24 @@
 grails.serverURL = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
 
 geoserver {
-    context = 'geoserver'
-    url = "https://geoserver-123.aodn.org.au/geoserver"
-    namespace = 'imos'
+    context = "<%= @custom_parameters['geoserver_context'] || 'geoserver' %>"
+    url = "<%= @custom_parameters['geoserver_url'] || 'https://geoserver-123.aodn.org.au/geoserver' %>"
+    namespace = "<%= @custom_parameters['geoserver_namespace'] || 'imos' %>"
     layerNames {
-        tracks = 'auv_tracks'
-        images = 'auv_images_vw'
+        tracks = "<%= @custom_parameters['geoserver_layer_tracks'] || 'auv_viewer_vw' %>"
+        images = "<%= @custom_parameters['geoserver_layer_images'] || 'auv_images_vw' %>"
     }
 }
 
 baseLayer {
-    url = 'https://geoserver-static.aodn.org.au/geoserver/baselayers/wms'
-    name = 'default_basemap_simple'
+    url = "<%= @custom_parameters['base_layer_url'] || 'https://geoserver-static.aodn.org.au/geoserver/baselayers/wms' %>"
+    name = "<%= @custom_parameters['base_layer_name'] || 'default_basemap_simple' %>"
 }
 
 imageFileServer {
-    url = 'https://data.aodn.org.au/IMOS/public/AUV/'
+    url = "<%= @custom_parameters['image_file_server_url'] || 'https://data.aodn.org.au/IMOS/public/AUV/' %>"
 }
 
 mest {
-    url = 'http://imosmest.emii.org.au/geonetwork'
+    url = "<%= @custom_parameters['mest_url'] || 'http://imosmest.emii.org.au/geonetwork' %>"
 }
