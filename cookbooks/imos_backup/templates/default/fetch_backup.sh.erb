@@ -17,7 +17,7 @@ fetch_backup() {
     local host=$1; shift
     local model=$1; shift
 
-    [ x"$@" = x ] && echo "Did not specify any files to files" && return 1
+    [ x"$@" = x ] && echo "Did not specify any files to download" && return 1
 
     local backup_location="backups/$host/$model"
     echo "Getting list of backups from '$BACKUPS_USER@$BACKUPS_HOST:$backup_location'"
@@ -61,6 +61,34 @@ fetch_backup() {
         local base_dir=`dirname $dir/restore_operation/$backup_file`
         echo "Downloading '$BACKUPS_USER@$BACKUPS_HOST:$backup_location/$selected_backup/$backup_file' -> '$dir/restore_operation/$backup_file'"
         (mkdir -p $base_dir && cd $base_dir && echo "get -r $backup_location/$selected_backup/$backup_file" | sftp $SSH_OPTIONS $BACKUPS_USER@$BACKUPS_HOST)
+
+        # when importing from one backup model to another - handle the required
+        # file renames
+        dst_backup_model=`basename $dir`
+        src_backup_model=`basename $backup_location`
+        rename_files $base_dir $src_backup_model $dst_backup_model
+    done
+}
+
+# rename files in directory based on given patterns
+# $1 - directory to perform operations in
+# $2 - src pattern
+# $3 - dst pattern
+rename_files() {
+    local dir=$1; shift
+    local src_pattern=$1; shift
+    local dst_pattern=$1; shift
+
+    # do not operate if src_pattern and dst_pattern are the same
+    [ x"$src_pattern" = x"$dst_pattern" ] && return
+
+    echo "Renaming files in '$dir', src_pattern '$src_pattern', dst_pattern '$dst_pattern'"
+
+    for file in $dir/*; do
+        file_src=`basename $file`
+        file_dst=`basename $file | sed -e "s/$src_pattern/$dst_pattern/g"`
+        echo "Renaming '$dir/$file_src' -> '$dir/$file_dst'"
+        mv $dir/$file_src $dir/$file_dst
     done
 }
 

@@ -72,7 +72,7 @@ define :imos_tomcat_webapp do
   end
 
   # Backup the data directory
-  if backup && node.run_list.include?("role[backup]")
+  if backup && (node.run_list.include?("role[backup]") || node.run_list.include?("role[restore]"))
     Chef::Log.info("Configuring backup for application '#{application_name}' with directory '#{data_directory}'")
     backup "#{tomcat_instance_name}_#{application_name}" do
       cookbook "imos_backup"
