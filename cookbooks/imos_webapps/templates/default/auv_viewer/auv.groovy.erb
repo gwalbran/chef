@@ -5,7 +5,7 @@ geoserver {
     url = "<%= @custom_parameters['geoserver_url'] || 'https://geoserver-123.aodn.org.au/geoserver' %>"
     namespace = "<%= @custom_parameters['geoserver_namespace'] || 'imos' %>"
     layerNames {
-        tracks = "<%= @custom_parameters['geoserver_layer_tracks'] || 'auv_viewer_vw' %>"
+        tracks = "<%= @custom_parameters['geoserver_layer_tracks'] || 'auv_tracks_vw' %>"
         images = "<%= @custom_parameters['geoserver_layer_images'] || 'auv_images_vw' %>"
     }
 }
