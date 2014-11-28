@@ -58,5 +58,5 @@ end
 %>
 
 <% backups_to_restore.sort.uniq.each do |to_model| %>
-sudo -u $BACKUP_USERNAME <%= ::File.join(node[:backup][:bin_dir], 'backup.sh') %> -r -m <%= File.join(node[:backup][:models_dir], "#{to_model}.sh") %>
+su -l $BACKUP_USERNAME -c '<%= ::File.join(node[:backup][:bin_dir], 'backup.sh') %> -r -m <%= File.join(node[:backup][:models_dir], "#{to_model}.sh") %>'
 <% end %>
