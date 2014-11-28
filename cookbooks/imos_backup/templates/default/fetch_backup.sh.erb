@@ -48,6 +48,7 @@ fetch_backup() {
     fi
 
     local selected_backup=`cat $tmp_choice`
+    rm -f $tmp_choice
 
     if [ x"$selected_backup" = x ]; then
         echo "Could not determine latest backup for host '$host' and model '$model', aborting..."
