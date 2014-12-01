@@ -20,14 +20,16 @@ declare -r WFS_REQUEST_SUFFIX="version=1.0.0&request=GetFeature&maxFeatures=50&o
 # invalidate the timeout checks).
 
 # checks a geoserver layer
-# $1 - geoserver URL
-# $2 - layer type
-# $3 - layer namespace
-# $4 - layer name
-# $5 - warning timeout
-# $6 - critical timeout
-# $7 - no cache (0 for allowing cached requests, 1 for not)
+# $1 - ip address
+# $2 - geoserver URL
+# $3 - layer type
+# $4 - layer namespace
+# $5 - layer name
+# $6 - warning timeout
+# $7 - critical timeout
+# $8 - no cache (0 for allowing cached requests, 1 for not)
 check_geoserver_layer() {
+    local ip_address=$1; shift
     local url="$1"; shift
     local type="$1"; shift
     local namespace="$1"; shift
@@ -36,17 +38,19 @@ check_geoserver_layer() {
     local -i critical_timeout=$1; shift
     local -i no_cache=$1; shift
 
-    ${type}_check_geoserver_layer $url $namespace $layer $warning_timeout $critical_timeout $no_cache
+    ${type}_check_geoserver_layer $ip_address $url $namespace $layer $warning_timeout $critical_timeout $no_cache
 }
 
 # checks a WMS geoserver layer
-# $1 - geoserver URL
-# $2 - layer namespace
-# $3 - layer name
-# $4 - warning timeout
-# $5 - critical timeout
-# $6 - no cache (0 for allowing cached requests, 1 for not)
+# $1 - ip address
+# $2 - geoserver URL
+# $3 - layer namespace
+# $4 - layer name
+# $5 - warning timeout
+# $6 - critical timeout
+# $7 - no cache (0 for allowing cached requests, 1 for not)
 wms_check_geoserver_layer() {
+    local ip_address=$1; shift
     local url="$1"; shift
     local namespace="$1"; shift
     local layer="$1"; shift
@@ -57,7 +61,7 @@ wms_check_geoserver_layer() {
     local check_url="${url}/$namespace/$type?LAYERS=$namespace:$layer&SERVICE=WMS&$WMS_REQUEST_SUFFIX"
 
     local tmp_output=`mktemp`
-    _check_geoserver_layer "$check_url" $type:$namespace:$layer $warning_timeout $critical_timeout $no_cache $tmp_output
+    _check_geoserver_layer $ip_address "$check_url" $type:$namespace:$layer $warning_timeout $critical_timeout $no_cache $tmp_output
     local -i retval=$?
 
     # if result is supposedly OK, make sure we got a PNG back
@@ -74,13 +78,15 @@ wms_check_geoserver_layer() {
 }
 
 # checks a WFS geoserver layer
-# $1 - geoserver URL
-# $2 - layer namespace
-# $3 - layer name
-# $4 - warning timeout
-# $5 - critical timeout
-# $6 - no cache (0 for allowing cached requests, 1 for not)
+# $1 - ip address
+# $2 - geoserver URL
+# $3 - layer namespace
+# $4 - layer name
+# $5 - warning timeout
+# $6 - critical timeout
+# $7 - no cache (0 for allowing cached requests, 1 for not)
 wfs_check_geoserver_layer() {
+    local ip_address=$1; shift
     local url="$1"; shift
     local namespace="$1"; shift
     local layer="$1"; shift
@@ -91,7 +97,7 @@ wfs_check_geoserver_layer() {
     local check_url="${url}/$namespace/$type?typeName=$namespace:$layer&SERVICE=WFS&$WFS_REQUEST_SUFFIX"
 
     local tmp_output=`mktemp`
-    _check_geoserver_layer "$check_url" $type:$namespace:$layer $warning_timeout $critical_timeout $no_cache $tmp_output
+    _check_geoserver_layer $ip_address "$check_url" $type:$namespace:$layer $warning_timeout $critical_timeout $no_cache $tmp_output
     local -i retval=$?
 
     # if result is supposedly OK, make sure we got some features
@@ -111,12 +117,14 @@ wfs_check_geoserver_layer() {
 }
 
 # checks a generic geoserver layer
-# $1 - URL
-# $2 - layer name (for nagios messages)
-# $3 - warning timeout
-# $4 - critical timeout
-# $5 - no cache (0 for allowing cached requests, 1 for not)
+# $1 - ip address
+# $2 - URL
+# $3 - layer name (for nagios messages)
+# $4 - warning timeout
+# $5 - critical timeout
+# $6 - no cache (0 for allowing cached requests, 1 for not)
 _check_geoserver_layer() {
+    local ip_address=$1; shift
     local url="$1"; shift
     local layer_name=$1; shift
     local -i warning_timeout=$1; shift
@@ -128,8 +136,12 @@ _check_geoserver_layer() {
         url="$url&date="`date +%s`
     fi
 
+    # resolve host to specific ip address
+    local host=`echo $url | cut -d/ -f3`
+    local resolve_args="--resolve $host:80:$ip_address --resolve $host:443:$ip_address"
+
     local total_time_ms
-    total_time_ms=`timeout $critical_timeout curl -o $output_file -L -s $url -w "%{time_total}\n" --retry 1`
+    total_time_ms=`timeout $critical_timeout curl $resolve_args -o $output_file -L -s $url -w "%{time_total}\n" --retry 1`
     check_status=$?
 
     if [ $check_status -eq 124 ]; then
@@ -157,6 +169,7 @@ usage() {
     echo "Checks a GeoServer layer."
     echo "
 Options:
+  -I, --ip-address           IP adddress of server.
   -u, --url                  GeoServer base URL.
   -t, --type                 Layer type (wfs, wms, wcs).
   -n, --namespace            Layer namespace.
@@ -170,11 +183,11 @@ Options:
 # "$@" - parameters, see usage
 main() {
     # parse options with getopt
-    local tmp_getops=`getopt -o hu:t:n:l:w:c:o --long help,url:,type:,namespace:,layer:,warning-timeout:,critical-timeout:,no-cache -- "$@"`
+    local tmp_getops=`getopt -o hI:u:t:n:l:w:c:o --long help,ip-address:,url:,type:,namespace:,layer:,warning-timeout:,critical-timeout:,no-cache -- "$@"`
     [ $? != 0 ] && usage
 
     eval set -- "$tmp_getops"
-    local url type namespace layer
+    local url type namespace layer ip_address
     local -i warning_timeout=5
     local -i critical_timeout=10
     local -i no_cache=0
@@ -183,6 +196,7 @@ main() {
     while true ; do
         case "$1" in
             -h|--help) usage;;
+            -I|--ip-adress) ip_address="$2"; shift 2;;
             -u|--url) url="$2"; shift 2;;
             -t|--type) type="$2"; shift 2;;
             -n|--namespace) namespace="$2"; shift 2;;
@@ -195,13 +209,13 @@ main() {
         esac
     done
 
-    # if url is empty, do not proceed
+    [ x"$ip_address" = x ] && usage
     [ x"$url" = x ] && usage
     [ x"$type" = x ] && usage
     [ x"$namespace" = x ] && usage
     [ x"$layer" = x ] && usage
 
-    check_geoserver_layer "$url" $type $namespace $layer $warning_timeout $critical_timeout $no_cache
+    check_geoserver_layer $ip_address "$url" $type $namespace $layer $warning_timeout $critical_timeout $no_cache
     local -i retval=$?
 
     if [ $retval -ge 2 ]; then

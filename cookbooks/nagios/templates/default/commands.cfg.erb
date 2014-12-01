@@ -29,7 +29,7 @@ define command {
 
 define command {
   command_name    check_http
-  command_line    $USER1$/check_http -f follow -L -H $ARG1$ -p $ARG2$ -u '$ARG3$' $ARG4$
+  command_line    $USER1$/check_http -f follow -L -I $HOSTADDRESS$ -H $ARG1$ -p $ARG2$ -u '$ARG3$' $ARG4$
 }
 
 define command {
@@ -61,7 +61,7 @@ define command {
 
 define command {
   command_name    check_geoserver_layer
-  command_line    $USER1$/check_geoserver_layer -c $ARG1$ -w $ARG2$ -u $ARG3$ -t $ARG4$ -n $ARG5$ -l $ARG6$ $ARG7$
+  command_line    $USER1$/check_geoserver_layer -I $HOSTADDRESS$ -c $ARG1$ -w $ARG2$ -u $ARG3$ -t $ARG4$ -n $ARG5$ -l $ARG6$ $ARG7$
 }
 
 define command {
