@@ -149,9 +149,8 @@ EOS
     :short => '-r'
 end
 
-Trollop::die :nagios_url,      "Must specify nagios url"          if ! opts[:nagios_username]
-Trollop::die :nagios_username, "Must specify nagios username"     if ! opts[:nagios_username]
-Trollop::die :nagios_password, "Must specify nagios password"     if ! opts[:nagios_password]
-Trollop::die :nagios_regexp,   "Must specify at least one regex " if ! opts[:regexp_given]
+%w{ nagios_url nagios_username nagios_password regexp }.each do |option|
+  Trollop::die option.to_sym, "Must specify #{option.gsub('_', ' ')}" if ! opts[option.to_sym]
+end
 
 exit(get_nagios_monitor_status(opts))
