@@ -56,7 +56,7 @@ define command {
 
 define command {
   command_name    check_ncwms
-  command_line    $USER1$/check_ncwms -t $ARG1$ -u $ARG2$ -w $ARG3$ -c $ARG4$
+  command_line    $USER1$/check_ncwms -I $HOSTADDRESS$ -t $ARG1$ -u $ARG2$ -w $ARG3$ -c $ARG4$
 }
 
 define command {

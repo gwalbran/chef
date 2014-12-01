@@ -18,18 +18,22 @@
 declare WMS_REQUEST_PREFIX="<a href=\"wms?REQUEST="
 
 # checks ncwms layers
-# $1 - ncwms URL
-# $2 - request type (GetMap, GetFeatureInfo)
-# $3 - warning
-# $4 - critical
+# $1 - ip address
+# $2 - ncwms URL
+# $3 - request type (GetMap, GetFeatureInfo)
+# $4 - warning
+# $5 - critical
 check_ncwms() {
+    local ip_address=$1; shift
     local url="$1"; shift
     local request_type="$1"; shift
     local -i warning=$1; shift
     local -i critical=$1; shift
 
     tmp_output=`mktemp`
-    curl -o $tmp_output -L -s $url
+    local host=`echo $url | cut -d/ -f3`
+    local resolve_args="--resolve $host:80:$ip_address --resolve $host:443:$ip_address"
+    curl $resolve_args -o $tmp_output -L -s $url
     if [ $? -ne 0 ]; then
         ERROR_STRING="curl error"
         rm -f $tmp_output
@@ -61,7 +65,8 @@ usage() {
     echo "Checks number of URLs served by NcWMS server."
     echo "
 Options:
-  -u, --url                  Portal URL.
+  -I, --ip-address           NcWMS IP address.
+  -u, --url                  NcWMS URL.
   -t, --type                 Request type (GetMap, GetFeatureInfo).
   -w, --warning              Warning threshold.
   -c, --critical             Critical threshold."
@@ -72,7 +77,7 @@ Options:
 # "$@" - parameters, see usage
 main() {
     # parse options with getopt
-    local tmp_getops=`getopt -o hu:t:w:c: --long help,url:,type:,warning:,critical: -- "$@"`
+    local tmp_getops=`getopt -o hI:u:t:w:c: --long help,ip-address:,url:,type:,warning:,critical: -- "$@"`
     [ $? != 0 ] && usage
 
     eval set -- "$tmp_getops"
@@ -84,6 +89,7 @@ main() {
     while true ; do
         case "$1" in
             -h|--help) usage;;
+            -I|--ip-address) ip_address="$2"; shift 2;;
             -u|--url) url="$2"; shift 2;;
             -t|--type) type="$2"; shift 2;;
             -w|--warning) warning="$2"; shift 2;;
@@ -93,11 +99,11 @@ main() {
         esac
     done
 
-    # if url is empty, do not proceed
+    [ x"$ip_address" = x ] && usage
     [ x"$url" = x ] && usage
     [ x"$type" = x ] && usage
 
-    check_ncwms "$url" "$type" $warning $critical
+    check_ncwms $ip_address "$url" "$type" $warning $critical
 }
 
 main "$@"
