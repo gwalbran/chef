@@ -1,0 +1,6 @@
+{
+    "id": "ncwms_csiro",
+    "uri": "http://rs-data1-mel.csiro.au/ncWMS/wms",
+    "wmsVersion": "1.1.1",
+    "type": "ncWMS"
+}

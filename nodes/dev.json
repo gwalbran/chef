@@ -96,14 +96,30 @@
                         }
                     },
                     {
-                        "name":                "imos123",
-                        "artifact":            "portal-3",
-                        "config_template_dir": "portal",
-                        "config_file":         "Portal.groovy",
-                        "jndis":               [ "portal" ],
-                        "wms_scanner_url":     "http://10.11.12.13/wmsscanner/",
-                        "wfs_scanner_url":     "http://10.11.12.13/wfsscanner/",
-                        "geonetwork_url":      "http://10.11.12.13/geonetwork"
+                        "name":                 "imos123",
+                        "artifact":             "portal-3",
+                        "config_template_dir":  "portal",
+                        "config_file":          "Portal.groovy",
+                        "portal_instance_name": "IMOS",
+                        "css_name":             "IMOS",
+                        "header_logo":          "IMOS_logo.png",
+                        "header_link_text":     "IMOS",
+                        "header_href":          "http://imos.org.au/imos.html",
+                        "jndis":                [ "portal" ],
+                        "wms_scanner_url":      "http://10.11.12.13/wmsscanner/",
+                        "wfs_scanner_url":      "http://10.11.12.13/wfsscanner/",
+                        "geonetwork_url":       "http://10.11.12.13/geonetwork",
+                        "feature_toggles":      {
+                            "hierarchicalFacets": true
+                        },
+                        "known_servers":        [
+                            "catami",
+                            "geoserver_123_aodn",
+                            "geoserver_po_aodn",
+                            "geoserver_rc_aodn",
+                            "ncwms_aodn",
+                            "ncwms_csiro"
+                        ]
                     },
                     {
                         "name":           "wmsscanner",

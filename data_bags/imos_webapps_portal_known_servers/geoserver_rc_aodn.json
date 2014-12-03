@@ -1,0 +1,9 @@
+{
+    "id": "geoserver_rc_aodn",
+    "uri": "http://geoserver-rc.aodn.org.au/geoserver/wms",
+    "wmsVersion": "1.1.1",
+    "type": "GeoServer",
+    "supportsCsvMetadataHeaderOutputFormat": true,
+    "urlListDownloadPrefixToRemove": "/mnt/imos-t3/",
+    "urlListDownloadPrefixToSubstitue": "http://data.aodn.org.au/"
+}
