@@ -12,7 +12,6 @@ group :integration do
 end
 
 gem 'chef', ">=11.6.0"
-gem 'berkshelf', '~> 3.1.5'
 gem 'knife-solo'
 gem 'rspec', '~> 2.0'
 gem 'chefspec', '~> 3.2.0'

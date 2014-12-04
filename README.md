@@ -8,19 +8,24 @@ This chef repository contains all cookbooks used for the IMOS infrastructure.
 
 | software | version | install notes |
 |----------|---------|---------------|
-git |  | `apt-get`
-ruby |  | `apt-get` / [`rbenv`](https://github.com/sstephenson/rbenv)
-bundler |  | `gem`
-[vagrant](http://www.vagrantup.com) | >= 1.5.2 | Download package from website
-[Berkshelf](http://berkshelf.com/) | >= 3.1.0 | `gem`
-[vagrant-berkshelf](https://github.com/berkshelf/vagrant-berkshelf) | >= 2.0.1 | `vagrant plugin install vagrant-berkshelf --plugin-version 2.0.1`
-[VirtualBox](https://www.virtualbox.org/wiki/Downloads) |  | `apt-get`
+|git  | | `apt-get` |
+|ruby | >= 1.9.3 | `apt-get` / [`rbenv`](https://github.com/sstephenson/rbenv) |
+|bundler |  | `gem` |
+|[vagrant](http://www.vagrantup.com) | >= 1.6.3 | Download package from website |
+|[chef_dk](http://downloads.getchef.com/chef-dk/)| >= 0.3.5 | Install for your own distribution |
+|[vagrant-berkshelf](https://github.com/berkshelf/vagrant-berkshelf) | >= 4.0.1 | `vagrant plugin install vagrant-berkshelf` |
+|[VirtualBox](https://www.virtualbox.org/wiki/Downloads) |  | `apt-get` |
 
 *See websites or documentation for more detailed insallation instructions*
 
 Once you have all the above prerequisites, you can install all the ruby modules using:
 ```
 $ bundle install
+```
+
+You will have to **uninstall** the berkshelf gem, as you should use the one from chef_dk:
+```
+$ gem uninstall berkshelf
 ```
 
 ## Optional Vagrant Plugins
