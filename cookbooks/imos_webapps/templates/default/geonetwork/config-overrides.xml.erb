@@ -86,4 +86,27 @@ if @custom_parameters['classification_scheme']
 end
 %>
 
+<%
+if @custom_parameters['term_vocabulary']
+%>
+    <file name=".*WEB-INF/config-gui\.xml">
+        <addXML xpath="">
+            <termSelector>
+<%
+  @custom_parameters['term_vocabulary'].each do |elementName, thesaurus|
+%>
+                <element name="mcp:<%= elementName %>">
+                    <thesaurus><%= thesaurus %></thesaurus>
+                    <typeCode>longName</typeCode>
+                </element>
+<%
+  end
+%>
+            </termSelector>
+        </addXML>
+    </file>
+<%
+end
+%>
+
 </overrides>
