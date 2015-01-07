@@ -12,7 +12,7 @@ name = 'agent'
 # Logstash needs to be able to read the squid log.
 group node['squid']['group'] do
   append true
-  members [node['logstash']['instance']['default']['user']]
+  members [node['logstash']['instance_default']['user']]
   action :modify
 end
 
