@@ -18,9 +18,12 @@ geonetwork.searchPath = '<%= @custom_parameters['feature_toggles'] && @custom_pa
 
 knownServers = [
 <%
-if @custom_parameters['known_servers']
-  @custom_parameters['known_servers'].each do |known_server_data_bag|
-    known_server = Chef::DataBagItem.load('imos_webapps_portal_known_servers', known_server_data_bag)
+if @custom_parameters['known_server_config']
+
+  known_server_config = Chef::DataBagItem.load('imos_webapps_portal_known_servers', @custom_parameters['known_server_config'])
+
+  known_server_config['servers'].each do |known_server_name|
+    known_server = Chef::DataBagItem.load('imos_webapps_portal_known_servers', known_server_name)
 %>
     [
 <% known_server.each do |k, v| %>
