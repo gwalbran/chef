@@ -9,10 +9,11 @@ mount_points = []
   # perform a search on mount points
   if n['mounts'] and n['mounts']['mounts']
     n['mounts']['mounts'].each do |mount_point_entry|
-      mount_point            = mount_point_entry['mount_point']
-      # Normalize mount point, so we can create a filename with that name
-      # /mnt/imos-t4 -> _mnt_imos-t4
-      mount_point_normalized = mount_point.gsub(/[\/]/, '_')
+      if mount_point_entry['monitored'] != false
+        mount_point            = mount_point_entry['mount_point']
+        # Normalize mount point, so we can create a filename with that name
+        # /mnt/imos-t4 -> _mnt_imos-t4
+        mount_point_normalized = mount_point.gsub(/[\/]/, '_')
 %>
 define service {
   service_description disk space <%= mount_point_normalized %>
@@ -22,8 +23,9 @@ define service {
   use default-service-pnp
 }
 <%
-      # collect all ports, so we can define commands
-      mount_points.push(mount_point_normalized)
+        # collect all ports, so we can define commands
+        mount_points.push(mount_point_normalized)
+      end
     end
   end
 end
