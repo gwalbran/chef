@@ -70,9 +70,11 @@ downloadAuth {
     ]
 }
 
+<% if ! @jndi_resources.empty? %>
 dataSource {
     jndiName = "java:comp/env/<%= @jndi_resources[0]['resource'] %>"
 }
+<% end %>
 
 portal {
     <% if @custom_parameters['branding_base'] %>
