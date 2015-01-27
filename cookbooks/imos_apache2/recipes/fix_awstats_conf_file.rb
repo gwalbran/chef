@@ -8,10 +8,17 @@ include_recipe 'awstats'
 
 # This snippet will fix awstats from upstream, which puts the config file at
 # /etc/apache2/conf.d/awstats, however apache2 will include
-# /etc/apache2/conf.d/*.conf only so the we'll need to simply include here
-# /etc/apache2/conf.d/awstats.conf
+# /etc/apache2/conf-enabled/*.conf only so we'll do the following:
+# * Create /etc/apache2/conf.d/ so awstats recipe doesn't fail
+# * Create the actual awstats file at /etc/apache2/conf-enabled/awstats.conf
 
-cookbook_file "/etc/apache2/conf.d/awstats.conf" do
+directory "/etc/apache2/conf.d" do
+  owner    "root"
+  group    "root"
+  mode     00644
+end
+
+cookbook_file ::File.join(node['apache']['dir'], "conf-enabled", "awstats.conf") do
   source   "awstats"
   cookbook "awstats"
   owner    "root"

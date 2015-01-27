@@ -1,6 +1,6 @@
 source "https://api.berkshelf.com"
 
-cookbook "apache2"
+cookbook "apache2", '~> 3.0.0'
 cookbook "application"
 cookbook "application_ruby"
 cookbook "apt", :github => "opscode-cookbooks/apt"
