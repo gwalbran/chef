@@ -34,6 +34,15 @@ directory data_services_log_dir do
   recursive true
 end
 
+# Allow anyone in 'projectofficer' group to sudo to user 'projectofficer'
+sudo 'data_services' do
+  group    "projectofficer"
+  runas    node['imos_po']['data_services']['user']
+  commands [ "ALL" ]
+  host     "ALL"
+  nopasswd true
+end
+
 # Inject those variables to the cronjobs
 # Please note all variables here must be fully expanded to avoid scripts
 # needing to evaluate them at runtime

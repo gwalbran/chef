@@ -16,3 +16,6 @@ default['imos_po']['data_services']['public_dir']   = '/mnt/public'
 default['imos_po']['data_services']['archive_dir']  = '/mnt/archive'
 default['imos_po']['data_services']['incoming_dir'] = '/mnt/incoming'
 default['imos_po']['data_services']['log_dir'] = '/var/log/data-services'
+
+# User to use when running cronjobs
+default['imos_po']['data_services']['user'] = 'projectofficer'
