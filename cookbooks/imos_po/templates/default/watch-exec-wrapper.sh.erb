@@ -1,0 +1,40 @@
+#!/bin/bash
+
+source <%= @env %> || exit 255
+
+# source utility functions from data-services repository
+for file in <%= @lib %>/*; do
+    source $file
+done
+declare -r SYSLOG_FACILITY=<%= node['imos_po']['watches']['syslog_facility'] %>; export SYSLOG_FACILITY
+
+export LOG_DIR="<%= node['imos_po']['data_services']['log_dir'] %>"
+
+# main
+# example argument list:
+# ACORN file.nc process-file.sh /home/netcdf
+# $1 - file to run command with
+# $2 - command to run
+# "$@" - extra parameters for command
+main() {
+    export JOB_NAME=$1; shift
+    local file=$1; shift
+    local command=$1; shift
+
+    if [ ! -f $file ]; then
+        # not a file - ignore event
+        return 0
+    elif lsof $file >& /dev/null; then
+        # file is still being accessed
+        return 0
+    fi
+
+    eval $command $file "$@" 2>&1 | log_out
+
+    # make sure file was handled, move to error directory if not
+    if [ -f $file ]; then
+        file_error $file "Not moved out of incoming directory"
+    fi
+}
+
+main "$@"
