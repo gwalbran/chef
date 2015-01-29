@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
     f.chomp(node_file_extension)
   end
 
-  config.vm.provision "shell", inline: "sudo apt-get update"
+  config.vm.provision "shell", inline: "test `find /var/cache -maxdepth 1 -name apt -mtime -1 | wc -l` -eq 0 && sudo apt-get update; true"
 
   define_node = Proc.new do |node_name|
     config.vm.define node_name do |node|
