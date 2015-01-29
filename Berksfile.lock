@@ -72,6 +72,9 @@ DEPENDENCIES
     path: cookbooks/imos_webapps
   imos_websites
     path: cookbooks/imos_websites
+  iptables-ng
+    git: git://github.com/chr4-cookbooks/iptables-ng.git
+    revision: 68963e170949f926e32d7fe0ded7404d7137375d
   java
     git: git://github.com/agileorbit-cookbooks/java.git
     revision: 44cadd9085de42a75f0d084fdb8f84b7d7f49a25
@@ -255,6 +258,7 @@ GRAPH
   imos_dns (0.1.0)
     route53 (>= 0.0.0)
   imos_firewall (0.1.0)
+    iptables-ng (>= 0.0.0)
   imos_java (1.5.4)
     java (>= 0.0.0)
   imos_jenkins (0.1.3)
