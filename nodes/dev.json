@@ -73,29 +73,6 @@
                 "max_post_size": 262144000,
                 "apps": [
                     {
-                        "name":           "geoserver",
-                        "artifact":       "geoserver",
-                        "custom_def":     "geoserver",
-                        "data_bag":       "geoserver_dev",
-                        "data_dir":       "/vagrant/shared_src/geoserver",
-                        "jndis":          [ "harvest-read-po", "local-harvest-read" ]
-                    },
-                    {
-                        "name":                  "geonetwork",
-                        "artifact":              "geonetwork",
-                        "config_file":           "config-overrides.xml",
-                        "config_template_dir":   "geonetwork",
-                        "schema_plugins":        [ "iso19135", "iso19139-anzlic", "iso19139-mcp-1-4", "iso19139-mcp-1-5", "iso19139-mcp-2-0" ],
-                        "geoserver":             "http://localhost/geonetwork",
-                        "jndis":                 [ "geonetwork" ],
-                        "custom_def":            "geonetwork",
-                        "data_dir":              "/var/lib/geonetwork",
-                        "classification_scheme": {
-                            "parameterCategories": "http://vocab.aodn.org.au/def/ClassScheme/parameter1",
-                            "platformCategories":  "http://vocab.aodn.org.au/def/ClassScheme/platform1"
-                        }
-                    },
-                    {
                         "name":                 "imos123",
                         "artifact":             "portal-3",
                         "config_template_dir":  "portal",
@@ -120,6 +97,29 @@
                             "ncwms_aodn",
                             "ncwms_csiro"
                         ]
+                    },
+                    {
+                        "name":           "geoserver",
+                        "artifact":       "geoserver",
+                        "custom_def":     "geoserver",
+                        "data_bag":       "geoserver_dev",
+                        "data_dir":       "/vagrant/shared_src/geoserver",
+                        "jndis":          [ "harvest-read-po", "local-harvest-read" ]
+                    },
+                    {
+                        "name":                  "geonetwork",
+                        "artifact":              "geonetwork",
+                        "config_file":           "config-overrides.xml",
+                        "config_template_dir":   "geonetwork",
+                        "schema_plugins":        [ "iso19135", "iso19139-anzlic", "iso19139-mcp-1-4", "iso19139-mcp-1-5", "iso19139-mcp-2-0" ],
+                        "geoserver":             "http://localhost/geonetwork",
+                        "jndis":                 [ "geonetwork" ],
+                        "custom_def":            "geonetwork",
+                        "data_dir":              "/var/lib/geonetwork",
+                        "classification_scheme": {
+                            "parameterCategories": "http://vocab.aodn.org.au/def/ClassScheme/parameter1",
+                            "platformCategories":  "http://vocab.aodn.org.au/def/ClassScheme/platform1"
+                        }
                     },
                     {
                         "name":           "wmsscanner",
