@@ -9,7 +9,11 @@ host_name = node['nagios']['server']['normalize_hostname'] ? n[node['nagios']['h
   if n['apache'] && n['apache']['vhosts']
     n['apache']['vhosts'].each do |apache_vhost|
       vhost_name = apache_vhost['name']
-      vhost_port = apache_vhost['port'] ? apache_vhost['port'] : 80
+
+      vhost_port = apache_vhost['https'] ? 443 : 80
+      if apache_vhost['port']
+        vhost_port = apache_vhost['port']
+      end
 
       # add --ssl if this is running https
       vhost_extra_options = vhost_port == 80 ? "" : "--ssl"

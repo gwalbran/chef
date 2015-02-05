@@ -13,6 +13,10 @@ tomcat_ports = []
       tomcat_name     = webapp_instance['name']
       app_vhost       = webapp_instance['vhost']
       app_tomcat_port = webapp_instance['port']
+      port            = webapp_instance['https'] ? 443 : 80
+
+      # add --ssl if this is running https
+      extra_opts = port == 80 ? "" : "--ssl"
 %>
 define service {
   service_description <%= tomcat_name %> tomcat <%= app_tomcat_port %>
@@ -65,8 +69,8 @@ define service {
 %>
 
 define service {
-  service_description <%= monitor_name %> apache <%= app_vhost %>:80/<% monitored_url[0..15] %>
-  check_command check_http!<%= app_vhost %>!80!/<%= monitored_url %>!
+  service_description <%= monitor_name %> apache <%= app_vhost %>:<%= port %>/<% monitored_url[0..15] %>
+  check_command check_http!<%= app_vhost %>!<%= port %>!/<%= monitored_url %>!<%= extra_opts %>
   host_name <%= host_name %>
   use default-service-pnp
   servicegroups http
