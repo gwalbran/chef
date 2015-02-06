@@ -16,6 +16,7 @@ define :apache_for_webapp do
   cached         = params[:cached]
   https          = params[:https]
   rules          = params[:rules]
+  full_config    = params[:full_config]
 
   include_recipe "apache2::mod_ssl"
   include_recipe "apache2::mod_proxy"
@@ -40,6 +41,7 @@ define :apache_for_webapp do
     redirect_to_https https
     domain            domain
     rules             rules
+    full_config       full_config
   end
 
   web_app "#{vhost}_ssl" do
@@ -53,6 +55,7 @@ define :apache_for_webapp do
     https          true
     domain         domain
     rules          rules
+    full_config    full_config
   end
 
   # Setup awstats
