@@ -79,6 +79,7 @@ if node['webapps'] && node['webapps']['instances']
       rules       instance_httpd_rules
       cached      instance['cached'] || false
       https       instance['https']  || false
+      full_config instance
     end
 
     # Tomcat definitions

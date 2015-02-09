@@ -88,6 +88,12 @@ end
 
 <% end -%>
 
+<% if @params[:full_config][:deny_robots] %>
+  Alias /robots.txt <%= node['imos_apache2']['static_dir'] %>/robots.txt
+<% else %>
+  Redirect /robots.txt /<%= main_app_path %>/robots.txt
+<% end %>
+
   RewriteEngine On
   RewriteOptions inherit
   RewriteLog <%= rewrite_log %>
