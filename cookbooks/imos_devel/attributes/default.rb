@@ -10,3 +10,5 @@ default['imos_devel']['virtualbox']['source_checksum'] = '9aeb5210ebf009d906b66c
 default['imos_devel']['berkshelf']['version']          = '3.1.2'
 
 default['imos_devel']['vagrant']['plugins']            = []
+
+default['imos_devel']['grails']['src_home']            = "/vagrant/src"
