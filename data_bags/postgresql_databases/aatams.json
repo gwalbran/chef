@@ -1,0 +1,24 @@
+{
+    "id": "aatams",
+    "database_name": "aatams",
+    "schemas": [
+        {
+            "name": "public",
+            "permissions": [
+                { "role": "aatams", "type": "read" }
+            ],
+            "extensions": [
+                {
+                    "name": "postgis"
+                }
+            ]
+        },
+        {
+            "name": "aatams",
+            "owner": "aatams",
+            "permissions": [
+                { "role": "aatams", "type": "write" }
+            ]
+        }
+    ]
+}

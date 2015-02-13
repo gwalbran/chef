@@ -22,10 +22,12 @@
                 "name": "main",
                 "roles": [
                     "db_dev_main",
-                    "portal"
+                    "portal",
+                    "aatams"
                 ],
                 "databases": [
-                    "portal"
+                    "portal",
+                    "aatams"
                 ],
                 "config": {
                     "listen_addresses": "*"
