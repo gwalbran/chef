@@ -1,0 +1,60 @@
+{
+    "chef_environment": "_default",
+    "name": "dev.json",
+    "run_list": [
+        "role[base]",
+        "recipe[ssl]",
+        "recipe[imos_devel::gvm]",
+        "recipe[imos_postgresql::official_postgresql]",
+        "recipe[imos_webapps::generic_webapp]"
+    ],
+    "aliases": [
+        "dev.aodn.org.au"
+    ],
+    "tz": "Australia/Hobart",
+    "tomcat": {
+        "user":  "vagrant",
+        "group": "vagrant"
+    },
+    "postgresql": {
+        "clusters": [
+            {
+                "name": "main",
+                "roles": [
+                    "db_dev_main",
+                    "portal"
+                ],
+                "databases": [
+                    "portal"
+                ],
+                "config": {
+                    "listen_addresses": "*"
+                },
+                "hba": [
+                    { "type": "hostssl", "db": "all", "user": "postgres", "addr": "0.0.0.0/0", "method": "reject" },
+                    { "type": "local", "db": "all", "user": "postgres", "addr": "", "method": "ident" },
+                    { "type": "hostssl", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5" },
+                    { "type": "hostnossl", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5" }
+                ]
+            }
+        ]
+    },
+    "webapps": {
+        "instances": [
+            {
+                "name":         "default",
+                "vhost":        "dev.aodn.org.au",
+                "aliases":      [ "10.11.12.13" ],
+                "port":         "8090",
+                "java_options": "-Xmx64m -Xms64m -XX:PermSize=64m",
+                "apps":         [],
+                "httpd_rules":  [
+                    "ProxyPass        /aodn-portal http://localhost:8080/aodn-portal",
+                    "ProxyPassReverse /aodn-portal http://localhost:8080/aodn-portal",
+                    "ProxyPass        /aatams      http://localhost:8081/aatams",
+                    "ProxyPassReverse /aatams      http://localhost:8081/aatams"
+                ]
+            }
+        ]
+    }
+}

@@ -27,7 +27,7 @@
         "clusters": [{
             "name": "main",
             "roles": [
-                "db_dev_main",
+                "db_po_main",
                 "portal",
                 "geonetwork",
                 "wmsscanner",
