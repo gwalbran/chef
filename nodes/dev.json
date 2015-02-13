@@ -4,7 +4,7 @@
     "run_list": [
         "role[base]",
         "recipe[ssl]",
-        "recipe[imos_devel::gvm]",
+        "recipe[imos_devel::grails]",
         "recipe[imos_postgresql::official_postgresql]",
         "recipe[imos_webapps::generic_webapp]"
     ],
