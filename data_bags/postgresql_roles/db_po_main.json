@@ -658,6 +658,17 @@
             "memberof": [
                 "aatams_read_group"
             ]
+        },
+        {
+            "name": "admin",
+            "password": "admin",
+            "memberof": [
+                "harvest_read_group",
+                "data_warehouse_read_group"
+            ],
+            "privileges": [
+                "superuser"
+            ]
         }
     ]
 }
