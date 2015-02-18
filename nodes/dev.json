@@ -4,135 +4,57 @@
     "run_list": [
         "role[base]",
         "recipe[ssl]",
+        "recipe[imos_devel::grails]",
         "recipe[imos_postgresql::official_postgresql]",
         "recipe[imos_webapps::generic_webapp]"
     ],
-    "imos_users": {
-        "groups": [ "users" ]
-    },
     "aliases": [
-        "po.aodn.org.au"
+        "dev.aodn.org.au"
     ],
-    "imos_dns": {
-        "etc_hosts": {
-            "10.11.12.13": "po.aodn.org.au"
-        }
-    },
     "tz": "Australia/Hobart",
     "tomcat": {
         "user":  "vagrant",
         "group": "vagrant"
     },
     "postgresql": {
-        "clusters": [{
-            "name": "main",
-            "roles": [
-                "db_dev_main",
-                "portal",
-                "geonetwork",
-                "wmsscanner",
-                "wfsscanner"
-            ],
-            "git_extension_support": [
-                {
-                    "name": "imos",
-                    "repository": "https://github.com/aodn/harvest_sql_library"
-                }
-            ],
-            "databases": [
-                "harvest",
-                "portal" ,
-                "geonetwork",
-                "wmsscanner",
-                "wfsscanner"
-            ],
-            "config": {
-                "listen_addresses": "*"
-            },
-            "hba": [
-                {
-                    "type": "hostssl", "db": "all", "user": "postgres", "addr": "0.0.0.0/0", "method": "reject"
+        "clusters": [
+            {
+                "name": "main",
+                "roles": [
+                    "db_dev_main",
+                    "portal",
+                    "aatams"
+                ],
+                "databases": [
+                    "portal",
+                    "aatams"
+                ],
+                "config": {
+                    "listen_addresses": "*"
                 },
-                {
-                    "type": "local", "db": "all", "user": "postgres", "addr": "", "method": "ident"
-                },
-                {
-                    "type": "hostssl", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5"
-                }
-            ]
-        }]
+                "hba": [
+                    { "type": "hostssl", "db": "all", "user": "postgres", "addr": "0.0.0.0/0", "method": "reject" },
+                    { "type": "local", "db": "all", "user": "postgres", "addr": "", "method": "ident" },
+                    { "type": "hostssl", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5" },
+                    { "type": "hostnossl", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5" }
+                ]
+            }
+        ]
     },
     "webapps": {
         "instances": [
             {
-                "name":          "default",
-                "vhost":         "po.aodn.org.au",
-                "aliases":       [ "10.11.12.13" ],
-                "port":          "8080",
-                "java_options":  "-Xmx2G -Xms1G -XX:PermSize=512m -DGEOSERVER_DATA_DIR=/vagrant/shared_src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork",
-                "max_post_size": 262144000,
-                "apps": [
-                    {
-                        "name":                 "imos123",
-                        "artifact":             "portal-3",
-                        "config_template_dir":  "portal",
-                        "config_file":          "Portal.groovy",
-                        "portal_instance_name": "IMOS",
-                        "css_name":             "IMOS",
-                        "header_logo":          "IMOS_logo.png",
-                        "header_link_text":     "IMOS",
-                        "header_href":          "http://imos.org.au/imos.html",
-                        "jndis":                [ "portal" ],
-                        "wms_scanner_url":      "http://10.11.12.13/wmsscanner/",
-                        "wfs_scanner_url":      "http://10.11.12.13/wfsscanner/",
-                        "geonetwork_url":       "http://10.11.12.13/geonetwork",
-                        "feature_toggles":      {
-                            "hierarchicalFacets": true
-                        },
-                        "known_servers":        [
-                            "catami",
-                            "geoserver_123_aodn",
-                            "geoserver_po_aodn",
-                            "geoserver_rc_aodn",
-                            "ncwms_aodn",
-                            "ncwms_csiro"
-                        ]
-                    },
-                    {
-                        "name":           "geoserver",
-                        "artifact":       "geoserver",
-                        "custom_def":     "geoserver",
-                        "data_bag":       "geoserver_dev",
-                        "data_dir":       "/vagrant/shared_src/geoserver",
-                        "jndis":          [ "harvest-read-po", "local-harvest-read" ]
-                    },
-                    {
-                        "name":                  "geonetwork",
-                        "artifact":              "geonetwork",
-                        "config_file":           "config-overrides.xml",
-                        "config_template_dir":   "geonetwork",
-                        "schema_plugins":        [ "iso19135", "iso19139-anzlic", "iso19139-mcp-1-4", "iso19139-mcp-1-5", "iso19139-mcp-2-0" ],
-                        "geoserver":             "http://localhost/geonetwork",
-                        "jndis":                 [ "geonetwork" ],
-                        "custom_def":            "geonetwork",
-                        "data_dir":              "/var/lib/geonetwork",
-                        "classification_scheme": {
-                            "parameterCategories": "http://vocab.aodn.org.au/def/ClassScheme/parameter1",
-                            "platformCategories":  "http://vocab.aodn.org.au/def/ClassScheme/platform1"
-                        }
-                    },
-                    {
-                        "name":           "wmsscanner",
-                        "artifact":       "wms-scanner",
-                        "config_file":    "WmsScanner.groovy",
-                        "jndis":          [ "wmsscanner" ]
-                    },
-                    {
-                        "name":           "wfsscanner",
-                        "artifact":       "wfs-scanner",
-                        "config_file":    "WfsScanner.groovy",
-                        "jndis":          [ "wfsscanner" ]
-                    }
+                "name":         "default",
+                "vhost":        "dev.aodn.org.au",
+                "aliases":      [ "10.11.12.13" ],
+                "port":         "8090",
+                "java_options": "-Xmx64m -Xms64m -XX:PermSize=64m",
+                "apps":         [],
+                "httpd_rules":  [
+                    "ProxyPass        /aodn-portal http://localhost:8080/aodn-portal",
+                    "ProxyPassReverse /aodn-portal http://localhost:8080/aodn-portal",
+                    "ProxyPass        /aatams      http://localhost:8081/aatams",
+                    "ProxyPassReverse /aatams      http://localhost:8081/aatams"
                 ]
             }
         ]
