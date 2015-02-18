@@ -10,3 +10,10 @@ default['imos_devel']['virtualbox']['source_checksum'] = '9aeb5210ebf009d906b66c
 default['imos_devel']['berkshelf']['version']          = '3.1.2'
 
 default['imos_devel']['vagrant']['plugins']            = []
+
+# Base directory for sources
+default['imos_devel']['src']                           = "/vagrant/src"
+
+# User and home directory to use for development
+default['imos_devel']['user']                          = "vagrant"
+default['imos_devel']['homedir']                       = "/home/vagrant"

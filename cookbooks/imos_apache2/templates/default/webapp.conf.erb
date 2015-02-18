@@ -1,5 +1,8 @@
 <%
-main_app_path = @params[:apps].first.keys.first
+main_app_path = nil
+if @params[:apps] && @params[:apps].first
+  main_app_path = @params[:apps].first.keys.first
+end
 
 # Logs
 error_log     = File.join(node['apache']['log_dir'], "#{@params[:name]}-error.log")
@@ -59,9 +62,11 @@ end
   ErrorLog <%= error_log %>
   CustomLog <%= access_log %> combined
 
+<% if main_app_path %>
   # redirects, use first app for that
   RewriteRule ^/index.html$ <%= protocol %>://<%= @params[:vhost] %>/<%= main_app_path %>
   RewriteRule ^/$ <%= protocol %>://<%= @params[:vhost] %>/<%= main_app_path %>
+<% end %>
 
   # proxy and reverse proxy handling
   ProxyPreserveHost On
@@ -90,7 +95,7 @@ end
 
 <% if @params[:full_config][:deny_robots] %>
   Alias /robots.txt <%= node['imos_apache2']['static_dir'] %>/robots.txt
-<% else %>
+<% elsif main_app_path %>
   Redirect /robots.txt /<%= main_app_path %>/robots.txt
 <% end %>
 
