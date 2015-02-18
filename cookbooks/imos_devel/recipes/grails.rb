@@ -9,8 +9,8 @@
 # Recipe to install grails/gvm and some more aliases
 #
 
-user = node['imos_devel']['grails']['user']
-homedir = node['imos_devel']['grails']['homedir']
+user = node['imos_devel']['user']
+homedir = node['imos_devel']['homedir']
 
 package "unzip"
 

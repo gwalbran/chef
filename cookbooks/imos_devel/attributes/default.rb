@@ -11,4 +11,9 @@ default['imos_devel']['berkshelf']['version']          = '3.1.2'
 
 default['imos_devel']['vagrant']['plugins']            = []
 
-default['imos_devel']['grails']['src_home']            = "/vagrant/src"
+# Base directory for sources
+default['imos_devel']['src']                           = "/vagrant/src"
+
+# User and home directory to use for development
+default['imos_devel']['user']                          = "vagrant"
+default['imos_devel']['homedir']                       = "/home/vagrant"
