@@ -1,5 +1,5 @@
 DEPENDENCIES
-  apache2
+  apache2 (~> 3.0.0)
   application
   application_ruby
   apt
@@ -164,10 +164,9 @@ GRAPH
   ant (1.0.2)
     ark (>= 0.0.0)
     java (>= 0.0.0)
-  apache2 (1.10.4)
+  apache2 (3.0.0)
     iptables (>= 0.0.0)
     logrotate (>= 0.0.0)
-    pacman (>= 0.0.0)
   application (4.1.4)
   application_ruby (3.0.2)
     apache2 (>= 0.0.0)
@@ -228,7 +227,7 @@ GRAPH
   iis (2.1.2)
     windows (>= 1.2.6)
   imos_apache2 (0.1.0)
-    apache2 (>= 0.0.0)
+    apache2 (~> 3.0.0)
     awstats (>= 0.0.0)
     logrotate (>= 0.0.0)
   imos_artifacts (1.0.0)
@@ -316,7 +315,7 @@ GRAPH
     imos_core (>= 0.0.0)
     imos_java (>= 0.0.0)
     tomcat (>= 0.0.0)
-  iptables (0.13.2)
+  iptables (0.14.1)
   java (1.28.0)
   jenkins (2.0.3)
     apt (~> 2.0)
@@ -347,6 +346,7 @@ GRAPH
     runit (>= 0.0.0)
   minitest-handler (1.2.1)
     chef_handler (>= 0.0.0)
+  monit (0.7.5)
   mysql (2.0.2)
     build-essential (>= 0.0.0)
     openssl (>= 0.0.0)
@@ -385,7 +385,6 @@ GRAPH
   openssl (1.1.0)
   packer (0.3.0)
     ark (~> 0.4.0)
-  pacman (1.1.1)
   passenger_apache2 (2.2.0)
     apache2 (>= 1.0.4)
     build-essential (>= 0.0.0)
