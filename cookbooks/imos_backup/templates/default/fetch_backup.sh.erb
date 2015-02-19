@@ -5,7 +5,7 @@ declare -r BACKUPS_USER=<%= @username %>
 declare -r BACKUPS_HOST=<%= node[:imos_backup][:restore][:from_host] %>
 
 # a bit of "slack" SSH options, but heck...
-declare -r SSH_OPTIONS='-o UserKnownHostsFile=<%= @known_hosts %> -o IdentityFile=<%= @id_rsa %>'
+declare -r SSH_OPTIONS='-o UserKnownHostsFile=<%= @known_hosts %> -o IdentityFile=<%= @id_rsa %> <%= node[:imos_backup][:restore][:ssh_opts] %>'
 
 # fetches the latest remote backup from the given destination
 # $1 - dir to put the backup in
