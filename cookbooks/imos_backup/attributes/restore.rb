@@ -8,3 +8,6 @@ default[:imos_backup][:restore][:directives] = []
 
 # User to use for restoration coming from remote server
 default[:imos_backup][:restore][:username] = "restore"
+
+# SSH options for restoring
+default[:imos_backup][:restore][:ssh_opts] = ""
