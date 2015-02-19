@@ -27,6 +27,7 @@
     "imos_backup": {
         "restore": {
             "allow": true,
+            "ssh_opts": "-o StrictHostKeyChecking=no",
             "directives": [
                 {
                     "from_host":  "2-nsp-mel.emii.org.au",
