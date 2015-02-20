@@ -26,18 +26,23 @@ class Chef::EncryptedDataBagItem
 
     Chef::Log.debug "Loading data bag (#{data_bag}, #{name})..."
 
-    if Chef::Config[:vagrant]
-      mocked_data_bag_name = self.mock_data_bag(data_bag, name)
-      data_bag_content = Chef::DataBagItem.load(data_bag, mocked_data_bag_name)
-      # Preseve id of data bag
-      data_bag_content['id'] = name
-      return data_bag_content
-    elsif Chef::Config[:solo]
-      return Chef::DataBagItem.load(data_bag, name)
-    else
-      raw_hash = Chef::DataBagItem.load(data_bag, name)
-      secret = secret || self.load_secret
-      self.new(raw_hash, secret)
+    begin
+      if Chef::Config[:vagrant]
+        mocked_data_bag_name = self.mock_data_bag(data_bag, name)
+        data_bag_content = Chef::DataBagItem.load(data_bag, mocked_data_bag_name)
+        # Preseve id of data bag
+        data_bag_content['id'] = name
+        return data_bag_content
+      elsif Chef::Config[:solo]
+        return Chef::DataBagItem.load(data_bag, name)
+      else
+        raw_hash = Chef::DataBagItem.load(data_bag, name)
+        secret = secret || self.load_secret
+        self.new(raw_hash, secret)
+      end
+    rescue Exception => e
+      Chef::Log.error "Error loading data bag (#{data_bag}, #{name})."
+      raise e
     end
   end
 end
