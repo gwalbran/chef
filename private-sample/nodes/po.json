@@ -176,6 +176,7 @@
                         "geoserver":             "http://localhost/geonetwork",
                         "jndis":                 [ "geonetwork" ],
                         "custom_def":            "geonetwork",
+                        "data_bag":              "catalogue_123_nogit",
                         "data_dir":              "/var/lib/geonetwork",
                         "classification_scheme": {
                             "parameterCategories": "http://vocab.aodn.org.au/def/ClassScheme/parameter1",

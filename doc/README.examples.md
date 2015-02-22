@@ -77,6 +77,15 @@ Error files will be moved to `src/error` (directory will be created automaticall
 $ ls -l src/error/
 ```
 
+### Importing Geonetwork Records
+
+By default, po box can import from https://catalogue-123.aodn.org.au/geonetwork
+
+Initiate the import by running:
+```
+$ vagrant ssh po -- /var/lib/tomcat7/default/import-gn-geonetwork.sh
+```
+
 ### Dev Box
 
 Intended for development and debugging of various IMOS web applications such as:

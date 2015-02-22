@@ -130,6 +130,7 @@ if node['webapps'] && node['webapps']['instances']
             instance_parameters     instance
             instance_service_name   instance_service_name
             instance_base_directory instance_base_directory
+            instance_port           instance_tomcat_port
             app_parameters          app_parameters
             end
         ")

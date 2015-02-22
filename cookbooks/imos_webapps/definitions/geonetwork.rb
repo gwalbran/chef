@@ -12,6 +12,7 @@ define :geonetwork do
   instance_parameters     = params[:instance_parameters]
   instance_service_name   = params[:instance_service_name]
   instance_base_directory = params[:instance_base_directory]
+  instance_port           = params[:instance_port]
 
   data_dir                = app_parameters['data_dir']
   app_name                = app_parameters['name']
@@ -90,6 +91,51 @@ define :geonetwork do
     variables ({
       :logging => logging
     })
+  end
+
+  if app_parameters['data_bag']
+    package 'zip'
+
+    # Download gn-tool.sh from utilities repo
+    remote_file node['imos_webapps']['geonetwork']['gn_tool']['binary'] do
+      source node['imos_webapps']['geonetwork']['gn_tool']['base_url']
+      mode   00755
+    end
+
+    # Load given data bag for instance
+    geonetwork_data_bag = Chef::DataBagItem.load("geonetwork", app_parameters['data_bag']).to_hash
+
+    gn_admin_username = geonetwork_data_bag['username'] || 'admin'
+    gn_admin_password = geonetwork_data_bag['password'] || 'admin'
+
+    import_dir = ::File.join(data_dir, "records")
+
+    gn_tool_import_command = "#{node['imos_webapps']['geonetwork']['gn_tool']['binary']} -o import -l #{import_dir} -g http://localhost:#{instance_port}/#{app_name} -u #{gn_admin_username} -p #{gn_admin_password}"
+
+    if geonetwork_data_bag['git_repo']
+      git import_dir do
+        repository geonetwork_data_bag['git_repo']
+        revision   geonetwork_data_bag['git_branch'] || "master"
+        user       geonetwork_data_bag['git_user']   || node['tomcat']['user']
+        group      geonetwork_data_bag['git_group']  || node['tomcat']['user']
+        action     :sync
+      end
+
+      gn_tool_import_command += " -G" # "Intelligent" git import
+      gn_tool_export_command = ""
+    elsif geonetwork_data_bag['url']
+      gn_tool_export_command = "#{node['imos_webapps']['geonetwork']['gn_tool']['binary']} -o export -l #{import_dir} -g #{geonetwork_data_bag['url']}"
+    end
+
+    file ::File.join(instance_base_directory, "import-gn-#{app_name}.sh") do
+      content "#!/bin/bash
+#{gn_tool_export_command}
+#{gn_tool_import_command}
+"
+      user    node['tomcat']['user']
+      group   node['tomcat']['user']
+      mode    00755
+    end
   end
 
 end
