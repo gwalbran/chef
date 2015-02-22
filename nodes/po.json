@@ -3,6 +3,7 @@
     "name": "dev.json",
     "run_list": [
         "role[base]",
+        "role[restore]",
         "recipe[ssl]",
         "recipe[imos_postgresql::official_postgresql]",
         "recipe[imos_webapps::generic_webapp]"
@@ -22,6 +23,22 @@
     "tomcat": {
         "user":  "vagrant",
         "group": "vagrant"
+    },
+    "imos_backup": {
+        "restore": {
+            "allow": true,
+            "ssh_opts": "-o StrictHostKeyChecking=no",
+            "directives": [
+                {
+                    "from_host":  "2-nsp-mel.emii.org.au",
+                    "from_model": "pgsql",
+                    "files":      [
+                        "harvest/aodn_dsto.dump",
+                        "harvest/soop_asf_mft.dump"
+                    ]
+                }
+            ]
+        }
     },
     "postgresql": {
         "clusters": [{
