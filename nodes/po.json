@@ -6,6 +6,7 @@
         "role[restore]",
         "recipe[ssl]",
         "recipe[imos_postgresql::official_postgresql]",
+        "recipe[database_migrations]",
         "recipe[imos_webapps::generic_webapp]"
     ],
     "imos_users": {
@@ -39,6 +40,11 @@
                 }
             ]
         }
+    },
+    "database_migrations": {
+        "migrations": [
+            "marvl_data_atlas"
+        ]
     },
     "postgresql": {
         "clusters": [{

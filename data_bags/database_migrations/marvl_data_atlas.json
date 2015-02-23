@@ -1,0 +1,5 @@
+{
+    "id": "marvl_data_atlas",
+    "source": "https://github.com/aodn/marvl-data-atlas",
+    "changelog": "src/changelog/changelog.groovy"
+}
