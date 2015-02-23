@@ -17,7 +17,7 @@ fetch_backup() {
     local host=$1; shift
     local model=$1; shift
 
-    [ x"$@" = x ] && echo "Did not specify any files to download" && return 1
+    [ x"$1" = x ] && echo "Did not specify any files to download" && return 1
 
     local backup_location="backups/$host/$model"
     echo "Getting list of backups from '$BACKUPS_USER@$BACKUPS_HOST:$backup_location'"
