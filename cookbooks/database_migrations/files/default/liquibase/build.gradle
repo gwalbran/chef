@@ -1,0 +1,25 @@
+apply plugin: 'liquibase'
+
+buildscript {
+    repositories {
+	mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'net.saliman:gradle-liquibase-plugin:1.0.0'
+        classpath 'org.postgresql:postgresql:9.3-1102-jdbc41'
+    }
+}
+
+liquibase {
+    activities {
+        migration {
+            changeLogFile changeLogFile
+            url jdbcUrl
+            defaultSchemaName defaultSchemaName
+            username dbUsername
+            password dbPassword
+        }
+    }
+}
