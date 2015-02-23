@@ -1,5 +1,7 @@
 {
     "id": "marvl_data_atlas",
     "source": "https://github.com/aodn/marvl-data-atlas",
-    "changelog": "src/changelog/changelog.groovy"
+    "changelog": "src/changelog/changelog.groovy",
+    "default_schema_name": "aodn_dsto", /* should probably be public, but don't have permission currently */
+    "jndi_resource": "marvl-data-atlas-write"
 }
