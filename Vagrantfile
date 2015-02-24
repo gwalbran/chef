@@ -42,6 +42,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", inline: "test `find /var/cache -maxdepth 1 -name apt -mtime -1 | wc -l` -eq 0 && sudo apt-get update; true"
+  # Fix Ubuntu not booting after a failed boot
+  config.vm.provision "shell", inline: "grep -q ^GRUB_RECORDFAIL_TIMEOUT /etc/default/grub || (echo GRUB_RECORDFAIL_TIMEOUT=3 | sudo tee -a /etc/default/grub && sudo update-grub)"
 
   define_node = Proc.new do |node_name|
     config.vm.define node_name do |node|
