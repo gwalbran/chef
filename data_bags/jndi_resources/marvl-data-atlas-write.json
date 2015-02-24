@@ -3,6 +3,6 @@
     "resource": "jdbc/marvl_data_atlas_write",
     "driver": "org.postgresql.Driver",
     "url": "jdbc:postgresql://localhost:5432/harvest?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory",
-    "username": "aodn_dsto",  /* TODO: marvl user */
-    "password": "aodn_dsto"
+    "username": "marvl_data_atlas",
+    "password": "marvl_data_atlas"
 }

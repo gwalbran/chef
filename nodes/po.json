@@ -51,6 +51,7 @@
             "name": "main",
             "roles": [
                 "db_po_main",
+                "marvl_data_atlas",
                 "portal",
                 "geonetwork",
                 "wmsscanner",
