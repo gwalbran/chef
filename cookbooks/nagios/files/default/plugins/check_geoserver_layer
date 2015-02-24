@@ -14,7 +14,7 @@
 declare -r WMS_REQUEST_SUFFIX="FORMAT=image/png&VERSION=1.1.1&REQUEST=GetMap&BBOX=110,-50,160,-3&WIDTH=1&HEIGHT=1"
 
 # append these to WFS requests
-declare -r WFS_REQUEST_SUFFIX="version=1.0.0&request=GetFeature&maxFeatures=50&outputFormat=csv"
+declare -r WFS_REQUEST_SUFFIX="version=1.0.0&request=GetFeature&maxFeatures=1&outputFormat=csv"
 
 # Note: we append a 'date' parameter to each of the above URLs, to workaround any caching in geoserver (which would
 # invalidate the timeout checks).
