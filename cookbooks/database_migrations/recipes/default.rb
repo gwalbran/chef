@@ -10,15 +10,26 @@
 
 
 base_dir = node['database_migrations']['base_dir']
-user = 'root' # TODO: change to node['database_migrations']['user'] when one exists.
-group = 'root' # TODO: change to node['database_migrations']['group'] when one exists.
+migration_user = node['database_migrations']['user']
+migration_group = node['database_migrations']['group']
+
+directory base_dir do
+  owner migration_user
+  group migration_group
+end
+
+user migration_user do
+  home base_dir
+  system true
+end
+group migration_group
 
 liquibase_dir = ::File.join(base_dir, 'liquibase')
 remote_directory liquibase_dir do
   files_backup 0
   purge true
-  user user
-  group group
+  owner migration_user
+  group migration_group
 end
 
 file ::File.join(liquibase_dir, 'gradlew') do
@@ -27,14 +38,14 @@ end
 
 changelog_working_dir = ::File.join(base_dir, 'changelogs')
 directory changelog_working_dir do
-  user user
-  group group
+  owner migration_user
+  group migration_group
 end
 
 bin_dir = ::File.join(base_dir, 'bin')
 directory bin_dir do
-  user user
-  group group
+  owner migration_user
+  group migration_group
 end
 
 node['database_migrations']['migrations'].each do |migration|
@@ -46,16 +57,16 @@ node['database_migrations']['migrations'].each do |migration|
     repository migration_databag['source']
     destination migration_source_dir
     depth 1
-    user user
-    group group
+    user migration_user
+    group migration_group
   end
 
   jndi_resource_databag = Chef::EncryptedDataBagItem.load('jndi_resources', migration_databag['jndi_resource'])
 
   template ::File.join(bin_dir, "run_#{migration}_migration.sh") do
     source "run_migration.sh.erb"
-    owner user
-    group group
+    owner migration_user
+    group migration_group
     mode '0755'
 
     variables(
