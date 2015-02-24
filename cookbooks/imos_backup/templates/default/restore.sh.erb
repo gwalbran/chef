@@ -34,6 +34,13 @@ fetch_backup() {
     sudo -u $BACKUP_USERNAME <%= @fetch_backup %> -H $from_host -m $from_model -d $BACKUP_DIR/$to_model -- "$@"
 }
 
+# verify this is being run as root
+[[ `id -u` -ne 0 ]] && echo "Must run as root" && exit 2
+
+# if user wishes to run in unattended mode (-u), close stdin and then
+# everything running from here will think we don't have a terminal
+[[ "$1" = "-u" ]] && exec 0>&-
+
 <%
 get_backups().each do |directive|
   to_model = directive['to_model'] || directive['from_model']
