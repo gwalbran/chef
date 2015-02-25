@@ -157,16 +157,17 @@ restore() {
             logger_info "Restoring schema '$schema'"
 
             # create a table of contents, which excludes the 'CREATE SCHEMA' directive
-            local toc=`mktemp` && chmod 644 $toc
+            local tmp_toc=`mktemp`
+            chmod 644 $tmp_toc
             local absolute_schema_file=$_BACKUP_DEST/$database_name/$schema_file
-            pg_restore --list $absolute_schema_file | grep -v SCHEMA > $toc
+            pg_restore --list $absolute_schema_file | grep -v SCHEMA > $tmp_toc
 
             # note that user postgres will not have permissions to read the schema dump file
             cat $absolute_schema_file | \
-                sudo -u postgres pg_restore -p $port -d $database_name --use-list=$toc || \
+                sudo -u postgres pg_restore -p $port -d $database_name --use-list=$tmp_toc || \
                 logger_fatal "Failed to restore schema '$schema' from database '$database_name'"
 
-            rm $toc
+            rm -f $tmp_toc
             let retval+=$?
         else
             logger_info "Ignoring schema '$schema'"
