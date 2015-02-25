@@ -13,16 +13,17 @@ base_dir = node['database_migrations']['base_dir']
 migration_user = node['database_migrations']['user']
 migration_group = node['database_migrations']['group']
 
-directory base_dir do
-  owner migration_user
-  group migration_group
-end
-
 user migration_user do
   home base_dir
   system true
 end
 group migration_group
+
+directory base_dir do
+  owner migration_user
+  group migration_group
+end
+
 
 liquibase_dir = ::File.join(base_dir, 'liquibase')
 remote_directory liquibase_dir do
