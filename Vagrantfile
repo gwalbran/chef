@@ -22,10 +22,10 @@ Vagrant.configure("2") do |config|
   config.ssh.username = ENV['VAGRANT_USER'] || "vagrant"
   config.ssh.forward_agent = true
 
-  config.vm.network :private_network, type: "dhcp"
-
   if ENV['VAGRANT_STATIC_IP']
     config.vm.network :private_network, ip: ENV['VAGRANT_STATIC_IP']
+  else
+    config.vm.network :private_network, type: "dhcp"
   end
 
   node_file_path = ENV['VAGRANT_NODE_FILE_PATH'] || 'nodes'
