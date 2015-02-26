@@ -11,7 +11,7 @@ This chef repository contains all cookbooks used for the IMOS infrastructure.
 |git  | | `apt-get` |
 |ruby | >= 1.9.3 | `apt-get` / [`rbenv`](https://github.com/sstephenson/rbenv) |
 |bundler |  | `gem` |
-|[vagrant](http://www.vagrantup.com) | >= 1.6.3 | Download package from website |
+|[vagrant](http://www.vagrantup.com) | >= 1.7.2 | Download package from website |
 |[chef_dk](http://downloads.getchef.com/chef-dk/)| >= 0.3.5 | Install for your own distribution |
 |[vagrant-berkshelf](https://github.com/berkshelf/vagrant-berkshelf) | >= 4.0.1 | `vagrant plugin install vagrant-berkshelf` |
 |[VirtualBox](https://www.virtualbox.org/wiki/Downloads) |  | `apt-get` |
