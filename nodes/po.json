@@ -30,6 +30,11 @@
             "ssh_opts": "-o StrictHostKeyChecking=no",
             "directives": [
                 {
+                    "from_host":  "1-aws-syd.emii.org.au",
+                    "from_model": "pgsql",
+                    "files":      [ "geonetwork/public.dump" ]
+                },
+                {
                     "from_host":  "2-nsp-mel.emii.org.au",
                     "from_model": "pgsql",
                     "files":      [
