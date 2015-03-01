@@ -31,6 +31,11 @@
             "ssh_opts": "-o StrictHostKeyChecking=no",
             "directives": [
                 {
+                    "from_host":  "1-aws-syd.emii.org.au",
+                    "from_model": "pgsql",
+                    "files":      [ "geonetwork/public.dump" ]
+                },
+                {
                     "from_host":  "2-nsp-mel.emii.org.au",
                     "from_model": "pgsql",
                     "files":      [
@@ -93,7 +98,7 @@
                 "vhost":         "po.aodn.org.au",
                 "aliases":       [ "10.11.12.13" ],
                 "port":          "8080",
-                "java_options":  "-Xmx2G -Xms1G -XX:PermSize=512m -DGEOSERVER_DATA_DIR=/vagrant/shared_src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork",
+                "java_options":  "-Xmx3G -Xms1G -XX:PermSize=512m -DGEOSERVER_DATA_DIR=/vagrant/shared_src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork",
                 "max_post_size": 262144000,
                 "apps": [
                     {
@@ -126,7 +131,6 @@
                         "name":           "geoserver",
                         "artifact":       "geoserver",
                         "custom_def":     "geoserver",
-                        "data_bag":       "geoserver_dev",
                         "data_dir":       "/vagrant/shared_src/geoserver",
                         "jndis":          [ "harvest-read-po", "local-harvest-read" ]
                     },
