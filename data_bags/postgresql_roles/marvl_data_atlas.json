@@ -1,0 +1,12 @@
+{
+    "id": "marvl_data_atlas",
+    "roles": [
+        {
+            "name": "marvl_data_atlas",
+            "password": "marvl_data_atlas",
+            "memberof": [
+                "harvest_write_group"
+            ]
+        }
+    ]
+}
