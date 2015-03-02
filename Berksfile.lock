@@ -83,7 +83,7 @@ DEPENDENCIES
     revision: 896315a066f1b0d19be457b6d2700f0fd6d0083b
   jenkins
     git: git://github.com/opscode-cookbooks/jenkins.git
-    revision: ee5a4e53908dc62b276b16bc5ed062636bc5bd20
+    revision: d6e09a4af669cf6545274329dd2be30a09903eca
   kibana
     git: git://github.com/lusis/chef-kibana.git
     revision: aadfd38bc6e2877bc2c23694a0ea24390b76bd8a
@@ -320,7 +320,7 @@ GRAPH
     tomcat (>= 0.0.0)
   iptables (0.14.1)
   java (1.28.0)
-  jenkins (2.0.3)
+  jenkins (2.2.2)
     apt (~> 2.0)
     runit (~> 1.5)
     yum (~> 3.0)

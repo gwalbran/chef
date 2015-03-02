@@ -18,6 +18,8 @@ Vagrant.configure("2") do |config|
   config.vm.box = ENV['VAGRANT_BOX'] || "precise64-chef-client-omnibus-11.4.0-0.4"
   config.vm.box_url = ENV['VAGRANT_BOX_URL'] || "https://binary.aodn.org.au/static/boxes/precise64-chef-client-omnibus-11.4.0-0.4.box"
 
+  config.omnibus.chef_version = :latest
+
   # ssh options
   config.ssh.username = ENV['VAGRANT_USER'] || "vagrant"
   config.ssh.forward_agent = true
