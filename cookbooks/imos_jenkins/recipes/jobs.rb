@@ -15,6 +15,9 @@ imos_artifacts.each do |item_id|
     build_and_test_config_xml = File.join(Chef::Config[:file_cache_path], "#{artifact_id}_build_and_test_config.xml")
     template build_and_test_config_xml do
       source 'jobs/build_and_test_config.xml.erb'
+      variables(
+        :repository_url => artifact_databag_item['ci']['repository']['url']
+      )
     end
 
     jenkins_job "#{artifact_id}_build_and_test" do
