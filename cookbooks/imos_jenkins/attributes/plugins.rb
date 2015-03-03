@@ -1,53 +1,6 @@
-# Plugin list retrieved from current config using:
-#
-#   $ curl -s "https://jenkins.aodn.org.au/pluginManager/api/json?depth=1&pretty=true" | grep shortName | cut -d\" -f 4 | sort | uniq
-
 default["imos_jenkins"]["plugins"] = %w{
-    ansicolor
-    ant
-    antisamy-markup-formatter
-    artifactdeployer
-    build-monitor-plugin
-    build-name-setter
-    build-pipeline-plugin
-    chucknorris
-    cobertura
-    copyartifact
-    credentials
-    cvs
-    deploy
-    embeddable-build-status
-    envinject
-    external-monitor-job
     git
     git-client
-    github
-    github-api
-    gradle
-    grails
     greenballs
-    javadoc
-    jquery
-    ldap
-    mailer
-    matrix-auth
-    matrix-project
     maven-plugin
-    pam-auth
-    parameterized-trigger
-    promoted-builds
-    publish-over-ssh
-    scm-api
-    scp
-    seleniumhq
-    shared-workspace
-    ssh-credentials
-    ssh-slaves
-    subversion
-    thinBackup
-    throttle-concurrents
-    token-macro
-    translation
-    validating-string-parameter
-    windows-slaves
 }
