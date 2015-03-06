@@ -2,6 +2,20 @@ grails.serverURL = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= 
 
 grails.mail.default.from = "emiioffice@emii.org.au"
 
+<% if @custom_parameters['mail_credentials']
+     mail_credentials = Chef::EncryptedDataBagItem.load('passwords', @custom_parameters['mail_credentials']).to_hash
+%>
+grails {
+    mail {
+        host = "<%= mail_credentials['host'] || 'localhost' %>"
+        port = <%= mail_credentials['port'] || 25 %>
+        props = [ "mail.smtp.auth": "true" ]
+        username = "<%= mail_credentials['username'] || 'root' %>"
+        password = "<%= mail_credentials['password'] || 'root' %>"
+    }
+}
+<% end %>
+
 worker {
     fileLimit = 3 * 31 * 24
     maxGogoduckTimeMinutes = 120
