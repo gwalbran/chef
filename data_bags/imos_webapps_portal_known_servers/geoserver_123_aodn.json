@@ -6,5 +6,9 @@
     "csvDownloadFormat": "csv-with-metadata-header",
     "supportsCsvMetadataHeaderOutputFormat": true,
     "urlListDownloadPrefixToRemove": "/mnt/imos-t3/",
-    "urlListDownloadPrefixToSubstitue": "http://data.aodn.org.au/"
+    "urlListDownloadPrefixToSubstitue": "http://data.aodn.org.au/",
+    "urlListDownloadSubstitutions": {
+        "'/mnt/imos-t3/'": "http://data.aodn.org.au/",
+        "'/mnt/opendap/2/SRS'": "http://thredds.aodn.org.au/thredds/catalog/srs"
+    }
 }
