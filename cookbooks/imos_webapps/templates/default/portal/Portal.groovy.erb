@@ -16,8 +16,8 @@ featureToggles {
 }
 geonetwork.searchPath = '<%= @custom_parameters['feature_toggles'] && @custom_parameters['feature_toggles']['hierarchicalFacets'] ? 'xml.search.imos' : 'xml.search.summary' %>'
 
-knownServers = [
 <%
+known_servers = []
 known_server_names = []
 
 if @custom_parameters['known_servers']
@@ -32,17 +32,12 @@ if @custom_parameters['known_servers_config']
 end
 
 known_server_names.uniq.each do |known_server_name|
-  known_server = Chef::DataBagItem.load('imos_webapps_portal_known_servers', known_server_name)
-%>
-    [
-<% known_server.each do |k, v| %>
-<%= "        #{k}: \"#{v}\"," %>
-<% end %>
-    ],
-<%
+  known_servers.push Chef::DataBagItem.load('imos_webapps_portal_known_servers', known_server_name).to_hash
 end
+
 %>
-]
+
+<%= "knownServers = #{GroovyIndenter.indent(known_servers.to_groovy)}" %>
 
 <% if @custom_parameters['google_analytics_tracking_id'] %>
 <%= "googleAnalytics.trackingId = '#{@custom_parameters['google_analytics_tracking_id']}'" =%>
