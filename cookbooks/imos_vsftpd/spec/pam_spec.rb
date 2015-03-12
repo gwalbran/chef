@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative 'spec_helper'
 
 describe 'imos_vsftpd::pam' do
   let (:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }

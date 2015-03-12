@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative 'spec_helper'
 
 describe Chef::Recipe::CronjobSanitizer do
   allowed_users = [ "test_user1", "test_user2" ]

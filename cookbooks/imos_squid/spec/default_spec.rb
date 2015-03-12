@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative 'spec_helper'
 
 describe 'imos_squid::default' do
   let (:chef_run) do

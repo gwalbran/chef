@@ -1,4 +1,4 @@
-require 'spec_helper'
+require_relative 'spec_helper'
 
 describe 'imos_vsftpd::ftp_dir_tree' do
   let (:chef_run) do

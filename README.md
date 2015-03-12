@@ -47,8 +47,7 @@ $ git clone git@github.com:YOUR_ORG/chef-private.git private
 
 The symbolic links should look lively now.
 
-Run up a node with Vagrant
---------------------------
+## Run up a node with Vagrant
 
 Running up a VM should be as simple as:
 ```
@@ -83,3 +82,18 @@ $ git push origin new_feature
 ```
 
 Submit a PR and see if we accept it.
+
+## Testing
+### Unit Testing
+`chefspec` unit tests can be run either from the root:
+
+```
+$ chef exec rake spec
+```
+
+or from a particular cookbook directory, e.g.:
+
+```
+$ cd cookbooks/imos_po
+$ chef exec rspec spec
+```
