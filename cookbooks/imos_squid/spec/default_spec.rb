@@ -1,8 +1,8 @@
-require 'spec_helper'
+require_relative 'spec_helper'
 
 describe 'imos_squid::default' do
   let (:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       node.automatic.merge!(JSON.parse(File.read('test/fixtures/nodes/node.json')))
     end.converge(described_recipe)
   end
