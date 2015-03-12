@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
 
 describe 'imos_vsftpd::default' do
-  let (:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let (:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
 
   before do
     stub_search(:ftp_users, 'id:*').and_return([

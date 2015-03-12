@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 
 describe 'imos_vsftpd::ftp_dir_tree' do
   let (:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       node.automatic['imos_vsftpd']['ftp_dir_tree']['root'] = "/ftp"
       node.automatic['imos_vsftpd']['ftp_dir_tree']['data_bags'] = [ "ftp_dir_tree/*" ]
     end.converge(described_recipe)
