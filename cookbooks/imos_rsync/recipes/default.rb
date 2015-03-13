@@ -48,7 +48,9 @@ if node['imos_rsync'] && node['imos_rsync']['serve']
 
     rsync_serve data_bag['id'] do
       path             data_bag['path']
-      comment          data_bag['id']
+      # HACK HACK HACK plant 'incoming chmod' attribute. PR up against official
+      # cookbook: https://github.com/opscode-cookbooks/rsync/pull/15
+      comment          "#{data_bag['id']}\n    incoming chmod = Dug+rwx,Fug+rw"
       secrets_file     rsyncd_secrets_path
       auth_users       data_bag['auth_users'].join(" ")
       use_chroot       false
