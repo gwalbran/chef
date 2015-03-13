@@ -5,7 +5,7 @@ default['imos_devel']['vagrant']['source_checksum']    = '1599113509b3ab2b13ca21
 
 default['imos_devel']['virtualbox']['package_name']    = 'virtualbox-4.3_4.3.6-91406~Ubuntu~precise_amd64.deb'
 default['imos_devel']['virtualbox']['source_url']      = "http://download.virtualbox.org/virtualbox/4.3.6/#{node['imos_devel']['virtualbox']['package_name']}"
-default['imos_devel']['virtualbox']['source_checksum'] = '9aeb5210ebf009d906b66c942a3eff4ee38db7bf'
+default['imos_devel']['virtualbox']['source_checksum'] = '7817f8ee7263e3c9e0dbfaa7b33a5787608ebe6c726cb71e9a29ed409ca29bc3'
 
 default['imos_devel']['berkshelf']['version']          = '3.1.2'
 
