@@ -47,8 +47,6 @@ include_recipe 'git'
 include_recipe 'xvfb'
 include_recipe 'packer'
 
-include_recipe 'chef-dk'
-
 package "zip"
 
 
