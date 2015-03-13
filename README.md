@@ -14,7 +14,6 @@ This chef repository contains all cookbooks used for the IMOS infrastructure.
 |[vagrant](http://www.vagrantup.com) | >= 1.7.2 | Download package from website |
 |[chef_dk](http://downloads.getchef.com/chef-dk/)| >= 0.3.5 | Install for your own distribution |
 |[vagrant-berkshelf](https://github.com/berkshelf/vagrant-berkshelf) | >= 4.0.1 | `vagrant plugin install vagrant-berkshelf` |
-|[vagrant-omnibus](https://github.com/chef/vagrant-omnibus) | | `vagrant plugin install vagrant-omnibus` |
 |[VirtualBox](https://www.virtualbox.org/wiki/Downloads) |  | `apt-get` |
 
 *See websites or documentation for more detailed insallation instructions*
@@ -31,7 +30,7 @@ $ gem uninstall berkshelf
 
 ## Optional Vagrant Plugins
 
-*Note*: in addition to the vagrant plugins listed above, the following are recommended:
+*Note*: in addition to the vagrant plugins listed above, the following are worth a look:
 
 * [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
 * [vagrant-cachier](http://fgrehm.viewdocs.io/vagrant-cachier)
