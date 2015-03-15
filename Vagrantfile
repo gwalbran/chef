@@ -3,6 +3,7 @@
 
 require 'enumerator'
 
+require_relative 'vagrant/plugins'
 require_relative 'vagrant/chef_solo'
 require_relative 'vagrant/virtualbox'
 
