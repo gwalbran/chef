@@ -1,7 +1,13 @@
 attr_reader :cached_file_path
 
 action :deploy do
-  @cached_file_path = ImosArtifactFetcher.new.fetch_artifact("#{new_resource.artifact_id}", node)
+  artifact_manifest = {}
+  if new_resource.artifact_manifest
+    artifact_manifest = new_resource.artifact_manifest
+  else
+    artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", new_resource.artifact_id)
+  end
+  @cached_file_path = ImosArtifactFetcher.new.fetch_artifact(artifact_manifest, node)
   deploy_artifact
 end
 
