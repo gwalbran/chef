@@ -30,6 +30,7 @@ attribute :harvest_resources, :kind_of => [Hash, NilClass]
 
 # deployment attributes
 attribute :artifact_id, :kind_of => String
+attribute :artifact_manifest, :kind_of => Hash
 attribute :owner, :regex => Chef::Config['user_valid_regex'], :default => node['talend']['user']
 attribute :group, :regex => Chef::Config['group_valid_regex'], :default => node['talend']['group']
 
