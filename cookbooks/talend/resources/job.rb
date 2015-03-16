@@ -15,6 +15,9 @@ actions :configure, :deploy, :schedule, :remove
 
 default_action :deploy
 
+# Common name (none-unique) of job
+attribute :common_name, :kind_of => String, :required => true
+
 # config attributes
 attribute :bin_dir, :kind_of => String, :required => true
 attribute :jobs_dir, :kind_of => String, :required => true
@@ -47,4 +50,3 @@ attribute :mailto, :kind_of => [String, NilClass]
 attribute :path, :kind_of => [String, NilClass]
 attribute :home, :kind_of => [String, NilClass]
 attribute :shell, :kind_of => [String, NilClass]
-
