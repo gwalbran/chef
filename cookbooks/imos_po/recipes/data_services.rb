@@ -8,6 +8,20 @@
 #
 # Sets up a server to allow project officers to do data manipulation
 
+def generate_env_file(file_path, vars)
+  env_content = "#!/bin/bash\n"
+  vars.each do |var|
+    env_content += "export #{var}\n"
+  end
+
+  file file_path do
+    user    node['imos_po']['data_services']['user']
+    group   "projectofficer"
+    mode    00440
+    content env_content
+  end
+end
+
 package 'heirloom-mailx'
 
 # Use this so we can deploy private repositories
@@ -46,7 +60,7 @@ end
 # Inject those variables to the cronjobs
 # Please note all variables here must be fully expanded to avoid scripts
 # needing to evaluate them at runtime
-cron_vars = [
+data_services_vars = [
     "OPENDAP_DIR='#{node['imos_po']['data_services']['opendap_dir']}'",
     "PUBLIC_DIR='#{node['imos_po']['data_services']['public_dir']}'",
     "ARCHIVE_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
@@ -58,6 +72,9 @@ cron_vars = [
     "DATA_SERVICES_DIR='#{data_services_dir}'",
     "LOG_DIR='#{data_services_log_dir}'"
 ]
+
+# plant env file in data-services repo with all related variables
+generate_env_file(::File.join(data_services_dir, "env"),  data_services_vars)
 
 if node['imos_po']['data_services']['cronjobs']
   # Install cron jobs for project officers
@@ -85,7 +102,7 @@ if node['imos_po']['data_services']['cronjobs']
           cronjob_dest      = File.join("/etc/cron.d", "_po_#{cronjob}")
 
           # Run those scripts as 'nobody'!
-          cronjob_sanitizer.sanitize_cronjob_file(cronjob_full_path, cronjob_dest, data_services_dir, cron_vars)
+          cronjob_sanitizer.sanitize_cronjob_file(cronjob_full_path, cronjob_dest, data_services_dir, data_services_vars)
         end
       end
     end
