@@ -2,6 +2,7 @@ require 'digest'
 require 'yaml'
 require 'fileutils'
 
+attr_reader :job_common_name
 attr_reader :job_name
 attr_reader :job_dir
 attr_reader :job_bin_dir
@@ -13,13 +14,14 @@ attr_reader :job_conf_file
 # load current state
 
 def load_current_resource
-  @job_name      = new_resource.name
-  @job_dir       = ::File.join(new_resource.jobs_dir, @job_name)
-  @job_bin_dir   = ::File.join(@job_dir, "bin")
-  @job_java_dir  = ::File.join(@job_dir, "java")
-  @job_log_dir   = ::File.join(@job_dir, "log")
-  @job_conf_dir  = ::File.join(@job_dir, "etc")
-  @job_conf_file = ::File.join(@job_conf_dir, "#{@job_name}.conf")
+  @job_common_name = new_resource.common_name
+  @job_name        = new_resource.name
+  @job_dir         = ::File.join(new_resource.jobs_dir, @job_name)
+  @job_bin_dir     = ::File.join(@job_dir, "bin")
+  @job_java_dir    = ::File.join(@job_dir, "java")
+  @job_log_dir     = ::File.join(@job_dir, "log")
+  @job_conf_dir    = ::File.join(@job_dir, "etc")
+  @job_conf_file   = ::File.join(@job_conf_dir, "#{@job_name}.conf")
 end
 
 # External configure
@@ -32,18 +34,36 @@ action :configure do
     ::FileUtils.chmod(0755, dir)
   end
 
+  job_parameters = {}
+
+  # Add common parameters
+  node['talend']['common_parameters'].each do |key, value|
+    job_parameters[key] = value
+  end
+
+  # Specific parameters
+  new_resource.params.each do |key, value|
+    job_parameters[key] = value
+  end
+
   # On vagrant machines, run through the mock_filter function, preventing
   # talend jobs from hitting production resources
   if node['vagrant']
-    new_resource.params = new_resource.params.map() do |item, value|
-      value = mock_filter(item, value)
-      [item, value]
+    mocked_job_parameters = {}
+    job_parameters.each do |key, value|
+      mocked_job_parameters[key] = mock_filter(key, value)
     end
+    job_parameters = mocked_job_parameters
   end
 
-  # Substitute attributes
-  new_resource.params = new_resource.params.map() do |item, value|
-    [item, eval( %{"#{value}"} )]
+  # Evaluate parameters
+  evaluated_job_parameters = {}
+  job_parameters.each do |key, value|
+    begin
+      evaluated_job_parameters[key] = eval( %{"#{value}"} )
+    rescue
+      Chef::Log.warn("Talend '#{@job_name}' ignoring parameter '#{key}'")
+    end
   end
 
   # create job parameter file
@@ -54,7 +74,7 @@ action :configure do
     group  new_resource.group
     mode 0644
     variables ({
-      :params => new_resource.params,
+      :params => evaluated_job_parameters,
       :delimiter => new_resource.delimiter
     })
   end

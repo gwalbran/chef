@@ -31,3 +31,5 @@ default['talend']['task_spooler_url']  = "http://ftp.ubuntu.com/ubuntu/pool/univ
 # Start harvesters at 18:00 daily
 default['talend']['hour']   = "18"
 default['talend']['minute'] = "0"
+
+default['talend']['common_parameters'] = {}

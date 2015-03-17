@@ -37,11 +37,14 @@ node['talend']['jobs'].each do |job_name|
   # eg. argo, cpr, soop-xbt etc
   bag_item = data_bag_item("talend", job_name)
 
+  job_common_name = bag_item['common_name'] || job_name.gsub(/_rc$/, '')
+
   job_id = "#{job_name}-#{bag_item['artifact_id']}"
   job_dir = ::File.join(jobs_dir, job_id)
 
   talend_job job_id do
     action      :deploy
+    common_name job_common_name
     artifact_id bag_item['artifact_id']
     jobs_dir    jobs_dir
     data_dir    data_dir
@@ -50,6 +53,7 @@ node['talend']['jobs'].each do |job_name|
 
   talend_job job_id do
     action            :configure
+    common_name       job_common_name
     params            bag_item['params']
     delimiter         bag_item['delimiter']
     harvest_resources bag_item['resources']
@@ -64,15 +68,16 @@ node['talend']['jobs'].each do |job_name|
   end
 
   talend_job job_id do
-    action  :schedule
-    hour     bag_item['cron']['hour']
-    weekday  bag_item['cron']['weekday']
-    minute   bag_item['cron']['minute']
-    day      bag_item['cron']['day']
-    month    bag_item['cron']['month']
-    mailto   bag_item['mailto'] || node['talend']['mailto']
-    jobs_dir jobs_dir
-    data_dir data_dir
+    action      :schedule
+    common_name job_common_name
+    hour        bag_item['cron']['hour']
+    weekday     bag_item['cron']['weekday']
+    minute      bag_item['cron']['minute']
+    day         bag_item['cron']['day']
+    month       bag_item['cron']['month']
+    mailto      bag_item['mailto'] || node['talend']['mailto']
+    jobs_dir    jobs_dir
+    data_dir    data_dir
     bin_dir  bin_dir
   end
 
@@ -87,6 +92,7 @@ job_to_cleanup = existing_talend_job_dirs - installed_talend_jobs
 job_to_cleanup.each do |job_id|
   talend_job job_id do
     action      :remove
+    common_name job_common_name
     jobs_dir    jobs_dir
     rubbish_dir rubbish_dir
   end
