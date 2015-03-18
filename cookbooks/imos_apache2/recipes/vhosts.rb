@@ -43,6 +43,7 @@ if node['apache'] && node['apache']['vhosts']
       proxy_pass        vhost['proxy_pass']
       server_aliases    vhost['aliases']
       docroot           vhost['docroot']
+      directory_index   vhost['directory_index'] || node['imos_apache2']['directory_index']
       content_repo      vhost['content_repo']
       redirect_to_https vhost['https']
     end
@@ -60,6 +61,7 @@ if node['apache'] && node['apache']['vhosts']
       proxy_pass      vhost['proxy_pass']
       server_aliases  vhost['aliases']
       docroot         vhost['docroot']
+      directory_index vhost['directory_index'] || node['imos_apache2']['directory_index']
       content_repo    vhost['content_repo']
       domain          domain
       https           true
