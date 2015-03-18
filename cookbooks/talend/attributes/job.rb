@@ -33,3 +33,5 @@ default['talend']['hour']   = "18"
 default['talend']['minute'] = "0"
 
 default['talend']['common_parameters'] = {}
+# No talend environment implies production environment
+default['talend']['environment'] = "prod"
