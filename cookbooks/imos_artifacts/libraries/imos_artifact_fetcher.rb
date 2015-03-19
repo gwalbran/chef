@@ -9,13 +9,7 @@ class ImosArtifactFetcher
     require 'net/http'
   end
 
-  def fetch_artifact(artifact_name, node)
-    return cache_artifact(Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_name), node)
-  end
-
-  private
-
-  def cache_artifact(artifact_manifest, node)
+  def fetch_artifact(artifact_manifest, node)
     archive_type = artifact_manifest['archiveType'] || node[:imos_artifacts][:archive_type]
     if archive_type == 'jenkins'
       return cache_jenkins_artifact(artifact_manifest, node)

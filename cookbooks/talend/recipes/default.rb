@@ -7,6 +7,10 @@
 # All rights reserved - Do Not Redistribute
 #
 
+def get_job_common_name(job_name, data_bag_item)
+  return data_bag_item['common_name'] || job_name.gsub(/_rc$/, '')
+end
+
 require 'fileutils'
 
 include_recipe "imos_java"
@@ -37,18 +41,31 @@ node['talend']['jobs'].each do |job_name|
   # eg. argo, cpr, soop-xbt etc
   bag_item = data_bag_item("talend", job_name)
 
-  job_common_name = bag_item['common_name'] || job_name.gsub(/_rc$/, '')
+  job_common_name = get_job_common_name(job_name, bag_item)
 
-  job_id = "#{job_name}-#{bag_item['artifact_id']}"
+  # If artifact_id is defined, use data bag, otherwise assemble one
+  artifact_id = bag_item['artifact_id']
+  artifact_manifest = nil
+  if ! artifact_id
+    artifact_id = job_name
+    artifact_manifest = {
+      "id"       => job_name,
+      "job"      => bag_item['jenkins_job'] || node['talend']['jenkins_job'],
+      "filename" => bag_item['artifact_filename']
+    }
+  end
+
+  job_id = "#{job_name}-#{artifact_id}"
   job_dir = ::File.join(jobs_dir, job_id)
 
   talend_job job_id do
-    action      :deploy
-    common_name job_common_name
-    artifact_id bag_item['artifact_id']
-    jobs_dir    jobs_dir
-    data_dir    data_dir
-    bin_dir     bin_dir
+    action            :deploy
+    common_name       job_common_name
+    artifact_id       bag_item['artifact_id']
+    artifact_manifest artifact_manifest
+    jobs_dir          jobs_dir
+    data_dir          data_dir
+    bin_dir           bin_dir
   end
 
   talend_job job_id do
@@ -92,7 +109,7 @@ job_to_cleanup = existing_talend_job_dirs - installed_talend_jobs
 job_to_cleanup.each do |job_id|
   talend_job job_id do
     action      :remove
-    common_name job_common_name
+    common_name job_id
     jobs_dir    jobs_dir
     rubbish_dir rubbish_dir
   end

@@ -14,6 +14,7 @@ default_action :deploy
 # installation identification
 
 attribute :artifact_id, :name_attribute => true, :required => true, :kind_of => String
+attribute :artifact_manifest, :required => false, :kind_of => Hash, :default => nil
 
 # deployment attributes
 attribute :install_dir,                :kind_of => String

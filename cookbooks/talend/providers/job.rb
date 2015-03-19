@@ -130,6 +130,7 @@ action :deploy do
   imos_artifacts_deploy job_name do
     install_dir                job_java_dir
     artifact_id                new_resource.artifact_id
+    artifact_manifest          new_resource.artifact_manifest
     file_destination           ::File.join(job_dir, "#{new_resource.artifact_id}.zip")
     # Remove redundant directory structure
     remove_top_level_directory true
