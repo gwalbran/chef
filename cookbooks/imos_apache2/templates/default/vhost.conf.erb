@@ -29,7 +29,7 @@ end
   DocumentRoot <%= @params[:docroot] %>
 
   <Directory <%= @params[:docroot] %>>
-    DirectoryIndex index.htm index.html
+    DirectoryIndex <%= @params[:directory_index] %>
     Options +Indexes +FollowSymLinks
     AllowOverride None
     Order allow,deny
