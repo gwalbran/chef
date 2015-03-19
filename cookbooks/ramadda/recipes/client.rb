@@ -20,8 +20,9 @@ ruby_block "fetch_ramadda_client" do
     require 'json'
     require 'net/http'
 
+    artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", "ramadda-client")
     fetcher = ImosArtifactFetcher.new
-    cache_zip_path, artifact_downloaded = fetcher.fetch_artifact("ramadda-client", node)
+    cache_zip_path, artifact_downloaded = fetcher.fetch_artifact(artifact_manifest, node)
 
     # At this point in time this actually copies the file over the top of itself
     # because the artifact fetcher downloads the file to Chef::Config[:file_cache_path] but

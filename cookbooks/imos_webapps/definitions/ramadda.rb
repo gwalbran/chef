@@ -56,8 +56,9 @@ define :ramadda do
       require 'json'
       require 'net/http'
 
+      artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", "ramadda-all-plugins")
       fetcher = ImosArtifactFetcher.new
-      cache_jar_path, artifact_downloaded = fetcher.fetch_artifact("ramadda-all-plugins", node)
+      cache_jar_path, artifact_downloaded = fetcher.fetch_artifact(artifact_manifest, node)
 
       # Now move the jar file into position
       if !::File.exists?(all_plugins_jar_path) || ::File.mtime(all_plugins_jar_path) < ::File.mtime(cache_jar_path)

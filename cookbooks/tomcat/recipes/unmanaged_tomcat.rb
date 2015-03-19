@@ -38,7 +38,8 @@ end
 
 fetcher = ImosArtifactFetcher.new
 
-cache_file_path, artifact_downloaded = fetcher.fetch_artifact("tomcat-#{node['tomcat']['fine_version'].tr('.', '-')}", node)
+artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", "tomcat-#{node['tomcat']['fine_version'].tr('.', '-')}")
+cache_file_path, artifact_downloaded = fetcher.fetch_artifact(artifact_manifest, node)
 
 node[:tomcat][:instances].each_with_index do |instance, index|
 
