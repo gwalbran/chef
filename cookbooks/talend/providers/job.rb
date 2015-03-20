@@ -131,7 +131,7 @@ action :deploy do
     install_dir                job_java_dir
     artifact_id                new_resource.artifact_id
     artifact_manifest          new_resource.artifact_manifest
-    file_destination           ::File.join(job_dir, "#{new_resource.artifact_id}.zip")
+    file_destination           ::File.join(job_dir, "#{new_resource.common_name}.zip")
     # Remove redundant directory structure
     remove_top_level_directory true
     owner                      'root'
