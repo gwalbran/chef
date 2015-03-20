@@ -38,8 +38,23 @@ installed_talend_jobs = []
 
 node['talend']['jobs'].each do |job_name|
 
-  # eg. argo, cpr, soop-xbt etc
+  environment = node['talend']['environment']
+
+  # Use job parameters, override with environment specific if exists
   bag_item = data_bag_item("talend", job_name)
+  job_parameters = bag_item['params'].dup
+  if bag_item[environment] && bag_item[environment]['params']
+    job_parameters.merge!(bag_item[environment]['params'])
+  end
+
+  # Use job scheduling from data bag, override with environment specific
+  cron = {}
+  if bag_item['cron']
+    cron.merge!(bag_item['cron'])
+  end
+  if bag_item[environment] && bag_item[environment]['cron']
+    cron.merge!(bag_item[environment]['cron'])
+  end
 
   job_common_name = get_job_common_name(job_name, bag_item)
 
@@ -71,7 +86,7 @@ node['talend']['jobs'].each do |job_name|
   talend_job job_id do
     action            :configure
     common_name       job_common_name
-    params            bag_item['params']
+    params            job_parameters
     delimiter         bag_item['delimiter']
     harvest_resources bag_item['resources']
     jobs_dir          jobs_dir
@@ -79,23 +94,18 @@ node['talend']['jobs'].each do |job_name|
     bin_dir           bin_dir
   end
 
-  # Allow empty scheduling in data bag
-  if ! bag_item['cron']
-    bag_item['cron'] = {}
-  end
-
   talend_job job_id do
     action      :schedule
     common_name job_common_name
-    hour        bag_item['cron']['hour']
-    weekday     bag_item['cron']['weekday']
-    minute      bag_item['cron']['minute']
-    day         bag_item['cron']['day']
-    month       bag_item['cron']['month']
+    hour        cron['hour']
+    weekday     cron['weekday']
+    minute      cron['minute']
+    day         cron['day']
+    month       cron['month']
     mailto      bag_item['mailto'] || node['talend']['mailto']
     jobs_dir    jobs_dir
     data_dir    data_dir
-    bin_dir  bin_dir
+    bin_dir     bin_dir
   end
 
   installed_talend_jobs << job_id
