@@ -130,7 +130,11 @@
       </Realm>
 
       <Host name="localhost"  appBase="webapps"
+<% if @parallel_deploy %>
+            unpackWARs="true" autoDeploy="true" undeployOldVersions="true">
+<% else %>
             unpackWARs="true" autoDeploy="false">
+<% end %>
 
         <!-- SingleSignOn valve, share authentication between web applications
              Documentation at: /docs/config/valve.html -->
