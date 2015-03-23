@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-
 # Repositories
 apt_repository 'official_postgres' do
   uri 'http://apt.postgresql.org/pub/repos/apt/'
@@ -204,6 +203,9 @@ if node['postgresql'] && node['postgresql']['clusters']
     all_role_names = {}
     server_role_passwords = {}
 
+    all_roles = []
+    all_databases = []
+
     # Create the roles
     cluster['roles'].each do |roles_data_bag_name|
 
@@ -222,16 +224,8 @@ if node['postgresql'] && node['postgresql']['clusters']
         server_role_passwords[name] = role['password']
       end
 
-
-      # And create
-      imos_postgresql_roles "#{cluster_name}-roles" do
-        cluster                       cluster_name
-        port                          cluster_config['port']
-        roles                         roles['roles']
-        default_role_connection_limit node[:imos_postgresql][:default_role_connection_limit]
-      end
+      all_roles.concat(roles['roles'])
     end if cluster['roles']
-
 
     # Define the databases
     cluster['databases'].each do |database_data_bag_name|
@@ -241,16 +235,6 @@ if node['postgresql'] && node['postgresql']['clusters']
          node[:imos_postgresql][:postgresql_databases_data_bag],
          database_data_bag_name
       )
-
-      # and create
-      # TODO: backup and maybe schema extensions ought to be factored out to make
-      # code more generalizable
-      imos_postgresql_database_with_schemas database_data_bag['database_name'] do
-        cluster           cluster_name
-        port              cluster_config['port']
-        database          database_data_bag
-        custom_extensions custom_extensions
-      end
 
       # If backup user specified then add database to backups
       backup_user = database_data_bag['backup_user']
@@ -263,8 +247,42 @@ if node['postgresql'] && node['postgresql']['clusters']
           'port'     => cluster_config['port']
         }
       end
+      all_databases.push(database_data_bag.to_hash)
     end if cluster['databases']
 
+    # Create Roles
+    modified_roles = PostgresqlHelper.modified_roles(cluster_name, all_roles)
+    deleted_roles = PostgresqlHelper.deleted_roles(cluster_name, all_roles)
+    Chef::Log.info("Need to modify #{modified_roles.length} roles in cluster '#{cluster_name}'")
+    Chef::Log.debug("Modified roles: '#{modified_roles}'")
+    Chef::Log.info("Need to delete #{deleted_roles.length} roles in cluster '#{cluster_name}'") # TODO Handle deletions
+    Chef::Log.debug("Deleted roles: '#{deleted_roles}'")
+
+    imos_postgresql_roles "#{cluster_name}-roles" do
+      cluster                       cluster_name
+      port                          cluster_config['port']
+      roles                         modified_roles
+      default_role_connection_limit node[:imos_postgresql][:default_role_connection_limit]
+    end
+    PostgresqlHelper.save_roles_state(cluster_name, all_roles)
+
+    # Create databases
+    modified_databases = PostgresqlHelper.modified_databases(cluster_name, all_databases)
+    deleted_databases = PostgresqlHelper.deleted_databases(cluster_name, all_databases)
+    Chef::Log.info("Need to modify #{modified_databases.length} databases in cluster '#{cluster_name}'")
+    Chef::Log.debug("Modified databases: '#{modified_databases}'")
+    Chef::Log.info("Need to delete #{deleted_databases.length} databases in cluster '#{cluster_name}'") # TODO Handle deletions
+    Chef::Log.debug("Deleted databases: '#{deleted_databases}'")
+
+    modified_databases.each do |database|
+      imos_postgresql_database_with_schemas database['database_name'] do
+        cluster           cluster_name
+        port              cluster_config['port']
+        database          database
+        custom_extensions custom_extensions
+      end
+    end
+    PostgresqlHelper.save_databases_state(cluster_name, all_databases)
   end
 end
 
