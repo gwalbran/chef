@@ -44,4 +44,11 @@ if node['imos_po']['data_services']['watches']
     action [:start, :enable]
   end
 
+  logrotate_app "project-officer-processing" do
+    rotate     node['logrotate']['global']['rotate']
+    path       ::File.join(node['imos_po']['data_services']['log_dir'], "*", "process.log")
+    frequency  'daily'
+    options    [ "compress", "delaycompress", "missingok", "nocreate", "sharedscripts" ]
+  end
+
 end
