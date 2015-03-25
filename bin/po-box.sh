@@ -29,5 +29,6 @@ if vagrant status $PO_VM_NAME | grep "^$PO_VM_NAME" | grep -q "\brunning\b"; the
     rm -f .vagrant/machines/$PO_VM_NAME/virtualbox/synced_folders
     vagrant reload $PO_VM_NAME --provision
 else
-    vagrant up po
+    # run with --provision to run provisioning if machine was halted
+    vagrant up po --provision
 fi
