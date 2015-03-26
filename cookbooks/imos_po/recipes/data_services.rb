@@ -36,15 +36,15 @@ git data_services_dir do
   revision    node['imos_po']['data_services']['branch']
   action      :sync
   user        'root'
-  group       'projectofficer'
+  group       node['imos_po']['data_services']['group']
   ssh_wrapper node['git_ssh_wrapper']
   notifies    :create, "ruby_block[data_services_cronjobs]", :immediately
 end
 
 directory data_services_log_dir do
-  user      'root'
-  group     'projectofficer'
-  mode      01777
+  user      node['imos_po']['data_services']['user']
+  group     node['imos_po']['data_services']['group']
+  mode      01775
   recursive true
 end
 

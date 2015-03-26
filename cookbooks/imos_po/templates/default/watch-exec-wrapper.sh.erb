@@ -17,7 +17,7 @@ export LOG_DIR="<%= node['imos_po']['data_services']['log_dir'] %>"
 # $2 - command to run
 # "$@" - extra parameters for command
 main() {
-    export JOB_NAME=$1; shift
+    declare -r JOB_NAME=$1; shift; export JOB_NAME
     local file=$1; shift
     local command=$1; shift
 
@@ -29,7 +29,7 @@ main() {
         return 0
     fi
 
-    eval $command $file "$@" 2>&1 | log_out
+    eval $command $file "$@" 2>&1 | log_info
 
     # make sure file was handled, move to error directory if not
     if [ -f $file ]; then

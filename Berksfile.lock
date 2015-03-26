@@ -293,6 +293,7 @@ GRAPH
     imos_mounts (>= 0.0.0)
     imos_users (>= 0.0.0)
     logrotate (>= 0.0.0)
+    rsyslog (>= 0.0.0)
     sudo (>= 0.0.0)
   imos_postgresql (0.2.0)
     backup (>= 0.0.0)

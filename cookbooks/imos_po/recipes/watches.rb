@@ -8,6 +8,8 @@
 #
 # Setup watches defined by project officers in watch.d directory
 
+include_recipe "rsyslog"
+
 data_services_dir = node['imos_po']['data_services']['dir']
 data_services_watch_dir = File.join(data_services_dir, "watch.d")
 watch_exec_wrapper = node['imos_po']['watch_exec_wrapper']
@@ -44,11 +46,30 @@ if node['imos_po']['data_services']['watches']
     action [:start, :enable]
   end
 
-  logrotate_app "project-officer-processing" do
-    rotate     node['logrotate']['global']['rotate']
-    path       ::File.join(node['imos_po']['data_services']['log_dir'], "*", "process.log")
-    frequency  'daily'
-    options    [ "compress", "delaycompress", "missingok", "nocreate", "sharedscripts" ]
-  end
+end
 
+log_dir  = ::File.join(node['imos_po']['data_services']['log_dir'])
+log_file = ::File.join(log_dir, "process.log")
+
+file ::File.join(node['rsyslog']['config_prefix'], "rsyslog.d", "60-project-officer-process.conf") do
+  content  "#{node['imos_po']['watches']['syslog_facility']}.* #{log_file}
+"
+  owner    'root'
+  group    'root'
+  mode     '0644'
+  notifies :restart, "service[#{node['rsyslog']['service_name']}]"
+end
+
+logrotate_app "project-officer-processing" do
+  rotate     node['logrotate']['global']['rotate']
+  path       log_file
+  frequency  'daily'
+  options    [ "compress", "delaycompress", "missingok", "nocreate", "sharedscripts" ]
+end
+
+logrotate_app "project-officer-processing-file-reports" do
+  rotate     node['logrotate']['global']['rotate']
+  path       ::File.join(log_dir, "*", "*.log")
+  frequency  'daily'
+  options    [ "compress", "delaycompress", "missingok", "nocreate", "sharedscripts" ]
 end

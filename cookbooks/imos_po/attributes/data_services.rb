@@ -22,7 +22,8 @@ default['imos_po']['data_services']['error_dir']    = '/mnt/err'
 default['imos_po']['data_services']['env'] = ::File.join(node['imos_po']['data_services']['dir'], "env")
 
 # User to use when running cronjobs
-default['imos_po']['data_services']['user'] = 'projectofficer'
+default['imos_po']['data_services']['user']  = 'projectofficer'
+default['imos_po']['data_services']['group'] = 'projectofficer'
 
 # Event driven processing variables
 default['imos_po']['watch_exec_wrapper']         = "/usr/local/bin/watch-exec-wrapper.sh"
