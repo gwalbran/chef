@@ -82,7 +82,7 @@ end
      app_name = app.keys.first
      aliases  = app.values.first
 %>
-  ProxyPass           /<%= app_name %> http://localhost:<%= @params[:app_port] %>/<%= app_name %>
+  ProxyPass           /<%= app_name %> http://localhost:<%= @params[:app_port] %>/<%= app_name %> retry=0
   ProxyPassReverse    /<%= app_name %> http://localhost:<%= @params[:app_port] %>/<%= app_name %>
 
   # take care of extra aliases per app
