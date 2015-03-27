@@ -36,15 +36,15 @@ git data_services_dir do
   revision    node['imos_po']['data_services']['branch']
   action      :sync
   user        'root'
-  group       'projectofficer'
+  group       node['imos_po']['data_services']['group']
   ssh_wrapper node['git_ssh_wrapper']
   notifies    :create, "ruby_block[data_services_cronjobs]", :immediately
 end
 
 directory data_services_log_dir do
-  user      'root'
-  group     'projectofficer'
-  mode      01777
+  user      node['imos_po']['data_services']['user']
+  group     node['imos_po']['data_services']['group']
+  mode      01775
   recursive true
 end
 
@@ -61,20 +61,21 @@ end
 # Please note all variables here must be fully expanded to avoid scripts
 # needing to evaluate them at runtime
 data_services_vars = [
-    "OPENDAP_DIR='#{node['imos_po']['data_services']['opendap_dir']}'",
-    "PUBLIC_DIR='#{node['imos_po']['data_services']['public_dir']}'",
-    "ARCHIVE_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
-    "INCOMING_DIR='#{node['imos_po']['data_services']['incoming_dir']}'",
-    "OPENDAP_IMOS_DIR='#{node['imos_po']['data_services']['opendap_dir']}/1/IMOS/opendap'",
-    "PUBLIC_IMOS_DIR='#{node['imos_po']['data_services']['public_dir']}'",
-    "ARCHIVE_IMOS_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
-    "WIP_DIR='#{node['imos_po']['wip_dir']}'",
-    "DATA_SERVICES_DIR='#{data_services_dir}'",
-    "LOG_DIR='#{data_services_log_dir}'"
+  "OPENDAP_DIR='#{node['imos_po']['data_services']['opendap_dir']}'",
+  "PUBLIC_DIR='#{node['imos_po']['data_services']['public_dir']}'",
+  "ARCHIVE_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
+  "INCOMING_DIR='#{node['imos_po']['data_services']['incoming_dir']}'",
+  "ERROR_DIR='#{node['imos_po']['data_services']['error_dir']}'",
+  "OPENDAP_IMOS_DIR='#{node['imos_po']['data_services']['opendap_dir']}/1/IMOS/opendap'",
+  "PUBLIC_IMOS_DIR='#{node['imos_po']['data_services']['public_dir']}'",
+  "ARCHIVE_IMOS_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
+  "WIP_DIR='#{node['imos_po']['wip_dir']}'",
+  "DATA_SERVICES_DIR='#{data_services_dir}'",
+  "LOG_DIR='#{data_services_log_dir}'"
 ]
 
 # plant env file in data-services repo with all related variables
-generate_env_file(::File.join(data_services_dir, "env"),  data_services_vars)
+generate_env_file(node['imos_po']['data_services']['env'],  data_services_vars)
 
 if node['imos_po']['data_services']['cronjobs']
   # Install cron jobs for project officers
@@ -115,3 +116,5 @@ else
     end
   end
 end
+
+include_recipe "imos_po::watches"

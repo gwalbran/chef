@@ -6,7 +6,6 @@ description      "Installs/Configures imos_po"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.1.0"
 
-depends "imos_mounts"
-depends "imos_core"
-depends "imos_users"
-depends "sudo"
+%w{ imos_mounts imos_core imos_users sudo logrotate rsyslog }. each do |cb|
+  depends cb
+end
