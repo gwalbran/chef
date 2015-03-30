@@ -9,7 +9,7 @@ watchlists.each do |job_name, watchlist|
       execute_params.gsub!("$", "$$")
     end
 %>
-<%= path %> IN_CLOSE_WRITE sudo -u <%= node['imos_po']['data_services']['user'] %> <%= @watch_exec_wrapper %> <%= job_name %> $@/$# <%= execute %> <%= execute_params %>
+<%= path %> IN_CLOSE_WRITE sudo -i -u <%= node['imos_po']['data_services']['user'] %> <%= @watch_exec_wrapper %> <%= job_name %> $@/$# <%= execute %> <%= execute_params %>
 <%
   end
 end %>
