@@ -29,7 +29,7 @@ main() {
         return 0
     fi
 
-    eval $command $file "$@" 2>&1 | log_info
+    eval $command $file "$@" 2>&1 | log_out
 
     # make sure file was handled, move to error directory if not
     if [ -f $file ]; then
