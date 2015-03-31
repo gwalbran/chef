@@ -1,5 +1,4 @@
 define :imos_tomcat_war do
-
   package "unzip"
 
   service_name = params[:service_name]
@@ -14,12 +13,21 @@ define :imos_tomcat_war do
   tomcat_webapps_dir = "#{node['tomcat']['base']}/#{params[:tomcat_instance_name]}/webapps"
   app_name           = params[:app_name] || artifact_id
 
+  artifact_manifest = {}
+  begin
+    artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_id).to_hash
+  rescue
+    Chef::Log.info("Building artifact manifest for '#{artifact_id}'")
+    artifact_manifest = { 'id' => artifact_id, 'job' => artifact_id }
+  end
+
   imos_artifacts_deploy artifact_id do
-    install_dir      ::File.join(tomcat_webapps_dir, app_name)
-    file_destination ::File.join(tomcat_webapps_dir, "#{app_name}.war")
-    owner            node["tomcat"]["user"]
-    group            node["tomcat"]["user"]
-    notifies         :restart, "service[#{params[:service_name]}]", :delayed
+    install_dir       ::File.join(tomcat_webapps_dir, app_name)
+    file_destination  ::File.join(tomcat_webapps_dir, "#{app_name}.war")
+    artifact_manifest artifact_manifest
+    owner             node["tomcat"]["user"]
+    group             node["tomcat"]["user"]
+    notifies          :restart, "service[#{params[:service_name]}]", :delayed
   end
 
 end
