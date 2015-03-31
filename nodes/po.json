@@ -5,6 +5,7 @@
         "role[base]",
         "role[restore]",
         "recipe[ssl]",
+        "recipe[imos_dns::etc_hosts]",
         "recipe[imos_postgresql::official_postgresql]",
         "recipe[database_migrations]",
         "recipe[imos_webapps::generic_webapp]"
@@ -17,7 +18,7 @@
     ],
     "imos_dns": {
         "etc_hosts": {
-            "10.11.12.13": "po.aodn.org.au"
+            "10.11.12.13": "po.aodn.org.au geoserver-123.aodn.org.au geoserver-rc.aodn.org.au"
         }
     },
     "tz": "Australia/Hobart",
@@ -57,10 +58,7 @@
             "roles": [
                 "db_po_main",
                 "marvl_data_atlas",
-                "portal",
-                "geonetwork",
-                "wmsscanner",
-                "wfsscanner"
+                "geonetwork"
             ],
             "git_extension_support": [
                 {
@@ -70,10 +68,7 @@
             ],
             "databases": [
                 "harvest",
-                "portal" ,
-                "geonetwork",
-                "wmsscanner",
-                "wfsscanner"
+                "geonetwork"
             ],
             "config": {
                 "listen_addresses": "*"
@@ -102,11 +97,10 @@
                 "aliases":       [ "10.11.12.13" ],
                 "port":          "8080",
                 "java_options":  "-Xmx3G -Xms1G -XX:PermSize=512m -DGEOSERVER_DATA_DIR=/vagrant/shared_src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork",
-                "max_post_size": 262144000,
                 "apps": [
                     {
                         "name":                 "imos123",
-                        "artifact":             "portal-3",
+                        "artifact":             "portal_4_content_testing",
                         "config_template_dir":  "portal",
                         "config_file":          "Portal.groovy",
                         "portal_instance_name": "IMOS",
@@ -114,9 +108,6 @@
                         "header_logo":          "IMOS_logo.png",
                         "header_link_text":     "IMOS",
                         "header_href":          "http://imos.org.au/imos.html",
-                        "jndis":                [ "portal" ],
-                        "wms_scanner_url":      "http://10.11.12.13/wmsscanner/",
-                        "wfs_scanner_url":      "http://10.11.12.13/wfsscanner/",
                         "geonetwork_url":       "http://10.11.12.13/geonetwork",
                         "feature_toggles":      {
                             "hierarchicalFacets": true
@@ -132,7 +123,7 @@
                     },
                     {
                         "name":           "geoserver",
-                        "artifact":       "geoserver",
+                        "artifact":       "geoserver_imos_rc",
                         "custom_def":     "geoserver",
                         "data_dir":       "/vagrant/shared_src/geoserver",
                         "jndis":          [ "harvest-read-po", "local-harvest-read" ]
@@ -151,18 +142,6 @@
                             "parameterCategories": "http://vocab.aodn.org.au/def/ClassScheme/parameter1",
                             "platformCategories":  "http://vocab.aodn.org.au/def/ClassScheme/platform1"
                         }
-                    },
-                    {
-                        "name":           "wmsscanner",
-                        "artifact":       "wms-scanner",
-                        "config_file":    "WmsScanner.groovy",
-                        "jndis":          [ "wmsscanner" ]
-                    },
-                    {
-                        "name":           "wfsscanner",
-                        "artifact":       "wfs-scanner",
-                        "config_file":    "WfsScanner.groovy",
-                        "jndis":          [ "wfsscanner" ]
                     }
                 ]
             }
