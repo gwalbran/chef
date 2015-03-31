@@ -48,7 +48,7 @@ include_recipe 'xvfb'
 include_recipe 'packer'
 
 package "zip"
-
+package "shunit2"
 
 # Copy the private key
 jenkins_ssh_key = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])['ssh_priv_key']
