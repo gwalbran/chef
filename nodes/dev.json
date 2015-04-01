@@ -22,11 +22,9 @@
                 "name": "main",
                 "roles": [
                     "db_dev_main",
-                    "portal",
                     "aatams"
                 ],
                 "databases": [
-                    "portal",
                     "aatams"
                 ],
                 "config": {
@@ -51,9 +49,9 @@
                 "java_options": "-Xmx64m -Xms64m -XX:PermSize=64m",
                 "apps":         [],
                 "httpd_rules":  [
-                    "ProxyPass        /aodn-portal http://localhost:8080/aodn-portal",
+                    "ProxyPass        /aodn-portal http://localhost:8080/aodn-portal retry=0",
                     "ProxyPassReverse /aodn-portal http://localhost:8080/aodn-portal",
-                    "ProxyPass        /aatams      http://localhost:8081/aatams",
+                    "ProxyPass        /aatams      http://localhost:8081/aatams      retry=0",
                     "ProxyPassReverse /aatams      http://localhost:8081/aatams"
                 ]
             }

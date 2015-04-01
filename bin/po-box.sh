@@ -1,7 +1,18 @@
 #!/bin/bash
 
+# remove wms and wfs scanners
+# TODO remove once ran on all POs VMs
+remove_scanners() {
+    local webapps_path="/var/lib/tomcat7/default/webapps"
+    local -i scanners_count=`vagrant ssh po -- "ls -1 /var/lib/tomcat7/default/webapps/*scanner*" | grep -v ^WARNING: | wc -l`
+    if [ $scanners_count -gt 0 ]; then
+        echo "Removing scanners and restarting tomcat"
+        vagrant ssh po -- "rm -rf $webapps_path/*scanner* && sudo /etc/init.d/tomcat7_default restart"
+    fi
+}
+
 export VAGRANT_STATIC_IP=10.11.12.13
-export VAGRANT_MEMORY=4096
+export VAGRANT_MEMORY=3072
 
 declare -r GEOSERVER_GIT_REPO=git@github.com:aodn/geoserver-config
 declare -r PO_VM_NAME=po
@@ -32,3 +43,5 @@ else
     # run with --provision to run provisioning if machine was halted
     vagrant up po --provision
 fi
+
+remove_scanners
