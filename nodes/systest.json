@@ -69,11 +69,11 @@
                     }
                 ],
                 "httpd_rules": [
-                    "ProxyPass           /geonetwork http://localhost:8081/geonetwork",
+                    "ProxyPass           /geonetwork http://localhost:8081/geonetwork retry=0",
                     "ProxyPassReverse    /geonetwork http://localhost:8081/geonetwork",
-                    "ProxyPass           /geoserver  http://localhost:8082/geoserver",
+                    "ProxyPass           /geoserver  http://localhost:8082/geoserver  retry=0",
                     "ProxyPassReverse    /geoserver  http://localhost:8082/geoserver",
-                    "ProxyPass           /ncwms      http://localhost:8083/ncwms",
+                    "ProxyPass           /ncwms      http://localhost:8083/ncwms      retry=0",
                     "ProxyPassReverse    /ncwms      http://localhost:8083/ncwms"
                 ]
             },
