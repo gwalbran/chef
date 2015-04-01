@@ -1,5 +1,0 @@
-{
-    "id": "geonetwork",
-    "job": "GeoNetwork_prod",
-    "logstash_filter_config": "geonetwork"
-}

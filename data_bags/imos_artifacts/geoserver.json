@@ -1,5 +1,0 @@
-{
-    "id": "geoserver",
-    "job": "geoserver_imos_prod",
-    "logstash_filter_config": "geoserver"
-}

@@ -32,11 +32,9 @@
         "clusters": [{
             "roles": [
                 "db_dev_main",
-                "portal",
                 "geonetwork"
             ],
             "databases": [
-                "portal",
                 "geonetwork"
             ],
             "config": {
@@ -57,11 +55,9 @@
                     {
                         "name":                 "imos123",
                         "aliases":              [ "webportal", "imos" ],
-                        "artifact":             "portal-3-system-testing",
+                        "artifact":             "portal_4_system_testing",
                         "config_file":          "Imos123.groovy",
                         "geonetwork_url":       "http://127.0.1.2/geonetwork",
-                        "proxyWmsRequests":     true,
-                        "jndis":                [ "portal" ],
                         "config_template_dir":  "portal",
                         "config_file":          "Portal.groovy",
                         "portal_instance_name": "IMOS",
@@ -69,10 +65,7 @@
                         "header_logo":          "IMOS_logo.png",
                         "header_link_text":     "IMOS",
                         "header_href":          "http://imos.org.au/imos.html",
-                        "known_servers":        [ "geoserver_systest", "ncwms_systest" ],
-                        "feature_toggles": {
-                            "pythonDownload": true
-                        }
+                        "known_servers":        [ "geoserver_systest", "ncwms_systest" ]
                     }
                 ],
                 "httpd_rules": [
@@ -92,7 +85,7 @@
                 "apps": [
                     {
                         "name":                  "geonetwork",
-                        "artifact":              "geonetwork_systest",
+                        "artifact":              "GeoNetwork_systest",
                         "config_file":           "config-overrides.xml",
                         "config_template_dir":   "geonetwork",
                         "custom_def":            "geonetwork",
@@ -123,7 +116,7 @@
                 "apps": [
                     {
                         "name":       "geoserver",
-                        "artifact":   "geoserver",
+                        "artifact":   "geoserver_imos_rc",
                         "custom_def": "geoserver",
                         "data_bag":   "geoserver_123",
                         "jndis":      [ "harvest-systest" ]
