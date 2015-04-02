@@ -35,10 +35,9 @@ if node['imos_po']['data_services']['watches']
     owner     "root"
     group     "root"
     variables ({
-      :watch_exec_wrapper      => watch_exec_wrapper,
-      :data_services_env       => node['imos_po']['data_services']['env'],
-      :data_services_dir       => data_services_dir,
-      :data_services_watch_dir => data_services_watch_dir
+      :watchlists         => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
+      :watch_exec_wrapper => watch_exec_wrapper,
+      :data_services_dir  => data_services_dir
     })
   end
 
@@ -72,4 +71,36 @@ logrotate_app "project-officer-processing-file-reports" do
   path       ::File.join(log_dir, "*", "*.log")
   frequency  'daily'
   options    [ "compress", "delaycompress", "missingok", "nocreate", "sharedscripts" ]
+end
+
+if node['vagrant']
+  # Install script to process all files in home directory of vagrant
+  # TODO hardcoded /home/vagrant
+  template "/home/vagrant/process-incoming.sh" do
+    source    'process-incoming.sh.erb'
+    owner     'vagrant'
+    group     'vagrant'
+    mode      '0755'
+    variables ({
+      :watchlists         => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
+      :watch_exec_wrapper => watch_exec_wrapper,
+      :data_services_dir  => data_services_dir
+    })
+  end
+
+  # Change ownership of /mnt to vagrant, so the production hierarchy can be
+  # created (/mnt/opendap/1, etc)
+  execute "fix opendap permissions" do
+    command "mkdir -p #{node['imos_po']['data_services']['opendap_dir']}/1 && chown vagrant:vagrant #{node['imos_po']['data_services']['opendap_dir']}/1"
+  end
+
+  # Create watched directories in incoming directory
+  watchlists = Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir)
+  watchlists.each do |job_name, watchlist|
+    watchlist['path'].each do |path|
+      path = ::File.join(node['imos_po']['data_services']['incoming_dir'], path)
+      ::FileUtils.mkdir_p path
+      ::FileUtils.chown 'vagrant', 'vagrant', path
+    end
+  end
 end
