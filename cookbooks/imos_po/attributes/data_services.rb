@@ -30,3 +30,6 @@ default['imos_po']['data_services']['group'] = 'projectofficer'
 default['imos_po']['watch_exec_wrapper']         = "/usr/local/bin/watch-exec-wrapper.sh"
 default['imos_po']['watches']['syslog_facility'] = "local3"
 default['imos_po']['data_services']['lib']       = ::File.join(node['imos_po']['data_services']['dir'], "lib", "common")
+
+# When running in vagrant in dev mode, we will clone the repo from outside the node
+default['imos_po']['data_services']['clone_repository'] = true
