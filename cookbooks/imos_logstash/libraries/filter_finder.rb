@@ -25,12 +25,16 @@ module FilterFinder
       portal
   }
 
+  def self.databag_exists?(name, id)
+    return ! Chef::Search::Query.new.search(name, "id:#{id}").empty?
+  end
+
   def self.get_filter_config(application_name)
     filter_config = nil
-    begin
+    if databag_exists?("imos_artifacts", application_name)
       app_data_bag = Chef::DataBagItem.load("imos_artifacts", application_name)
       filter_config = app_data_bag['logstash_filter_config']
-    rescue
+    else
       application_name_short = application_name.split('_')[0].downcase
       if @@available_filter_configs.include?(application_name_short)
         filter_config = application_name_short
