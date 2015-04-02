@@ -7,9 +7,17 @@ declare -r GEOSERVER_GIT_REPO=git@github.com:aodn/geoserver-config
 declare -r DATA_SERVICES_GIT_REPO=git@github.com:aodn/data-services
 declare -r PO_VM_NAME=po
 
-if [ ! -d "shared_src/geoserver/.git" ]; then
-    mkdir -p shared_src
-    (cd shared_src && git clone $GEOSERVER_GIT_REPO geoserver)
+if [ ! -d "src/geoserver/.git" ]; then
+    mkdir -p src
+    if [ -d "shared_src/geoserver/.git" ]; then
+        mv shared_src/geoserver src/geoserver
+        echo "NOTICE!!!!"
+        echo "NOTICE!!!!"
+        echo "NOTICE!!!!"
+        echo "Your geoserver repository was moved from 'shared_src/geoserver' to 'src/geoserver'"
+    else
+        (cd src && git clone $GEOSERVER_GIT_REPO geoserver)
+    fi
 fi
 
 if [ ! -d "src/data-services/.git" ]; then
