@@ -4,11 +4,17 @@ export VAGRANT_STATIC_IP=10.11.12.13
 export VAGRANT_MEMORY=3072
 
 declare -r GEOSERVER_GIT_REPO=git@github.com:aodn/geoserver-config
+declare -r DATA_SERVICES_GIT_REPO=git@github.com:aodn/data-services
 declare -r PO_VM_NAME=po
 
 if [ ! -d "shared_src/geoserver/.git" ]; then
     mkdir -p shared_src
     (cd shared_src && git clone $GEOSERVER_GIT_REPO geoserver)
+fi
+
+if [ ! -d "src/data-services/.git" ]; then
+    mkdir -p src
+    (cd src && git clone $DATA_SERVICES_GIT_REPO data-services)
 fi
 
 declare -r RESTORE_USER='data_bags/users/restore.json'

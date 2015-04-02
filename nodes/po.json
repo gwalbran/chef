@@ -8,10 +8,12 @@
         "recipe[imos_dns::etc_hosts]",
         "recipe[imos_postgresql::official_postgresql]",
         "recipe[database_migrations]",
+        "recipe[imos_po]",
+        "recipe[imos_po::data_services]",
         "recipe[imos_webapps::generic_webapp]"
     ],
     "imos_users": {
-        "groups": [ "users" ]
+        "groups": [ "users", "projectofficer" ]
     },
     "aliases": [
         "po.aodn.org.au"
@@ -51,6 +53,20 @@
         "migrations": [
             "marvl_data_atlas"
         ]
+    },
+    "imos_po": {
+        "wip_dir": "/tmp",
+        "data_services": {
+            "user": "vagrant",
+            "group": "vagrant",
+            "clone_repository": false,
+            "dir": "/vagrant/src/data-services",
+            "log_dir": "/vagrant/src/data-services/log",
+            "public_dir": "/mnt/imos-t4/IMOS/public",
+            "archive_dir": "/mnt/imos-t4/IMOS/archive",
+            "incoming_dir": "/vagrant/src/incoming",
+            "error_dir": "/vagrant/src/error"
+        }
     },
     "postgresql": {
         "clusters": [{
