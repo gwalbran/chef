@@ -1,10 +1,33 @@
 class JenkinsArtifact
+  attr_reader :url
+  attr_reader :username
+  attr_reader :password
 
-  def initialize(url, username, password)
-    @url = url
-    @username = username
-    @password = password
+  def initialize(artifact_manifest, node)
+    job_name = artifact_manifest['job']
+
+    if artifact_manifest['jenkins_data_bag']
+      jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", artifact_manifest['jenkins_data_bag'])
+      @url = JenkinsArtifact::get_job_url(jenkins_creds['url'], job_name)
+      @username = jenkins_creds['username']
+      @password = jenkins_creds['password']
+    else
+      begin
+        jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", node[:imos_artifacts][:jenkins_data_bag])
+        @url = JenkinsArtifact::get_job_url(jenkins_creds['url'], job_name)
+        @username = jenkins_creds['username']
+        @password = jenkins_creds['password']
+      rescue
+        @url = JenkinsArtifact::get_job_url(node[:imos_artifacts][:ci_url], job_name)
+        Chef::Log.warn("Not using authentication for jenkins download from '#{@url}'")
+      end
+    end
+
     @api = 'api/json'
+  end
+
+  def self.get_job_url(url_base, job_name)
+    return URI.escape("#{url_base}/job/#{job_name}/lastSuccessfulBuild")
   end
 
   def cache(artifact_manifest, cache_path)

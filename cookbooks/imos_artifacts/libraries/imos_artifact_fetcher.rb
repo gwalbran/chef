@@ -32,22 +32,7 @@ class ImosArtifactFetcher
       return "#{Chef::Config[:file_cache_path]}/#{artifact_manifest['filename']}", false
     end
 
-    # Get the jenkins api creds
-    uri_base = artifact_manifest['ci_url'] || node[:imos_artifacts][:ci_url]
-    uri = URI.escape("#{uri_base}/job/#{artifact_manifest['job']}/lastSuccessfulBuild");
-    jenkins = JenkinsArtifact.new(uri, nil, nil)
-
-    begin
-      jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", "jenkins-api")
-      jenkins = JenkinsArtifact.new(
-        uri,
-        jenkins_creds['username'],
-        jenkins_creds['password']
-      )
-    rescue
-      Chef::Log.warn("Not using authentication for jenkins download from '#{uri}'")
-    end
-
+    jenkins = JenkinsArtifact.new(artifact_manifest, node)
     return jenkins.cache(artifact_manifest, Chef::Config[:file_cache_path])
   end
 
