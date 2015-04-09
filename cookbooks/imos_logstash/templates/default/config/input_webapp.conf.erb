@@ -17,12 +17,20 @@ filter {
     # App specific filters.
     <%
        instance_params['apps'].each do |app_params|
-         app_data_bag = Chef::DataBagItem.load("imos_artifacts", app_params['artifact'])
-         if app_data_bag['logstash_filter_config']
-    %>
-<%= render "config/filters_#{app_data_bag['logstash_filter_config']}.conf.erb" %>
-    <%
+         app_artifact = app_params['artifact']
+         filter_config = FilterFinder.get_filter_config(app_artifact)
+         filter_config_content = ""
+         if filter_config
+           Chef::Log.info("Using logstash filter config '#{filter_config}' for application '#{app_artifact}'")
+           begin
+             filter_config_content = render "config/filters_#{filter_config}.conf.erb"
+           rescue
+             Chef::Log.warn("Could not find logstash filter configuration for #{app_artifact} - no stress!")
+           end
          end
+    %>
+<%= filter_config_content %>
+    <%
        end
     %>
   }
