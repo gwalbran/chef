@@ -72,7 +72,7 @@ def deploy_artifact
   # else?
   #   don't deploy!!
 
-  if ::File.exists?(file_dest) && !FileUtils.compare_file(cached_file_path, file_dest)
+  if !::File.exists?(file_dest) || (::File.exists?(file_dest) && !FileUtils.compare_file(cached_file_path, file_dest))
     Chef::Log.info("IMOS artifact at '#{file_dest}' is different than cached one, deploying...")
     extract_artifact(
       cached_file_path,
