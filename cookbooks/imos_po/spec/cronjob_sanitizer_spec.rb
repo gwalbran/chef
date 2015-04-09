@@ -1,6 +1,10 @@
 require_relative 'spec_helper'
 
 describe Chef::Recipe::CronjobSanitizer do
+  before(:each) do
+    allow(Chef::Log).to receive(:warn)
+  end
+
   allowed_users = [ "test_user1", "test_user2" ]
   let(:cronjob_sanitizer) { Chef::Recipe::CronjobSanitizer.new(allowed_users) }
 
