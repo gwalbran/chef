@@ -1,6 +1,10 @@
 require_relative 'spec_helper'
 
 describe JenkinsArtifact do
+  before(:each) do
+    allow(Chef::Log).to receive(:warn)
+  end
+
   describe 'initialize' do
     it 'build job url' do
       job_url = JenkinsArtifact.get_job_url("https://ci.aodn.org.au", "a_job")
