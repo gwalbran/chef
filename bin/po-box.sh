@@ -4,7 +4,7 @@
 # TODO remove once ran on all POs VMs
 remove_scanners() {
     local webapps_path="/var/lib/tomcat7/default/webapps"
-    local -i scanners_count=`vagrant ssh po -- "ls -1 /var/lib/tomcat7/default/webapps/*scanner*" | grep -v ^WARNING: | wc -l`
+    local -i scanners_count=`vagrant ssh po -- "ls -1 /var/lib/tomcat7/default/webapps/*scanner* 2> /dev/null" | grep -v ^WARNING: | wc -l`
     if [ $scanners_count -gt 0 ]; then
         echo "Removing scanners and restarting tomcat"
         vagrant ssh po -- "rm -rf $webapps_path/*scanner* && sudo /etc/init.d/tomcat7_default restart"
