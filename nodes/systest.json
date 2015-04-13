@@ -5,6 +5,9 @@
         "role[base]",
         "recipe[imos_mounts::ebs]",
         "recipe[ssl]",
+        "role[restore]",
+        "recipe[imos_squid]",
+        "recipe[imos_core::cronjob]",
         "recipe[imos_dns::etc_hosts]",
         "recipe[imos_postgresql::official_postgresql]",
         "recipe[imos_webapps::generic_webapp]"
@@ -28,6 +31,34 @@
         "base_dir":   "/mnt/ebs/backups",
         "backup_dir": "/mnt/ebs/backups/backups"
     },
+    "imos_backup": {
+        "restore": {
+            "allow": true,
+            "ssh_opts": "-o StrictHostKeyChecking=no",
+            "directives": [
+                {
+                    "from_host":  "1-aws-syd.emii.org.au",
+                    "from_model": "pgsql",
+                    "files":      [ "geonetwork/public.dump" ]
+                },
+                {
+                    "from_host":  "1-aws-syd.emii.org.au",
+                    "from_model": "geonetwork_123_geonetwork",
+                    "to_model":   "geonetwork_geonetwork"
+                }
+            ]
+        }
+    },
+    "cronjobs": [
+        {
+            "job_name": "restore",
+            "shell":    "/bin/bash",
+            "minute":   "0",
+            "hour":     "7",
+            "mailto":   "\"\"",
+            "command":  "/mnt/ebs/backups/restore/restore.sh >& /tmp/restore.log; /etc/init.d/tomcat7_geonetwork restart >& /dev/null"
+        }
+    ],
     "postgresql": {
         "clusters": [{
             "roles": [
@@ -41,6 +72,10 @@
                 "data_directory": "/mnt/ebs/pgsql"
             }
         }]
+    },
+    "squid": {
+        "cache_size": 20480,
+        "cache_mem": 512
     },
     "webapps": {
         "instances": [
@@ -111,6 +146,7 @@
                 "port":           "8082",
                 "java_options":   "-Xmx5G -Xms512m -Dgt2.jdbc.trace=true -XX:MaxPermSize=128m -DGEOSERVER_DATA_DIR=/mnt/ebs/geoserver",
                 "data_dir":       "/mnt/ebs/geoserver",
+                "cached":         true,
                 "thread_control": true,
                 "max_threads":    10,
                 "apps": [
@@ -119,7 +155,15 @@
                         "artifact":   "geoserver_imos_rc",
                         "custom_def": "geoserver",
                         "data_bag":   "geoserver_123",
-                        "jndis":      [ "harvest-systest" ]
+                        "jndis":      [ "harvest-systest" ],
+                        "refresh_patterns": [
+                            {
+                                "regex": "(.+/)?wms\\?.*",
+                                "extra_opts": "override-expire ignore-reload",
+                                "min":        720,
+                                "max":        720
+                            }
+                        ]
                     }
                 ]
             }

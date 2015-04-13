@@ -5,5 +5,5 @@
     "url": "jdbc:postgresql://dbprod.emii.org.au:5432/harvest?loginTimeout=1000&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory",
     "username": "geoserver_systest",
     "password": "geoserver_systest",
-    "maxActive": 1
+    "maxActive": 10
 }
