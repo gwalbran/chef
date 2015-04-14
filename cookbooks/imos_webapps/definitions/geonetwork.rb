@@ -8,7 +8,6 @@
 #
 
 define :geonetwork do
-
   app_parameters          = params[:app_parameters]
   instance_parameters     = params[:instance_parameters]
   instance_service_name   = params[:instance_service_name]
@@ -78,31 +77,7 @@ define :geonetwork do
     }
   end
 
-  # Deploy schema plugins
-  schema_plugins_extract_dir = "#{data_dir}/config/schema_plugins"
-
-  directory schema_plugins_extract_dir do
-    owner     node['tomcat']['user']
-    group     node['tomcat']['group']
-    mode      0755
-    recursive true
-  end
-
-  # Deploy all schema plugins specified
-  app_parameters['schema_plugins'].each do |schema_id|
-    schema = data_bag_item("schema_plugins", schema_id)
-
-    imos_artifacts_deploy schema["artifact_id"] do
-      file_destination ::File.join(schema_plugins_extract_dir, "#{schema['name']}.war")
-      install_dir      "#{schema_plugins_extract_dir}/#{schema['name']}"
-      owner            node["tomcat"]["user"]
-      group            node["tomcat"]["user"]
-      notifies         :restart, "service[#{instance_service_name}]", :delayed
-    end
-  end if app_parameters['schema_plugins']
-
   # log4j override file
-
   log4j_override_file = File.join(config_dir, "log4j-overrides.cfg")
   logging = app_parameters['logging']
 
