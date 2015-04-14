@@ -133,7 +133,6 @@
                         "artifact":              "GeoNetwork_prod",
                         "config_file":           "config-overrides.xml",
                         "config_template_dir":   "geonetwork",
-                        "schema_plugins":        [ "iso19135", "iso19139-anzlic", "iso19139-mcp-1-4", "iso19139-mcp-1-5", "iso19139-mcp-2-0" ],
                         "geoserver":             "http://localhost/geonetwork",
                         "jndis":                 [ "geonetwork" ],
                         "custom_def":            "geonetwork",

@@ -124,7 +124,6 @@
                         "config_file":           "config-overrides.xml",
                         "config_template_dir":   "geonetwork",
                         "custom_def":            "geonetwork",
-                        "schema_plugins":        [ "iso19135-rc", "iso19139-anzlic-rc", "iso19139-mcp-1-4-rc", "iso19139-mcp-1-5-rc", "iso19139-mcp-2-0-rc" ],
                         "geoserver":             "http://geoserver-static.aodn.org.au/geoserver",
                         "data_dir":              "/mnt/ebs/geonetwork",
                         "backup":                true,
