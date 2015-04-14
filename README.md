@@ -47,6 +47,14 @@ $ git clone git@github.com:YOUR_ORG/chef-private.git private
 
 The symbolic links should look lively now.
 
+## Updating The Repository
+
+In order to update this repository, you need to update both repositories you
+have setup:
+```
+$ git pull && (cd private && git pull)
+```
+
 ## Run up a node with Vagrant
 
 Running up a VM should be as simple as:
