@@ -307,3 +307,9 @@ cookbook_file '/etc/init.d/postgresql' do
   group  'root'
   mode   00755
 end
+
+service "postgresql" do
+  service_name "postgresql"
+  supports :status => true, :restart => true
+  action [:start, :enable]
+end
