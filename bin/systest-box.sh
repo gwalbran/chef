@@ -26,6 +26,6 @@ if vagrant status $SYSTEST_VM_NAME | grep "^$SYSTEST_VM_NAME" | grep -q "\brunni
     vagrant reload $SYSTEST_VM_NAME --provision && restore_geonetwork
 else
     # run with --provision to run provisioning if machine was halted
-    vagrant up po --provision && restore_geonetwork
+    vagrant up $SYSTEST_VM_NAME --provision && restore_geonetwork
 fi
 

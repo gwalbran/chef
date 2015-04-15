@@ -41,7 +41,7 @@ if vagrant status $PO_VM_NAME | grep "^$PO_VM_NAME" | grep -q "\brunning\b"; the
     vagrant reload $PO_VM_NAME --provision
 else
     # run with --provision to run provisioning if machine was halted
-    vagrant up po --provision
+    vagrant up $PO_VM_NAME --provision
 fi
 
 remove_scanners
