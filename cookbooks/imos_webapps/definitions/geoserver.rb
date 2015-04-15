@@ -28,6 +28,9 @@ define :geoserver do
     recursive true
   end
 
+  geoserver_username = Chef::EncryptedDataBagItem.load('passwords', 'geoserver')['username']
+  geoserver_password = Chef::EncryptedDataBagItem.load('passwords', 'geoserver')['password']
+
   if app_parameters['data_bag']
     # Load given data bag for instance
     geoserver_data_bag = Chef::DataBagItem.load("geoserver", app_parameters['data_bag']).to_hash
@@ -58,20 +61,22 @@ define :geoserver do
       notifies :restart, "service[#{instance_service_name}]", :delayed
     end
 
-    geoserver_username = geoserver_data_bag['username'] || Chef::EncryptedDataBagItem.load('passwords', 'geoserver')['username']
-    geoserver_password = geoserver_data_bag['password'] || Chef::EncryptedDataBagItem.load('passwords', 'geoserver')['password']
-    template "#{data_dir}/security/usergroup/default/users.xml" do
-      source "geoserver/users.xml.erb"
-      owner  node[:tomcat][:user]
-      group  node[:tomcat][:user]
-      mode   0644
-
-      variables ({
-        :username => geoserver_username,
-        :password => geoserver_password
-      })
-    end
+    # Use geoserver username/password from given data bag if available
+    geoserver_username = geoserver_data_bag['username'] || geoserver_username
+    geoserver_password = geoserver_data_bag['password'] || geoserver_password
   else
     Chef::Log.warn("Not cloning any git repository for geoserver '#{instance_service_name}'")
+  end
+
+  template ::File.join(data_dir, "security", "usergroup", "default", "users.xml") do
+    source    "geoserver/users.xml.erb"
+    owner     node[:tomcat][:user]
+    group     node[:tomcat][:user]
+    mode      0644
+    notifies  :restart, "service[#{instance_service_name}]", :delayed
+    variables ({
+      :username => geoserver_username,
+      :password => geoserver_password
+    })
   end
 end
