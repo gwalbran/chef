@@ -15,6 +15,14 @@ def deploy_artifact
   install_dir = new_resource.install_dir
   dest_file = new_resource.file_destination
 
+  if new_resource.parallel_deploy
+    version = ParallelDeploy.tomcat_version_for_artifact(@cached_file_path)
+    install_dir = ParallelDeploy.add_version(install_dir, version)
+    dest_file = ParallelDeploy.add_version(dest_file, version)
+    Chef::Log.info("Invoking parallel deploy with version: '#{version}'")
+    Chef::Log.info("Parallel deploying: '#{dest_file}' -> '#{install_dir}'")
+  end
+
   Chef::Log.info("Attempting to deploy artifact '#{new_resource.name}' -> '#{install_dir}'")
 
   directory install_dir do
