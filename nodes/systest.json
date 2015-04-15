@@ -23,7 +23,7 @@
     ],
     "imos_dns": {
         "etc_hosts": {
-            "127.0.1.2": "geoserver-123.aodn.org.au catalogue-123.aodn.org.au"
+            "127.0.1.2": "geoserver-123.aodn.org.au catalogue-123.aodn.org.au geoserver-systest.aodn.org.au catalogue-systest.aodn.org.au"
         }
     },
     "tz": "Australia/Hobart",
@@ -100,7 +100,7 @@
                         "header_logo":          "IMOS_logo.png",
                         "header_link_text":     "IMOS",
                         "header_href":          "http://imos.org.au/imos.html",
-                        "known_servers":        [ "geoserver_systest", "ncwms_systest" ]
+                        "known_servers":        [ "geoserver_systest", "ncwms_systest", "geoserver_123_aodn", "ncwms_aodn" ]
                     }
                 ],
                 "httpd_rules": [
