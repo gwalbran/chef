@@ -10,12 +10,22 @@ include_recipe 'awstats'
 # /etc/apache2/conf.d/awstats, however apache2 will include
 # /etc/apache2/conf-enabled/*.conf only so we'll do the following:
 # * Create /etc/apache2/conf.d/ so awstats recipe doesn't fail
+# * Override /etc/apache2/conf.d/awstats so it doesn't restart apache for no reason
 # * Create the actual awstats file at /etc/apache2/conf-enabled/awstats.conf
 
 directory "/etc/apache2/conf.d" do
   owner    "root"
   group    "root"
   mode     00644
+end
+
+cookbook_file "/etc/apache2/conf.d/awstats" do
+  source   "awstats"
+  cookbook "awstats"
+  owner    "root"
+  group    "root"
+  mode     "0755"
+  # Omit :restart action for this file to avoid unnecessary apache2 restarts
 end
 
 cookbook_file ::File.join(node['apache']['dir'], "conf-enabled", "awstats.conf") do
