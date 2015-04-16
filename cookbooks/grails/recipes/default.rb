@@ -47,6 +47,10 @@ package "grails-2.2.0"  do
   options "--force-yes"
 end
 
+package "grails-2.4.4"  do
+  options "--force-yes"
+end
+
 execute "select grails 1.3.7 as default" do
   command "update-alternatives --set grails /usr/share/grails/1.3.7/bin/grails"
   action :run
