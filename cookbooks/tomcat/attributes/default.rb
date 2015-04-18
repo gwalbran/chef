@@ -16,54 +16,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default["tomcat"]["version"] = '7'
 default["tomcat"]["fine_version"] = "7.0.37"
+default["tomcat"]["version"] = node["tomcat"]["fine_version"].split(".")[0]
 default["tomcat"]["ports"]["port"] = 8005
 default["tomcat"]["ports"]["connector_port"] = 8080
 default["tomcat"]["ports"]["ssl_port"] = 8443
 default["tomcat"]["ports"]["redirect_port"] = 8444
 default["tomcat"]["ports"]["ajp_port"] = 8009
 default["tomcat"]["java_options"] = "-Xmx128M -Djava.awt.headless=true"
-default["tomcat"]["use_security_manager"] = false
 default["tomcat"]["log_level"] = "SEVERE"
-default["tomcat"]["default_instance_name"] = "default"
-default["tomcat"]["instances"] = []
 
-case platform
-when "centos","redhat","fedora"
-  default["tomcat"]["user"] = "tomcat#{tomcat["version"]}"
-  default["tomcat"]["group"] = "tomcat#{tomcat["version"]}"
-  default["tomcat"]["home"] = "/usr/share/tomcat#{tomcat["version"]}"
-  default["tomcat"]["base"] = "/usr/share/tomcat#{tomcat["version"]}"
-  default["tomcat"]["config_dir"] = "/etc/tomcat#{tomcat["version"]}"
-  default["tomcat"]["log_dir"] = "/var/log/tomcat#{tomcat["version"]}"
-  default["tomcat"]["tmp_dir"] = "/var/cache/tomcat#{tomcat["version"]}/temp"
-  default["tomcat"]["work_dir"] = "/var/cache/tomcat#{tomcat["version"]}/work"
-  default["tomcat"]["context_dir"] = "#{tomcat["config_dir"]}/Catalina/localhost"
-  default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{tomcat["version"]}/webapps"
-when "debian","ubuntu"
-  default["tomcat"]["user"] = "tomcat#{tomcat["version"]}"
-  default["tomcat"]["group"] = "tomcat#{tomcat["version"]}"
-  default["tomcat"]["home"] = "/usr/share/tomcat#{tomcat["version"]}"
-  default["tomcat"]["base"] = "/var/lib/tomcat#{tomcat["version"]}"
-  default["tomcat"]["config_dir"] = "/etc/tomcat#{tomcat["version"]}"
-  default["tomcat"]["log_dir"] = "/var/log/tomcat#{tomcat["version"]}"
-  default["tomcat"]["tmp_dir"] = "/tmp/tomcat#{tomcat["version"]}-tmp"
-  default["tomcat"]["work_dir"] = "/var/cache/tomcat#{tomcat["version"]}"
-  default["tomcat"]["context_dir"] = "#{tomcat["config_dir"]}/Catalina/localhost"
-  default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{tomcat["version"]}/webapps"
-else
-  default["tomcat"]["user"] = "tomcat#{tomcat["version"]}"
-  default["tomcat"]["group"] = "tomcat#{tomcat["version"]}"
-  default["tomcat"]["home"] = "/usr/share/tomcat#{tomcat["version"]}"
-  default["tomcat"]["base"] = "/var/lib/tomcat#{tomcat["version"]}"
-  default["tomcat"]["config_dir"] = "/etc/tomcat#{tomcat["version"]}"
-  default["tomcat"]["log_dir"] = "/var/log/tomcat#{tomcat["version"]}"
-  default["tomcat"]["tmp_dir"] = "/tmp/tomcat#{tomcat["version"]}-tmp"
-  default["tomcat"]["work_dir"] = "/var/cache/tomcat#{tomcat["version"]}"
-  default["tomcat"]["context_dir"] = "#{tomcat["config_dir"]}/Catalina/localhost"
-  default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{tomcat["version"]}/webapps"
-end
+# Tomcat 7.0.37 installation source
+default["tomcat"]["pkg_url"] = "https://binary.aodn.org.au/static/tomcat/tomcat-7-0-37.tar.gz"
+default["tomcat"]["pkg_checksum"] = "4955fc8ca6ee20886d078360f0f169c0490949556044d96542750428e814d9aa"
+
+default["tomcat"]["user"] = "tomcat#{tomcat["version"]}"
+default["tomcat"]["group"] = "tomcat#{tomcat["version"]}"
+default["tomcat"]["home"] = "/usr/share/tomcat#{tomcat["version"]}"
+default["tomcat"]["base"] = "/var/lib/tomcat#{tomcat["version"]}"
+default["tomcat"]["config_dir"] = "/etc/tomcat#{tomcat["version"]}"
+default["tomcat"]["log_dir"] = "/var/log/tomcat#{tomcat["version"]}"
+default["tomcat"]["tmp_dir"] = "/tmp/tomcat#{tomcat["version"]}-tmp"
+default["tomcat"]["work_dir"] = "/var/cache/tomcat#{tomcat["version"]}"
+default["tomcat"]["context_dir"] = "#{tomcat["config_dir"]}/Catalina/localhost"
+default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{tomcat["version"]}/webapps"
 
 # Max threads will be set to number of cores times 4 - that should be enough!
 # Tomcat original default is 200

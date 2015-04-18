@@ -18,8 +18,8 @@ end
 
 # Create CATALINA_HOME
 directory node['tomcat']['home'] do
-  owner node['tomcat']['user']
-  group node['tomcat']['user']
+  owner     node['tomcat']['user']
+  group     node['tomcat']['user']
   recursive true
-  mode 00755
+  mode      00755
 end
