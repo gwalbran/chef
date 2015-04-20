@@ -9,6 +9,7 @@
 
 node.set['vagrant'] = true
 Chef::Config[:vagrant] = true
+include_recipe "imos_core::insecure"
 
 # Allow sudo for vagrant user
 sudo 'vagrant' do
