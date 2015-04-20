@@ -7,12 +7,6 @@ require_relative 'vagrant/plugins'
 require_relative 'vagrant/chef_solo'
 require_relative 'vagrant/virtualbox'
 
-def is_node_specified(cmd_line_args)
-  cmd_line_args.shift # First parameter is the action name (up, provision, reload etc)
-  cmd_line_args.select! { |node_name| ! node_name.start_with?("-") }
-  return cmd_line_args.length > 0
-end
-
 Vagrant.configure("2") do |config|
 
   if Vagrant.has_plugin?("vagrant-cachier")
@@ -53,15 +47,11 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: "grep -q ^GRUB_RECORDFAIL_TIMEOUT /etc/default/grub || (echo GRUB_RECORDFAIL_TIMEOUT=3 | sudo tee -a /etc/default/grub && sudo update-grub)"
 
   define_node = Proc.new do |node_name|
-    config.vm.define node_name do |node|
+    config.vm.define node_name, autostart: false do |node|
       configure_virtualbox_provider node, node_name
       # Provision if node name was specified.
       configure_chef_solo_provisioning node, node_name, "#{node_file_path}/#{node_name}.json", chef_log_level
     end
-  end
-
-  unless is_node_specified(ARGV.dup)
-    abort "You must specify at least one VM to provision"
   end
 
   Dir.entries(node_file_path).
