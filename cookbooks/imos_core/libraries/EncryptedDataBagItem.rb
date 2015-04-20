@@ -27,7 +27,7 @@ class Chef::EncryptedDataBagItem
     Chef::Log.debug "Loading data bag (#{data_bag}, #{name})..."
 
     begin
-      if Chef::Config[:vagrant]
+      if Chef::Config[:insecure]
         mocked_data_bag_name = self.mock_data_bag(data_bag, name)
         data_bag_content = Chef::DataBagItem.load(data_bag, mocked_data_bag_name)
         # Preseve id of data bag
