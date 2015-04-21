@@ -44,6 +44,7 @@ define :imos_tomcat_webapp do
     app_name             application_name
     tomcat_instance_name tomcat_instance_name
     service_name         service_name
+    parallel_deploy      custom_parameters['parallel_deploy']
   end
 
   # Configuration files

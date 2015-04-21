@@ -1,9 +1,10 @@
 define :tomcat_instance do
-  name       = @params[:name]
-  instance   = @params[:instance]
-  port       = instance['port']
-  java_opts  = instance['java_options'] || node['tomcat']['java_options']
-  admin_port = @params[:admin_port] || "1#{port}"
+  name            = @params[:name]
+  instance        = @params[:instance]
+  port            = instance['port']
+  java_opts       = instance['java_options'] || node['tomcat']['java_options']
+  parallel_deploy = instance['parallel_deploy']
+  admin_port      = @params[:admin_port] || "1#{port}"
 
   fetcher = ImosArtifactFetcher.new
 
@@ -67,7 +68,8 @@ define :tomcat_instance do
     mode "0644"
     variables(
         :instance => instance,
-        :ports => { :connector_port => port, :port => admin_port }
+        :ports => { :connector_port => port, :port => admin_port },
+        :parallel_deploy => parallel_deploy
     )
   end
 

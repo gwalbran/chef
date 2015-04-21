@@ -21,13 +21,19 @@ define :imos_tomcat_war do
     artifact_manifest = { 'id' => artifact_id, 'job' => artifact_id }
   end
 
+  service_notify_action = :restart
+  if params[:parallel_deploy]
+    service_notify_action = :nothing
+  end
+
   imos_artifacts_deploy artifact_id do
     install_dir       ::File.join(tomcat_webapps_dir, app_name)
     file_destination  ::File.join(tomcat_webapps_dir, "#{app_name}.war")
     artifact_manifest artifact_manifest
     owner             node["tomcat"]["user"]
     group             node["tomcat"]["user"]
-    notifies          :restart, "service[#{params[:service_name]}]", :delayed
+    parallel_deploy   params[:parallel_deploy]
+    notifies          service_notify_action, "service[#{params[:service_name]}]", :delayed
   end
 
 end
