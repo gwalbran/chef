@@ -5,6 +5,7 @@ DEPENDENCIES
   apt
     git: git://github.com/opscode-cookbooks/apt.git
     revision: bb1849257902070fd8f418b8bd349ae98bcbaf8e
+  auditd
   awstats
   backup
     git: git://github.com/danfruehauf/backup-cookbook.git
@@ -180,6 +181,7 @@ GRAPH
   apt (2.3.11)
   ark (0.4.2)
   artifact (1.0.0)
+  auditd (0.1.4)
   aws (2.2.0)
   awstats (0.2.2)
     apache2 (>= 0.0.0)

@@ -4,6 +4,7 @@ cookbook "apache2", '~> 3.0.0'
 cookbook "application"
 cookbook "application_ruby"
 cookbook "apt", :github => "opscode-cookbooks/apt"
+cookbook "auditd"
 cookbook "awstats"
 cookbook "backup", :github => "danfruehauf/backup-cookbook"
 cookbook "build-essential"
