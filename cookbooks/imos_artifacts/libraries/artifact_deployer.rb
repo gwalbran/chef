@@ -7,7 +7,7 @@ class ArtifactDeployer
   def self.get_artifact_manifest(artifact_id)
     artifact_manifest = nil
 
-    if artifact_id && ! artifact_id.empty? && self.databag_exists?('imos_artifacts', artifact_id)
+    if artifact_id && ! artifact_id.empty? && databag_exists?('imos_artifacts', artifact_id)
       artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_id).to_hash
     end
 

@@ -30,14 +30,7 @@ class JenkinsArtifact
     return URI.escape("#{url_base}/job/#{job_name}/lastSuccessfulBuild")
   end
 
-  def cache(artifact_manifest, cache_path)
-    # Check if the artifact is configured to just return a local cache always
-    if artifact_manifest['from_local_cache'] && artifact_manifest['filename']
-      # Return the locally cached file
-      Chef::Log.info("Returning locally cached file at #{Chef::Config[:file_cache_path]}/#{artifact_manifest['filename']} due to artifact configuration")
-      return "#{Chef::Config[:file_cache_path]}/#{artifact_manifest['filename']}"
-    end
-
+  def cache(artifact_manifest, download_prefix)
     response = http_get_response_retry("#{@url}/#{@api}")
 
     artifact_url = nil
@@ -74,13 +67,14 @@ class JenkinsArtifact
 
     Chef::Log.info("Downloading artifact version '#{current_version}'")
 
-    if download?(json, artifact_filename, cache_path) && !artifact_manifest['from_local_cache']
+    download_path = download_prefix + "_" + artifact_filename
+
+    if download?(json, artifact_filename, download_path)
       Chef::Log.info("Checksums do not match will download artifact #{artifact_url}")
-      download_path = download(artifact_url, "#{Chef::Config[:file_cache_path]}/#{artifact_filename}")
+      download(artifact_url, download_path)
       return download_path
     else
-      Chef::Log.info("Returning locally cached file at #{Chef::Config[:file_cache_path]}/#{artifact_filename}")
-      download_path = "#{Chef::Config[:file_cache_path]}/#{artifact_filename}"
+      Chef::Log.info("Returning locally cached file at '#{download_path}'")
       return download_path
     end
   end
@@ -165,7 +159,7 @@ class JenkinsArtifact
     return artifact_md5_checksum
   end
 
-  def download?(json, artifact_filename, cache_path)
+  def download?(json, artifact_filename, download_path)
     remote_checksum = nil
 
     # Try obtaining md5 checksum from .md5 file in jenkins
@@ -185,8 +179,8 @@ class JenkinsArtifact
 
     # Checksum of file already downloaded
     file_real_checksum = nil
-    if ::File.exist?(::File.join(cache_path, artifact_filename))
-      file_real_checksum = Digest::MD5.file(::File.join(cache_path, artifact_filename)).hexdigest
+    if ::File.exist?(download_path)
+      file_real_checksum = Digest::MD5.file(download_path).hexdigest
     end
 
     # The only case in which we do not deploy, is if the remote checksum and
