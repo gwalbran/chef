@@ -38,7 +38,7 @@ class JenkinsArtifact
       return "#{Chef::Config[:file_cache_path]}/#{artifact_manifest['filename']}"
     end
 
-    response = http_get_response("#{@url}/#{@api}")
+    response = http_get_response_retry("#{@url}/#{@api}")
 
     artifact_url = nil
     artifact_filename = nil
@@ -92,7 +92,7 @@ class JenkinsArtifact
     f = open(filename, 'w')
     begin
       Chef::Log.info("Fetching #{url}")
-      response = http_get_response(url)
+      response = http_get_response_retry(url)
       f.write(response.body)
       Chef::Log.info("Cached #{url} at #{filename}")
     rescue
@@ -209,6 +209,19 @@ class JenkinsArtifact
     end
 
     http.request(request)
+  end
+
+  def http_get_response_retry(url, retries = 3)
+    for i in 1..retries do
+      req = http_get_response(url)
+      if req.kind_of? Net::HTTPSuccess
+        return req
+      else
+        Chef::Log.warn "Retrying #{i}/#{retries} '#{url}'"
+        sleep 2
+      end
+    end
+    Chef::Application.fatal! "Failed accessing '#{url}'"
   end
 
 end
