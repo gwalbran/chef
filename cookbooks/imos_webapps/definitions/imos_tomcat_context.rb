@@ -11,26 +11,41 @@ define :imos_tomcat_context do
   tomcat_webapps_dir = ::File.join(base_directory, "webapps")
 
   artifact_manifest = {}
-  begin
-    artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_name).to_hash
-  rescue
+  if Chef::Search::Query.new.search('imos_artifacts', "id:#{artifact_name}").empty?
     Chef::Log.info("Building artifact manifest for '#{artifact_name}'")
     artifact_manifest = { 'id' => artifact_name, 'job' => artifact_name }
+  else
+    artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_name).to_hash
   end
 
+  app_deploy_name = app_name
   service_notify_action = :restart
+
+  # Cache artifact, so we can use it to determine parallel deploy version
+  cached_artifact = ImosArtifactFetcher.new.fetch_artifact(artifact_manifest, node)
+
   if params[:parallel_deploy]
+    version = ParallelDeploy.tomcat_version_for_artifact(cached_artifact)
+    app_deploy_name = ParallelDeploy.add_version(app_name, version)
+    context_file = File.join(context_dir, "#{app_deploy_name}.xml")
+    Chef::Log.info("Invoking parallel deploy with version: '#{version}'")
+
+    # Disable restarts if using parallel_deploy
     service_notify_action = :nothing
   end
 
+  file_destination = ::File.join(tomcat_webapps_dir, "#{app_deploy_name}.war")
+  install_dir = ::File.join(tomcat_webapps_dir, app_deploy_name)
+  Chef::Log.info("Deploying: '#{file_destination}' -> '#{install_dir}'")
+
   imos_artifacts_deploy artifact_name do
-    install_dir       ::File.join(tomcat_webapps_dir, app_name)
-    file_destination  ::File.join(tomcat_webapps_dir, "#{app_name}.war")
+    install_dir       install_dir
+    file_destination  file_destination
     artifact_manifest artifact_manifest
     owner             node["tomcat"]["user"]
     group             node["tomcat"]["user"]
-    parallel_deploy   params[:parallel_deploy]
-    notifies          service_notify_action, "service[#{params[:service_name]}]", :delayed
+    notifies          service_notify_action, "service[#{service_name}]", :delayed
+    cached_artifact   cached_artifact
   end
 
   # Main config file
@@ -69,7 +84,7 @@ define :imos_tomcat_context do
     owner     node['tomcat']['user']
     group     node['tomcat']['user']
     mode      0644
-    notifies  :restart, "service[#{service_name}]", :delayed
+    notifies  service_notify_action, "service[#{service_name}]", :delayed
     variables (params[:template_variables])
   end
 

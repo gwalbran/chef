@@ -29,7 +29,7 @@ class ImosArtifactFetcher
     if node[:imos_artifacts][:from_local_cache] && artifact_manifest['filename']
       # Return the locally cached file
       Chef::Log.info("Returning locally cached file at #{Chef::Config[:file_cache_path]}/#{artifact_manifest['filename']} due to node configuration")
-      return "#{Chef::Config[:file_cache_path]}/#{artifact_manifest['filename']}", false
+      return ::File.join(Chef::Config[:file_cache_path], artifact_manifest['filename'])
     end
 
     jenkins = JenkinsArtifact.new(artifact_manifest, node)
