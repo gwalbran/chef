@@ -39,23 +39,15 @@ define :imos_tomcat_webapp do
     tomcat_data_directory = "#{node[application_name]['data_dir']}/#{application_name}"
   end
 
-  # Install war into place
-  imos_tomcat_war artifact_name do
+  # Install war & context xml into place
+  imos_tomcat_context artifact_name do
     app_name             application_name
     tomcat_instance_name tomcat_instance_name
     service_name         service_name
     parallel_deploy      custom_parameters['parallel_deploy']
-  end
-
-  # Configuration files
-  imos_tomcat_config config_file do
-    app_name             application_name
-    artifact_name        artifact_name
     config_template_dir  config_template_dir
     config_file_name     config_file
     base_directory       base_directory
-    service_name         service_name
-    tomcat_instance_name tomcat_instance_name
     template_variables   ({
       :custom_parameters     => custom_parameters,
       :tomcat_instance_name  => tomcat_instance_name,
