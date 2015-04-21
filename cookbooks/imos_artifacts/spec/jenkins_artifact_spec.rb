@@ -3,6 +3,7 @@ require_relative 'spec_helper'
 describe JenkinsArtifact do
   before(:each) do
     allow(Chef::Log).to receive(:warn)
+    allow(Chef::Log).to receive(:error)
   end
 
   describe 'initialize' do

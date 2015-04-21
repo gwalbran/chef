@@ -10,12 +10,11 @@ define :imos_tomcat_context do
   context_file        = File.join(context_dir, "#{app_name}.xml")
   tomcat_webapps_dir = ::File.join(base_directory, "webapps")
 
-  artifact_manifest = {}
-  if Chef::Search::Query.new.search('imos_artifacts', "id:#{artifact_name}").empty?
+  # Assume jenkins job is given if data bag is not available
+  artifact_manifest = ArtifactDeployer.get_artifact_manifest(artifact_name)
+  if ! artifact_manifest
     Chef::Log.info("Building artifact manifest for '#{artifact_name}'")
     artifact_manifest = { 'id' => artifact_name, 'job' => artifact_name }
-  else
-    artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_name).to_hash
   end
 
   app_deploy_name = app_name

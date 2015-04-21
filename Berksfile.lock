@@ -283,6 +283,7 @@ GRAPH
     ruby_build (>= 0.0.0)
     xvfb (>= 0.0.0)
   imos_logstash (0.1.0)
+    imos_artifacts (>= 0.0.0)
     imos_java (>= 0.0.0)
     imos_users (>= 0.0.0)
     kibana (>= 0.0.0)

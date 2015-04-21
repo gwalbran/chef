@@ -1,5 +1,19 @@
 class ArtifactDeployer
 
+  def self.databag_exists?(name, id)
+    return ! Chef::Search::Query.new.search(name, "id:#{id}").empty?
+  end
+
+  def self.get_artifact_manifest(artifact_id)
+    artifact_manifest = nil
+
+    if artifact_id && ! artifact_id.empty? && self.databag_exists?('imos_artifacts', artifact_id)
+      artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_id).to_hash
+    end
+
+    return artifact_manifest
+  end
+
   def self.extract_artifact(artifact_src, artifact_dest, install_dir, owner, group, remove_top_level_directory = false)
     # Nuke install_dir if it exists
     if ::File.exists?(install_dir)
