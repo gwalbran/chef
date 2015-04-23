@@ -12,7 +12,8 @@ aliases_for_app() {
     local app=$1; shift
     local -i port=$1; shift
     local app_dir=$1; shift
-    local grails_version=`grep ^app.grails.version= /vagrant/src/aodn-portal/application.properties | cut -d= -f2`
+    test -d $app_dir || return # abort if the application directory does not exist
+    local grails_version=`grep ^app.grails.version= $app_dir/application.properties | cut -d= -f2`
 
     eval "alias ${app}='cd $app_dir'"
     eval "alias ${app}_run='cd $app_dir && yes | gvm install grails $grails_version && gvm use grails $grails_version && grails -Divy.cache.dir=$IVY2_CACHE -Dserver.port=$port run-app'"
@@ -22,3 +23,5 @@ aliases_for_app() {
 aliases_for_app portal 8080 $SRC/aodn-portal
 aliases_for_app aatams 8081 $SRC/aatams
 aliases_for_app gogoduck 8082 $SRC/go-go-duck
+aliases_for_app auv 8083 $SRC/auv
+aliases_for_app acoustic 8084 $SRC/acoustic-data-viewer
