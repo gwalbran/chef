@@ -111,7 +111,13 @@
                     "ProxyPass        /aodn-portal http://localhost:8080/aodn-portal retry=0",
                     "ProxyPassReverse /aodn-portal http://localhost:8080/aodn-portal",
                     "ProxyPass        /aatams      http://localhost:8081/aatams      retry=0",
-                    "ProxyPassReverse /aatams      http://localhost:8081/aatams"
+                    "ProxyPassReverse /aatams      http://localhost:8081/aatams",
+                    "ProxyPass        /gogoduck    http://localhost:8082/gogoduck    retry=0",
+                    "ProxyPassReverse /gogoduck    http://localhost:8082/gogoduck",
+                    "ProxyPass        /auv         http://localhost:8083/auv         retry=0",
+                    "ProxyPassReverse /auv         http://localhost:8083/auv",
+                    "ProxyPass        /acoustic    http://localhost:8084/acoustic    retry=0",
+                    "ProxyPassReverse /acoustic    http://localhost:8084/acoustic"
                 ]
             }
         ]
