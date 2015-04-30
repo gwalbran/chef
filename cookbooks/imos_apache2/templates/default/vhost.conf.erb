@@ -79,7 +79,7 @@ end
        proxy_suffix = proxy_pair['from']
        proxy_port = proxy_pair['to_port']
   %>
-  ProxyPass           /<%= proxy_suffix %>  http://localhost:<%= proxy_port %>/<%= proxy_suffix %>
+  ProxyPass           /<%= proxy_suffix %>  http://localhost:<%= proxy_port %>/<%= proxy_suffix %> retry=0
   ProxyPassReverse    /<%= proxy_suffix %>  http://localhost:<%= proxy_port %>/<%= proxy_suffix %>
   <% end %>
 <% end %>
