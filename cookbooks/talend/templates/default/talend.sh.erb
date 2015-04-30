@@ -1,8 +1,11 @@
 #!/bin/bash
 
+export TALEND_JOBS_DIR="<%= @talend_jobs_dir %>"
+export TALEND_USER=<%= node['talend']['user'] %>
+
 # prints all talend jobs
 _talend_jobs() {
-    local talend_jobs=`ls -1 <%= @talend_jobs_dir %> | xargs`
+    local talend_jobs=`ls -1 $TALEND_JOBS_DIR | xargs`
 
     local cur="${COMP_WORDS[COMP_CWORD]}"
     COMPREPLY=()
@@ -13,7 +16,7 @@ _talend_jobs() {
 # $1 - name of job to run
 talend_run() {
     local talend_job=$1; shift
-    sudo -u <%= node['talend']['user'] %> <%= @talend_jobs_dir %>/$talend_job/bin/${talend_job}.sh
+    sudo -u $TALEND_USER $TALEND_JOBS_DIR/$talend_job/bin/${talend_job}.sh
 }
 
 # runs a talend job urgently, or moves it forward in queue
@@ -28,7 +31,7 @@ talend_urgent() {
         echo "Job '$talend_job' is not in queue, we've just queued it, how can that be?!"
     else
         echo "Making job '$talend_job' with ID '$talend_job_id' urgent (move to head of queue)"
-        sudo -u <%= node['talend']['user'] %> tsp -u $talend_job_id
+        sudo -u $TALEND_USER tsp -u $talend_job_id
     fi
 }
 
@@ -40,7 +43,7 @@ talend_run_all() {
 
     if [ x"$resp" != x ] && [ "$resp" = "yes" ]; then
         echo "Queueing all jobs!"
-        for job in `ls -1 <%= @talend_jobs_dir %> | xargs`; do
+        for job in `ls -1 $TALEND_JOBS_DIR | xargs`; do
             talend_run $job
         done
     else
@@ -48,11 +51,18 @@ talend_run_all() {
     fi
 }
 
+# change directory to talend job directory
+# $1 - name of job to change directory to
+talend_cd() {
+    local talend_job=$1; shift
+    cd $TALEND_JOBS_DIR/$talend_job
+}
+
 # show log for a talend job
 # $1 - name of job to show log for
 talend_log() {
     local talend_job=$1; shift
-    less <%= @talend_jobs_dir %>/$talend_job/log/console.log
+    less $TALEND_JOBS_DIR/$talend_job/log/console.log
 }
 
 # returns tsp id of job or -1 if it doesn't exist
@@ -76,7 +86,7 @@ talend_dequeue() {
         echo "Job '$talend_job' is not in queue"
     else
         echo "Removing job '$talend_job' with ID '$talend_job_id' from queue"
-        sudo -u <%= node['talend']['user'] %> tsp -r $talend_job_id
+        sudo -u $TALEND_USER tsp -r $talend_job_id
     fi
 }
 
@@ -84,26 +94,26 @@ talend_dequeue() {
 # $1 - status of jobs
 _talend_show_jobs() {
     local status=$1; shift
-    sudo -u <%= node['talend']['user'] %> tsp -l | tr -s ' ' | cut -d' ' -f1,2,4 | grep "\b$status\b" | sed -e 's/\[//' -e 's/\].*//g'
+    sudo -u $TALEND_USER tsp -l | tr -s ' ' | cut -d' ' -f1,2,4 | grep "\b$status\b" | sed -e 's/\[//' -e 's/\].*//g'
 }
 
 # shows all jobs with status
 talend_show() {
-    sudo -u <%= node['talend']['user'] %> tsp -l | tr -s ' ' | cut -d' ' -f1,2,4 | grep -v "\bfinished\b" | grep -v '^ID' | sed -e 's/\[//' -e 's/\].*//g'
+    sudo -u $TALEND_USER tsp -l | tr -s ' ' | cut -d' ' -f1,2,4 | grep -v "\bfinished\b" | grep -v '^ID' | sed -e 's/\[//' -e 's/\].*//g'
 }
 
 # shows jenkins build version
 # $1 - name of job to show version of
 talend_version() {
     local talend_job=$1; shift
-    cat <%= @talend_jobs_dir %>/$talend_job/java/build.properties
+    cat $TALEND_JOBS_DIR/$talend_job/java/build.properties
 }
 
 alias talend_show_running='_talend_show_jobs running'
 alias talend_show_queued='_talend_show_jobs queued'
 
 # auto complete for all relevant talend commands
-for talend_command in talend_run talend_log talend_dequeue talend_urgent talend_version; do
+for talend_command in talend_run talend_cd talend_log talend_dequeue talend_urgent talend_version; do
     complete -o bashdefault -o default -o nospace -F _talend_jobs $talend_command 2>/dev/null \
         || complete -o default -o nospace -F _talend_jobs $talend_command
 done
