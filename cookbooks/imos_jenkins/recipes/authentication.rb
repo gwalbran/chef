@@ -23,6 +23,10 @@ jenkins_user 'chef' do
   public_keys [public_key]
 end
 
+# TODO the first time this runs it fails, because there's no authentication
+# configured however it still tries to run it using the configured SSH key, and
+# this fails. Consecutive runs will succeed if this snippet managed to run (or
+# was ran manually
 # Turn on basic authentication
 jenkins_script 'setup authentication' do
   command <<-EOH.gsub(/^ {4}/, '')
@@ -35,4 +39,13 @@ jenkins_script 'setup authentication' do
     instance.setAuthorizationStrategy(strategy)
     instance.save()
   EOH
+end
+
+# Define all jenkins users
+search('users', "jenkins_password:*").each do |data_bag|
+  jenkins_user data_bag['id'] do
+    full_name data_bag['full_name']
+    email     data_bag['email']
+    password  data_bag['jenkins_password'] # TODO PLAIN TEXT SUCKS
+  end
 end
