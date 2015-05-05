@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: imos_artifacts
+# Cookbook Name:: imos_webapps
 # Library:: parallel_deploy
 #
 # Copyright 2014, IMOS
@@ -18,13 +18,10 @@
 #
 
 module ParallelDeploy
-  @@artifact_deploy_suffix = ".war"
 
   def self.add_version(path, version)
     if !version || version.empty?
       return path
-    elsif path.end_with?(@@artifact_deploy_suffix)
-      return path.gsub(/#{@@artifact_deploy_suffix}$/, "###{version}#{@@artifact_deploy_suffix}")
     else
       return path + "##" + version
     end

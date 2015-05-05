@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: imos_logstash
-# Recipe:: filter_finder
+# Library:: filter_finder
 #
 # Copyright 2015, IMOS
 #
@@ -19,16 +19,12 @@
 
 module FilterFinder
 
-  def self.databag_exists?(name, id)
-    return ! Chef::Search::Query.new.search(name, "id:#{id}").empty?
-  end
-
   def self.get_filter_config(application_name)
     filter_config = nil
 
     if application_name && ! application_name.empty?
-      if databag_exists?("imos_artifacts", application_name)
-        app_data_bag = Chef::DataBagItem.load("imos_artifacts", application_name)
+      app_data_bag = ArtifactDeployer.get_artifact_manifest(application_name)
+      if app_data_bag
         filter_config = app_data_bag['logstash_filter_config']
       elsif application_name.include?('_')
         filter_config = application_name.split('_')[0].downcase

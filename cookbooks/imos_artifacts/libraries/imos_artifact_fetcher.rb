@@ -23,17 +23,9 @@ class ImosArtifactFetcher
   end
 
   def cache_jenkins_artifact(artifact_manifest, node)
-
-    # Check if there is a use from local cache override and if we know the name of the
-    # file so we don't have to query jerkins at all
-    if node[:imos_artifacts][:from_local_cache] && artifact_manifest['filename']
-      # Return the locally cached file
-      Chef::Log.info("Returning locally cached file at #{Chef::Config[:file_cache_path]}/#{artifact_manifest['filename']} due to node configuration")
-      return "#{Chef::Config[:file_cache_path]}/#{artifact_manifest['filename']}", false
-    end
-
+    download_prefix = ::File.join(Chef::Config[:file_cache_path], artifact_manifest['job'])
     jenkins = JenkinsArtifact.new(artifact_manifest, node)
-    return jenkins.cache(artifact_manifest, Chef::Config[:file_cache_path])
+    return jenkins.cache(artifact_manifest, download_prefix)
   end
 
   def cache_archiva_artifact(artifact_manifest)

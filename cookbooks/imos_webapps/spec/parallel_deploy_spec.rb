@@ -12,12 +12,7 @@ describe ParallelDeploy do
       expect("/tomcat/webapps/imos.war").to eq(result)
     end
 
-    it '.war file' do
-      result = ParallelDeploy.add_version("/tomcat/webapps/imos.war", "1429007040")
-      expect("/tomcat/webapps/imos##1429007040.war").to eq(result)
-    end
-
-    it 'directory' do
+    it 'valid name and version' do
       result = ParallelDeploy.add_version("/tomcat/webapps/imos", "1429007040")
       expect("/tomcat/webapps/imos##1429007040").to eq(result)
     end

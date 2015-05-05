@@ -22,4 +22,4 @@ attribute :file_destination,           :kind_of => String
 attribute :owner,                      :regex => Chef::Config['user_valid_regex'], :default => "root"
 attribute :group,                      :regex => Chef::Config['group_valid_regex'], :default => "root"
 attribute :remove_top_level_directory, :kind_of => [ TrueClass, FalseClass ], :default => false
-attribute :parallel_deploy,            :kind_of => [ TrueClass, FalseClass ], :default => false
+attribute :cached_artifact,            :kind_of => String, :required => false
