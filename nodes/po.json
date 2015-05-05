@@ -141,6 +141,13 @@
                             "parameterCategories": "http://vocab.aodn.org.au/def/ClassScheme/parameter1",
                             "platformCategories":  "http://vocab.aodn.org.au/def/ClassScheme/platform1"
                         }
+                    },
+                    {
+                        "name":       "ncwms",
+                        "artifact":   "ncWMS - Prod",
+                        "custom_def": "ncwms",
+                        "cache_dir":  "/mnt/opendap/1/cache/ncwmsCache",
+                        "root":       "/mnt/opendap"
                     }
                 ]
             }
