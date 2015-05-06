@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-default["tomcat"]["fine_version"] = "7.0.37"
+default["tomcat"]["fine_version"] = "7.0.61"
 default["tomcat"]["version"] = node["tomcat"]["fine_version"].split(".")[0]
 default["tomcat"]["ports"]["port"] = 8005
 default["tomcat"]["ports"]["connector_port"] = 8080
@@ -27,8 +27,8 @@ default["tomcat"]["java_options"] = "-Xmx128M -Djava.awt.headless=true"
 default["tomcat"]["log_level"] = "SEVERE"
 
 # Tomcat 7.0.37 installation source
-default["tomcat"]["pkg_url"] = "https://binary.aodn.org.au/static/tomcat/tomcat-7-0-37.tar.gz"
-default["tomcat"]["pkg_checksum"] = "4955fc8ca6ee20886d078360f0f169c0490949556044d96542750428e814d9aa"
+default["tomcat"]["pkg_url"] = "http://apache.mirror.digitalpacific.com.au/tomcat/tomcat-7/v7.0.61/bin/apache-tomcat-7.0.61.tar.gz"
+default["tomcat"]["pkg_checksum"] = "2528ad7434e44ab1198b5692d5f831ac605051129119fd81a00d4c75abe1c0e0"
 
 default["tomcat"]["user"] = "tomcat#{tomcat["version"]}"
 default["tomcat"]["group"] = "tomcat#{tomcat["version"]}"
