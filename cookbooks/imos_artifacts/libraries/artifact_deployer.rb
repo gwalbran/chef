@@ -22,7 +22,7 @@ class ArtifactDeployer
 
     Dir.mktmpdir do |tmp_dir|
       # unzip to temporary directory
-      %x{ unzip -q -u -o #{artifact_src} -d #{tmp_dir} }
+      %x{ unzip -q -u -o "#{artifact_src}" -d "#{tmp_dir}" }
 
       content_dir = tmp_dir
 
