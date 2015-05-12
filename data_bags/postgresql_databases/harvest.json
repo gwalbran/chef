@@ -590,6 +590,20 @@
             ]
         },
         {
+            "name": "srs_oc",
+            "owner": "srs_oc",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
             "name": "srs_oc_bodbaw",
             "owner": "srs_oc_bodbaw",
             "permissions": [

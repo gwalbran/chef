@@ -525,6 +525,10 @@
             "password": "srs_altimetry"
         },
         {
+            "name": "srs_oc",
+            "password": "srs_oc"
+        },
+        {
             "name": "srs_oc_bodbaw",
             "password": "srs_oc_bodbaw"
         },
