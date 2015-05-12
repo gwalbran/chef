@@ -40,21 +40,17 @@ node['talend']['jobs'].each do |job_name|
 
   environment = node['talend']['environment']
 
-  # Use job parameters, override with environment specific if exists
   bag_item = data_bag_item("talend", job_name)
-  job_parameters = bag_item['params'].dup
-  if bag_item[environment] && bag_item[environment]['params']
-    job_parameters.merge!(bag_item[environment]['params'])
-  end
+
+  # Use job parameters, override with environment specific if exists
+  job_parameters = {}
+  bag_item['params'] and job_parameters.merge!(bag_item['params'])
+  bag_item[environment] && bag_item[environment]['params'] and job_parameters.merge!(bag_item[environment]['params'])
 
   # Use job scheduling from data bag, override with environment specific
   cron = {}
-  if bag_item['cron']
-    cron.merge!(bag_item['cron'])
-  end
-  if bag_item[environment] && bag_item[environment]['cron']
-    cron.merge!(bag_item[environment]['cron'])
-  end
+  bag_item['cron'] and cron.merge!(bag_item['cron'])
+  bag_item[environment] && bag_item[environment]['cron'] and cron.merge!(bag_item[environment]['cron'])
 
   job_common_name = get_job_common_name(job_name, bag_item)
 
