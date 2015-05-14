@@ -1,16 +1,5 @@
 #!/bin/bash
 
-# remove wms and wfs scanners
-# TODO remove once ran on all POs VMs
-remove_scanners() {
-    local webapps_path="/var/lib/tomcat7/default/webapps"
-    local -i scanners_count=`vagrant ssh po -- "ls -1 /var/lib/tomcat7/default/webapps/*scanner* 2> /dev/null" | grep -v ^WARNING: | wc -l`
-    if [ $scanners_count -gt 0 ]; then
-        echo "Removing scanners and restarting tomcat"
-        vagrant ssh po -- "rm -rf $webapps_path/*scanner* && sudo /etc/init.d/tomcat7_default restart"
-    fi
-}
-
 export VAGRANT_STATIC_IP=10.11.12.13
 export VAGRANT_MEMORY=3072
 
@@ -23,9 +12,17 @@ if [ ! -d "shared_src/geoserver/.git" ]; then
 fi
 
 declare -r RESTORE_USER='data_bags/users/restore.json'
+declare -r SSHFS_USER='data_bags/users/sshfs.json'
 if [ ! -f "$RESTORE_USER" ]; then
-    echo "Please get a restore key from the dev team and place it in '$RESTORE_USER'"
-    exit 1
+    if test -d ../chef-private; then
+        echo "Probed chef-private directory at ../chef-private"
+        mkdir -p `dirname $RESTORE_USER`
+        cp -a ../chef-private/data_bags/users/restore.json $RESTORE_USER
+        cp -a ../chef-private/data_bags/users/sshfs.json   $SSHFS_USER
+    else
+        echo "Please get a restore key from the dev team and place it in '$RESTORE_USER'"
+        exit 1
+    fi
 fi
 
 declare -r HARVEST_READ_PO='data_bags/jndi_resources/harvest-read-po.json'
@@ -43,5 +40,3 @@ else
     # run with --provision to run provisioning if machine was halted
     vagrant up $PO_VM_NAME --provision
 fi
-
-remove_scanners
