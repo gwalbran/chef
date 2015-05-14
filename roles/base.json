@@ -13,12 +13,6 @@
             }
         }
     },
-    "override_attributes": {
-        "omnibus_updater":
-        {
-            "version": "11.6.0"
-        }
-    },
     "run_list": [
         "recipe[ohai_plugins]",
         "recipe[imos_core::chef_solo]",
@@ -37,6 +31,7 @@
         "recipe[imos_core::motd]",
         "recipe[imos_core::unattended_upgrades]",
         "recipe[imos_core::logrotate]",
+        "recipe[imos_core::xml_tools]",
         "recipe[sysctl]"
     ]
 }
