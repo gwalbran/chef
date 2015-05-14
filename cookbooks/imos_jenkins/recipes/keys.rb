@@ -1,3 +1,9 @@
+directory ::File.join(node['jenkins']['master']['home'], ".ssh") do
+  user      node['imos_jenkins']['user']
+  group     node['imos_jenkins']['group']
+  recursive true
+end
+
 # Copy the private key
 jenkins_ssh_key = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])['ssh_priv_key']
 file ::File.join(node['jenkins']['master']['home'], '.ssh/id_rsa') do
