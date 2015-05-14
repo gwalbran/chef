@@ -52,8 +52,8 @@ create_node() {
         let retry_count=$retry_count+1
 
         echo `date`" Creating '$node_name', attempt: $retry_count/$retry_max..."
-        if [ `uname` == "Darwin" ]; then
-            vagrant up $node_name --no-provision --provider=$provider  # No timeout on OS X :-(
+        if [ `uname` != "Linux" ]; then
+            vagrant up $node_name --no-provision --provider=$provider  # No timeout on *BSD
         else
             timeout 2h vagrant up $node_name --no-provision --provider=$provider
         fi
@@ -103,9 +103,6 @@ provision_node() {
     local -i retval=0
 
     _lock
-
-    # sleep after locking, perhaps avoiding some more race conditions
-    sleep 15
 
     create_node $node_name $provider $retry_max
 

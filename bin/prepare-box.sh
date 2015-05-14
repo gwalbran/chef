@@ -5,10 +5,10 @@
 # script to prepare a machine before packaging with vagrant
 
 # default root password
-ROOT_PASSWORD=imos
+ROOT_PASSWORD=root
 
 # users to not remove
-USERS_IGNORE=
+USERS_IGNORE=vagrant
 
 # weird sudo environment set PATH!
 export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
@@ -21,6 +21,13 @@ remove_ssh_host_identities() {
 	# to recreate the keys on the next restart
 	echo "#!/bin/bash" > /etc/rc.local
 	echo "test -f /etc/ssh/ssh_host_rsa_key || dpkg-reconfigure openssh-server" >> /etc/rc.local
+}
+
+# clear network rules so box can boot cleanly
+clear_udev_net_rules() {
+    sed -i -r '/#VAGRANT-BEGIN/,/#VAGRANT-END/d' /etc/network/interfaces
+    sed -i -e "\\#.*eth1.*#d" /etc/udev/rules.d/70-persistent-net.rules
+    return 0
 }
 
 # remove all users except for the ones in $USERS_IGNORE
@@ -55,11 +62,12 @@ clear_tmp() {
 # main
 main() {
 	remove_ssh_host_identities && \
+    clear_udev_net_rules && \
 	remove_users && \
 	setup_root_password && \
 	clear_root_history && \
 	clear_tmp && \
-	poweroff
+    poweroff
 }
 
 main "$@"
