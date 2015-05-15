@@ -25,6 +25,7 @@
         "recipe[git]",
         "recipe[ntp]",
         "recipe[timezone-ii]",
+        "recipe[imos_core::locale]",
         "recipe[imos_core::email_forward]",
         "recipe[imos_core::environment]",
         "recipe[postfix]",
