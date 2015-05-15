@@ -10,15 +10,14 @@
 # Wouldn't build ruby gems without it
 include_recipe "build-essential"
 
-xsltdev = package "libxslt-dev" do
-  action :nothing
+# Those ar needed to compile nokogiri
+%w{libxml2-dev libxslt1-dev zlib1g-dev binutils-doc bison unzip gettext flex ncurses-dev}.each do |pkg|
+  # Use this method to install packages immediately rather than after
+  # `chef_gem` resources
+  pkg_resource = package pkg do
+    action :nothing
+  end
+  pkg_resource.run_action(:install)
 end
-
-xmldev = package "libxml2-dev" do
-  action :nothing
-end
-
-xsltdev.run_action(:install)
-xmldev.run_action(:install)
 
 chef_gem 'nokogiri'
