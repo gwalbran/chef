@@ -8,7 +8,7 @@
 ROOT_PASSWORD=root
 
 # users to not remove
-USERS_IGNORE=vagrant
+USERS_IGNORE="vagrant backups"
 
 # weird sudo environment set PATH!
 export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
