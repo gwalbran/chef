@@ -26,8 +26,7 @@ default["tomcat"]["ports"]["ajp_port"] = 8009
 default["tomcat"]["java_options"] = "-Xmx128M -Djava.awt.headless=true"
 default["tomcat"]["log_level"] = "SEVERE"
 
-# Tomcat 7.0.37 installation source
-default["tomcat"]["pkg_url"] = "http://apache.mirror.digitalpacific.com.au/tomcat/tomcat-7/v7.0.61/bin/apache-tomcat-7.0.61.tar.gz"
+default["tomcat"]["pkg_url"] = "https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.61/bin/apache-tomcat-7.0.61.tar.gz"
 default["tomcat"]["pkg_checksum"] = "2528ad7434e44ab1198b5692d5f831ac605051129119fd81a00d4c75abe1c0e0"
 
 default["tomcat"]["user"] = "tomcat#{tomcat["version"]}"
