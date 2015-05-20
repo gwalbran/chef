@@ -4,8 +4,8 @@ define :custom_templates do
 
     # Create the directory.
     directory File.dirname(template[:path]) do
-      owner     node[:tomcat][:user]
-      group     node[:tomcat][:user]
+      owner     node['tomcat']['user']
+      group     node['tomcat']['user']
       mode      0755
       recursive true
     end
@@ -13,8 +13,8 @@ define :custom_templates do
     # Install the template.
     template template[:path] do
       source "custom/#{File.basename(template[:path])}.erb"
-      owner  node[:tomcat][:user]
-      group  node[:tomcat][:user]
+      owner  node['tomcat']['user']
+      group  node['tomcat']['user']
       mode   0644
 
       variables ({

@@ -22,8 +22,8 @@ define :geoserver do
 
   # Initialize data directory (must happen before git repo clone)
   directory data_dir do
-    owner     node[:tomcat][:user]
-    group     node[:tomcat][:user]
+    owner     node['tomcat']['user']
+    group     node['tomcat']['user']
     mode      0755
     recursive true
   end
@@ -43,8 +43,8 @@ define :geoserver do
       depth      git_depth
       action     :sync
       notifies   :create, "ruby_block[#{data_dir}_proxy_base_url]", :immediately
-      user       geoserver_data_bag['git_user']   || node[:tomcat][:user]
-      group      geoserver_data_bag['git_group']  || node[:tomcat][:user]
+      user       geoserver_data_bag['git_user']   || node['tomcat']['user']
+      group      geoserver_data_bag['git_group']  || node['tomcat']['user']
     end
 
     # Inject proxyBaseUrl to global.xml at /global/settings/proxyBaseUrl
@@ -70,8 +70,8 @@ define :geoserver do
 
   template ::File.join(data_dir, "security", "usergroup", "default", "users.xml") do
     source    "geoserver/users.xml.erb"
-    owner     node[:tomcat][:user]
-    group     node[:tomcat][:user]
+    owner     node['tomcat']['user']
+    group     node['tomcat']['user']
     mode      0644
     notifies  :restart, "service[#{instance_service_name}]", :delayed
     variables ({
