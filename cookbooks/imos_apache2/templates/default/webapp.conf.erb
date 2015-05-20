@@ -34,6 +34,7 @@ end
   DocumentRoot <%= @params[:docroot] %>
 
   <Directory <%= @params[:docroot] %>>
+    DirectoryIndex <%= @params[:directory_index] %>
     Options FollowSymLinks
     AllowOverride None
     Order allow,deny
@@ -46,6 +47,18 @@ end
   </Directory>
 <% end -%>
 
+<% if @params[:content_repo] %>
+  <Directorymatch "^/.*/\.git/">
+    Order deny,allow
+    Deny from all
+  </Directorymatch>
+
+  <FilesMatch "^README.md">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+<% end %>
+
 <%
 if @params[:cached]
   @params[:apps].each do |app|
@@ -53,7 +66,7 @@ if @params[:cached]
 %>
   ProxyRemote http://localhost:<%= @params[:app_port] %>/<%= app_name %> http://localhost:3128
 <%
-  end
+  end if @params[:apps]
 end
 -%>
 
@@ -68,6 +81,32 @@ end
   RewriteRule ^/$ <%= protocol %>://<%= @params[:vhost] %>/<%= main_app_path %>
 <% end %>
 
+<% if @params[:redirects] %>
+  # http redirects
+  <% @params[:redirects].each do |redirect_pair|
+       redirect_to = redirect_pair['to']
+       redirect_from = redirect_pair['from']
+  %>
+  RewriteRule ^/<%= redirect_from %>$ http://<%= @params[:vhost] %>/<%= redirect_to %>
+  <% end %>
+<% end %>
+
+<%
+proxied_apps = []
+@params[:apps].each do |app|
+  app_name = app.keys.first
+  aliases  = app.values.first
+  proxied_apps << [ app_name, @params[:app_port], aliases ]
+end if @params[:apps]
+
+@params[:proxy_pass].each do |proxy_pair|
+   app_name = proxy_pair['from']
+   app_port = proxy_pair['to_port']
+   proxied_apps << [ app_name, app_port, [] ]
+end if @params[:proxy_pass]
+%>
+
+<% if ! proxied_apps.empty? %>
   # proxy and reverse proxy handling
   ProxyPreserveHost On
 
@@ -77,23 +116,24 @@ end
     Deny from all
     Allow from all
   </Proxy>
+<% end %>
 
-<% @params[:apps].each do |app|
-     app_name = app.keys.first
-     aliases  = app.values.first
+<% proxied_apps.each do |proxied_app|
+     app_name    = proxied_app[0]
+     app_port    = proxied_app[1]
+     app_aliases = proxied_app[2]
 %>
-  ProxyPass           /<%= app_name %> http://localhost:<%= @params[:app_port] %>/<%= app_name %> retry=0
-  ProxyPassReverse    /<%= app_name %> http://localhost:<%= @params[:app_port] %>/<%= app_name %>
+  ProxyPass           /<%= app_name %> http://localhost:<%= app_port %>/<%= app_name %> retry=0
+  ProxyPassReverse    /<%= app_name %> http://localhost:<%= app_port %>/<%= app_name %>
 
   # take care of extra aliases per app
   # forward all aliases to /name
-<%   aliases.each do |_alias| %>
+<%   app_aliases.each do |_alias| %>
   RewriteRule ^/<%= _alias %>/*$ http://%{HTTP_HOST}/<%= app_name %>
-<%   end if aliases -%>
+<%   end if app_aliases -%>
+<% end %>
 
-<% end -%>
-
-<% if @params[:full_config][:deny_robots] %>
+<% if @params[:full_config] && @params[:full_config][:deny_robots] %>
   Alias /robots.txt <%= node['imos_apache2']['static_dir'] %>/robots.txt
 <% elsif main_app_path %>
   Redirect /robots.txt /<%= main_app_path %>/robots.txt

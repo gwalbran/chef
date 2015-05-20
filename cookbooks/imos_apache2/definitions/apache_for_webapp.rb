@@ -1,5 +1,8 @@
 #
-# Copyright 2012, IMOS
+# Cookbook Name:: imos_apache2
+# Definition:: apache_for_webapp
+#
+# Copyright 2015, IMOS
 #
 # All rights reserved - Do Not Redistribute
 #
@@ -8,16 +11,22 @@
 awstats_data_bag = Chef::EncryptedDataBagItem.load("passwords", "awstats")
 
 define :apache_for_webapp do
-  name           = params[:name]
-  apps           = params[:apps]
-  tomcat_port    = params[:tomcat_port]
-  vhost          = params[:vhost]
-  server_aliases = params[:aliases]
-  cached         = params[:cached]
-  https          = params[:https]
-  rules          = params[:rules]
-  full_config    = params[:full_config]
+  name            = params[:name]
+  apps            = params[:apps]
+  tomcat_port     = params[:tomcat_port]
+  vhost           = params[:vhost]
+  server_aliases  = params[:aliases]
+  cached          = params[:cached]
+  https           = params[:https]
+  rules           = params[:rules]
+  redirects       = params[:redirects]
+  full_config     = params[:full_config]
+  docroot         = params[:docroot]
+  proxy_pass      = params[:proxy_pass]
+  directory_index = params[:directory_index]
+  content_repo    = params[:content_repo]
 
+  include_recipe "imos_apache2::default"
   include_recipe "apache2::mod_ssl"
   include_recipe "apache2::mod_proxy"
   include_recipe "apache2::mod_proxy_http"
@@ -42,20 +51,28 @@ define :apache_for_webapp do
     domain            domain
     rules             rules
     full_config       full_config
+    proxy_pass        proxy_pass
+    docroot           docroot
+    content_repo      content_repo
+    directory_index   directory_index
   end
 
   web_app "#{vhost}_ssl" do
-    vhost          vhost
-    template       "webapp.conf.erb"
-    cookbook       "imos_apache2"
-    apps           apps
-    app_port       tomcat_port
-    server_aliases server_aliases
-    cached         cached
-    https          true
-    domain         domain
-    rules          rules
-    full_config    full_config
+    vhost           vhost
+    template        "webapp.conf.erb"
+    cookbook        "imos_apache2"
+    apps            apps
+    app_port        tomcat_port
+    server_aliases  server_aliases
+    cached          cached
+    https           true
+    domain          domain
+    rules           rules
+    full_config     full_config
+    proxy_pass      proxy_pass
+    docroot         docroot
+    content_repo    content_repo
+    directory_index directory_index
   end
 
   # Setup awstats
@@ -69,6 +86,13 @@ define :apache_for_webapp do
   htpasswd '/etc/apache2/htpasswd_awstats' do
     user     awstats_data_bag['username']
     password awstats_data_bag['password']
+  end
+
+  if content_repo
+    git docroot do
+      repository content_repo
+      depth      1
+    end
   end
 
 end
