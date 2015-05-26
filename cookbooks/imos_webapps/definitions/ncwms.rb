@@ -70,6 +70,7 @@ define :ncwms do
   ruby_block "refresh_ncwms_config_#{instance_service_name}" do
     block do
       FileUtils.cp ncwms_config_from_chef, ncwms_config_real
+      FileUtils.chown node['tomcat']['user'], node['tomcat']['group'], ncwms_config_real
     end
     action   :nothing
     notifies :restart, "service[#{instance_service_name}]", :delayed
