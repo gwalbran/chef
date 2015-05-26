@@ -9,8 +9,6 @@
 
 include_recipe "imos_java"
 
-tomcat_version = node['tomcat']['version']
-
 # Create user
 user node['tomcat']['user'] do
   system true
@@ -19,7 +17,11 @@ end
 # Create CATALINA_HOME
 directory node['tomcat']['home'] do
   owner     node['tomcat']['user']
-  group     node['tomcat']['user']
+  group     node['tomcat']['group']
   recursive true
   mode      00755
+end
+
+execute "remove tomcat7_ init.d" do
+  command "rm -f /etc/init.d/tomcat7_*"
 end

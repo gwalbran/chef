@@ -28,17 +28,13 @@ default["tomcat"]["log_level"] = "SEVERE"
 
 default["tomcat"]["pkg_url"] = "https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.61/bin/apache-tomcat-7.0.61.tar.gz"
 default["tomcat"]["pkg_checksum"] = "2528ad7434e44ab1198b5692d5f831ac605051129119fd81a00d4c75abe1c0e0"
+#default["tomcat"]["pkg_url"] = "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.32/bin/apache-tomcat-8.0.32.tar.gz"
+#default["tomcat"]["pkg_checksum"] = "7e23260f2481aca88f89838e91cb9ff00548a28ba5a19a88ff99388c7ee9a9b8"
 
-default["tomcat"]["user"] = "tomcat#{tomcat["version"]}"
-default["tomcat"]["group"] = "tomcat#{tomcat["version"]}"
-default["tomcat"]["home"] = "/usr/share/tomcat#{tomcat["version"]}"
-default["tomcat"]["base"] = "/var/lib/tomcat#{tomcat["version"]}"
-default["tomcat"]["config_dir"] = "/etc/tomcat#{tomcat["version"]}"
-default["tomcat"]["log_dir"] = "/var/log/tomcat#{tomcat["version"]}"
-default["tomcat"]["tmp_dir"] = "/tmp/tomcat#{tomcat["version"]}-tmp"
-default["tomcat"]["work_dir"] = "/var/cache/tomcat#{tomcat["version"]}"
-default["tomcat"]["context_dir"] = "#{tomcat["config_dir"]}/Catalina/localhost"
-default["tomcat"]["webapp_dir"] = "/var/lib/tomcat#{tomcat["version"]}/webapps"
+default["tomcat"]["user"] = "tomcat7"
+default["tomcat"]["group"] = "tomcat7"
+default["tomcat"]["home"] = "/usr/share/tomcat7"
+default["tomcat"]["base"] = "/var/lib/tomcat7"
 
 # Max threads will be set to number of cores times 4 - that should be enough!
 # Tomcat original default is 200

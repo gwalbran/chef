@@ -38,7 +38,7 @@ if node['webapps'] && node['webapps']['instances']
     instance_aliases           = instance['aliases']
     instance_tomcat_port       = instance['port']
     instance_base_directory    = "#{node['tomcat']['base']}/#{instance_name}"
-    instance_service_name      = "tomcat#{node["tomcat"]["version"]}_#{instance_name}"
+    instance_service_name      = "tomcat_#{instance_name}"
     instance_data_directory    = instance_parameters['data_dir'] || "#{instance_base_directory}/data/#{instance_name}"
     instance_apps              = instance['apps']
     instance_httpd_rules       = instance['httpd_rules']

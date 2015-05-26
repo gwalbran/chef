@@ -1,15 +1,14 @@
 define :delete_tomcat_instance do
   instance_name  = @params[:name]
-  tomcat_version = node['tomcat']['version']
 
   # Stop
-  service "tomcat#{tomcat_version}_#{instance_name}" do
-    service_name "tomcat#{tomcat_version}_#{instance_name}"
+  service "tomcat_#{instance_name}" do
+    service_name "tomcat_#{instance_name}"
     action [:stop, :disable]
   end
 
   # Delete init.d scripts.
-  file "/etc/init.d/tomcat#{tomcat_version}_#{instance_name}" do
+  file "/etc/init.d/tomcat_#{instance_name}" do
     action :delete
   end
 

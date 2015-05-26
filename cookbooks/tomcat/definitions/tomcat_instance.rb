@@ -12,7 +12,7 @@ define :tomcat_instance do
   tomcat_fine_version = node['tomcat']['fine_version']
   instance_dir        = "#{node['tomcat']['base']}/#{name}"
   server_xml          = ::File.join(instance_dir, 'conf', 'server.xml')
-  init_d_service      = "tomcat#{tomcat_version}_#{name}"
+  init_d_service      = "tomcat_#{name}"
   init_d_service_path = ::File.join('etc', 'init.d', init_d_service)
   logging_properties  = ::File.join(instance_dir, 'conf', 'logging.properties')
   version_sh          = ::File.join(instance_dir, "bin", "version.sh")
@@ -67,7 +67,7 @@ define :tomcat_instance do
   # Create init.d script for each instance.
   template init_d_service_path do
     cookbook "tomcat"
-    source   "tomcat#{tomcat_version}.erb"
+    source   "tomcat.erb"
     owner    "root"
     group    "root"
     mode     00755

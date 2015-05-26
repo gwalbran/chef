@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# /etc/init.d/tomcat7 -- startup script for the tomcat7
+# /etc/init.d/tomcat -- startup script for the tomcat
 #
 # Written by Miquel van Smoorenburg <miquels@cistron.nl>.
 # Modified for Debian GNU/Linux	by Ian Murdock <imurdock@gnu.ai.mit.edu>.
@@ -10,7 +10,7 @@
 # Additional improvements by Jason Brittain <jason.brittain@mulesoft.com>.
 #
 ### BEGIN INIT INFO
-# Provides:          tomcat7
+# Provides:          tomcat
 # Required-Start:    $local_fs $remote_fs $network
 # Required-Stop:     $local_fs $remote_fs $network
 # Should-Start:      $named
@@ -26,7 +26,7 @@ set -e
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 NAME=<%= @name %>
 DESC="Tomcat servlet engine"
-DEFAULT=/etc/default/tomcat7/$NAME
+DEFAULT=/etc/default/tomcat/$NAME
 
 if [ `id -u` -ne 0 ]; then
 	echo "You need root privileges to run this script"
@@ -103,7 +103,7 @@ if [ -z "$CATALINA_TMPDIR" ]; then
 	CATALINA_TMPDIR="$JVM_TMP"
 fi
 
-# Set the JSP compiler if set in the tomcat7.default file
+# Set the JSP compiler if set in the tomcat.default file
 if [ -n "$JSP_COMPILER" ]; then
 	JAVA_OPTS="$JAVA_OPTS -Dbuild.compiler=\"$JSP_COMPILER\""
 fi
@@ -180,7 +180,7 @@ case "$1" in
 
 		# Regenerate POLICY_CACHE file
 		umask 022
-		echo "// AUTO-GENERATED FILE from /etc/tomcat7/policy.d/" \
+		echo "// AUTO-GENERATED FILE from /etc/tomcat/policy.d/" \
 			> "$POLICY_CACHE"
 		echo ""  >> "$POLICY_CACHE"
                 if [ -d $CATALINA_BASE/conf/policy.d ] ; then
