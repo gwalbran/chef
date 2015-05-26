@@ -17,8 +17,8 @@ grails {
 <% end %>
 
 worker {
-    fileLimit = 3 * 31 * 24
-    maxGogoduckTimeMinutes = 120
+    fileLimit = <%= @custom_parameters['file_limit'] || 3 * 31 * 24 %>
+    maxGogoduckTimeMinutes = <%= @custom_parameters['max_minutes'] || 120 %>
     outputFilename = 'output.nc'
     outputPath = '<%= @tomcat_data_directory %>'
     cmd = {
