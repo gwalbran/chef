@@ -1,9 +1,10 @@
-include_recipe "java"
-
-# Required for grails to run.
-if node['java']['install_flavor'] == "openjdk"
-  execute "set Open JDK as alternative" do
-    command "update-alternatives --set java /usr/lib/jvm/java-#{node["java"]["jdk_version"]}-openjdk-amd64/jre/bin/java"
-    action :run
-  end
+apt_repository 'openjdk-r' do
+  uri          'http://ppa.launchpad.net/openjdk-r/ppa/ubuntu'
+  distribution "#{node['lsb']['codename']}"
+  components   ['main']
+  keyserver    'keyserver.ubuntu.com'
+  key          '86F44E2A'
 end
+
+include_recipe "java::set_attributes_from_version"
+include_recipe "java::#{node['java']['install_flavor']}"
