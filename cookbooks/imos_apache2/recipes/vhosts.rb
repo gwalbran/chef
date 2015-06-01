@@ -30,7 +30,7 @@ if node['apache'] && node['apache']['vhosts']
       docroot           vhost['docroot']
       directory_index   vhost['directory_index'] || node['imos_apache2']['directory_index']
       content_repo      vhost['content_repo']
-      redirect_to_https vhost['https']
+      https             vhost['https']
     end
 
   end

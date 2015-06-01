@@ -35,15 +35,10 @@ end
 
   <Directory <%= @params[:docroot] %>>
     DirectoryIndex <%= @params[:directory_index] %>
-    Options FollowSymLinks
+    Options <%= @params[:docroot_options] || "+Indexes +FollowSymLinks" %>
     AllowOverride None
     Order allow,deny
     Allow from all
-  </Directory>
-
-  <Directory />
-    Options FollowSymLinks
-    AllowOverride None
   </Directory>
 <% end -%>
 
