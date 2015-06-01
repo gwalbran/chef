@@ -47,6 +47,7 @@ define :apache_for_webapp do
     app_port          tomcat_port
     server_aliases    server_aliases
     cached            cached
+    redirects         redirects
     redirect_to_https https
     domain            domain
     rules             rules
@@ -65,6 +66,7 @@ define :apache_for_webapp do
     app_port        tomcat_port
     server_aliases  server_aliases
     cached          cached
+    redirects       redirects
     https           true
     domain          domain
     rules           rules
