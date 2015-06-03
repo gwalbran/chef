@@ -42,7 +42,7 @@ define :geoserver do
       revision   geoserver_data_bag['git_branch'] || "master"
       depth      git_depth
       action     :sync
-      notifies   :create, "ruby_block[#{data_dir}_proxy_base_url]", :immediately
+      notifies   :create, "ruby_block[#{data_dir}_geoserver_injected_variables]", :immediately
       user       geoserver_data_bag['git_user']   || node['tomcat']['user']
       group      geoserver_data_bag['git_group']  || node['tomcat']['user']
     end
@@ -50,13 +50,31 @@ define :geoserver do
     # Inject proxyBaseUrl to global.xml at /global/settings/proxyBaseUrl
     protocol = app_parameters['https'] ? "https" : "http"
     geoserver_url = "#{protocol}://#{instance_vhost}/#{app_name}"
-    ruby_block "#{data_dir}_proxy_base_url" do
+
+    geoserver_injected_variables = []
+    geoserver_injected_variables << [ "#{data_dir}/global.xml", "/global/settings", "proxyBaseUrl", geoserver_url ]
+
+    ruby_block "#{data_dir}_geoserver_injected_variables" do
       block do
-        Chef::Recipe::XMLHelper.insert_xml_node("#{data_dir}/global.xml", "/global/settings", "proxyBaseUrl", geoserver_url)
+        geoserver_injected_variables.each do |var_tuple|
+          file, xpath, name, value = var_tuple
+          Chef::Log.info "Injecting geoserver variable in '#{file}', '#{xpath}/#{name}' => '#{value}'"
+          Chef::Recipe::XMLHelper.insert_xml_node(file, xpath, name, value)
+        end
       end
-      not_if {
-        current_proxy_base_url = Chef::Recipe::XMLHelper.get_xml_value("#{data_dir}/global.xml", "/global/settings/proxyBaseUrl")
-        current_proxy_base_url && current_proxy_base_url == geoserver_url
+      only_if {
+        # Test if anything needs changing, so the next block can restart
+        # geoserver only if required
+        need_change = false
+        geoserver_injected_variables.each do |var_tuple|
+          file, xpath, name, value = var_tuple
+          current_var_value = Chef::Recipe::XMLHelper.get_xml_value(file, "#{xpath}/#{name}")
+          Chef::Log.info "Current value of injected geoserver variable in '#{file}', '#{xpath}/#{name}' => '#{current_var_value}'"
+          if ! current_var_value || current_var_value != value
+            need_change = true
+          end
+        end
+        need_change
       }
       notifies :restart, "service[#{instance_service_name}]", :delayed
     end
