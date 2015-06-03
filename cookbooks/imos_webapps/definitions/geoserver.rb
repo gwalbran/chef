@@ -53,6 +53,9 @@ define :geoserver do
 
     geoserver_injected_variables = []
     geoserver_injected_variables << [ "global.xml", "/global/settings/proxyBaseUrl", geoserver_url ]
+    if app_parameters['injected_variables']
+      geoserver_injected_variables.concat(app_parameters['injected_variables'].dup)
+    end
 
     ruby_block "#{data_dir}_geoserver_injected_variables" do
       block do
