@@ -52,14 +52,15 @@ define :geoserver do
     geoserver_url = "#{protocol}://#{instance_vhost}/#{app_name}"
 
     geoserver_injected_variables = []
-    geoserver_injected_variables << [ "#{data_dir}/global.xml", "/global/settings", "proxyBaseUrl", geoserver_url ]
+    geoserver_injected_variables << [ "global.xml", "/global/settings/proxyBaseUrl", geoserver_url ]
 
     ruby_block "#{data_dir}_geoserver_injected_variables" do
       block do
         geoserver_injected_variables.each do |var_tuple|
-          file, xpath, name, value = var_tuple
-          Chef::Log.info "Injecting geoserver variable in '#{file}', '#{xpath}/#{name}' => '#{value}'"
-          Chef::Recipe::XMLHelper.insert_xml_node(file, xpath, name, value)
+          file, xpath, value = var_tuple
+          file = ::File.join(data_dir, file)
+          Chef::Log.info "Injecting geoserver variable in '#{file}', '#{xpath}' => '#{value}'"
+          Chef::Recipe::XMLHelper.insert_xml_node(file, xpath, value)
         end
       end
       only_if {
@@ -67,9 +68,10 @@ define :geoserver do
         # geoserver only if required
         need_change = false
         geoserver_injected_variables.each do |var_tuple|
-          file, xpath, name, value = var_tuple
-          current_var_value = Chef::Recipe::XMLHelper.get_xml_value(file, "#{xpath}/#{name}")
-          Chef::Log.info "Current value of injected geoserver variable in '#{file}', '#{xpath}/#{name}' => '#{current_var_value}'"
+          file, xpath, value = var_tuple
+          file = ::File.join(data_dir, file)
+          current_var_value = Chef::Recipe::XMLHelper.get_xml_value(file, "#{xpath}")
+          Chef::Log.info "Current value of injected geoserver variable in '#{file}', '#{xpath}' => '#{current_var_value}'"
           if ! current_var_value || current_var_value != value
             need_change = true
           end
