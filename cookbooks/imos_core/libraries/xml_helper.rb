@@ -29,21 +29,24 @@ class Chef::Recipe::XMLHelper
     xpath_object ? xpath_object.inner_html : nil
   end
 
-  # insert/updates xml node named 'name' at 'xpath' with 'value'
-  def self.insert_xml_node(xml_file, xpath, name, value)
+  # insert/updates xml node at 'xpath' with 'value'
+  def self.insert_xml_node(xml_file, xpath, value)
     require 'nokogiri'
     @xml = load_xml_file(xml_file)
-    xml_node = @xml.at_xpath("#{xpath}/#{name}")
+    xml_node = @xml.at_xpath(xpath)
 
     if xml_node
       # Node already exists, lets edit it
-      xml_node.inner_html = value
+      xml_node.inner_html = value.to_s
     else
       # Need to add a new node
+      # Split xpath from '/1/2/3' to '/1/2' and '3'
+      # We need to add node named '3' under '/1/2'
+      name = xpath.split("/").last
+      base_xpath = xpath.split('/')[0..-2].join('/') # remove last element
       new_node = Nokogiri::XML::Node.new name, @xml
-      new_node.content = value
-      # Using File.dirname to strip the last element
-      @xml.at_xpath(xpath).children.last.add_next_sibling(new_node)
+      new_node.content = value.to_s
+      @xml.at_xpath(base_xpath).children.last.add_next_sibling(new_node)
     end
 
     # Write out the xml again
