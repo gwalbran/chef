@@ -1,6 +1,7 @@
 class ArtifactDeployer
 
   def self.databag_exists?(name, id)
+    id.include? " " and return false # Corner case for ids with spaces
     return ! Chef::Search::Query.new.search(name, "id:#{id}").empty?
   end
 
