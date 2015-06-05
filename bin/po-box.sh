@@ -27,8 +27,12 @@ fi
 
 declare -r HARVEST_READ_PO='data_bags/jndi_resources/harvest-read-po.json'
 harvest_read_po_password=`grep 'password' $HARVEST_READ_PO | cut -d: -f2 | cut -d\" -f2`
-if [[ "$harvest_read_po_password" = "geoserver_po" ]]; then
-    echo "Please edit '$HARVEST_READ_PO' and plant a password"
+
+declare -r HARVEST_READ_PO_RC='data_bags/jndi_resources/harvest-read-po-rc.json'
+harvest_read_po_rc_password=`grep 'password' $HARVEST_READ_PO_RC | cut -d: -f2 | cut -d\" -f2`
+
+if [[ "$harvest_read_po_password" = "geoserver_po" || "$harvest_read_po_rc_password" = "geoserver_po" ]]; then
+    echo "Please edit '$HARVEST_READ_PO' and '$HARVEST_READ_PO_RC' and plant valid passwords"
     exit 1
 fi
 
