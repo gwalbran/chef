@@ -83,7 +83,9 @@ DEPENDENCIES
     git: git://github.com/socrata-cookbooks/java.git
     revision: 896315a066f1b0d19be457b6d2700f0fd6d0083b
   jenkins
-    path: ../jenkins
+    git: git://github.com/danfruehauf/jenkins.git
+    revision: b2075960ac2097d3bc87a91d47139ba6929a82e3
+    ref: jenkins
   kibana
     git: git://github.com/lusis/chef-kibana.git
     revision: aadfd38bc6e2877bc2c23694a0ea24390b76bd8a
