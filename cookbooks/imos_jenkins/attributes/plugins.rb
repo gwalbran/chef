@@ -1,7 +1,11 @@
 default["imos_jenkins"]["plugins"] = %w{
-    git
-    git-client
-    grails
-    greenballs
-    maven-plugin
+  build-pipeline-plugin
+  copyartifact
+  envinject
+  git
+  git-client
+  grails
+  greenballs
+  maven-plugin
+  repository
 }
