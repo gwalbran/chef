@@ -1,3 +1,14 @@
+#
+# Cookbook Name:: jenkins
+# Recipe:: jobs
+#
+# Copyright 2014, IMOS
+#
+# All rights reserved - Do Not Redistribute
+#
+# Manages jobs, views and pipelines on Jenkins
+#
+
 def cache_path
   File.join(Chef::Config[:file_cache_path], "jenkins")
 end
@@ -114,3 +125,25 @@ jenkins_jobs.each do |job_name, variables|
 end
 
 # TODO delete unnecessary jobs
+
+# Create views
+data_bag('build_views').each do |item_id|
+  view_databag = Chef::DataBagItem.load('build_views', item_id)
+  jobs = []
+  view_databag['jobs'].each do |job|
+    Chef::Search::Query.new.search('build_jobs', "id:#{job}").each do |item|
+      item['is_template'] != true and jobs << item['id']
+    end
+  end
+
+  action = :create
+  if jobs.empty?
+    Chef::Log.warn "Deleting Jenkins view '#{view_databag['id']}' as it has no items in it"
+    action = :delete
+  end
+
+  jenkins_view view_databag['id'] do
+    jobs   jobs
+    action action
+  end
+end
