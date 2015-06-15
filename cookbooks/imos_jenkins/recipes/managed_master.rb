@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: jenkins
-# Recipe:: master
+# Recipe:: managed_master
 #
 # Copyright 2015, IMOS
 #
@@ -21,3 +21,4 @@ include_recipe 'imos_jenkins::grails_installer'
 include_recipe 'imos_jenkins::global_env'
 include_recipe "imos_jenkins::node_common"
 include_recipe "imos_jenkins::jobs"
+include_recipe "imos_jenkins::define_slaves"
