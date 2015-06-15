@@ -21,8 +21,9 @@ slave_nodes.each do |n|
   labels = n['imos_jenkins']['slave']['labels'] or node['imos_jenkins']['slave']['labels']
 
   jenkins_slave slave_hostname do
-    remote_fs remote_fs
-    executors executors.to_i
-    labels    labels
+    remote_fs   remote_fs
+    executors   executors.to_i
+    labels      labels
+    environment Chef::Recipe::JenkinsHelper.global_environment
   end
 end

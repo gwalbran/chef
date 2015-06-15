@@ -9,24 +9,8 @@
 # Recipe to configure global environment variables
 #
 
-def canonicalized_path(path)
-  path = '/usr/bin/java'
-  while ::File.symlink?(path)
-    path = ::File.readlink(path)
-  end
-  path.chomp
-end
-
-def java_home
-  canonicalized_path('/usr/bin/java').gsub('/jre/bin/java', '')
-end
-
-global_environment = {
-  :JAVA_HOME => java_home
-}
-
 global_environment_groovy_code = ""
-global_environment.each do |k, v|
+Chef::Recipe::JenkinsHelper.global_environment.each do |k, v|
   global_environment_groovy_code += "envVars.put(\"#{k}\", \"#{v}\")" + "\n"
 end
 
