@@ -21,7 +21,6 @@ include_recipe "imos_devel::talend"
 include_recipe "imos_devel::vagrant"
 
 include_recipe 'imos_postgresql::sharpie_postgresql_9_1'
-include_recipe 'grails'
 include_recipe 'git'
 include_recipe 'xvfb'
 include_recipe 'packer'
