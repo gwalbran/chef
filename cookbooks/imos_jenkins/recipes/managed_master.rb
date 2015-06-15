@@ -16,5 +16,8 @@ include_recipe "jenkins::master"
 include_recipe "imos_jenkins::keys"
 include_recipe "imos_jenkins::authentication"
 include_recipe "imos_jenkins::plugins"
-include_recipe "imos_jenkins::tools"
+include_recipe 'imos_jenkins::maven_installer'
+include_recipe 'imos_jenkins::grails_installer'
+include_recipe 'imos_jenkins::global_env'
+include_recipe "imos_jenkins::node_common"
 include_recipe "imos_jenkins::jobs"

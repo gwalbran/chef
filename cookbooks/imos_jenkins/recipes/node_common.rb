@@ -16,30 +16,9 @@ include_recipe 'build-essential'
 include_recipe "imos_java"
 include_recipe "imos_core::xml_tools"
 include_recipe "imos_devel::nco_devel"
-
-node.set['imos_devel']['vagrant']['plugins'] = [
-  {
-    'name' => 'vagrant-berkshelf',
-    'user' => node['imos_jenkins']['user'],
-    'home' => '/home/jenkins',
-    'version' => '2.0.1'
-  },
-  {
-    'name' => 'vagrant-cachier',
-    'user' => node['imos_jenkins']['user'],
-    'home' => '/home/jenkins'
-  },
-  {
-    'name' => 'vagrant-vbguest',
-    'user' => node['imos_jenkins']['user'],
-    'home' => '/home/jenkins'
-  }
-]
-
+include_recipe "imos_devel::chef_dk"
+include_recipe "imos_devel::talend"
 include_recipe "imos_devel::vagrant"
-include_recipe "imos_devel::virtualbox"
-
-include_recipe "imos_jenkins::ruby"
 
 include_recipe 'imos_postgresql::sharpie_postgresql_9_1'
 include_recipe 'grails'
@@ -69,30 +48,4 @@ template "/home/jenkins/.ssh/config" do
   variables({
     :user => 'jenkins'
   })
-end
-
-# This file is used to check that the portal is running (with correct version).
-directory "/home/jenkins/scripts" do
-  user  node['imos_jenkins']['user']
-  group node['imos_jenkins']['group']
-end
-
-cookbook_file "/home/jenkins/scripts/check_running.sh" do
-  source "check_running.sh"
-  mode   00500
-  user   node['imos_jenkins']['user']
-  group  node['imos_jenkins']['group']
-end
-
-# Maven setting for jenkins user.
-directory "/home/jenkins/.m2" do
-  user  node['imos_jenkins']['user']
-  group node['imos_jenkins']['group']
-end
-
-cookbook_file "/home/jenkins/.m2/settings.xml" do
-  source "settings.xml"
-  mode   00644
-  user   node['imos_jenkins']['user']
-  group  node['imos_jenkins']['group']
 end
