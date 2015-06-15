@@ -30,7 +30,12 @@ define :imos_tomcat_webapp do
   jndis.each do |jndi_name|
     begin
       Chef::Log.info("Using JNDI resource '#{jndi_name}' from data bag for '#{application_name}'")
-      jndi_resources << Chef::EncryptedDataBagItem.load('jndi_resources', jndi_name).to_hash
+      jndi_resource = Chef::EncryptedDataBagItem.load('jndi_resources', jndi_name).to_hash
+      if node['vagrant']
+        # Mock JNDI on vagrant boxes to point to localhost
+        jndi_resource['url'].gsub!(/:\/\/.*:/, "://localhost:")
+      end
+      jndi_resources << jndi_resource
     end
   end
 
