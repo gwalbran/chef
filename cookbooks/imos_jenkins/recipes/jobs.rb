@@ -111,6 +111,11 @@ jenkins_jobs.each do |job_name, variables|
   job_template_cache = File.join(cache_path, "#{job_name}.xml")
   Chef::Log.info("Cache file for '#{job_name}' at '#{job_template_cache}'")
 
+  variables['enabled'].nil? and variables['enabled'] = true
+  if node['vagrant']
+    variables['enabled'] = false
+  end
+
   template job_template_cache do
     source    variables['job_template']
     cookbook  variables['job_cookbook']
