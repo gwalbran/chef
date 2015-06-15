@@ -6,7 +6,7 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-# Recipe to configure global environment variables
+# Recipe to configure global environment
 #
 
 global_environment_groovy_code = ""
@@ -18,10 +18,12 @@ jenkins_script 'set_global_properties' do
   command <<-EOH.gsub(/^ {4}/, '')
     import jenkins.model.*
 
-    instance = Jenkins.getInstance()
-    globalNodeProperties = instance.getGlobalNodeProperties()
-    envVarsNodePropertyList = globalNodeProperties.getAll(hudson.slaves.EnvironmentVariablesNodeProperty.class)
+    def instance = Jenkins.getInstance()
+    def globalNodeProperties = instance.getGlobalNodeProperties()
+    def envVarsNodePropertyList = globalNodeProperties.getAll(hudson.slaves.EnvironmentVariablesNodeProperty.class)
 
+    def newEnvVarsNodeProperty
+    def envVars
     if (envVarsNodePropertyList == null || envVarsNodePropertyList.size() == 0) {
         newEnvVarsNodeProperty = new hudson.slaves.EnvironmentVariablesNodeProperty();
         globalNodeProperties.add(newEnvVarsNodeProperty)
@@ -31,6 +33,14 @@ jenkins_script 'set_global_properties' do
     }
 
     #{global_environment_groovy_code}
+
+    // Configure git username and email
+    def gitExtension = instance.getExtensionList(hudson.plugins.git.GitSCM.DescriptorImpl.class)[0]
+    gitExtension.setGlobalConfigName("#{node['imos_jenkins']['username']}")
+    gitExtension.setGlobalConfigEmail("#{node['imos_jenkins']['email']}")
+
+    // Set number of executors on master node
+    instance.setNumExecutors(#{node['imos_jenkins']['executors'].to_i})
 
     instance.save()
   EOH
