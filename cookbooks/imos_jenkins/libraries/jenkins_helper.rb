@@ -24,6 +24,7 @@ class Chef::Recipe::JenkinsHelper
     return variables
   end
 
+<<<<<<< HEAD
   # Groovy code for installing common tools such as ant, grails, maven
   def self.groovy_code_for_tool_installer(versions, namespace, extension_class, installer_class, installation_class)
     extension_class = "#{namespace}.#{extension_class}"
@@ -58,7 +59,7 @@ class Chef::Recipe::JenkinsHelper
   end
 
   def self.groovy_code_for_pipeline(pipeline_databag)
-    pipeline_name = pipeline_databag['id']
+    pipeline_name = app_id
     first_job = "#{pipeline_name}_#{pipeline_databag['jobs'].first['name']}"
 
     return <<-GROOVY

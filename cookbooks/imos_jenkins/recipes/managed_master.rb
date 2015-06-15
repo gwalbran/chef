@@ -11,6 +11,8 @@
 include_recipe "imos_java"
 
 node.set['jenkins']['master']['runit']['sv_timeout'] = 240
+node.set['jenkins']['master']['jvm_options'] = node['imos_jenkins']['master']['jvm_options']
+
 include_recipe "jenkins::master"
 
 include_recipe "imos_jenkins::keys"
