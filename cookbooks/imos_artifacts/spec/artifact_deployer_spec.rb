@@ -2,6 +2,41 @@ require_relative 'spec_helper'
 require 'tmpdir'
 
 describe ArtifactDeployer do
+  describe 'build artifact manifests' do
+    it 'manifest from data bag' do
+      job_data_bag = { 'id' => 'job_id', 'uri' => '/some/path/file.war' }
+      allow(ArtifactDeployer).to receive(:databag_exists?).and_return(true)
+      allow(Chef::EncryptedDataBagItem).to receive(:load).with("imos_artifacts", "job_data_bag").and_return(job_data_bag)
+
+      manifest = ArtifactDeployer.get_artifact_manifest("job_data_bag")
+      expect(manifest).to eq (job_data_bag)
+    end
+
+    it 'manifest from uri' do
+      manifest = ArtifactDeployer.get_artifact_manifest("http://test.com/file.war")
+      expect(manifest['id']).to eq ("file.war")
+      expect(manifest['uri']).to eq ("http://test.com/file.war")
+
+      manifest = ArtifactDeployer.get_artifact_manifest("/some/path/file.war")
+      expect(manifest['id']).to eq ("file.war")
+      expect(manifest['uri']).to eq ("/some/path/file.war")
+    end
+
+    it 'manifest from job' do
+      allow(ArtifactDeployer).to receive(:databag_exists?).and_return(false)
+      manifest = ArtifactDeployer.get_artifact_manifest("some_job")
+      expect(manifest['id']).to eq ("some_job")
+      expect(manifest['job']).to eq ("some_job")
+    end
+
+    it 'manifest from job with filename' do
+      allow(ArtifactDeployer).to receive(:databag_exists?).and_return(false)
+      manifest = ArtifactDeployer.get_artifact_manifest("some_job/file.war")
+      expect(manifest['id']).to eq ("some_job/file.war")
+      expect(manifest['job']).to eq ("some_job")
+      expect(manifest['filename']).to eq ("file.war")
+    end
+  end
 
   describe 'need_deploy?' do
     tmp_dir = ""

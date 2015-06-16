@@ -1,7 +1,7 @@
 class ArtifactDeployer
 
   def self.databag_exists?(name, id)
-    id.include? " " and return false # Corner case for ids with spaces
+    id =~ /[^a-zA-Z0-9\-_]/ and return false # Do not allow special characters in id
     return ! Chef::Search::Query.new.search(name, "id:#{id}").empty?
   end
 
@@ -10,6 +10,17 @@ class ArtifactDeployer
 
     if artifact_id && ! artifact_id.empty? && databag_exists?('imos_artifacts', artifact_id)
       artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_id).to_hash
+
+    elsif artifact_id.start_with?("/") || artifact_id.start_with?("http://") || artifact_id.start_with?("https://")
+      artifact_manifest = { 'id' => ::File.basename(artifact_id), 'uri' => artifact_id }
+
+    else
+      job = artifact_id
+      artifact_manifest = { 'id' => artifact_id, 'job' => artifact_id }
+      if artifact_manifest['id'].include?("/")
+        # In the case of having a 'job/something', treat 'something' as the filename
+        artifact_manifest['job'], artifact_manifest['filename'] = artifact_id.split("/")
+      end
     end
 
     return artifact_manifest

@@ -12,10 +12,6 @@ define :imos_tomcat_context do
 
   # Assume jenkins job is given if data bag is not available
   artifact_manifest = ArtifactDeployer.get_artifact_manifest(artifact_name)
-  if ! artifact_manifest
-    Chef::Log.info("Building artifact manifest for '#{artifact_name}'")
-    artifact_manifest = { 'id' => artifact_name, 'job' => artifact_name }
-  end
 
   app_deploy_name = app_name
   service_notify_action = :restart

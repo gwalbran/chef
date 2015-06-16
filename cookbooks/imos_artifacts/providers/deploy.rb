@@ -21,10 +21,10 @@ def deploy_artifact
     recursive true
   end
 
-  if ArtifactDeployer.need_deploy?(dest_file, cached_file_path, install_dir)
-    Chef::Log.info("Deploying artifact '#{cached_file_path}' -> '#{dest_file}' -> '#{install_dir}'")
+  if ArtifactDeployer.need_deploy?(dest_file, @cached_file_path, install_dir)
+    Chef::Log.info("Deploying artifact '#{@cached_file_path}' -> '#{dest_file}' -> '#{install_dir}'")
     ArtifactDeployer.extract_artifact(
-      cached_file_path,
+      @cached_file_path,
       dest_file,
       install_dir,
       new_resource.owner,
@@ -32,7 +32,7 @@ def deploy_artifact
       new_resource.remove_top_level_directory)
     new_resource.updated_by_last_action(true)
   else
-    Chef::Log.info("No need to deploy artifact '#{cached_file_path}' -> '#{dest_file}' -> '#{install_dir}'")
+    Chef::Log.info("No need to deploy artifact '#{@cached_file_path}' -> '#{dest_file}' -> '#{install_dir}'")
     new_resource.updated_by_last_action(false)
   end
 

@@ -1,24 +1,12 @@
+require 'open-uri'
+
 class ImosArtifactFetcher
 
-  def initialize
-    load_dependencies
-  end
-
-  def load_dependencies
-    require 'json'
-    require 'net/http'
-  end
-
   def fetch_artifact(artifact_manifest, node)
-    archive_type = artifact_manifest['archiveType'] || node[:imos_artifacts][:archive_type]
-    if archive_type == 'jenkins'
-      return cache_jenkins_artifact(artifact_manifest, node)
-    elsif archive_type == 'archiva'
-      return cache_archiva_artifact(artifact_manifest)
-    elsif archive_type == 'local'
-      return cache_local_artifact(artifact_manifest)
+    if artifact_manifest['uri']
+      return cache_uri_artifact(artifact_manifest)
     else
-      Chef::Log.error("Unknown archive type #{archive_type}")
+      return cache_jenkins_artifact(artifact_manifest, node)
     end
   end
 
@@ -28,64 +16,52 @@ class ImosArtifactFetcher
     return jenkins.cache(artifact_manifest, download_prefix)
   end
 
-  def cache_archiva_artifact(artifact_manifest)
-    extension = artifact_manifest['extension'] || '.war'
-    filename = "#{Chef::Config[:file_cache_path]}/#{artifact_manifest['id']}" + extension
-    if filename && !::File.exists?(filename)
-      filename = download(artifact_manifest['url'], artifact_manifest['username'], artifact_manifest['password'], filename)
+  def cache_uri_artifact(artifact_manifest)
+    filename = "#{Chef::Config[:file_cache_path]}/#{artifact_manifest['id']}"
+    uri = artifact_manifest['uri']
+    username = artifact_manifest['username']
+    password = artifact_manifest['password']
+    return ImosArtifactFetcher.download_file(uri, filename, username, password)
+  end
+
+  def self.download_file(uri, filename, username = nil, password = nil)
+    File.open(filename, "wb") do |output|
+      file_content = ImosArtifactFetcher.get_uri_content_retry(uri, username, password)
+      if ! file_content
+        Chef::Application.fatal!("Error downloading file from '#{uri}'")
+      end
+      output.write(file_content)
+      Chef::Log.info "Cached '#{uri}' at '#{filename}'"
     end
 
     return filename
   end
 
-  def cache_local_artifact(artifact_manifest)
-    extension = artifact_manifest['extension'] || '.war'
-    dst_filename = "#{Chef::Config[:file_cache_path]}/#{artifact_manifest['id']}" + extension
-    src_filename = artifact_manifest['url']
-
-    if !File.exists?(src_filename)
-      Chef::Application.fatal!("Source file does not exist: #{src_filename}")
-    end
-
-    if dst_filename && !file_exists_unchanged(src_filename, dst_filename)
-      Chef::Log.debug("Copying '#{src_filename}' to '#{dst_filename}'...")
-      FileUtils.copy(src_filename, dst_filename)
-    end
-
-    return dst_filename
-  end
-
-  def file_exists_unchanged(src_filename, dst_filename)
-    return File.exists?(dst_filename) && FileUtils.compare_file(src_filename, dst_filename)
-  end
-
-  def download(url, username, password, filename)
-    downloaded = true
-    f = open(filename, 'w')
+  def self.get_uri_content(uri, username, password)
     begin
-      Chef::Log.info("Fetching #{url}")
-      uri = URI(url)
+      open_uri_obj = nil
+      if username && password
+        Chef::Log.info "Using authentication to download artifact, username: '#{username}'"
+        open_uri_obj = open(uri, "rb", :http_basic_authentication => [ username, password ])
+      else
+        open_uri_obj = open(uri, "rb")
+      end
 
-      request = Net::HTTP::Get.new(uri.request_uri)
-      request.basic_auth username, password
-
-      response = Net::HTTP.start(uri.host, uri.port) { |http|
-        http.request(request)
-      }
-      f.write(response.body)
-      Chef::Log.info("Cached #{url} at #{filename}")
+      return open_uri_obj.read
     rescue
-      downloaded = false
-    ensure
-      f.close()
+      return nil
     end
+  end
 
-    unless downloaded
-      File.delete(filename)
-      filename = nil
+  def self.get_uri_content_retry(uri, username, password, retries = 3)
+    for i in 1..retries do
+      content = ImosArtifactFetcher.get_uri_content(uri, username, password)
+      content and return content
+
+      Chef::Log.warn "Retrying #{i}/#{retries} '#{uri}'"
+      sleep 2
     end
-
-    filename
+    Chef::Application.fatal! "Could not access '#{uri}'"
   end
 
 end
