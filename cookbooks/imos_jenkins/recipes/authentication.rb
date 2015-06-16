@@ -50,6 +50,24 @@ def configure_jenkins_security
           return new Role("admin", permissions)
       }
 
+      def handleAnonymousRole(strategy) {
+          Set<Permission> permissions = new HashSet<Permission>()
+          permissions.add(PermissionGroup.get(hudson.model.Hudson).find("Read"))
+
+          // User anonymous should have global read access
+          def anonymousRole = new Role("anonymous", permissions)
+          strategy.addRole(strategy.GLOBAL, anonymousRole)
+          strategy.assignRole(strategy.GLOBAL, anonymousRole, "anonymous")
+
+          // Grant only read access only to jobs matching pattern
+          permissions = new HashSet<Permission>()
+          permissions.add(PermissionGroup.get(hudson.model.Item).find("Read"))
+          def regexPublicJobs = '^(?:(?!_private$).)*$' // Strings that don't end with '_private'
+          def publicJobsRole = new Role('public', regexPublicJobs, permissions)
+          strategy.addRole(strategy.PROJECT, publicJobsRole)
+          strategy.assignRole(strategy.PROJECT, publicJobsRole, "anonymous")
+      }
+
       def instance = Jenkins.getInstance()
       def realm = new HudsonPrivateSecurityRealm(false)
       instance.setSecurityRealm(realm)
@@ -61,6 +79,8 @@ def configure_jenkins_security
       adminUsers.each { user ->
           strategy.assignRole(strategy.GLOBAL, adminRole, user)
       }
+
+      handleAnonymousRole(strategy)
 
       instance.setAuthorizationStrategy(strategy)
       instance.save()
