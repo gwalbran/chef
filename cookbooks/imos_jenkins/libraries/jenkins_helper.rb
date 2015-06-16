@@ -91,7 +91,7 @@ GROOVY
   # A shell command to generate md5 for all artifacts
   def self.generate_md5_for_artifacts
     str  = '#!/bin/bash' + "\n"
-    str += 'for i in `find . -regex "^\./.*\(war\|jar\|zip\)$"`; do echo "$i"; md5sum "$i" > "$i.md5"; done'
+    str += 'for i in `find . -type f -regex "^\./.*\(war\|jar\|zip\)$"`; do echo "$i"; md5sum "$i" > "$i.md5"; done'
     return str
   end
 end
