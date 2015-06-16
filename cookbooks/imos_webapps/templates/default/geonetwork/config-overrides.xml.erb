@@ -73,16 +73,42 @@
     </file>
 
 <%
+# Temporarily cater for existing BroaderTerm classifier usage
 if @custom_parameters['classification_scheme']
-  @custom_parameters['classification_scheme'].each do |k, v|
-    xpath = "dimensions/dimension[@name='#{k}']/param[@name='conceptScheme']"
-    value = v
 %>
     <file name=".*WEB-INF/config-summary\.xml">
-        <replaceAtt xpath="<%= xpath %>" attName="value" value="<%= value %>"/>
-    </file>
+<%
+  @custom_parameters['classification_scheme'].each do |facet, conceptScheme|
+%>
+        <replaceAtt xpath="dimensions/dimension[@name='<%= facet %>']" attName="classifier" value="org.fao.geonet.kernel.search.classifier.BroaderTerm"/>
+        <replaceXml xpath="dimensions/dimension[@name='<%= facet %>']">
+            <param name="thesaurusManager" type="org.fao.geonet.kernel.ThesaurusManager"/>
+            <param name="conceptScheme" type="java.lang.String" value="<%= conceptScheme %>"/>
+        </replaceXml>
 <%
   end
+%>
+    </file>
+<%
+end
+%>
+
+<%
+if @custom_parameters['concept_schemes']
+%>
+    <file name=".*WEB-INF/config-summary\.xml">
+<%
+  @custom_parameters['concept_schemes'].each do |facet, conceptSchemes|
+    vocabularyScheme = conceptSchemes.vocabularyScheme
+    classificationScheme = conceptSchemes.classificationScheme
+%>
+        <replaceAtt xpath="dimensions/dimension[@name='<%= facet %>']/param[@name='vocabularyScheme']" attName="value" value="<%= vocabularyScheme %>"/>
+        <replaceAtt xpath="dimensions/dimension[@name='<%= facet %>']/param[@name='classificationScheme']" attName="value" value="<%= classificationScheme %>"/>
+<%
+  end
+%>
+    </file>
+<%
 end
 %>
 
