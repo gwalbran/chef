@@ -69,6 +69,23 @@ configure_view = { view ->
 GROOVY
   end
 
+  def self.canonicalized_path(path)
+    while ::File.symlink?(path)
+      path = ::File.readlink(path)
+    end
+    path.chomp
+  end
+
+  def self.java_home
+    canonicalized_path('/usr/bin/java').gsub('/jre/bin/java', '')
+  end
+
+  def self.global_environment
+    return {
+      :JAVA_HOME => self.java_home
+    }
+  end
+
   private
 
   # A shell command to generate md5 for all artifacts

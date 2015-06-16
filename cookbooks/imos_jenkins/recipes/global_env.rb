@@ -6,27 +6,11 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-# Recipe to configure global environment variables
+# Recipe to configure global environment
 #
 
-def canonicalized_path(path)
-  path = '/usr/bin/java'
-  while ::File.symlink?(path)
-    path = ::File.readlink(path)
-  end
-  path.chomp
-end
-
-def java_home
-  canonicalized_path('/usr/bin/java').gsub('/jre/bin/java', '')
-end
-
-global_environment = {
-  :JAVA_HOME => java_home
-}
-
 global_environment_groovy_code = ""
-global_environment.each do |k, v|
+Chef::Recipe::JenkinsHelper.global_environment.each do |k, v|
   global_environment_groovy_code += "envVars.put(\"#{k}\", \"#{v}\")" + "\n"
 end
 
@@ -34,10 +18,12 @@ jenkins_script 'set_global_properties' do
   command <<-EOH.gsub(/^ {4}/, '')
     import jenkins.model.*
 
-    instance = Jenkins.getInstance()
-    globalNodeProperties = instance.getGlobalNodeProperties()
-    envVarsNodePropertyList = globalNodeProperties.getAll(hudson.slaves.EnvironmentVariablesNodeProperty.class)
+    def instance = Jenkins.getInstance()
+    def globalNodeProperties = instance.getGlobalNodeProperties()
+    def envVarsNodePropertyList = globalNodeProperties.getAll(hudson.slaves.EnvironmentVariablesNodeProperty.class)
 
+    def newEnvVarsNodeProperty
+    def envVars
     if (envVarsNodePropertyList == null || envVarsNodePropertyList.size() == 0) {
         newEnvVarsNodeProperty = new hudson.slaves.EnvironmentVariablesNodeProperty();
         globalNodeProperties.add(newEnvVarsNodeProperty)
@@ -47,6 +33,14 @@ jenkins_script 'set_global_properties' do
     }
 
     #{global_environment_groovy_code}
+
+    // Configure git username and email
+    def gitExtension = instance.getExtensionList(hudson.plugins.git.GitSCM.DescriptorImpl.class)[0]
+    gitExtension.setGlobalConfigName("#{node['imos_jenkins']['username']}")
+    gitExtension.setGlobalConfigEmail("#{node['imos_jenkins']['email']}")
+
+    // Set number of executors on master node
+    instance.setNumExecutors(#{node['imos_jenkins']['executors'].to_i})
 
     instance.save()
   EOH
