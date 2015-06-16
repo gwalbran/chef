@@ -42,6 +42,9 @@ jenkins_script 'set_global_properties' do
     // Set number of executors on master node
     instance.setNumExecutors(#{node['imos_jenkins']['executors'].to_i})
 
+    // Set port for slaves to connect to
+    instance.setSlaveAgentPort(#{node['imos_jenkins']['ajp_port'].to_i})
+
     instance.save()
   EOH
 end
