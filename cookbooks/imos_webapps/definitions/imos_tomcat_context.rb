@@ -11,13 +11,13 @@ define :imos_tomcat_context do
   tomcat_webapps_dir = ::File.join(base_directory, "webapps")
 
   # Assume jenkins job is given if data bag is not available
-  artifact_manifest = ArtifactDeployer.get_artifact_manifest(artifact_name)
+  artifact_manifest = ImosArtifacts::Deployer.get_artifact_manifest(artifact_name)
 
   app_deploy_name = app_name
   service_notify_action = :restart
 
   # Cache artifact, so we can use it to determine parallel deploy version
-  cached_artifact = ArtifactFetcher.new.fetch_artifact(artifact_manifest, node)
+  cached_artifact = ImosArtifacts::Fetcher.new.fetch_artifact(artifact_manifest, node)
 
   if params[:parallel_deploy]
     version = ParallelDeploy.tomcat_version_for_artifact(cached_artifact)

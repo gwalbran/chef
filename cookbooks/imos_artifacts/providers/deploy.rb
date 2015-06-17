@@ -4,7 +4,7 @@ action :deploy do
   if new_resource.cached_artifact
     @cached_file_path = new_resource.cached_artifact
   else
-    @cached_file_path = ArtifactFetcher.new.fetch_artifact(new_resource.artifact_manifest, node)
+    @cached_file_path = ImosArtifacts::Fetcher.new.fetch_artifact(new_resource.artifact_manifest, node)
   end
 
   install_dir = new_resource.install_dir
@@ -18,9 +18,9 @@ action :deploy do
     recursive true
   end
 
-  if ArtifactDeployer.need_deploy?(dest_file, @cached_file_path, install_dir)
+  if ImosArtifacts::Deployer.need_deploy?(dest_file, @cached_file_path, install_dir)
     Chef::Log.info("Deploying artifact '#{@cached_file_path}' -> '#{dest_file}' -> '#{install_dir}'")
-    ArtifactDeployer.extract_artifact(
+    ImosArtifacts::Deployer.extract_artifact(
       @cached_file_path,
       dest_file,
       install_dir,
