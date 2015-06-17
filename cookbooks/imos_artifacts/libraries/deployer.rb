@@ -1,3 +1,14 @@
+#
+# Cookbook Name:: imos_artifacts
+# Library:: Deployer
+#
+# Copyright 2015, IMOS
+#
+# All rights reserved - Do Not Redistribute
+#
+# Logic for deploying (unzipping) an artifact
+#
+
 module ImosArtifacts
   class Deployer
 

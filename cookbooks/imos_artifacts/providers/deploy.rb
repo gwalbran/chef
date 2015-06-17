@@ -1,3 +1,14 @@
+#
+# Cookbook Name:: imos_artifacts
+# Provider:: deploy
+#
+# Copyright 2015, IMOS
+#
+# All rights reserved - Do Not Redistribute
+#
+# Provider to deploy artifacts
+#
+
 attr_reader :cached_file_path
 
 action :deploy do

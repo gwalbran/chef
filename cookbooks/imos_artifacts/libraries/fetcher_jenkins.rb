@@ -1,3 +1,14 @@
+#
+# Cookbook Name:: imos_artifacts
+# Library:: FetcherJenkins
+#
+# Copyright 2015, IMOS
+#
+# All rights reserved - Do Not Redistribute
+#
+# Logic for fetching artifacts via jenkins
+#
+
 require 'json'
 
 module ImosArtifacts

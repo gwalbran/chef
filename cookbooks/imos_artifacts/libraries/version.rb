@@ -1,3 +1,14 @@
+#
+# Cookbook Name:: imos_artifacts
+# Library:: Version
+#
+# Copyright 2015, IMOS
+#
+# All rights reserved - Do Not Redistribute
+#
+# Version comparison logic
+#
+
 module ImosArtifacts
   class Version
 

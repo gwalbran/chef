@@ -1,3 +1,14 @@
+#
+# Cookbook Name:: imos_artifacts
+# Library:: Fetcher
+#
+# Copyright 2015, IMOS
+#
+# All rights reserved - Do Not Redistribute
+#
+# Logic for fetching artifacts via open-uri
+#
+
 require 'open-uri'
 
 module ImosArtifacts
