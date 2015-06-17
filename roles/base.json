@@ -11,6 +11,9 @@
                 "passwordless": true,
                 "users": []
             }
+        },
+        "imos_artifacts": {
+            "ci_url": "https://kenkins.aodn.org.au"
         }
     },
     "run_list": [

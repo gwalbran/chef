@@ -100,7 +100,7 @@
                 "apps": [
                     {
                         "name":                 "imos123",
-                        "artifact":             "portal_4_content_testing",
+                        "artifact":             "portal_4_prod",
                         "config_template_dir":  "portal",
                         "config_file":          "Portal.groovy",
                         "portal_instance_name": "IMOS",
@@ -123,14 +123,14 @@
                     },
                     {
                         "name":           "geoserver",
-                        "artifact":       "geoserver_imos_rc",
+                        "artifact":       "geoserver_prod",
                         "custom_def":     "geoserver",
                         "data_dir":       "/vagrant/shared_src/geoserver",
                         "jndis":          [ "harvest-read-po", "harvest-read-po-rc", "local-harvest-read" ]
                     },
                     {
                         "name":                  "geonetwork",
-                        "artifact":              "GeoNetwork_prod",
+                        "artifact":              "geonetwork_prod",
                         "config_file":           "config-overrides.xml",
                         "config_template_dir":   "geonetwork",
                         "geoserver":             "http://localhost/geonetwork",
@@ -144,7 +144,7 @@
                     },
                     {
                         "name":       "ncwms",
-                        "artifact":   "ncWMS - Prod",
+                        "artifact":   "ncwms_prod",
                         "custom_def": "ncwms",
                         "cache_dir":  "/mnt/opendap/1/cache/ncwmsCache",
                         "root":       "/mnt/opendap"

@@ -86,14 +86,14 @@
                 "apps":         [
                     {
                         "name":       "geoserver",
-                        "artifact":   "geoserver_imos_edge",
+                        "artifact":   "geoserver_edge",
                         "custom_def": "geoserver",
                         "data_dir":   "/vagrant/shared_src/geoserver",
                         "jndis":      [ "harvest-read-po", "local-harvest-read" ]
                     },
                     {
                         "name":                  "geonetwork",
-                        "artifact":              "GeoNetwork_edge",
+                        "artifact":              "geonetwork_edge",
                         "config_file":           "config-overrides.xml",
                         "config_template_dir":   "geonetwork",
                         "schema_plugins":        [ "iso19135", "iso19139-anzlic", "iso19139-mcp-1-4", "iso19139-mcp-1-5", "iso19139-mcp-2-0" ],

@@ -90,7 +90,7 @@
                     {
                         "name":                 "imos123",
                         "aliases":              [ "webportal", "imos" ],
-                        "artifact":             "portal_4_system_testing",
+                        "artifact":             "portal_4_systest",
                         "config_file":          "Imos123.groovy",
                         "geonetwork_url":       "http://127.0.1.2/geonetwork",
                         "config_template_dir":  "portal",
@@ -120,7 +120,7 @@
                 "apps": [
                     {
                         "name":                  "geonetwork",
-                        "artifact":              "GeoNetwork_systest",
+                        "artifact":              "geonetwork_systest",
                         "config_file":           "config-overrides.xml",
                         "config_template_dir":   "geonetwork",
                         "custom_def":            "geonetwork",
@@ -151,7 +151,7 @@
                 "apps": [
                     {
                         "name":       "geoserver",
-                        "artifact":   "geoserver_imos_rc",
+                        "artifact":   "geoserver_systest",
                         "custom_def": "geoserver",
                         "data_bag":   "geoserver_123",
                         "jndis":      [ "harvest-systest" ],
