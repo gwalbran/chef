@@ -136,9 +136,11 @@ directory cache_path
   job_template_cache = File.join(cache_path, "#{job_name}.xml")
   Chef::Log.info("Cache file for '#{job_name}' at '#{job_template_cache}'")
 
-  variables['enabled'].nil? and variables['enabled'] = true
+  variables['publishing_enabled'].nil? and variables['publishing_enabled'] = true
+  variables['job_enabled'].nil? and variables['job_enabled'] = true
   if node['vagrant']
-    variables['enabled'] = false
+    variables['job_enabled'] = false
+    variables['publishing_enabled'] = false
   end
 
   template job_template_cache do
