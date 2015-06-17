@@ -1,6 +1,6 @@
 require 'json'
 
-class JenkinsArtifact
+class ArtifactFetcherJenkins
   attr_reader :url
   attr_reader :username
   attr_reader :password
@@ -10,17 +10,17 @@ class JenkinsArtifact
 
     if artifact_manifest['jenkins_data_bag']
       jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", artifact_manifest['jenkins_data_bag'])
-      @url = JenkinsArtifact::get_job_url(jenkins_creds['url'], job_name)
+      @url = ArtifactFetcherJenkins::get_job_url(jenkins_creds['url'], job_name)
       @username = jenkins_creds['username']
       @password = jenkins_creds['password']
     else
       begin
         jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", node[:imos_artifacts][:jenkins_data_bag])
-        @url = JenkinsArtifact::get_job_url(jenkins_creds['url'], job_name)
+        @url = ArtifactFetcherJenkins::get_job_url(jenkins_creds['url'], job_name)
         @username = jenkins_creds['username']
         @password = jenkins_creds['password']
       rescue
-        @url = JenkinsArtifact::get_job_url(node[:imos_artifacts][:ci_url], job_name)
+        @url = ArtifactFetcherJenkins::get_job_url(node[:imos_artifacts][:ci_url], job_name)
         Chef::Log.warn("Not using authentication for jenkins download from '#{@url}'")
       end
     end
@@ -36,7 +36,7 @@ class JenkinsArtifact
     artifact_url = nil
     artifact_filename = nil
 
-    json = JSON.parse(ImosArtifactFetcher.get_uri_content_retry("#{@url}/#{@api}", @username, @password))
+    json = JSON.parse(ArtifactFetcher.get_uri_content_retry("#{@url}/#{@api}", @username, @password))
 
     # Abort run if there are no archived artifacts on jenkins
     Chef::Application.fatal!("Jenkins build contains no archived artifacts!", 1) if json['artifacts'].empty?
@@ -71,7 +71,7 @@ class JenkinsArtifact
 
     if need_download?(json, artifact_filename, download_path)
       Chef::Log.info("Checksums do not match will download artifact #{artifact_url}")
-      ImosArtifactFetcher.download_file(artifact_url, download_path, @username, @password)
+      ArtifactFetcher.download_file(artifact_url, download_path, @username, @password)
       return download_path
     else
       Chef::Log.info("Returning locally cached file at '#{download_path}'")
@@ -103,7 +103,7 @@ class JenkinsArtifact
 
   def get_artifact_md5_from_md5_file(artifact_md5_url)
     tmpfile = Tempfile.new('jenkins-artifact-md5')
-    if ImosArtifactFetcher.download_file(artifact_md5_url, tmpfile.path, @username, @password)
+    if ArtifactFetcher.download_file(artifact_md5_url, tmpfile.path, @username, @password)
       remote_checksum = checksum_from_file(tmpfile.path)
     else
       Chef::Log.warn("Could not obtain md5 via md5 file at '#{artifact_md5_url}'")
@@ -123,7 +123,7 @@ class JenkinsArtifact
     tmpfile = Tempfile.new('jenkins-fingerprint')
     begin
       fingerprint_url = "#{artifact_url}/*fingerprint*/"
-      if ImosArtifactFetcher.download_file(fingerprint_url, tmpfile.path, @username, @password)
+      if ArtifactFetcher.download_file(fingerprint_url, tmpfile.path, @username, @password)
         html_page = Nokogiri::HTML(open(tmpfile.path))
         # Expect something like 'MD5: 00000000000000000000000000000000', so strip
         # the first 4 chars

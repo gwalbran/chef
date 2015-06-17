@@ -17,7 +17,7 @@ define :imos_tomcat_context do
   service_notify_action = :restart
 
   # Cache artifact, so we can use it to determine parallel deploy version
-  cached_artifact = ImosArtifactFetcher.new.fetch_artifact(artifact_manifest, node)
+  cached_artifact = ArtifactFetcher.new.fetch_artifact(artifact_manifest, node)
 
   if params[:parallel_deploy]
     version = ParallelDeploy.tomcat_version_for_artifact(cached_artifact)

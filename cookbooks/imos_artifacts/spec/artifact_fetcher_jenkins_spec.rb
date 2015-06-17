@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe JenkinsArtifact do
+describe ArtifactFetcherJenkins do
   before(:each) do
     allow(Chef::Log).to receive(:warn)
     allow(Chef::Log).to receive(:error)
@@ -8,7 +8,7 @@ describe JenkinsArtifact do
 
   describe 'initialize' do
     it 'build job url' do
-      job_url = JenkinsArtifact.get_job_url("https://ci.aodn.org.au", "a_job")
+      job_url = ArtifactFetcherJenkins.get_job_url("https://ci.aodn.org.au", "a_job")
       expect(job_url).to eq("https://ci.aodn.org.au/job/a_job/lastSuccessfulBuild")
     end
   end
@@ -40,7 +40,7 @@ describe JenkinsArtifact do
           'password' => 'password_from_custom_data_bag'
         }
       )
-      jenkins_artifact = JenkinsArtifact.new(artifact_manifest, node)
+      jenkins_artifact = ArtifactFetcherJenkins.new(artifact_manifest, node)
       expect(jenkins_artifact.url).to eq("url_from_custom_data_bag/job/some_job/lastSuccessfulBuild")
       expect(jenkins_artifact.username).to eq("username_from_custom_data_bag")
       expect(jenkins_artifact.password).to eq("password_from_custom_data_bag")
@@ -54,14 +54,14 @@ describe JenkinsArtifact do
           'password' => 'password_from_data_bag'
         }
       )
-      jenkins_artifact = JenkinsArtifact.new(artifact_manifest, node)
+      jenkins_artifact = ArtifactFetcherJenkins.new(artifact_manifest, node)
       expect(jenkins_artifact.url).to eq("url_from_data_bag/job/some_job/lastSuccessfulBuild")
       expect(jenkins_artifact.username).to eq("username_from_data_bag")
       expect(jenkins_artifact.password).to eq("password_from_data_bag")
     end
 
     it 'when no default credentials available' do
-      jenkins_artifact = JenkinsArtifact.new(artifact_manifest, node)
+      jenkins_artifact = ArtifactFetcherJenkins.new(artifact_manifest, node)
       expect(jenkins_artifact.url).to eq("https://ci.aodn.org.au/job/some_job/lastSuccessfulBuild")
       expect(jenkins_artifact.username).to eq(nil)
       expect(jenkins_artifact.password).to eq(nil)

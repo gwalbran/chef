@@ -1,6 +1,6 @@
 require 'open-uri'
 
-class ImosArtifactFetcher
+class ArtifactFetcher
 
   def fetch_artifact(artifact_manifest, node)
     if artifact_manifest['uri']
@@ -12,7 +12,7 @@ class ImosArtifactFetcher
 
   def cache_jenkins_artifact(artifact_manifest, node)
     download_prefix = ::File.join(Chef::Config[:file_cache_path], artifact_manifest['job'])
-    jenkins = JenkinsArtifact.new(artifact_manifest, node)
+    jenkins = ArtifactFetcherJenkins.new(artifact_manifest, node)
     return jenkins.cache(artifact_manifest, download_prefix)
   end
 
@@ -21,12 +21,12 @@ class ImosArtifactFetcher
     uri = artifact_manifest['uri']
     username = artifact_manifest['username']
     password = artifact_manifest['password']
-    return ImosArtifactFetcher.download_file(uri, filename, username, password)
+    return ArtifactFetcher.download_file(uri, filename, username, password)
   end
 
   def self.download_file(uri, filename, username = nil, password = nil)
     File.open(filename, "wb") do |output|
-      file_content = ImosArtifactFetcher.get_uri_content_retry(uri, username, password)
+      file_content = ArtifactFetcher.get_uri_content_retry(uri, username, password)
       if ! file_content
         Chef::Application.fatal!("Error downloading file from '#{uri}'")
       end
@@ -55,7 +55,7 @@ class ImosArtifactFetcher
 
   def self.get_uri_content_retry(uri, username, password, retries = 3)
     for i in 1..retries do
-      content = ImosArtifactFetcher.get_uri_content(uri, username, password)
+      content = ArtifactFetcher.get_uri_content(uri, username, password)
       content and return content
 
       Chef::Log.warn "Retrying #{i}/#{retries} '#{uri}'"
