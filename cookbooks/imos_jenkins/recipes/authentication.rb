@@ -58,14 +58,6 @@ def configure_jenkins_security
           def anonymousRole = new Role("anonymous", permissions)
           strategy.addRole(strategy.GLOBAL, anonymousRole)
           strategy.assignRole(strategy.GLOBAL, anonymousRole, "anonymous")
-
-          // Grant only read access only to jobs matching pattern
-          permissions = new HashSet<Permission>()
-          permissions.add(PermissionGroup.get(hudson.model.Item).find("Read"))
-          def regexPublicJobs = '^(?:(?!_private$).)*$' // Strings that don't end with '_private'
-          def publicJobsRole = new Role('public', regexPublicJobs, permissions)
-          strategy.addRole(strategy.PROJECT, publicJobsRole)
-          strategy.assignRole(strategy.PROJECT, publicJobsRole, "anonymous")
       }
 
       def instance = Jenkins.getInstance()
