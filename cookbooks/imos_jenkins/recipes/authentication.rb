@@ -27,14 +27,53 @@ def configure_jenkins_security
     public_keys [public_key]
   end
 
+  admin_users = [ 'chef' ]
+  search('users', "jenkins_password:*").each do |data_bag|
+    admin_users << data_bag['id']
+  end
+
   jenkins_script 'setup authentication' do
     command <<-EOH.gsub(/^ {4}/, '')
       import jenkins.model.*
-      def instance = Jenkins.getInstance()
       import hudson.security.*
+      import com.michelin.cio.hudson.plugins.rolestrategy.*
+
+      def adminUsers = #{admin_users}
+
+      def createAdminRole(strategy) {
+          Set<Permission> permissions = new HashSet<Permission>()
+          for(PermissionGroup group : strategy.DESCRIPTOR.getGroups(strategy.GLOBAL)) {
+              for(Permission permission : group) {
+                  permissions.add(permission)
+              }
+          }
+          return new Role("admin", permissions)
+      }
+
+      def handleAnonymousRole(strategy) {
+          Set<Permission> permissions = new HashSet<Permission>()
+          permissions.add(PermissionGroup.get(hudson.model.Hudson).find("Read"))
+
+          // User anonymous should have global read access
+          def anonymousRole = new Role("anonymous", permissions)
+          strategy.addRole(strategy.GLOBAL, anonymousRole)
+          strategy.assignRole(strategy.GLOBAL, anonymousRole, "anonymous")
+      }
+
+      def instance = Jenkins.getInstance()
       def realm = new HudsonPrivateSecurityRealm(false)
       instance.setSecurityRealm(realm)
-      def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
+      def strategy = new RoleBasedAuthorizationStrategy()
+
+      def adminRole = createAdminRole(strategy)
+      strategy.addRole(strategy.GLOBAL, adminRole)
+
+      adminUsers.each { user ->
+          strategy.assignRole(strategy.GLOBAL, adminRole, user)
+      }
+
+      handleAnonymousRole(strategy)
+
       instance.setAuthorizationStrategy(strategy)
       instance.save()
     EOH

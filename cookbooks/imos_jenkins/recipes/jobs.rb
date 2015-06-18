@@ -179,3 +179,44 @@ data_bag('build_views').each do |item_id|
     action action
   end
 end
+
+public_jenkins_jobs = []
+jenkins_jobs.each do |job_name, variables|
+  if variables['private']
+    Chef::Log.info("Jenkins job '#{job_name}' is private - not exposing")
+  else
+    Chef::Log.info("Jenkins job '#{job_name}' is public")
+    public_jenkins_jobs << job_name
+  end
+end
+
+jenkins_script 'public jobs authorization' do
+  command <<-EOH.gsub(/^ {4}/, '')
+    import jenkins.model.*
+    import hudson.security.*
+    import com.michelin.cio.hudson.plugins.rolestrategy.*
+
+    def publicJobs = #{public_jenkins_jobs}
+
+    def addPublicAccess(strategy, jobName) {
+        // Grant only read access only to jobs matching pattern
+        permissions = new HashSet<Permission>()
+        permissions.add(PermissionGroup.get(hudson.model.Item).find("Read"))
+
+        def jobRegex = '^' + jobName + '$' // Exact regex matching
+        def jobRole = new Role(jobName, jobRegex, permissions)
+        strategy.addRole(strategy.PROJECT, jobRole)
+        strategy.assignRole(strategy.PROJECT, jobRole, "anonymous")
+    }
+
+    def instance = Jenkins.getInstance()
+    def strategy = instance.getAuthorizationStrategy()
+
+    publicJobs.each { jobName ->
+        addPublicAccess(strategy, jobName)
+    }
+
+    instance.setAuthorizationStrategy(strategy)
+    instance.save()
+  EOH
+end
