@@ -27,46 +27,14 @@ def get_templated_variables_for_job(job_name, job_template)
   end
 end
 
-def jenkins_pipeline(pipeline_databag)
-  jenkins_view pipeline_databag['id'] do
-    code Chef::Recipe::JenkinsHelper.groovy_code_for_pipeline(pipeline_databag)
-  end
-end
-
-jenkins_jobs = {}
-
-data_bag('build_jobs').each do |item_id|
-  job_databag = Chef::DataBagItem.load('build_jobs', item_id)
-  job_name = job_databag['id']
-
-  # Merge variables in the following order:
-  # * Predefined variables
-  # * Variables from template (if exists)
-  # * Data bag variables
-
-  templated_variables = get_templated_variables_for_job(job_name, job_databag['template'])
-  jenkins_variables = Chef::Recipe::JenkinsHelper.merge_hashes(
-    Chef::Recipe::JenkinsHelper.predefined_variables,
-    templated_variables,
-    job_databag.to_hash
-  )
-
-  # Skip jobs marked as templates
-  if ! job_databag['is_template']
-    jenkins_jobs[job_name] = jenkins_variables
-  end
-end
-
-# Deal with job pipelines
-data_bag('build_pipelines').each do |pipeline_id|
-  Chef::Log.info("Configuring Jenkins pipeline for '#{pipeline_id}'")
+def jenkins_pipepline_for_app(app_id, pipeline_databag)
+  Chef::Log.info("Configuring Jenkins '#{pipeline_databag['id']}' pipeline for '#{app_id}' app...")
 
   downstream_project = nil
 
-  pipeline_databag = Chef::DataBagItem.load('build_pipelines', pipeline_id)
   # Iterate reverse
   pipeline_databag['jobs'].reverse_each do |job_item|
-    job_name = "#{pipeline_id}_#{job_item['name']}"
+    job_name = "#{app_id}_#{job_item['name']}"
 
     # Merge variables in the following order:
     # * Predefined variables
@@ -94,26 +62,85 @@ data_bag('build_pipelines').each do |pipeline_id|
       end
     end
 
-    jenkins_jobs[job_name] = jenkins_variables
+    @jenkins_jobs[job_name] = jenkins_variables
 
     downstream_project = job_name
   end
 
+  # set upstream project
+  upstream_project = nil
+  pipeline_databag['jobs'].each do |job_item|
+
+    job_name = "#{app_id}_#{job_item['name']}"
+
+    if upstream_project
+      @jenkins_jobs[job_name]['upstream_project'] = upstream_project
+    end
+
+    upstream_project = job_name
+  end
+
+  jenkins_view app_id do
+    code Chef::Recipe::JenkinsHelper.groovy_code_for_pipeline(app_id, pipeline_databag)
+  end
+end
+
+def jenkins_pipeline(pipeline_databag)
+  if pipeline_databag['apps']
+    pipeline_databag['apps'].each do |app_id|
+      jenkins_pipepline_for_app(app_id, pipeline_databag)
+    end
+  elsif
+    jenkins_pipepline_for_app(pipeline_databag['id'], pipeline_databag)
+  end
+end
+
+@jenkins_jobs = {}
+
+# Deal with job pipelines
+data_bag('build_pipelines').each do |pipeline_id|
+  pipeline_databag = Chef::DataBagItem.load('build_pipelines', pipeline_id)
   jenkins_pipeline(pipeline_databag)
+end
+
+data_bag('build_jobs').each do |item_id|
+  job_databag = Chef::DataBagItem.load('build_jobs', item_id)
+  job_name = job_databag['id']
+
+  # Merge variables in the following order:
+  # * Predefined variables
+  # * Variables from template (if exists)
+  # * Variables from pipeline config (if exists)
+  # * Data bag variables
+
+  templated_variables = get_templated_variables_for_job(job_name, job_databag['template'])
+  jenkins_variables = Chef::Recipe::JenkinsHelper.merge_hashes(
+    Chef::Recipe::JenkinsHelper.predefined_variables,
+    templated_variables,
+    @jenkins_jobs[job_name],
+    job_databag.to_hash
+  )
+
+  # Skip jobs marked as templates
+  if ! job_databag['is_template']
+    @jenkins_jobs[job_name] = jenkins_variables
+  end
 end
 
 # Directory to store job templates
 directory cache_path
 
-jenkins_jobs.each do |job_name, variables|
+@jenkins_jobs.each do |job_name, variables|
   Chef::Log.info("Configuring Jenkins CI for '#{job_name}'")
 
   job_template_cache = File.join(cache_path, "#{job_name}.xml")
   Chef::Log.info("Cache file for '#{job_name}' at '#{job_template_cache}'")
 
-  variables['enabled'].nil? and variables['enabled'] = true
+  variables['publishing_enabled'].nil? and variables['publishing_enabled'] = true
+  variables['job_enabled'].nil? and variables['job_enabled'] = true
   if node['vagrant']
-    variables['enabled'] = false
+    variables['job_enabled'] = false
+    variables['publishing_enabled'] = false
   end
 
   template job_template_cache do

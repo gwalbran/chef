@@ -57,8 +57,8 @@ class Chef::Recipe::JenkinsHelper
     GROOVY
   end
 
-  def self.groovy_code_for_pipeline(pipeline_databag)
-    pipeline_name = pipeline_databag['id']
+  def self.groovy_code_for_pipeline(app_id, pipeline_databag)
+    pipeline_name = app_id
     first_job = "#{pipeline_name}_#{pipeline_databag['jobs'].first['name']}"
 
     return <<-GROOVY
