@@ -181,7 +181,7 @@ data_bag('build_views').each do |item_id|
 end
 
 public_jenkins_jobs = []
-jenkins_jobs.each do |job_name, variables|
+@jenkins_jobs.each do |job_name, variables|
   if variables['private']
     Chef::Log.info("Jenkins job '#{job_name}' is private - not exposing")
   else
