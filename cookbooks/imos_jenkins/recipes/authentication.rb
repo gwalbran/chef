@@ -83,29 +83,14 @@ end
 set_jenkins_creds
 configure_jenkins_security
 
-# Until https://github.com/opscode-cookbooks/jenkins/pull/233 is merged, use
-# this mechanism to define users with SHA passwords
-def jenkins_user_sha(id, full_name, email, password)
-  Chef::Log.info "Defining Jenkins user '#{id}' with '#{password}'"
-
-  jenkins_script "user_add_#{id}" do
-    command <<-EOH.gsub(/^ {4}/, '')
-      user = hudson.model.User.get('#{id}')
-      user.setFullName('#{full_name}')
-      email = new hudson.tasks.Mailer.UserProperty('#{email}')
-      user.addProperty(email)
-      password = hudson.security.HudsonPrivateSecurityRealm.Details.fromHashedPassword('#{password}')
-      user.addProperty(password)
-    EOH
-  end
-end
-
 # Define all jenkins users
 search('users', "jenkins_password:*").each do |data_bag|
-  jenkins_user_sha(data_bag['id'], data_bag['full_name'], data_bag['email'], data_bag['jenkins_password'])
-  #jenkins_user data_bag['id'] do
-  #  full_name data_bag['full_name']
-  #  email     data_bag['email']
-  #  password  data_bag['jenkins_password'] # TODO PLAIN TEXT SUCKS
-  #end
+  # Until https://github.com/opscode-cookbooks/jenkins/pull/233 is merged, use
+  # this mechanism to define users with hashed passwords
+  imos_jenkins_user_jbcrypt data_bag['id'] do
+    id        data_bag['id']
+    full_name data_bag['full_name']
+    email     data_bag['email']
+    password  data_bag['jenkins_password'] # TODO PLAIN TEXT SUCKS
+  end
 end
