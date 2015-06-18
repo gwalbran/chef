@@ -23,7 +23,7 @@ module FilterFinder
     filter_config = nil
 
     if application_name && ! application_name.empty?
-      app_data_bag = ArtifactDeployer.get_artifact_manifest(application_name)
+      app_data_bag = ImosArtifacts::Deployer.get_artifact_manifest(application_name)
       if app_data_bag
         filter_config = app_data_bag['logstash_filter_config']
       elsif application_name.include?('_')

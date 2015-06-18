@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: imos_artifacts
-# resource:: deploy
+# Resource:: deploy
 #
-# Copyright (C) 2013 IMOS
+# Copyright 2013, IMOS
 #
 # All rights reserved - Do Not Redistribute
 #
