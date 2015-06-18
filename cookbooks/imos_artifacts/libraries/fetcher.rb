@@ -16,19 +16,19 @@ module ImosArtifacts
 
     def fetch_artifact(artifact_manifest, node)
       if artifact_manifest['uri']
-        return cache_uri_artifact(artifact_manifest)
+        return fetch_uri_artifact(artifact_manifest)
       else
-        return cache_jenkins_artifact(artifact_manifest, node)
+        return fetch_jenkins_artifact(artifact_manifest, node)
       end
     end
 
-    def cache_jenkins_artifact(artifact_manifest, node)
+    def fetch_jenkins_artifact(artifact_manifest, node)
       download_prefix = ::File.join(Chef::Config[:file_cache_path], artifact_manifest['job'])
       jenkins = FetcherJenkins.new(artifact_manifest, node)
       return jenkins.cache(artifact_manifest, download_prefix)
     end
 
-    def cache_uri_artifact(artifact_manifest)
+    def fetch_uri_artifact(artifact_manifest)
       filename = "#{Chef::Config[:file_cache_path]}/#{artifact_manifest['id']}"
       uri = artifact_manifest['uri']
       username = artifact_manifest['username']

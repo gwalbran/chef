@@ -20,10 +20,14 @@ module ImosArtifacts
     def self.get_artifact_manifest(artifact_id)
       artifact_manifest = nil
 
-      if artifact_id && ! artifact_id.empty? && databag_exists?('imos_artifacts', artifact_id)
+      if ! artifact_id || artifact_id.empty?
+        Chef::Application.fatal!("Cannot deploy null artifact id")
+      end
+
+      if databag_exists?('imos_artifacts', artifact_id)
         artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_id).to_hash
 
-      elsif artifact_id.start_with?("/") || artifact_id.start_with?("http://") || artifact_id.start_with?("https://")
+      elsif is_uri(artifact_id)
         artifact_manifest = { 'id' => ::File.basename(artifact_id), 'uri' => artifact_id }
 
       else
@@ -36,6 +40,10 @@ module ImosArtifacts
       end
 
       return artifact_manifest
+    end
+
+    def self.is_uri(uri)
+      return uri.start_with?("/") || uri.start_with?("http://") || uri.start_with?("https://")
     end
 
     def self.extract_artifact(artifact_src, artifact_dest, install_dir, owner, group, remove_top_level_directory = false)
