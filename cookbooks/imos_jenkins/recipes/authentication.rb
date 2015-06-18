@@ -80,15 +80,8 @@ def configure_jenkins_security
   end
 end
 
-# At the first run, we must not use credentials for setting this security
-# settings, subsequent runs should use it. Here we first try without having
-# any credentials set (as if it a first run) and then we try setting credentials
-# and continue on if it succeeded
-# If we're on vagrant, save us all of this security headache altogether.
-if ! node['vagrant']
-  set_jenkins_creds
-  configure_jenkins_security
-end
+set_jenkins_creds
+configure_jenkins_security
 
 # Until https://github.com/opscode-cookbooks/jenkins/pull/233 is merged, use
 # this mechanism to define users with SHA passwords
