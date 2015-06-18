@@ -24,6 +24,39 @@ class Chef::Recipe::JenkinsHelper
     return variables
   end
 
+  # Groovy code for installing common tools such as ant, grails, maven
+  def self.groovy_code_for_tool_installer(versions, namespace, extension_class, installer_class, installation_class)
+    extension_class = "#{namespace}.#{extension_class}"
+    installation_class = "#{namespace}.#{installation_class}"
+    installer_class = "#{namespace}.#{installer_class}"
+    return <<-GROOVY
+      import jenkins.model.*
+      import hudson.tools.InstallSourceProperty
+
+      def requiredToolVersions = #{versions}
+
+      def extensions = Jenkins.instance.getExtensionList(#{extension_class}.DescriptorImpl.class)[0]
+      def toolInstallations = (extensions.installations as List)
+
+      def installedToolVersions = toolInstallations.collect { it.getName() }
+
+      def toolVersionsToInstall = requiredToolVersions - installedToolVersions
+
+      if (!toolVersionsToInstall.isEmpty()) {
+        def newToolInstallations = toolInstallations
+        toolVersionsToInstall.each { toolVersion ->
+          println "Installing ${toolVersion}"
+          def toolAutoInstaller = new #{installer_class}(toolVersion)
+          def installProperty = new InstallSourceProperty([toolAutoInstaller])
+          def autoInstallation = new #{installation_class}(toolVersion, "", [installProperty])
+          newToolInstallations.add(autoInstallation)
+        }
+        extensions.installations = newToolInstallations
+        extensions.save()
+      }
+    GROOVY
+  end
+
   def self.groovy_code_for_pipeline(pipeline_databag)
     pipeline_name = pipeline_databag['id']
     first_job = "#{pipeline_name}_#{pipeline_databag['jobs'].first['name']}"
