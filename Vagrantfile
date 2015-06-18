@@ -16,8 +16,8 @@ Vagrant.configure("2") do |config|
     config.cache.enable :gem
   end
 
-  config.vm.box = ENV['VAGRANT_BOX'] || "precise64-chef-client-omnibus-12.3.0-0.7"
-  config.vm.box_url = ENV['VAGRANT_BOX_URL'] || "https://binary.aodn.org.au/static/boxes/precise64-chef-client-omnibus-12.3.0-0.7.box"
+  config.vm.box = ENV['VAGRANT_BOX'] || "precise64-chef-client-omnibus-12.3.0-0.8"
+  config.vm.box_url = ENV['VAGRANT_BOX_URL'] || "https://binary.aodn.org.au/static/boxes/precise64-chef-client-omnibus-12.3.0-0.8.box"
 
   # Uncomment this to upgrade to the latest chef
   #config.omnibus.chef_version = :latest
