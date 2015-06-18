@@ -43,6 +43,11 @@ jenkins_script 'set_global_properties' do
     instance.setNumExecutors(#{node['imos_jenkins']['executors'].to_i})
 
     instance.save()
+
+    // Set main URL
+    def jenkinsLocationConfiguration = JenkinsLocationConfiguration.get()
+    jenkinsLocationConfiguration.setUrl("#{node['imos_jenkins']['master_url']}")
+    jenkinsLocationConfiguration.save()
   EOH
 end
 
