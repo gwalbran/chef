@@ -29,8 +29,8 @@ module ImosArtifacts
     end
 
     def fetch_uri_artifact(artifact_manifest)
-      filename = "#{Chef::Config[:file_cache_path]}/#{artifact_manifest['id']}"
       uri = artifact_manifest['uri']
+      filename = "#{Chef::Config[:file_cache_path]}/#{::File.basename(uri)}"
       username = artifact_manifest['username']
       password = artifact_manifest['password']
       return Fetcher.download_file(uri, filename, username, password)
