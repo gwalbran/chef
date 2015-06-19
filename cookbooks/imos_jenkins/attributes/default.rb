@@ -3,6 +3,7 @@ default['imos_jenkins']['group']                 = 'jenkins'
 default['imos_jenkins']['ajp_port']              = 49187
 default['imos_jenkins']['master_url']            = "https://kenkins.aodn.org.au/"
 default['imos_jenkins']['master']['jvm_options'] = '-Xmx2G'
+default['imos_jenkins']['master']['ssh_port']    = 2222
 
 default['imos_jenkins']['maven']['versions']  = [ "3.2.2" ]
 default['imos_jenkins']['grails']['versions'] = [ "1.3.7", "2.1.0", "2.2.0", "2.4.4" ]

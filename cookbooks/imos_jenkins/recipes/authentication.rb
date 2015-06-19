@@ -75,6 +75,11 @@ def configure_jenkins_security
       handleAnonymousRole(strategy)
 
       instance.setAuthorizationStrategy(strategy)
+
+      // Set SSH port
+      def sshExtension = instance.getExtensionList(org.jenkinsci.main.modules.sshd.SSHD.class)[0]
+      sshExtension.setPort(#{node['imos_jenkins']['master']['ssh_port'].to_i})
+
       instance.save()
     EOH
   end
