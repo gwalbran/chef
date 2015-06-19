@@ -88,9 +88,10 @@ search('users', "jenkins_password:*").each do |data_bag|
   # Until https://github.com/opscode-cookbooks/jenkins/pull/233 is merged, use
   # this mechanism to define users with hashed passwords
   imos_jenkins_user_jbcrypt data_bag['id'] do
-    id        data_bag['id']
-    full_name data_bag['full_name']
-    email     data_bag['email']
-    password  data_bag['jenkins_password'] # TODO PLAIN TEXT SUCKS
+    id          data_bag['id']
+    full_name   data_bag['full_name']
+    email       data_bag['email']
+    password    data_bag['jenkins_password'] # TODO PLAIN TEXT SUCKS
+    public_keys data_bag['ssh_keys']
   end
 end
