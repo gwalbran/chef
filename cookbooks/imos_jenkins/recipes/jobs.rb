@@ -52,7 +52,7 @@ def jenkins_pipepline_for_app(app_id, pipeline_databag)
 
     if downstream_project
       downstream_projects = [{
-        "properties" => "ARTIFACT_BUILD_NUMBER=$BUILD_NUMBER",
+        "properties" => { "ARTIFACT_BUILD_NUMBER" => "$BUILD_NUMBER" },
         "downstream_project" => downstream_project
       }]
       if job_item['auto_trigger_next']
