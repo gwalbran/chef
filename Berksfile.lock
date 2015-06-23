@@ -9,7 +9,7 @@ DEPENDENCIES
   awstats
   backup
     git: git://github.com/danfruehauf/backup-cookbook.git
-    revision: fa5b2138d90b4b7044e285cebc969b2eb37beddd
+    revision: 35170c5a278abd573e3ec5d28fa136aaf8a50ead
   build-essential
   chef-solo-search
     git: git://github.com/edelight/chef-solo-search.git
