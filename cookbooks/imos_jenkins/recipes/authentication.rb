@@ -75,44 +75,28 @@ def configure_jenkins_security
       handleAnonymousRole(strategy)
 
       instance.setAuthorizationStrategy(strategy)
+
+      // Set SSH port
+      def sshExtension = instance.getExtensionList(org.jenkinsci.main.modules.sshd.SSHD.class)[0]
+      sshExtension.setPort(#{node['imos_jenkins']['master']['ssh_port'].to_i})
+
       instance.save()
     EOH
   end
 end
 
-# At the first run, we must not use credentials for setting this security
-# settings, subsequent runs should use it. Here we first try without having
-# any credentials set (as if it a first run) and then we try setting credentials
-# and continue on if it succeeded
-# If we're on vagrant, save us all of this security headache altogether.
-if ! node['vagrant']
-  set_jenkins_creds
-  configure_jenkins_security
-end
-
-# Until https://github.com/opscode-cookbooks/jenkins/pull/233 is merged, use
-# this mechanism to define users with SHA passwords
-def jenkins_user_sha(id, full_name, email, password)
-  Chef::Log.info "Defining Jenkins user '#{id}' with '#{password}'"
-
-  jenkins_script "user_add_#{id}" do
-    command <<-EOH.gsub(/^ {4}/, '')
-      user = hudson.model.User.get('#{id}')
-      user.setFullName('#{full_name}')
-      email = new hudson.tasks.Mailer.UserProperty('#{email}')
-      user.addProperty(email)
-      password = hudson.security.HudsonPrivateSecurityRealm.Details.fromHashedPassword('#{password}')
-      user.addProperty(password)
-    EOH
-  end
-end
+set_jenkins_creds
+configure_jenkins_security
 
 # Define all jenkins users
 search('users', "jenkins_password:*").each do |data_bag|
-  jenkins_user_sha(data_bag['id'], data_bag['full_name'], data_bag['email'], data_bag['jenkins_password'])
-  #jenkins_user data_bag['id'] do
-  #  full_name data_bag['full_name']
-  #  email     data_bag['email']
-  #  password  data_bag['jenkins_password'] # TODO PLAIN TEXT SUCKS
-  #end
+  # Until https://github.com/opscode-cookbooks/jenkins/pull/233 is merged, use
+  # this mechanism to define users with hashed passwords
+  imos_jenkins_user_jbcrypt data_bag['id'] do
+    id          data_bag['id']
+    full_name   data_bag['full_name']
+    email       data_bag['email']
+    password    data_bag['jenkins_password'] # TODO PLAIN TEXT SUCKS
+    public_keys data_bag['ssh_keys']
+  end
 end
