@@ -34,6 +34,8 @@ default['imos_po']['data_services']['lib']       = ::File.join(node['imos_po']['
 # When running in vagrant in dev mode, we will clone the repo from outside the node
 default['imos_po']['data_services']['clone_repository'] = true
 
+# Required packages
+default['imos_po']['data_services']['packages'] = [ 'imagemagick', 'gdal-bin', 'sqlite3', 'heirloom-mailx', 'python-pip', 'python-dev', 'libnetcdf-dev', 'libhdf5-serial-dev', 'python-scipy', 'python-matplotlib', 'python-numpy' ]
+
 # All required python plugins
-default['imos_po']['data_services']['packages'] = [ 'heirloom-mailx', 'python-pip', 'python-dev', 'libnetcdf-dev', 'libhdf5-serial-dev', 'python-scipy', 'python-matplotlib', 'python-numpy' ]
 default['imos_po']['data_services']['python']['plugins'] = [ 'netCDF4' ]
