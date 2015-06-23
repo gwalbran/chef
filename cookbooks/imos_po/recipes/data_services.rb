@@ -22,7 +22,13 @@ def generate_env_file(file_path, vars)
   end
 end
 
-package 'heirloom-mailx'
+node['imos_po']['data_services']['packages'].each do |pkg|
+  package pkg
+end
+
+node['imos_po']['data_services']['python']['plugins'].each do |python_pkg|
+  python_pip python_pkg
+end
 
 data_services_dir = node['imos_po']['data_services']['dir']
 data_services_log_dir = node['imos_po']['data_services']['log_dir']
