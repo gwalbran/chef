@@ -10,6 +10,7 @@
         "recipe[database_migrations]",
         "recipe[imos_po]",
         "recipe[imos_po::data_services]",
+        "recipe[imos_rsync]",
         "recipe[imos_webapps::generic_webapp]"
     ],
     "imos_users": {
@@ -64,7 +65,7 @@
             "log_dir": "/vagrant/src/data-services/log",
             "public_dir": "/mnt/imos-t4/IMOS/public",
             "archive_dir": "/mnt/imos-t4/IMOS/archive",
-            "incoming_dir": "/vagrant/src/incoming",
+            "incoming_dir": "/var/incoming",
             "error_dir": "/vagrant/src/error"
         }
     },
@@ -104,6 +105,16 @@
                 }
             ]
         }]
+    },
+    "imos_rsync": {
+        "uid": "vagrant",
+        "gid": "vagrant",
+        "users": [
+            "incoming"
+        ],
+        "serve": [
+            "incoming"
+        ]
     },
     "webapps": {
         "instances": [
