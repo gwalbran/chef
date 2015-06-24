@@ -10,3 +10,6 @@ default['imos_rsync']['log_dir'] = "/var/log/rsyncd"
 
 # User for chroot rsync uploads
 default['imos_rsync']['user'] = 'rsync'
+
+default['imos_rsync']['users'] = []
+default['imos_rsync']['serve'] = []

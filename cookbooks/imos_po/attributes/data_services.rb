@@ -39,3 +39,5 @@ default['imos_po']['data_services']['packages'] = [ 'imagemagick', 'gdal-bin', '
 
 # All required python plugins
 default['imos_po']['data_services']['python']['plugins'] = [ 'netCDF4', 'OWSLib', 'Wicken', 'lxml', 'cf_units', 'requests', 'python-dateutil', 'six' ]
+
+default['imos_po']['email_aliases'] = "/etc/incoming-aliases"
