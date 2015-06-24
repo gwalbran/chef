@@ -74,20 +74,6 @@ logrotate_app "project-officer-processing-file-reports" do
 end
 
 if node['vagrant']
-  # Install script to process all files in home directory of vagrant
-  # TODO hardcoded /home/vagrant
-  template "/home/vagrant/process-incoming.sh" do
-    source    'process-incoming.sh.erb'
-    owner     'vagrant'
-    group     'vagrant'
-    mode      '0755'
-    variables ({
-      :watchlists         => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
-      :watch_exec_wrapper => watch_exec_wrapper,
-      :data_services_dir  => data_services_dir
-    })
-  end
-
   # Change ownership of /mnt to vagrant, so the production hierarchy can be
   # created (/mnt/opendap/1, etc)
   execute "fix opendap permissions" do
