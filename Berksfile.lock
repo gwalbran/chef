@@ -60,10 +60,6 @@ DEPENDENCIES
     path: cookbooks/imos_po
   imos_postgresql
     path: cookbooks/imos_postgresql
-  imos_python
-    git: https://github.com/aodn/cookbooks.git
-    revision: 93e2165e7181912c58c7da2f254e7f57aaea3c40
-    rel: imos_python
   imos_rsync
     path: cookbooks/imos_rsync
   imos_squid
@@ -286,8 +282,6 @@ GRAPH
     sudo (>= 0.0.0)
   imos_postgresql (0.2.0)
     backup (>= 0.0.0)
-  imos_python (0.1.0)
-    python (>= 0.0.0)
   imos_rsync (0.1.0)
     logrotate (>= 0.0.0)
     rsync (>= 0.0.0)

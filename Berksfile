@@ -32,7 +32,6 @@ cookbook "imos_po", :path => "cookbooks/imos_po"
 cookbook "imos_postgresql", :path => "cookbooks/imos_postgresql"
 # If you're going to use ':github =>', instead of ':git =>', the ':rel argument
 # will not work!!
-cookbook "imos_python", :git => "https://github.com/aodn/cookbooks.git", :rel => "imos_python"
 cookbook "imos_squid", :path => "cookbooks/imos_squid"
 cookbook "imos_task_spooler", :path => "cookbooks/imos_task_spooler"
 cookbook "imos_users", :path => "cookbooks/imos_users"
