@@ -10,6 +10,7 @@
         "recipe[database_migrations]",
         "recipe[imos_po]",
         "recipe[imos_po::data_services]",
+        "recipe[imos_po::netcdf_checker]",
         "recipe[imos_rsync]",
         "recipe[imos_webapps::generic_webapp]"
     ],
@@ -56,6 +57,10 @@
         ]
     },
     "imos_po": {
+        "netcdf_checker": {
+            "repo": "https://github.com/aodn/compliance-checker.git",
+            "branch": "IMOS-Checker"
+        },
         "wip_dir": "/tmp",
         "data_services": {
             "user": "vagrant",
