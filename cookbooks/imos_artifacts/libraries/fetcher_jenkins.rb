@@ -22,17 +22,17 @@ module ImosArtifacts
 
       if artifact_manifest['jenkins_data_bag']
         jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", artifact_manifest['jenkins_data_bag'])
-        @url = FetcherJenkins::get_job_url(jenkins_creds['url'], job_name)
+        @url = FetcherJenkins::get_job_url(jenkins_creds['url'], job_name, artifact_manifest['build_number'])
         @username = jenkins_creds['username']
         @password = jenkins_creds['password']
       else
         begin
           jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", node[:imos_artifacts][:jenkins_data_bag])
-          @url = FetcherJenkins::get_job_url(jenkins_creds['url'], job_name)
+          @url = FetcherJenkins::get_job_url(jenkins_creds['url'], job_name, artifact_manifest['build_number'])
           @username = jenkins_creds['username']
           @password = jenkins_creds['password']
         rescue
-          @url = FetcherJenkins::get_job_url(node[:imos_artifacts][:ci_url], job_name)
+          @url = FetcherJenkins::get_job_url(node[:imos_artifacts][:ci_url], job_name, artifact_manifest['build_number'])
           Chef::Log.warn("Not using authentication for jenkins download from '#{@url}'")
         end
       end
@@ -40,8 +40,12 @@ module ImosArtifacts
       @api = 'api/json'
     end
 
-    def self.get_job_url(url_base, job_name)
-      return URI.escape("#{url_base}/job/#{job_name}/lastSuccessfulBuild")
+    def self.get_job_url(url_base, job_name, build_number)
+      if 0 == build_number.to_i
+        build_number = 'lastSuccessfulBuild'
+      end
+
+      return URI.escape("#{url_base}/job/#{job_name}/#{build_number}")
     end
 
     def cache(artifact_manifest, download_prefix)

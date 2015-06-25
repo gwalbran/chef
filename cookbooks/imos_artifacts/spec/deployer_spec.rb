@@ -37,6 +37,15 @@ module ImosArtifacts
         expect(manifest['job']).to eq ("some_job")
         expect(manifest['filename']).to eq ("file.war")
       end
+
+      it 'manifest from job with filename and build number' do
+        allow(Deployer).to receive(:databag_exists?).and_return(false)
+        manifest = Deployer.get_artifact_manifest("some_job#1/file.war")
+        expect(manifest['id']).to eq ("some_job#1/file.war")
+        expect(manifest['job']).to eq ("some_job")
+        expect(manifest['build_number']).to eq ("1")
+        expect(manifest['filename']).to eq ("file.war")
+      end
     end
 
     describe 'need_deploy?' do
