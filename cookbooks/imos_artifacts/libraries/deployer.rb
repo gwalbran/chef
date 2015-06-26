@@ -37,6 +37,11 @@ module ImosArtifacts
           # In the case of having a 'job/something', treat 'something' as the filename
           artifact_manifest['job'], artifact_manifest['filename'] = artifact_id.split("/")
         end
+
+        # In the case of having a 'job#number', treat 'number' as the build number
+        if artifact_manifest['job'].include?("#")
+          artifact_manifest['job'], artifact_manifest['build_number'] = artifact_manifest['job'].split("#")
+        end
       end
 
       return artifact_manifest
