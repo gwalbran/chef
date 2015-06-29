@@ -13,14 +13,16 @@ rsyncd_secrets_path = "/etc/rsyncd_secrets"
 
 # Collect all defined rsync users
 rsync_users = []
-if node['imos_rsync'] && node['imos_rsync']['users']
-  node['imos_rsync']['users'].each do |data_bag_name|
-    data_bag = Chef::EncryptedDataBagItem.load('rsync_users', data_bag_name)
-    rsync_users << {
-      :username => data_bag['username'],
-      :password => data_bag['password']
-    }
-  end
+node['imos_rsync']['users'].each do |data_bag_name|
+  data_bag = Chef::EncryptedDataBagItem.load('rsync_users', data_bag_name)
+  rsync_users << {
+    :username => data_bag['username'],
+    :password => data_bag['password']
+  }
+
+  imos_po_incoming_email data_bag['username'] do
+    email data_bag['email']
+  end if data_bag['email']
 end
 
 template rsyncd_secrets_path do
@@ -41,30 +43,26 @@ directory node['imos_rsync']['log_dir'] do
 end
 
 # Define all the shares
-rsync_users = []
-if node['imos_rsync'] && node['imos_rsync']['serve']
-  node['imos_rsync']['serve'].each do |data_bag_name|
-    data_bag = Chef::EncryptedDataBagItem.load('rsync_serve', data_bag_name)
+node['imos_rsync']['serve'].each do |data_bag_name|
+  data_bag = Chef::EncryptedDataBagItem.load('rsync_serve', data_bag_name)
 
-    rsync_serve data_bag['id'] do
-      path             data_bag['path']
-      comment          "#{data_bag['id']}"
-      secrets_file     rsyncd_secrets_path
-      auth_users       data_bag['auth_users'].join(" ")
-      incoming_chmod   "Dug+rwx,Fug+rw"
-      use_chroot       false
-      munge_symlinks   false
-      read_only        data_bag['read_only']
-      list             true
-      uid              node['imos_rsync']['uid']
-      gid              node['imos_rsync']['gid']
-      hosts_allow      data_bag['hosts_allow'].join(", ")
-      hosts_deny       "0.0.0.0/0"
-      max_connections  node['imos_rsync']['max_connections']
-      transfer_logging true
-      log_file         ::File.join(node['imos_rsync']['log_dir'], "rsync_#{data_bag['id']}.log")
-    end
-
+  rsync_serve data_bag['id'] do
+    path             data_bag['path']
+    comment          "#{data_bag['id']}"
+    secrets_file     rsyncd_secrets_path
+    auth_users       data_bag['auth_users'].join(" ")
+    incoming_chmod   "Dug+rwx,Fug+rw"
+    use_chroot       false
+    munge_symlinks   false
+    read_only        data_bag['read_only']
+    list             true
+    uid              node['imos_rsync']['uid']
+    gid              node['imos_rsync']['gid']
+    hosts_allow      data_bag['hosts_allow'].join(", ")
+    hosts_deny       "0.0.0.0/0"
+    max_connections  node['imos_rsync']['max_connections']
+    transfer_logging true
+    log_file         ::File.join(node['imos_rsync']['log_dir'], "rsync_#{data_bag['id']}.log")
   end
 end
 

@@ -85,6 +85,7 @@ data_services_vars = [
   "PUBLIC_IMOS_DIR='#{node['imos_po']['data_services']['public_dir']}'",
   "ARCHIVE_IMOS_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
   "WIP_DIR='#{node['imos_po']['wip_dir']}'",
+  "EMAIL_ALIASES='#{node['imos_po']['email_aliases']}'",
   "DATA_SERVICES_DIR='#{data_services_dir}'",
   "LOG_DIR='#{data_services_log_dir}'"
 ]

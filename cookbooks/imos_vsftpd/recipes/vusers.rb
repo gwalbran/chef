@@ -68,6 +68,11 @@ node['imos_vsftpd']['ftp_users']['data_bags'].each do |data_bag_pattern|
 
       # Build the passwd file
       pwdfile_content << "#{user['id']}:#{user['password']}"
+
+      # Add email alias for that user
+      imos_po_incoming_email user['id'] do
+        email user['email']
+      end if user['email']
     end
 
   end
