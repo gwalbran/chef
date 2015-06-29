@@ -16,7 +16,5 @@ end
 
 include_recipe "imos_po::matlab"
 include_recipe "imos_po::netcdf_nco"
-include_recipe "imos_po::imagemagick"
 include_recipe "imos_po::wip"
-include_recipe "imos_po::sqlite"
 include_recipe "imos_po::sudo"

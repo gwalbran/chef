@@ -11,6 +11,7 @@ cache/
 data_bags/node
 *.swp
 shared_src/
+src
 
 # Some extra personal ignore settings
 .bundle

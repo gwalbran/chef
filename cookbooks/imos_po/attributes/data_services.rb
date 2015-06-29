@@ -30,3 +30,12 @@ default['imos_po']['data_services']['group'] = 'projectofficer'
 default['imos_po']['watch_exec_wrapper']         = "/usr/local/bin/watch-exec-wrapper.sh"
 default['imos_po']['watches']['syslog_facility'] = "local3"
 default['imos_po']['data_services']['lib']       = ::File.join(node['imos_po']['data_services']['dir'], "lib", "common")
+
+# When running in vagrant in dev mode, we will clone the repo from outside the node
+default['imos_po']['data_services']['clone_repository'] = true
+
+# Required packages
+default['imos_po']['data_services']['packages'] = [ 'imagemagick', 'gdal-bin', 'sqlite3', 'heirloom-mailx', 'python-pip', 'python-dev', 'libnetcdf-dev', 'libhdf5-serial-dev', 'python-scipy', 'python-matplotlib', 'python-numpy', 'python-psycopg2', 'python-beautifulsoup', 'ipython', 'python-scipy' ]
+
+# All required python plugins
+default['imos_po']['data_services']['python']['plugins'] = [ 'netCDF4', 'OWSLib', 'Wicken', 'lxml', 'cf_units', 'requests', 'python-dateutil', 'six' ]

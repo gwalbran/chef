@@ -22,23 +22,38 @@ def generate_env_file(file_path, vars)
   end
 end
 
-package 'heirloom-mailx'
+node['imos_po']['data_services']['packages'].each do |pkg|
+  package pkg
+end
 
-# Use this so we can deploy private repositories
-include_recipe "imos_core::git_deploy_key"
+node['imos_po']['data_services']['python']['plugins'].each do |python_pkg|
+  python_pip python_pkg
+end
 
 data_services_dir = node['imos_po']['data_services']['dir']
 data_services_log_dir = node['imos_po']['data_services']['log_dir']
 data_services_cron_dir = File.join(data_services_dir, "cron.d")
 
-git data_services_dir do
-  repository  node['imos_po']['data_services']['repo']
-  revision    node['imos_po']['data_services']['branch']
-  action      :sync
-  user        'root'
-  group       node['imos_po']['data_services']['group']
-  ssh_wrapper node['git_ssh_wrapper']
-  notifies    :create, "ruby_block[data_services_cronjobs]", :immediately
+if node['imos_po']['data_services']['clone_repository']
+  # Use this so we can deploy private repositories
+  include_recipe "imos_core::git_deploy_key"
+
+  git data_services_dir do
+    repository  node['imos_po']['data_services']['repo']
+    revision    node['imos_po']['data_services']['branch']
+    action      :sync
+    user        'root'
+    group       node['imos_po']['data_services']['group']
+    ssh_wrapper node['git_ssh_wrapper']
+    notifies    :create, "ruby_block[data_services_cronjobs]", :immediately
+  end
+
+else
+  # Dummy block to generate the cronjobs when git is not checked out by the recipe
+  ruby_block "#{data_services_dir}_dummy" do
+    block do end
+    notifies :create, "ruby_block[data_services_cronjobs]", :immediately
+  end
 end
 
 directory data_services_log_dir do
