@@ -16,11 +16,10 @@ Vagrant.configure("2") do |config|
     config.cache.enable :gem
   end
 
-  config.vm.box = ENV['VAGRANT_BOX'] || "precise64-chef-client-omnibus-12.3.0-0.8"
-  config.vm.box_url = ENV['VAGRANT_BOX_URL'] || "https://binary.aodn.org.au/static/boxes/precise64-chef-client-omnibus-12.3.0-0.8.box"
+  config.vm.box = ENV['VAGRANT_BOX'] || "precise-server-cloudimg-amd64-chef-12.3.0-0.9"
+  config.vm.box_url = ENV['VAGRANT_BOX_URL'] || "https://ci.aodn.org.au/job/chef_basebox/lastSuccessfulBuild/artifact/#{config.vm.box}.box"
 
-  # Uncomment this to upgrade to the latest chef
-  #config.omnibus.chef_version = :latest
+  ENV['CHEF_VERSION'] and config.omnibus.chef_version = ENV['CHEF_VERSION']
 
   # ssh options
   config.ssh.username = ENV['VAGRANT_USER'] || "vagrant"
