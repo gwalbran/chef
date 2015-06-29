@@ -8,10 +8,14 @@
         "recipe[imos_dns::etc_hosts]",
         "recipe[imos_postgresql::official_postgresql]",
         "recipe[database_migrations]",
+        "recipe[imos_po]",
+        "recipe[imos_po::data_services]",
+        "recipe[imos_po::netcdf_checker]",
+        "recipe[imos_rsync]",
         "recipe[imos_webapps::generic_webapp]"
     ],
     "imos_users": {
-        "groups": [ "users" ]
+        "groups": [ "users", "projectofficer" ]
     },
     "aliases": [
         "po.aodn.org.au"
@@ -52,6 +56,24 @@
             "marvl_data_atlas"
         ]
     },
+    "imos_po": {
+        "netcdf_checker": {
+            "repo": "https://github.com/aodn/compliance-checker.git",
+            "branch": "IMOS-Checker"
+        },
+        "wip_dir": "/tmp",
+        "data_services": {
+            "user": "vagrant",
+            "group": "vagrant",
+            "clone_repository": false,
+            "dir": "/vagrant/src/data-services",
+            "log_dir": "/vagrant/src/data-services/log",
+            "public_dir": "/mnt/imos-t4/IMOS/public",
+            "archive_dir": "/mnt/imos-t4/IMOS/archive",
+            "incoming_dir": "/var/incoming",
+            "error_dir": "/vagrant/src/error"
+        }
+    },
     "postgresql": {
         "clusters": [{
             "name": "main",
@@ -89,6 +111,16 @@
             ]
         }]
     },
+    "imos_rsync": {
+        "uid": "vagrant",
+        "gid": "vagrant",
+        "users": [
+            "incoming"
+        ],
+        "serve": [
+            "incoming"
+        ]
+    },
     "webapps": {
         "instances": [
             {
@@ -96,7 +128,7 @@
                 "vhost":         "po.aodn.org.au",
                 "aliases":       [ "10.11.12.13" ],
                 "port":          "8080",
-                "java_options":  "-Xmx3G -Xms1G -XX:PermSize=512m -DGEOSERVER_DATA_DIR=/vagrant/shared_src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork",
+                "java_options":  "-Xmx3G -Xms1G -XX:PermSize=512m -DGEOSERVER_DATA_DIR=/vagrant/src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork",
                 "apps": [
                     {
                         "name":                 "imos123",
@@ -122,11 +154,11 @@
                         ]
                     },
                     {
-                        "name":           "geoserver",
-                        "artifact":       "geoserver_prod",
-                        "custom_def":     "geoserver",
-                        "data_dir":       "/vagrant/shared_src/geoserver",
-                        "jndis":          [ "harvest-read-po", "harvest-read-po-rc", "local-harvest-read" ]
+                        "name":       "geoserver",
+                        "artifact":   "geoserver_prod",
+                        "custom_def": "geoserver",
+                        "data_dir":   "/vagrant/src/geoserver",
+                        "jndis":      [ "harvest-read-po", "harvest-read-po-rc", "local-harvest-read" ]
                     },
                     {
                         "name":                  "geonetwork",

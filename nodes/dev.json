@@ -82,13 +82,13 @@
                 "vhost":        "dev.aodn.org.au",
                 "aliases":      [ "10.11.12.13" ],
                 "port":         "8090",
-                "java_options": "-Xmx3G -Xms1G -XX:PermSize=512m -DGEOSERVER_DATA_DIR=/vagrant/shared_src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork",
+                "java_options": "-Xmx3G -Xms1G -XX:PermSize=512m -DGEOSERVER_DATA_DIR=/vagrant/src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork",
                 "apps":         [
                     {
                         "name":       "geoserver",
                         "artifact":   "geoserver_edge",
                         "custom_def": "geoserver",
-                        "data_dir":   "/vagrant/shared_src/geoserver",
+                        "data_dir":   "/vagrant/src/geoserver",
                         "jndis":      [ "harvest-read-po", "local-harvest-read" ]
                     },
                     {

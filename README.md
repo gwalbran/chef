@@ -49,6 +49,33 @@ In order to initiate a restore, run:
 $ vagrant ssh po -- sudo /var/backups/restore/restore.sh
 ```
 
+### Testing Pipeline Processing
+
+Pipeline processing refers to the event driven infrastructure which polls files
+entering the ftp/rsync incoming directory.
+
+In order to upload files into the incoming directories rsync has to be used
+with the following credentials:
+ * Host: po.aodn.org.au
+ * User: incoming
+ * Password: incoming
+ * Destination: ::incoming
+
+For example:
+```
+$ rsync file.nc incoming@po.aodn.org.au::incoming/ANMN/AM/
+```
+
+The log file will be exposed under `src/data-services/log/process.log`:
+```
+$ tail -f src/data-services/log/process.log
+```
+
+Error files will be moved to `src/error` (directory will be created automatically):
+```
+$ ls -l src/error/
+```
+
 ### Dev Box
 
 Intended for development and debugging of various IMOS web applications such as:
