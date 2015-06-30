@@ -59,18 +59,23 @@ file ::File.join(node['rsyslog']['config_prefix'], "rsyslog.d", "60-project-offi
   notifies :restart, "service[#{node['rsyslog']['service_name']}]"
 end
 
+log_file_user  = node['imos_po']['data_services']['user']
+log_file_group = node['imos_po']['data_services']['group']
+
 logrotate_app "project-officer-processing" do
   rotate     node['logrotate']['global']['rotate']
+  create     "644 #{log_file_user} #{log_file_group}"
   path       log_file
   frequency  'daily'
-  options    [ "compress", "delaycompress", "missingok", "nocreate", "sharedscripts" ]
+  options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
 end
 
 logrotate_app "project-officer-processing-file-reports" do
   rotate     node['logrotate']['global']['rotate']
+  create     "644 #{log_file_user} #{log_file_group}"
   path       ::File.join(log_dir, "*", "*.log")
   frequency  'daily'
-  options    [ "compress", "delaycompress", "missingok", "nocreate", "sharedscripts" ]
+  options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
 end
 
 if node['vagrant']
