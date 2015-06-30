@@ -38,6 +38,8 @@ DEPENDENCIES
     path: cookbooks/imos_artifacts
   imos_backup
     path: cookbooks/imos_backup
+  imos_chef_solo
+    path: cookbooks/imos_chef_solo
   imos_core
     path: cookbooks/imos_core
   imos_depth_service
@@ -225,9 +227,10 @@ GRAPH
     backup (>= 0.0.0)
     imos_users (>= 0.0.0)
     logrotate (>= 0.0.0)
+  imos_chef_solo (0.1.0)
+    chef-solo-search (>= 0.0.0)
   imos_core (0.1.0)
     build-essential (>= 0.0.0)
-    chef-solo-search (>= 0.0.0)
     cron (>= 0.0.0)
     git_ssh_wrapper (>= 0.0.0)
     logrotate (>= 0.0.0)

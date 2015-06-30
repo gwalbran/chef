@@ -11,7 +11,6 @@ version          "0.1.0"
   sysctl
   cron
   build-essential
-  chef-solo-search
   git_ssh_wrapper
   unattended_upgrades
   sudo
