@@ -14,3 +14,6 @@ default['imos_apache2']['awstats_cron_contact'] = "sys.admin@emii.org.au"
 
 default['imos_apache2']['static_dir'] = ::File.join(node['apache']['docroot_dir'], "static")
 default['imos_apache2']['directory_index'] = "index.htm index.html"
+
+# Default options for STS (Strict Transport Security)
+default['imos_apache2']['sts']['options'] = "max-age=15768000;includeSubDomains"

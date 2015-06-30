@@ -155,6 +155,14 @@ end if @params[:proxy_pass]
   SSLCertificateFile /etc/ssl/certs/<%= @params[:domain] %>.crt
   SSLCertificateKeyFile /etc/ssl/private/<%= @params[:domain] %>.key
   SSLCertificateChainFile /etc/ssl/certs/<%= @params[:domain] %>.chain.crt
+  <% if @params[:sts]
+       sts_options = node['imos_apache2']['sts']['options']
+       if @params[:sts].kind_of? Hash and @params[:sts][:options]
+         sts_options = @params[:sts][:options]
+       end
+  %>
+  Header add Strict-Transport-Security "<%= sts_options %>"
+  <% end %>
 <% end %>
 
 </VirtualHost>
