@@ -11,8 +11,8 @@
 
 node['imos_devel']['vagrant']['plugins'].each do |plugin|
   imos_devel_vagrant_plugin plugin['name'] do
-    user       plugin['user']
-    home       plugin['home']
-    version    plugin['version']
+    user    plugin['user']
+    home    plugin['home']
+    version plugin['version']
   end
 end

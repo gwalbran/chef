@@ -13,6 +13,13 @@ USERS_IGNORE="vagrant backups"
 # weird sudo environment set PATH!
 export PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
+# upgrade apache, because otherwise it messes up with the chef apache cookbook
+upgrade_apache2() {
+    apt-get update && \
+    apt-get install -y -q apache2.2-common && \
+    apt-get clean
+}
+
 # remove ssh host identities, they should be recreated on reboot
 remove_ssh_host_identities() {
     rm -f /etc/ssh/ssh_host_*
@@ -61,6 +68,7 @@ clear_tmp() {
 
 # main
 main() {
+    upgrade_apache2 && \
     remove_ssh_host_identities && \
     clear_udev_net_rules && \
     remove_users && \
