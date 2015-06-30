@@ -13,7 +13,7 @@ DEPENDENCIES
   build-essential
   chef-solo-search
     git: git://github.com/edelight/chef-solo-search.git
-    revision: 848fad1461c78fd502975f1df2e14eed12610635
+    revision: 72bd5e3507056e5c931ee0cf7516ce1bfbce6d51
   chef_handler
   cron
   database_migrations
@@ -94,7 +94,7 @@ DEPENDENCIES
     path: cookbooks/nagios
   nfs
     git: git://github.com/atomic-penguin/cookbook-nfs.git
-    revision: c5752a9eb427c4b02e05c08c9292b96ac1cdd5a4
+    revision: 1d557ca96c328edaaba2dedc7857573994219671
   nginx
     git: git://github.com/opscode-cookbooks/nginx.git
     revision: f5a4fcffc390a027f32129c9b6c28860b5dfd6c3
@@ -185,7 +185,7 @@ GRAPH
   bluepill (2.3.1)
     rsyslog (>= 0.0.0)
   build-essential (2.0.2)
-  chef-solo-search (0.5.1)
+  chef-solo-search (0.5.2)
   chef_handler (1.1.6)
   cron (1.4.0)
   curl (2.0.1)
@@ -354,7 +354,7 @@ GRAPH
     php (>= 0.0.0)
     sudo (>= 0.0.0)
     yum (>= 0.0.0)
-  nfs (1.0.0)
+  nfs (2.2.1)
     line (>= 0.0.0)
   nginx (2.6.3)
     apt (~> 2.2)
