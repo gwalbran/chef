@@ -10,6 +10,9 @@
 # Most mounts would require the nfs package
 package 'nfs-common'
 
+# Fix for https://github.com/atomic-penguin/cookbook-nfs/issues/58
+node.set['nfs']['service_provider']['server'] = Chef::Provider::Service::Init::Debian
+
 node['mounts']['mounts'].each do |mount|
   # Skip sshfs mounts here, we need the user created first
   next if mount['fstype'] == 'fuse.sshfs'
