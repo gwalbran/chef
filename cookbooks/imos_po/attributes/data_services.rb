@@ -12,12 +12,13 @@ default['imos_po']['data_services']['cronjobs'] = true
 default['imos_po']['data_services']['watches']  = true
 
 # Directories scripts are likely to access
-default['imos_po']['data_services']['opendap_dir']  = '/mnt/opendap'
-default['imos_po']['data_services']['public_dir']   = '/mnt/public'
-default['imos_po']['data_services']['archive_dir']  = '/mnt/archive'
-default['imos_po']['data_services']['incoming_dir'] = '/mnt/incoming'
-default['imos_po']['data_services']['error_dir']    = '/mnt/err'
-default['imos_po']['data_services']['log_dir']      = '/var/log/data-services'
+default['imos_po']['data_services']['opendap_dir']   = '/mnt/opendap'
+default['imos_po']['data_services']['public_dir']    = '/mnt/public'
+default['imos_po']['data_services']['archive_dir']   = '/mnt/archive'
+default['imos_po']['data_services']['incoming_dir']  = '/mnt/incoming'
+default['imos_po']['data_services']['error_dir']     = '/mnt/err'
+default['imos_po']['data_services']['graveyard_dir'] = '/mnt/graveyard'
+default['imos_po']['data_services']['log_dir']       = '/var/log/data-services'
 
 # env file for data-services repository
 default['imos_po']['data_services']['env'] = ::File.join(node['imos_po']['data_services']['dir'], "env")
