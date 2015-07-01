@@ -71,7 +71,8 @@
             "public_dir": "/mnt/imos-t4/IMOS/public",
             "archive_dir": "/mnt/imos-t4/IMOS/archive",
             "incoming_dir": "/var/incoming",
-            "error_dir": "/vagrant/src/error"
+            "error_dir": "/vagrant/src/error",
+            "graveyard_dir": "/vagrant/src/graveyard"
         }
     },
     "postgresql": {
