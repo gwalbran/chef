@@ -1,0 +1,6 @@
+{
+    "id": "ncwms_systest",
+    "uri": "http://ncwms-systest.aodn.org.au/ncwms/wms",
+    "wmsVersion": "1.1.1",
+    "type": "ncWMS"
+}

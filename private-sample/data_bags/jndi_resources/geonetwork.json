@@ -1,0 +1,9 @@
+{
+    "id": "geonetwork",
+    "resource": "jdbc/geonetwork",
+    "driver": "org.postgis.DriverWrapper",
+    "url": "jdbc:postgresql_postGIS://localhost:5432/geonetwork?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory",
+    "username": "geonetwork",
+    "password": "geonetwork",
+    "defaultAutoCommit": "false"
+}

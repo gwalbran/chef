@@ -1,0 +1,171 @@
+{
+    "chef_environment": "vagrant",
+    "name": "systest",
+    "run_list": [
+        "role[base]",
+        "recipe[imos_mounts::ebs]",
+        "recipe[ssl]",
+        "role[restore]",
+        "recipe[imos_squid]",
+        "recipe[imos_core::cronjob]",
+        "recipe[imos_dns::etc_hosts]",
+        "recipe[imos_postgresql::official_postgresql]",
+        "recipe[imos_webapps::generic_webapp]"
+    ],
+    "tomcat": {
+        "base": "/mnt/ebs/tomcat7"
+    },
+    "aliases": [
+        "portal-systest.aodn.org.au",
+        "catalogue-systest.aodn.org.au",
+        "geoserver-systest.aodn.org.au",
+        "ncwms-systest.aodn.org.au"
+    ],
+    "imos_dns": {
+        "etc_hosts": {
+            "127.0.1.2": "geoserver-123.aodn.org.au catalogue-123.aodn.org.au geoserver-systest.aodn.org.au catalogue-systest.aodn.org.au"
+        }
+    },
+    "tz": "Australia/Hobart",
+    "backup": {
+        "base_dir":   "/mnt/ebs/backups",
+        "backup_dir": "/mnt/ebs/backups/backups"
+    },
+    "imos_backup": {
+        "restore": {
+            "allow": true,
+            "ssh_opts": "-o StrictHostKeyChecking=no",
+            "directives": [
+                {
+                    "from_host":  "1-aws-syd.emii.org.au",
+                    "from_model": "pgsql",
+                    "files":      [ "geonetwork/public.dump" ]
+                },
+                {
+                    "from_host":  "1-aws-syd.emii.org.au",
+                    "from_model": "geonetwork_123_geonetwork",
+                    "to_model":   "geonetwork_geonetwork"
+                }
+            ]
+        }
+    },
+    "cronjobs": [
+        {
+            "job_name": "restore",
+            "shell":    "/bin/bash",
+            "minute":   "0",
+            "hour":     "7",
+            "mailto":   "\"\"",
+            "command":  "/mnt/ebs/backups/restore/restore.sh >& /tmp/restore.log; /etc/init.d/tomcat7_geonetwork restart >& /dev/null"
+        }
+    ],
+    "postgresql": {
+        "clusters": [{
+            "roles": [
+                "db_dev_main",
+                "geonetwork"
+            ],
+            "databases": [
+                "geonetwork"
+            ],
+            "config": {
+                "data_directory": "/mnt/ebs/pgsql"
+            }
+        }]
+    },
+    "squid": {
+        "cache_size": 20480,
+        "cache_mem": 512
+    },
+    "webapps": {
+        "instances": [
+            {
+                "name":          "portal",
+                "vhost":         "portal-systest.aodn.org.au",
+                "aliases":       [ "10.11.12.13", "127.0.1.2" ],
+                "port":          "8080",
+                "java_options":  "-Xmx3G -Xms1G -XX:PermSize=128m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError",
+                "max_post_size": 262144000,
+                "apps": [
+                    {
+                        "name":                 "imos123",
+                        "aliases":              [ "webportal", "imos" ],
+                        "artifact":             "portal_4_systest",
+                        "config_file":          "Imos123.groovy",
+                        "geonetwork_url":       "http://127.0.1.2/geonetwork",
+                        "config_template_dir":  "portal",
+                        "config_file":          "Portal.groovy",
+                        "portal_instance_name": "IMOS",
+                        "css_name":             "IMOS",
+                        "header_logo":          "IMOS_logo.png",
+                        "header_link_text":     "IMOS",
+                        "header_href":          "http://imos.org.au/imos.html",
+                        "known_servers":        [ "geoserver_systest", "ncwms_systest", "geoserver_123_aodn", "ncwms_aodn" ]
+                    }
+                ],
+                "httpd_rules": [
+                    "ProxyPass           /geonetwork http://localhost:8081/geonetwork retry=0",
+                    "ProxyPassReverse    /geonetwork http://localhost:8081/geonetwork",
+                    "ProxyPass           /geoserver  http://localhost:8082/geoserver  retry=0",
+                    "ProxyPassReverse    /geoserver  http://localhost:8082/geoserver",
+                    "ProxyPass           /ncwms      http://localhost:8083/ncwms      retry=0",
+                    "ProxyPassReverse    /ncwms      http://localhost:8083/ncwms"
+                ]
+            },
+            {
+                "name":         "geonetwork_123",
+                "vhost":        "catalogue-systest.aodn.org.au",
+                "port":         "8081",
+                "java_options": "-Dgeonetwork.jeeves.configuration.overrides.file=/mnt/ebs/tomcat7/geonetwork_123/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/mnt/ebs/geonetwork",
+                "apps": [
+                    {
+                        "name":                  "geonetwork",
+                        "artifact":              "geonetwork_systest",
+                        "config_file":           "config-overrides.xml",
+                        "config_template_dir":   "geonetwork",
+                        "custom_def":            "geonetwork",
+                        "geoserver":             "http://geoserver-static.aodn.org.au/geoserver",
+                        "data_dir":              "/mnt/ebs/geonetwork",
+                        "backup":                true,
+                        "jndis":                 [ "geonetwork" ],
+                        "classification_scheme": {
+                            "parameterCategories": "http://vocab.aodn.org.au/def/ClassScheme/parameter1",
+                            "platformCategories":  "http://vocab.aodn.org.au/def/ClassScheme/platform1"
+                        },
+                        "logging": {
+                            "log4j.logger.geonetwork.index": "DEBUG"
+                        }
+                    }
+                ]
+            },
+            {
+                "name":           "geoserver",
+                "vhost":          "geoserver-systest.aodn.org.au",
+                "aliases":        [ "geoserver-123.aodn.org.au" ],
+                "port":           "8082",
+                "java_options":   "-Xmx5G -Xms512m -Dgt2.jdbc.trace=true -XX:MaxPermSize=128m -DGEOSERVER_DATA_DIR=/mnt/ebs/geoserver",
+                "data_dir":       "/mnt/ebs/geoserver",
+                "cached":         true,
+                "thread_control": true,
+                "max_threads":    10,
+                "apps": [
+                    {
+                        "name":       "geoserver",
+                        "artifact":   "geoserver_systest",
+                        "custom_def": "geoserver",
+                        "data_bag":   "geoserver_123",
+                        "jndis":      [ "harvest-systest" ],
+                        "refresh_patterns": [
+                            {
+                                "regex": "(.+/)?wms\\?.*",
+                                "extra_opts": "override-expire ignore-reload",
+                                "min":        720,
+                                "max":        720
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

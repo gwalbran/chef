@@ -1,0 +1,11 @@
+{
+    "id": "db_dev_main",
+    "roles": [
+        {
+            "name": "system_read_group",
+            "privileges": [
+                "nologin"
+            ]
+        }
+    ]
+}
