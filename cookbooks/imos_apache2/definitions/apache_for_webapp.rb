@@ -18,6 +18,7 @@ define :apache_for_webapp do
   server_aliases  = params[:aliases]
   cached          = params[:cached]
   https           = params[:https]
+  sts             = params[:sts]
   rules           = params[:rules]
   redirects       = params[:redirects]
   full_config     = params[:full_config]
@@ -68,6 +69,7 @@ define :apache_for_webapp do
     cached          cached
     redirects       redirects
     https           true
+    sts             sts
     domain          domain
     rules           rules
     full_config     full_config

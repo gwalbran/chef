@@ -31,6 +31,7 @@ if node['apache'] && node['apache']['vhosts']
       directory_index   vhost['directory_index'] || node['imos_apache2']['directory_index']
       content_repo      vhost['content_repo']
       https             vhost['https']
+      sts               vhost['sts']
     end
 
   end
