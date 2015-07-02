@@ -31,7 +31,6 @@ node['imos_po']['data_services']['python']['plugins'].each do |python_pkg|
 end
 
 data_services_dir = node['imos_po']['data_services']['dir']
-data_services_log_dir = node['imos_po']['data_services']['log_dir']
 data_services_cron_dir = File.join(data_services_dir, "cron.d")
 
 if node['imos_po']['data_services']['clone_repository']
@@ -56,11 +55,13 @@ else
   end
 end
 
-directory data_services_log_dir do
-  user      node['imos_po']['data_services']['user']
-  group     node['imos_po']['data_services']['group']
-  mode      01775
-  recursive true
+node['imos_po']['data_services']['owned_dirs'].each do |dir|
+  directory dir do
+    user      node['imos_po']['data_services']['user']
+    group     node['imos_po']['data_services']['group']
+    mode      01775
+    recursive true
+  end
 end
 
 # Allow anyone in 'projectofficer' group to sudo to user 'projectofficer'
@@ -81,13 +82,14 @@ data_services_vars = [
   "ARCHIVE_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
   "INCOMING_DIR='#{node['imos_po']['data_services']['incoming_dir']}'",
   "ERROR_DIR='#{node['imos_po']['data_services']['error_dir']}'",
+  "GRAVEYARD_DIR='#{node['imos_po']['data_services']['graveyard_dir']}'",
   "OPENDAP_IMOS_DIR='#{node['imos_po']['data_services']['opendap_dir']}/1/IMOS/opendap'",
   "PUBLIC_IMOS_DIR='#{node['imos_po']['data_services']['public_dir']}'",
   "ARCHIVE_IMOS_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
   "WIP_DIR='#{node['imos_po']['wip_dir']}'",
   "EMAIL_ALIASES='#{node['imos_po']['email_aliases']}'",
   "DATA_SERVICES_DIR='#{data_services_dir}'",
-  "LOG_DIR='#{data_services_log_dir}'"
+  "LOG_DIR='#{node['imos_po']['data_services']['log_dir']}'"
 ]
 
 # plant env file in data-services repo with all related variables
