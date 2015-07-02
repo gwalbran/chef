@@ -55,11 +55,7 @@ else
   end
 end
 
-[
-  node['imos_po']['data_services']['log_dir'],
-  node['imos_po']['data_services']['error_dir'],
-  node['imos_po']['data_services']['graveyard_dir']
-].each do |dir|
+node['imos_po']['data_services']['owned_dirs'].each do |dir|
   directory dir do
     user      node['imos_po']['data_services']['user']
     group     node['imos_po']['data_services']['group']
