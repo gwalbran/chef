@@ -24,7 +24,7 @@ goodies:
 
 To run the PO Box, cd to your chef directory and run:
 ```
-$ private/bin/po-box.sh
+$ bin/po-box.sh
 ```
 
 The services mentioned will be exposed on 10.11.12.13, or po.aodn.org.au.
@@ -41,7 +41,7 @@ Relevant links are:
 Running restores can be done by tinkering with `nodes/po.json`, under the
 `imos_backup/restore` area. After modifying it you must run:
 ```
-$ private/bin/po-box.sh
+$ bin/po-box.sh
 ```
 
 In order to initiate a restore, run:
@@ -122,14 +122,4 @@ for transient system testing.
 To run:
 ```
 $ vagrant up systest
-```
-
-### Packer
-
-To build a basebox using packer, you'll need [packer](http://www.packer.io)
-version 0.8.0 or greater. From the `chef` directory you can then run:
-```
-$ berks vendor private/packer/cookbooks1
-$ cp -a cookbooks private/packer/cookbooks2
-$ cd private/packer && packer build basebox.json
 ```
