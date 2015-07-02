@@ -123,3 +123,13 @@ To run:
 ```
 $ vagrant up systest
 ```
+
+### Packer
+
+To build a basebox using packer, you'll need [packer](http://www.packer.io)
+version 0.8.0 or greater. From the `chef` directory you can then run:
+```
+$ berks vendor private/packer/cookbooks1
+$ cp -a cookbooks private/packer/cookbooks2
+$ cd private/packer && packer build basebox.json
+```
