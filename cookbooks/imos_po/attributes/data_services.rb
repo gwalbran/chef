@@ -54,7 +54,8 @@ default['imos_po']['data_services']['python']['packages'] = [
   { 'name' => 'requests' },
   { 'name' => 'python-dateutil' },
   { 'name' => 'six' },
-  { 'name' => 'petulant-bear', 'version' => '0.1.3' }
+  { 'name' => 'petulant-bear', 'version' => '0.1.3' },
+  { 'name' => 'PyYAML' }
 ]
 
 default['imos_po']['email_aliases'] = "/etc/incoming-aliases"
