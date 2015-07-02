@@ -26,8 +26,10 @@ node['imos_po']['data_services']['packages'].each do |pkg|
   package pkg
 end
 
-node['imos_po']['data_services']['python']['plugins'].each do |python_pkg|
-  python_pip python_pkg
+node['imos_po']['data_services']['python']['packages'].each do |python_pkg|
+  python_pip python_pkg['name'] do
+    version python_pkg['version']
+  end
 end
 
 data_services_dir = node['imos_po']['data_services']['dir']

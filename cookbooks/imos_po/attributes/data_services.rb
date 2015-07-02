@@ -45,6 +45,16 @@ default['imos_po']['data_services']['clone_repository'] = true
 default['imos_po']['data_services']['packages'] = [ 'imagemagick', 'gdal-bin', 'sqlite3', 'heirloom-mailx', 'python-pip', 'python-dev', 'libnetcdf-dev', 'libhdf5-serial-dev', 'python-scipy', 'python-matplotlib', 'python-numpy', 'python-psycopg2', 'python-beautifulsoup', 'ipython', 'python-scipy' ]
 
 # All required python plugins
-default['imos_po']['data_services']['python']['plugins'] = [ 'netCDF4', 'OWSLib', 'Wicken', 'lxml', 'cf_units', 'requests', 'python-dateutil', 'six' ]
+default['imos_po']['data_services']['python']['packages'] = [
+  { 'name' => 'netCDF4' },
+  { 'name' => 'OWSLib' },
+  { 'name' => 'Wicken' },
+  { 'name' => 'lxml' },
+  { 'name' => 'cf_units' },
+  { 'name' => 'requests' },
+  { 'name' => 'python-dateutil' },
+  { 'name' => 'six' },
+  { 'name' => 'petulant-bear', 'version' => '0.1.3' }
+]
 
 default['imos_po']['email_aliases'] = "/etc/incoming-aliases"
