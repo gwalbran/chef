@@ -1,0 +1,9 @@
+{
+    "id":          "incoming",
+    "path":        "/var/incoming",
+    "read_only":   false,
+    "auth_users":  [ "incoming" ],
+    "hosts_allow": [
+        "0.0.0.0/0"
+    ]
+}

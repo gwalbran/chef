@@ -1,0 +1,8 @@
+{
+    "id": "portal",
+    "resource": "jdbc/portal",
+    "driver": "org.postgresql.Driver",
+    "url": "jdbc:postgresql://localhost:5432/portal?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory",
+    "username": "portal",
+    "password": "portal"
+}

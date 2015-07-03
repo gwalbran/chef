@@ -1,0 +1,18 @@
+{
+    "id": "geonetwork",
+    "roles": [
+        {
+            "name": "geonetwork_read_group",
+            "privileges": [ "nologin" ]
+        },
+        {
+            "name": "geonetwork_write_group",
+            "privileges": [ "nologin" ]
+        },
+        {
+            "name": "geonetwork",
+            "password": "geonetwork",
+            "connection_limit": 20
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "id": "aatams",
+    "roles": [
+        {
+            "name": "aatams",
+            "password": "aatams",
+            "connection_limit": 15
+        }
+    ]
+}

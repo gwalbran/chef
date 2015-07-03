@@ -1,0 +1,125 @@
+{
+    "chef_environment": "_default",
+    "name": "dev.json",
+    "run_list": [
+        "role[base]",
+        "role[restore]",
+        "recipe[ssl]",
+        "recipe[imos_mounts::sshfs_client]",
+        "recipe[imos_core::nco]",
+        "recipe[imos_dns::etc_hosts]",
+        "recipe[imos_devel::grails]",
+        "recipe[imos_postgresql::official_postgresql]",
+        "recipe[imos_webapps::generic_webapp]"
+    ],
+    "aliases": [
+        "dev.aodn.org.au"
+    ],
+    "imos_dns": {
+        "etc_hosts": {
+            "127.0.1.2": "dev.aodn.org.au"
+        }
+    },
+    "tz": "Australia/Hobart",
+    "tomcat": {
+        "user":  "vagrant",
+        "group": "vagrant"
+    },
+    "imos_backup": {
+        "restore": {
+            "allow": true,
+            "ssh_opts": "-o StrictHostKeyChecking=no",
+            "directives": [
+                {
+                    "from_host":  "1-aws-syd.emii.org.au",
+                    "from_model": "pgsql",
+                    "files":      [ "geonetwork/public.dump" ]
+                }
+            ]
+        }
+    },
+    "mounts": {
+        "mounts": [
+            {
+                "mount_point": "/mnt/opendap/2",
+                "device": "sshfs@6-nec-hob.emii.org.au:/mnt/opendap/2",
+                "fstype": "fuse.sshfs",
+                "options": "ro,noauto",
+                "monitored": false
+            }
+        ]
+    },
+    "postgresql": {
+        "clusters": [
+            {
+                "name": "main",
+                "roles": [
+                    "db_dev_main",
+                    "geonetwork",
+                    "aatams"
+                ],
+                "databases": [
+                    "geonetwork",
+                    "aatams"
+                ],
+                "config": {
+                    "listen_addresses": "*"
+                },
+                "hba": [
+                    { "type": "hostssl", "db": "all", "user": "postgres", "addr": "0.0.0.0/0", "method": "reject" },
+                    { "type": "local", "db": "all", "user": "postgres", "addr": "", "method": "ident" },
+                    { "type": "hostssl", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5" },
+                    { "type": "hostnossl", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5" },
+                    { "type": "host", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5" }
+                ]
+            }
+        ]
+    },
+    "webapps": {
+        "instances": [
+            {
+                "name":         "default",
+                "vhost":        "dev.aodn.org.au",
+                "aliases":      [ "10.11.12.13" ],
+                "port":         "8090",
+                "java_options": "-Xmx3G -Xms1G -XX:PermSize=512m -DGEOSERVER_DATA_DIR=/vagrant/src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork",
+                "apps":         [
+                    {
+                        "name":       "geoserver",
+                        "artifact":   "geoserver_edge",
+                        "custom_def": "geoserver",
+                        "data_dir":   "/vagrant/src/geoserver",
+                        "jndis":      [ "harvest-read-po", "local-harvest-read" ]
+                    },
+                    {
+                        "name":                  "geonetwork",
+                        "artifact":              "geonetwork_edge",
+                        "config_file":           "config-overrides.xml",
+                        "config_template_dir":   "geonetwork",
+                        "schema_plugins":        [ "iso19135", "iso19139-anzlic", "iso19139-mcp-1-4", "iso19139-mcp-1-5", "iso19139-mcp-2-0" ],
+                        "geoserver":             "http://dev.aodn.org.au/geonetwork",
+                        "jndis":                 [ "geonetwork" ],
+                        "custom_def":            "geonetwork",
+                        "data_dir":              "/var/lib/geonetwork",
+                        "classification_scheme": {
+                            "parameterCategories": "http://vocab.aodn.org.au/def/ClassScheme/parameter1",
+                            "platformCategories":  "http://vocab.aodn.org.au/def/ClassScheme/platform1"
+                        }
+                    }
+                ],
+                "httpd_rules":  [
+                    "ProxyPass        /aodn-portal http://localhost:8080/aodn-portal retry=0",
+                    "ProxyPassReverse /aodn-portal http://localhost:8080/aodn-portal",
+                    "ProxyPass        /aatams      http://localhost:8081/aatams      retry=0",
+                    "ProxyPassReverse /aatams      http://localhost:8081/aatams",
+                    "ProxyPass        /gogoduck    http://localhost:8082/gogoduck    retry=0",
+                    "ProxyPassReverse /gogoduck    http://localhost:8082/gogoduck",
+                    "ProxyPass        /auv         http://localhost:8083/auv         retry=0",
+                    "ProxyPassReverse /auv         http://localhost:8083/auv",
+                    "ProxyPass        /acoustic    http://localhost:8084/acoustic    retry=0",
+                    "ProxyPassReverse /acoustic    http://localhost:8084/acoustic"
+                ]
+            }
+        ]
+    }
+}

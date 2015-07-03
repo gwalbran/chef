@@ -1,0 +1,678 @@
+{
+    "id": "db_po_main",
+    "roles": [
+        {
+            "name": "harvest_read_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "harvest_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "harvest_contr_vocab_db_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "harvest_report_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "harvest_reporting_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "harvest_report_test_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "harvest_parameters_mapping_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "harvest_legacy_bluenet_aodn_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "data_warehouse_read_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "data_warehouse_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "aatams_data_warehouse_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "aatams_read_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "aatams_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "publications_read_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "publications_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "acoustic_data_viewer_read_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "acoustic_data_viewer_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "harvest_anmn_acoustics_read_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "harvest_anmn_acoustics_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "ftp_user_registration_read_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "ftp_user_registration_write_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "depth_service_read_group",
+            "privileges": [
+                "nologin"
+            ]
+        },
+        {
+            "name": "project_officers_group",
+            "privileges": [
+                "nologin"
+            ],
+            "memberof": [
+                "harvest_read_group",
+                "data_warehouse_read_group",
+                "aatams_read_group",
+                "acoustic_data_viewer_read_group",
+                "harvest_anmn_acoustics_read_group",
+                "publications_read_group",
+                "ftp_user_registration_read_group"
+            ]
+        },
+        {
+            "name": "developers_group",
+            "privileges": [
+                "nologin"
+            ],
+            "memberof": [
+                "harvest_read_group",
+                "data_warehouse_read_group",
+                "aatams_read_group",
+                "acoustic_data_viewer_read_group",
+                "harvest_anmn_acoustics_read_group",
+                "publications_read_group",
+                "ftp_user_registration_read_group"
+            ]
+        },
+        {
+            "name": "system_read_group",
+            "privileges": [
+                "nologin"
+            ],
+            "memberof": [
+                "harvest_read_group",
+                "data_warehouse_read_group",
+                "aatams_read_group",
+                "acoustic_data_viewer_read_group",
+                "harvest_anmn_acoustics_read_group",
+                "publications_read_group",
+                "ftp_user_registration_read_group"
+            ]
+        },
+        {
+            "name": "abos_currents",
+            "password": "abos_currents",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "acorn_radial_nonqc",
+            "password": "acorn_radial_nonqc",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "acorn_radial_qc",
+            "password": "acorn_radial_qc",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "anmn_am_dm",
+            "password": "anmn_am_dm",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "anmn_mhlwave",
+            "password": "anmn_mhlwave",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "anmn_nrs_bgc",
+            "password": "anmn_nrs_bgc",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "anmn_nrs_ctd_profiles",
+            "password": "anmn_nrs_ctd_profiles",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "auv_viewer_track",
+            "password": "auv_viewer_track",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "backup",
+            "password": "backup",
+            "memberof": [
+                "system_read_group"
+            ],
+            "connection_limit": 10
+        },
+        {
+            "name": "noaa_drifters",
+            "password": "noaa_drifters",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "replication",
+            "password": "replication",
+            "privileges": [
+                "replication"
+            ]
+        },
+        {
+            "name": "nagios",
+            "password": "nagios",
+            "memberof": [
+                "system_read_group"
+            ]
+        },
+        {
+            "name": "report",
+            "password": "report",
+            "connection_limit": 11
+        },
+        {
+            "name": "publications",
+            "password": "publications",
+            "connection_limit": 16
+        },
+        {
+            "name": "depth_service",
+            "password": "depth_service",
+            "memberof": [
+                "depth_service_read_group"
+            ]
+        },
+        {
+            "name": "ftp_user_registration",
+            "password": "ftp_user_registration"
+        },
+        {
+            "name": "legacy",
+            "password": "legacy"
+        },
+        {
+            "name": "geoserver_systest",
+            "password": "geoserver_systest",
+            "memberof": [
+                "harvest_read_group"
+            ],
+            "connection_limit": 11
+        },
+        {
+            "name": "geoserver_123_11_nsp_mel",
+            "password": "geoserver_123_11_nsp_mel",
+            "memberof": [
+                "harvest_read_group"
+            ],
+            "connection_limit": 11
+        },
+        {
+            "name": "geoserver_123_12_nsp_mel",
+            "password": "geoserver_123_12_nsp_mel",
+            "memberof": [
+                "harvest_read_group"
+            ],
+            "connection_limit": 11
+        },
+        {
+            "name": "geoserver_123_11_nec_hob",
+            "password": "geoserver_123_11_nec_hob",
+            "memberof": [
+                "harvest_read_group"
+            ],
+            "connection_limit": 11
+        },
+        {
+            "name": "geoserver_123_12_nec_hob",
+            "password": "geoserver_123_12_nec_hob",
+            "memberof": [
+                "harvest_read_group"
+            ],
+            "connection_limit": 11
+        },
+        {
+            "name": "geoserver_123_5_nec_mel",
+            "password": "geoserver_123_5_nec_mel",
+            "memberof": [
+                "harvest_read_group"
+            ],
+            "connection_limit": 11
+        },
+        {
+            "name": "geoserver_123_1_aws_syd",
+            "password": "geoserver_123_1_aws_syd",
+            "memberof": [
+                "harvest_read_group"
+            ],
+            "connection_limit": 11
+        },
+        {
+            "name": "geoserver_rc",
+            "password": "geoserver_rc",
+            "memberof": [
+                "harvest_read_group"
+            ],
+            "connection_limit": 11
+        },
+        {
+            "name": "geoserver_po",
+            "password": "geoserver_po",
+            "memberof": [
+                "harvest_read_group"
+            ],
+            "connection_limit": 11
+        },
+        {
+            "name": "aatams",
+            "password": "aatams",
+            "privileges": [
+                "createdb",
+                "inherit",
+                "login",
+                "nosuperuser"
+            ],
+            "connection_limit": 11
+        },
+        {
+            "name": "aatams_sattag_dm",
+            "password": "aatams_sattag_dm",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "abos_ts",
+            "password": "abos_ts"
+        },
+        {
+            "name": "acoustic_data_viewer",
+            "password": "acoustic_data_viewer",
+            "connection_limit": 11,
+            "memberof": [
+                "acoustic_data_viewer_read_group"
+            ]
+        },
+        {
+            "name": "aatams_sattag_nrt",
+            "password": "aatams_sattag_nrt"
+        },
+        {
+            "name": "abos",
+            "password": "abos"
+        },
+        {
+            "name": "abos_sots",
+            "password": "abos_sots",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "acorn_hourly_avg_qc",
+            "password": "acorn_hourly_avg_qc"
+        },
+        {
+            "name": "acorn_hourly_avg_nonqc",
+            "password": "acorn_hourly_avg_nonqc"
+        },
+        {
+            "name": "anmn_acidification_nrt",
+            "password": "anmn_acidification_nrt"
+        },
+        {
+            "name": "anmn_realtime",
+            "password": "anmn_realtime"
+        },
+        {
+            "name": "anmn",
+            "password": "anmn"
+        },
+        {
+            "name": "anmn_t_regridded",
+            "password": "anmn_t_regridded"
+        },
+        {
+            "name": "aodn_dsto",
+            "password": "aodn_dsto",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "aodn_nt_sattag_hawksbill",
+            "password": "aodn_nt_sattag_hawksbill",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "argo",
+            "password": "argo",
+            "connection_limit": 10
+        },
+        {
+            "name": "legacy_argo",
+            "password": "legacy_argo",
+            "connection_limit": 10
+        },
+        {
+            "name": "legacy_soop",
+            "password": "legacy_soop"
+        },
+        {
+            "name": "legacy_srs",
+            "password": "legacy_srs"
+        },
+        {
+            "name": "legacy_cpr",
+            "password": "legacy_cpr"
+        },
+        {
+            "name": "dw_aatams_acoustic",
+            "password": "dw_aatams_acoustic"
+        },
+        {
+            "name": "dw_abos",
+            "password": "dw_abos"
+        },
+        {
+            "name": "dw_anmn",
+            "password": "dw_anmn"
+        },
+        {
+            "name": "dw_anmn_realtime",
+            "password": "dw_anmn_realtime"
+        },
+        {
+            "name": "dw_argo",
+            "password": "dw_argo"
+        },
+        {
+            "name": "dw_soop",
+            "password": "dw_soop"
+        },
+        {
+            "name": "dw_srs",
+            "password": "dw_srs"
+        },
+        {
+            "name": "soop",
+            "password": "soop"
+        },
+        {
+            "name": "soop_auscpr",
+            "password": "soop_auscpr",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "srs",
+            "password": "srs"
+        },
+        {
+            "name": "aodn_mest",
+            "password": "aodn_mest"
+        },
+        {
+            "name": "gsla_dm00",
+            "password": "gsla_dm00"
+        },
+        {
+            "name": "gsla_nrt00",
+            "password": "gsla_nrt00"
+        },
+        {
+            "name": "srs_altimetry",
+            "password": "srs_altimetry"
+        },
+        {
+            "name": "srs_oc",
+            "password": "srs_oc"
+        },
+        {
+            "name": "srs_oc_bodbaw",
+            "password": "srs_oc_bodbaw"
+        },
+        {
+            "name": "srs_oc_soop_rad",
+            "password": "srs_oc_soop_rad"
+        },
+        {
+            "name": "aodn_dart",
+            "password": "aodn_dart"
+        },
+        {
+            "name": "soop_sst",
+            "password": "soop_sst"
+        },
+        {
+            "name": "soop_xbt_dm",
+            "password": "soop_xbt_dm"
+        },
+        {
+            "name": "soop_xbt_nrt",
+            "password": "soop_xbt_nrt",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
+            "name": "soop_xbt_nrt_read",
+            "password": "soop_xbt_nrt_read",
+            "memberof": [
+                "harvest_read_group"
+            ],
+            "setconfig": [
+                {
+                    "key": "search_path",
+                    "value": "report, legacy_soop"
+                }
+            ]
+        },
+        {
+            "name": "aatams_biologging_penguin",
+            "password": "aatams_biologging_penguin"
+        },
+        {
+            "name": "aatams_biologging_shearwater",
+            "password": "aatams_biologging_shearwater"
+        },
+        {
+            "name": "abos_sofs_fl",
+            "password": "abos_sofs_fl"
+        },
+        {
+            "name": "abos_sofs_sp",
+            "password": "abos_sofs_sp"
+        },
+        {
+            "name": "anmn_nrs_dar_yon",
+            "password": "anmn_nrs_dar_yon"
+        },
+        {
+            "name": "anmn_ts",
+            "password": "anmn_ts"
+        },
+        {
+            "name": "anmn_burst_avg",
+            "password": "anmn_burst_avg"
+        },
+        {
+            "name": "anmn_velocity",
+            "password": "anmn_velocity"
+        },
+        {
+            "name": "anfog_dm",
+            "password": "anfog_dm"
+        },
+        {
+            "name": "anfog_rt",
+            "password": "anfog_rt"
+        },
+        {
+            "name": "anmn_nrs_rt_bio",
+            "password": "anmn_nrs_rt_bio"
+        },
+        {
+            "name": "anmn_nrs_rt_wave",
+            "password": "anmn_nrs_rt_wave"
+        },
+        {
+            "name": "soop_asf_mft",
+            "password": "soop_asf_mft"
+        },
+        {
+            "name": "soop_asf_mt",
+            "password": "soop_asf_mt"
+        },
+        {
+            "name": "auv",
+            "password": "auv"
+        },
+        {
+            "name": "faimms",
+            "password": "faimms"
+        },
+        {
+            "name": "soop_ba",
+            "password": "soop_ba"
+        },
+        {
+            "name": "soop_co2",
+            "password": "soop_co2"
+        },
+        {
+            "name": "anmn_nrs_rt_meteo",
+            "password": "anmn_nrs_rt_meteo"
+        },
+        {
+            "name": "soop_tmv",
+            "password": "soop_tmv"
+        },
+        {
+            "name": "soop_tmv_nrt",
+            "password": "soop_tmv_nrt"
+        },
+        {
+            "name": "soop_trv",
+            "password": "soop_trv"
+        },
+        {
+            "name": "aatams_acoustic",
+            "password": "aatams_acoustic",
+            "memberof": [
+                "aatams_read_group"
+            ]
+        },
+        {
+            "name": "admin",
+            "password": "admin",
+            "memberof": [
+                "harvest_read_group",
+                "data_warehouse_read_group"
+            ],
+            "privileges": [
+                "superuser"
+            ]
+        }
+    ]
+}

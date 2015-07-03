@@ -1,0 +1,8 @@
+{
+    "id": "projectofficer",
+    "uid": 2305,
+    "full_name": "Project Officer",
+    "email": "projectofficer@emii.org.au",
+    "shell": "/bin/bash",
+    "groups": [ "users", "ftp", "projectofficer" ]
+}

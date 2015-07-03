@@ -39,21 +39,22 @@ $ gem uninstall berkshelf
 
 You may have noticed that `data_bags`, `roles` and `nodes` are referencing
 `private/SOMETHING`. We'll need to plug a chef private repository under
-`private/`. This repository will contain only private data which should not be
-exposed to the world. The way to do it is:
+`private/`. `private-sample` contains a sample tree structure with a few basic
+definitions so you can get started. In order to use the sample definitions,
+link it as shown below:
 ```
-$ git clone git@github.com:YOUR_ORG/chef-private.git private
+$ ln -s private-sample private
 ```
 
 The symbolic links should look lively now.
 
-## Updating The Repository
+**In case you plan on using real infrastructure, it is advised to create a new
+private repository just with the private definitions and link `private` to it.**
 
-In order to update this repository, you need to update both repositories you
-have setup:
-```
-$ git pull && (cd private && git pull)
-```
+## Private Sample Repository
+
+Read more [here](doc/README.examples.md) for more examples of nodes and how to
+use them.
 
 ## Run up a node with Vagrant
 
@@ -72,8 +73,17 @@ or check the status:
 $ vagrant status <node_name>
 ```
 
-
 The [Vagrantfile](Vagrantfile) contains some other overridable options - refer to *it* to see what they are.
+
+## Packing Your Own Vagrant Basebox (with Packer)
+
+To build a basebox using packer, you'll need [packer](http://www.packer.io)
+version 0.8.0 or greater. From the `chef` directory you can then run:
+```
+$ berks vendor private/packer/cookbooks1
+$ cp -a cookbooks private/packer/cookbooks2
+$ cd private/packer && packer build basebox.json
+```
 
 # Workflow
 

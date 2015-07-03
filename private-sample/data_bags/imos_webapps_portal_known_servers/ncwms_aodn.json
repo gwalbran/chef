@@ -1,0 +1,11 @@
+{
+    "id": "ncwms_aodn",
+    "uri": "http://ncwms.aodn.org.au/ncwms/wms",
+    "wmsVersion": "1.1.1",
+    "type": "ncWMS",
+    "urlListDownloadPrefixToRemove": "/mnt/imos-t3/IMOS/opendap/",
+    "urlListDownloadPrefixToSubstitue": "http://thredds.aodn.org.au/thredds/fileServer/IMOS/",
+    "urlListDownloadSubstitutions": {
+        "'/mnt/imos-t3/IMOS/opendap/'": "http://thredds.aodn.org.au/thredds/fileServer/IMOS/"
+    }
+}

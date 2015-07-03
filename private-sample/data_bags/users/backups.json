@@ -1,0 +1,9 @@
+{
+    "id": "backups",
+    "full_name": "backups",
+    "shell": "/bin/bash",
+    "ssh_keys": "",
+    "ssh_priv_key": "",
+    "groups": ["backups"],
+    "home": "/home/backups"
+}

@@ -1,0 +1,8 @@
+{
+    "id": "wmsscanner",
+    "resource": "jdbc/wmsscanner",
+    "driver": "org.postgresql.Driver",
+    "url": "jdbc:postgresql://localhost:5432/wmsscanner?loginTimeout=1000&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory",
+    "username": "wmsscanner",
+    "password": "wmsscanner"
+}
