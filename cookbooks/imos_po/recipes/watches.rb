@@ -14,6 +14,15 @@ data_services_dir = node['imos_po']['data_services']['dir']
 data_services_watch_dir = File.join(data_services_dir, "watch.d")
 watch_exec_wrapper = node['imos_po']['watch_exec_wrapper']
 
+# Allow anyone in 'projectofficer' group to sudo to user 'projectofficer'
+sudo 'data_services_watches' do
+  user     node['imos_po']['data_services']['user']
+  runas    'root'
+  commands [ "/bin/cat /etc/rsyncd.conf", "/bin/cat /var/log/vsftpd.log" ]
+  host     "ALL"
+  nopasswd true
+end
+
 template watch_exec_wrapper do
   source "watch-exec-wrapper.sh.erb"
   owner  'root'
