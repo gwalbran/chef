@@ -91,7 +91,9 @@ data_services_vars = [
   "WIP_DIR='#{node['imos_po']['wip_dir']}'",
   "EMAIL_ALIASES='#{node['imos_po']['email_aliases']}'",
   "DATA_SERVICES_DIR='#{data_services_dir}'",
-  "LOG_DIR='#{node['imos_po']['data_services']['log_dir']}'"
+  "LOG_DIR='#{node['imos_po']['data_services']['log_dir']}'",
+  "S3CMD_CONFIG='#{node['imos_po']['s3']['config_file']}'",
+  "S3_BUCKET='#{node['imos_po']['s3']['bucket']}'"
 ]
 
 # plant env file in data-services repo with all related variables
