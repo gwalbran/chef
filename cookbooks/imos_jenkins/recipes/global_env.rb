@@ -9,8 +9,11 @@
 # Recipe to configure global environment
 #
 
+global_environment = Chef::Recipe::JenkinsHelper.global_environment
+global_environment['S3CMD_CONFIG'] = node['imos_jenkins']['s3cmd']['config_file']
+
 global_environment_groovy_code = ""
-Chef::Recipe::JenkinsHelper.global_environment.each do |k, v|
+global_environment.each do |k, v|
   global_environment_groovy_code += "envVars.put(\"#{k}\", \"#{v}\")" + "\n"
 end
 
