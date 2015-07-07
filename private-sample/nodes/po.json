@@ -7,6 +7,7 @@
         "recipe[ssl]",
         "recipe[imos_dns::etc_hosts]",
         "recipe[imos_postgresql::official_postgresql]",
+        "recipe[imos_devel::talend]",
         "recipe[database_migrations]",
         "recipe[imos_po]",
         "recipe[imos_po::data_services]",
@@ -111,6 +112,11 @@
                 }
             ]
         }]
+    },
+    "imos_devel": {
+        "talend": {
+            "user": "vagrant"
+        }
     },
     "imos_rsync": {
         "uid": "vagrant",
