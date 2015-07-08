@@ -72,7 +72,7 @@ define :imos_postgresql_database_with_schemas, :cluster => "", :port => nil, :da
         EOS
         )
         Chef::Application.fatal!("Database '#{database_name}' options do not match chef definition")
-      end 
+      end
     end
   end
 
@@ -223,7 +223,7 @@ define :imos_postgresql_database_with_schemas, :cluster => "", :port => nil, :da
             select nspname from pg_namespace where nspname = 'chef'
           )
         EOS
-        ) && 
+        ) &&
         PostgresqlHelper.query_boolean(port, database_name,
         <<-EOS
           select chef.version() = #{chef_schema_version}

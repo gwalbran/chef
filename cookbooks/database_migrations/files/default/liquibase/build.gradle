@@ -2,7 +2,7 @@ apply plugin: 'liquibase'
 
 buildscript {
     repositories {
-	mavenLocal()
+    mavenLocal()
         mavenCentral()
     }
 

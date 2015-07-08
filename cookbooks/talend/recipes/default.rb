@@ -28,7 +28,7 @@ rubbish_dir  = node['talend']['rubbish_dir']
 execute "purge_talend_jobs" do
   user    talend_user
   command "crontab -r"
-  only_if { 
+  only_if {
     `id -u #{talend_user} 2> /dev/null && crontab -l -u #{talend_user} > /dev/null`
     $?.success?
   }

@@ -33,7 +33,7 @@ end
 
 # Try to chown the directory, don't fail if we cannot
 begin
-  Mixlib::shell_out("chown #{node[:backup][:username]}:#{node[:backup][:group]} #{node[:backup][:backup_dir]}") 
+  Mixlib::shell_out("chown #{node[:backup][:username]}:#{node[:backup][:group]} #{node[:backup][:backup_dir]}")
 rescue
   Chef::Log.warn("Could not chown directory '#{node[:imos_backup][:tmp_dir]}', but we'll proceed anyway")
 end
