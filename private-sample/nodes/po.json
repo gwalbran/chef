@@ -159,6 +159,7 @@
                         "artifact":   "geoserver_prod",
                         "custom_def": "geoserver",
                         "data_dir":   "/vagrant/src/geoserver",
+                        "mock_jndis": false,
                         "jndis":      [ "harvest-read-po", "harvest-read-po-rc", "local-harvest-read" ]
                     },
                     {
