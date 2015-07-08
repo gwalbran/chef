@@ -1,19 +1,29 @@
 // AATAMS configuration
 
 // Mail plugin config
-grails.mail.disabled            = <%= !@custom_parameters['mail_enabled'] || (node['vagrant'] == true) %>
-grails.mail.adminEmailAddress   = "aatams_admin@emii.org.au"
-grails.mail.systemEmailAddress  = "aatams_system@emii.org.au"
-grails.mail.supportEmailAddress = "info@emii.org.au"
-grails.mail.port                = 25
-grails.mail.username            = "aatams_system@utas.edu.au"
-grails.mail.props               = [ "mail.smtp.auth": "false" ]
+<%
+if @custom_parameters['mail_credentials']
+  mail_credentials = Chef::EncryptedDataBagItem.load('passwords', @custom_parameters['mail_credentials']).to_hash
+end
+%>
+grails {
+    mail {
+        disabled            = <%= !@custom_parameters['mail_enabled'] || (node['vagrant'] == true) %>
+        adminEmailAddress   = "aatams_admin@emii.org.au"
+        systemEmailAddress  = "aatams_system@emii.org.au"
+        supportEmailAddress = "info@emii.org.au"
+        host                = "<%= mail_credentials['host'] || 'localhost' %>"
+        port                = <%= mail_credentials['port'] || 25 %>
+        props               = [ "mail.smtp.auth": "true" ]
+        username            = "<%= mail_credentials['username'] || 'root' %>"
+        password            = "<%= mail_credentials['password'] || 'root' %>"
+    }
+}
 
 grails.serverURL  = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
 grails.serverHost = "<%= @custom_parameters['vhost'] %>"
 fileimport.path   = "<%= @custom_parameters['data_dir'] || @tomcat_data_directory %>/<%= @custom_parameters['fileimports'] || 'fileimports' %>"
 bulkimport.path   = "<%= @custom_parameters['data_dir'] || @tomcat_data_directory %>/<%= @custom_parameters['bulkimports'] || 'fileimports/bulkimports' %>"
-grails.mail.host  = "localhost"
 
 dataSource {
     jndiName = "java:comp/env/<%= @jndi_resources[0]['resource'] %>"
