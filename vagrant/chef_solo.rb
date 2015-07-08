@@ -26,8 +26,8 @@ def configure_chef_solo_provisioning(config, node_name, node_file_name, chef_log
       vagrant_json['apt'] = { 'cacher_ipaddress' => ENV['VAGRANT_APT_CACHER'] }
     end
 
-    # Inject node['vagrant'] attribute by imos_core::vagrant recipe
-    vagrant_json['run_list'].unshift('recipe[imos_core::vagrant]')
+    # Inject Chef::Config[:dev] attribute by imos_core::dev recipe
+    vagrant_json['run_list'].unshift('recipe[imos_core::dev]')
 
     chef.json = vagrant_json
 

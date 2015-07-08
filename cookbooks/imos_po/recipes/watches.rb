@@ -87,7 +87,7 @@ logrotate_app "project-officer-processing-file-reports" do
   options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
 end
 
-if node['vagrant']
+if Chef::Config[:dev]
   # Change ownership of /mnt to vagrant, so the production hierarchy can be
   # created (/mnt/opendap/1, etc)
   execute "fix opendap permissions" do

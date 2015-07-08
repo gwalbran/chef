@@ -335,9 +335,9 @@ end
   end
 end
 
-# Disable nagios on vagrant machines as it'll hammer our services
+# Disable nagios on dev machines as it'll hammer our services
 nagios_service_action = [ :enable, :start ]
-if node['vagrant']
+if Chef::Config[:dev]
   nagios_service_action = [ :disable ]
 end
 

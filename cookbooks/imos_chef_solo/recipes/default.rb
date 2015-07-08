@@ -12,9 +12,9 @@ if Chef::Config[:solo]
   include_recipe "chef-solo-search"
 end
 
-# On vagrant, there is no need to cleanup as the directories are shared with the
-# host
-if Chef::Config[:solo] && ! node['vagrant']
+# In dev mode, there is no need to cleanup as the directories are shared with
+# the host
+if Chef::Config[:solo] && ! Chef::Config[:dev]
   # If we're with chef solo, we must clean credentials after the run
   remote_directory node['chef_handler']['handler_path'] do
     source    'handlers'

@@ -138,7 +138,7 @@ directory cache_path
 
   variables['publishing_enabled'].nil? and variables['publishing_enabled'] = true
   variables['job_enabled'].nil? and variables['job_enabled'] = true
-  if node['vagrant']
+  if Chef::Config[:dev]
     variables['job_enabled'] = false
     variables['publishing_enabled'] = false
   end

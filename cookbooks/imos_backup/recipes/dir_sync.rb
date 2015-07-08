@@ -23,7 +23,7 @@ node[:imos_backup][:dir_sync][:data_bags].each do |data_bag_name|
     "#{data_bag['dst_path']} " + \
     ">> #{log_file} 2>&1"
 
-  if node['vagrant']
+  if Chef::Config[:dev]
     Chef::Log.warn("MOCKED - not configuring dir_sync command '#{command}'")
   else
     cron "dir_sync_#{data_bag['id']}" do

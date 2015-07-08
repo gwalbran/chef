@@ -8,7 +8,7 @@ end
 %>
 grails {
     mail {
-        disabled            = <%= !@custom_parameters['mail_enabled'] || (node['vagrant'] == true) %>
+        disabled            = <%= !@custom_parameters['mail_enabled'] || (Chef::Config[:dev] == true) %>
         adminEmailAddress   = "aatams_admin@emii.org.au"
         systemEmailAddress  = "aatams_system@emii.org.au"
         supportEmailAddress = "info@emii.org.au"
