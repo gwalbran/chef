@@ -16,27 +16,42 @@ featureToggles {
 }
 
 <%
+ignore_keys = [ 'chef_type', 'data_bag' ]
+
 known_servers = []
 known_server_names = []
 
 if @custom_parameters['known_servers']
-    known_server_names += @custom_parameters['known_servers']
+  known_server_names += @custom_parameters['known_servers']
 end
 
 if @custom_parameters['known_servers_config']
-
   known_servers_config = Chef::DataBagItem.load('imos_webapps_portal_known_servers_configs', @custom_parameters['known_servers_config'])
-
   known_server_names += known_servers_config['servers']
 end
 
 known_server_names.uniq.each do |known_server_name|
-  known_servers.push Chef::DataBagItem.load('imos_webapps_portal_known_servers', known_server_name).to_hash
+  known_servers << Chef::DataBagItem.load('imos_webapps_portal_known_servers', known_server_name).
+   to_hash.select { |k, v| ! ignore_keys.include?(k) }
 end
 
 %>
 
 <%= "knownServers = #{GroovyIndenter.indent(known_servers.to_groovy)}" %>
+
+<%
+enabled_facets = []
+if @custom_parameters['enabled_facets']
+  @custom_parameters['enabled_facets'].each do |enabled_facet|
+    enabled_facets << Chef::DataBagItem.load('imos_webapps_portal_facets', enabled_facet).
+      to_hash.select { |k, v| ! ignore_keys.include?(k) }
+  end
+end
+%>
+
+<% if ! enabled_facets.empty? %>
+<%= "enabledFacets = #{GroovyIndenter.indent(enabled_facets.to_groovy)}" %>
+<% end %>
 
 <% if @custom_parameters['google_analytics_tracking_id'] %>
 <%= "googleAnalytics.trackingId = '#{@custom_parameters['google_analytics_tracking_id']}'" =%>
