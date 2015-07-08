@@ -63,6 +63,7 @@ with the following credentials:
 
 For example:
 ```
+$ export RSYNC_PASSWORD=incoming
 $ rsync file.nc incoming@po.aodn.org.au::incoming/ANMN/AM/
 ```
 

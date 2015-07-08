@@ -7,6 +7,8 @@ declare -r GEOSERVER_GIT_REPO=git@github.com:aodn/geoserver-config
 declare -r DATA_SERVICES_GIT_REPO=git@github.com:aodn/data-services
 declare -r PO_VM_NAME=po
 
+rm -f private; ln -s private-sample private
+
 if [ ! -d "src/geoserver/.git" ]; then
     mkdir -p src
     if [ -d "shared_src/geoserver/.git" ]; then
@@ -39,14 +41,29 @@ if [ ! -f "$RESTORE_USER" ]; then
     fi
 fi
 
-declare -r HARVEST_READ_PO='data_bags/jndi_resources/harvest-read-po.json'
-harvest_read_po_password=`grep 'password' $HARVEST_READ_PO | cut -d: -f2 | cut -d\" -f2`
 
-declare -r HARVEST_READ_PO_RC='data_bags/jndi_resources/harvest-read-po-rc.json'
-harvest_read_po_rc_password=`grep 'password' $HARVEST_READ_PO_RC | cut -d: -f2 | cut -d\" -f2`
+declare -r HARVEST_READ_PO='private-sample/data_bags/jndi_resources/harvest-read-po.json'
+declare -r HARVEST_READ_PO_MOCK='private-sample/data_bags/jndi_resources/harvest-read-po-mock.json'
 
-if [[ "$harvest_read_po_password" = "geoserver_po" || "$harvest_read_po_rc_password" = "geoserver_po" ]]; then
-    echo "Please edit '$HARVEST_READ_PO' and '$HARVEST_READ_PO_RC' and plant valid passwords"
+declare -r HARVEST_READ_PO_RC='private-sample/data_bags/jndi_resources/harvest-read-po-rc.json'
+declare -r HARVEST_READ_PO_RC_MOCK='private-sample/data_bags/jndi_resources/harvest-read-po-rc-mock.json'
+
+declare -i retval=0
+
+if ! test -f $HARVEST_READ_PO; then
+    sed -e 's/harvest-read-po-mock/harvest-read-po/g' $HARVEST_READ_PO_MOCK > $HARVEST_READ_PO
+    echo "Please edit '$HARVEST_READ_PO' and plant a valid password"
+    retval=1
+fi
+
+if ! test -f $HARVEST_READ_PO_RC; then
+    sed -e 's/harvest-read-po-rc-mock/harvest-read-po-rc/g' $HARVEST_READ_PO_RC_MOCK > $HARVEST_READ_PO_RC
+    echo "Please edit '$HARVEST_READ_PO_RC' and plant a valid password"
+    retval=1
+fi
+
+if [ $retval -ne 0 ]; then
+    echo "Error detected, not proceeding"
     exit 1
 fi
 
