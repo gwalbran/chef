@@ -1,0 +1,77 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'tempfile'
+
+@config = nil
+
+def get_executables_for_object(object)
+  executables = []
+
+  @config['triggers'].each do |item|
+    item['regex'].each do |regex|
+      if object =~ Regexp.new(regex)
+        executables << item['exec']
+      end
+    end
+  end
+
+  return executables
+end
+
+def prepare_file_list(objects)
+  file_list = Tempfile.new('harvester_file_list')
+  objects.each do |object|
+    file_list.write(object + "\n")
+  end
+  file_list.close
+  return file_list.path
+end
+
+def handle_file(base, object)
+  retval = 0
+
+  executables = get_executables_for_object(object)
+  if executables.empty?
+    puts "ERROR: cannot find talend job for '#{base}/#{object}'"
+  else
+    executables.each do |exec|
+      Dir.mktmpdir { |tmp_log_dir|
+        file_list = prepare_file_list([object])
+        extra_talend_parameters = "--context_param base=#{base} --context_param fileList=#{file_list} --context_param logDir=#{tmp_log_dir}"
+        puts "Executing '#{exec} -- #{extra_talend_parameters}' for '#{base}/#{object}'"
+        `#{exec} -- #{extra_talend_parameters}`
+        retval += $?.exitstatus
+
+        stats_file = File.join(tmp_log_dir, "stats_file.txt")
+        File.open(stats_file).each do |line|
+          puts line
+        end
+
+        File.unlink(file_list)
+      }
+    end
+  end
+
+  return retval
+end
+
+def usage
+  script_name = File.basename(__FILE__)
+  puts "#{script_name} config_file base object"
+  puts "Example: #{script_name} /usr/local/talend/etc/trigger.conf /tmp/tmp.CNzfboWqu3 IMOS/ACORN/radial/NNB/2015/07/14/IMOS_ACORN_RV_20150714T030500Z_NNB_FV00_radial.nc"
+  exit(1)
+end
+
+config_file = ARGV[0]
+base = ARGV[1]
+object = ARGV[2]
+(config_file && base && object) || usage
+
+@config = JSON.parse(File.read(config_file))
+if ! @config
+  puts "Could not parse config file"
+  usage
+end
+
+exit(handle_file(base, object))

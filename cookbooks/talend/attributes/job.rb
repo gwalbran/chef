@@ -12,8 +12,9 @@ default['talend']['mailto'] = "developers.emii.org.au"
 default['talend']['user']  = "talend"
 default['talend']['group'] = "talend"
 
-default['talend']['base_dir']    = "/usr/local/talend/"
+default['talend']['base_dir']    = "/usr/local/talend"
 default['talend']['bin_dir']     = "#{node['talend']['base_dir']}/bin"
+default['talend']['etc_dir']     = "#{node['talend']['base_dir']}/etc"
 default['talend']['jobs_dir']    = "#{node['talend']['base_dir']}/jobs"
 default['talend']['working']     = "#{node['talend']['base_dir']}/data"
 default['talend']['rubbish_dir'] = "#{node['talend']['base_dir']}/rubbish"
@@ -35,3 +36,6 @@ default['talend']['minute'] = "0"
 default['talend']['common_parameters'] = {}
 # No talend environment implies production environment
 default['talend']['environment'] = "prod"
+
+default['talend']['trigger']['bin']    = ::File.join(node['talend']['bin_dir'], "talend-trigger")
+default['talend']['trigger']['config'] = ::File.join(node['talend']['etc_dir'], "trigger.conf")
