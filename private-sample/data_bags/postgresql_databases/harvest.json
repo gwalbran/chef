@@ -61,10 +61,6 @@
                 {
                     "role": "soop",
                     "type": "write"
-                },
-                {
-                    "role": "srs",
-                    "type": "write"
                 }
             ],
             "extensions": [
@@ -76,6 +72,20 @@
                 },
                 {
                     "name": "imos"
+                }
+            ]
+        },
+        {
+            "name": "marvl3",
+            "owner": "marvl3",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "marvl3",
+                    "type": "write"
                 }
             ]
         },
@@ -117,6 +127,20 @@
                 },
                 {
                     "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
+            "name": "anmn_acoustics",
+            "owner": "postgres",
+            "permissions": [
+                {
+                    "role": "harvest_anmn_acoustics_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_anmn_acoustics_write_group",
                     "type": "write"
                 }
             ]
@@ -251,7 +275,7 @@
         },
         {
             "name": "contr_vocab_db",
-            "owner": "postgres",
+            "owner": "contr_vocab_db",
             "permissions": [
                 {
                     "role": "harvest_read_group",
@@ -269,20 +293,6 @@
         },
         {
             "name": "aodn_coastal_watch",
-            "owner": "legacy",
-            "permissions": [
-                {
-                    "role": "harvest_read_group",
-                    "type": "read"
-                },
-                {
-                    "role": "harvest_write_group",
-                    "type": "write"
-                }
-            ]
-        },
-        {
-            "name": "aodn_dsto",
             "owner": "legacy",
             "permissions": [
                 {
@@ -464,6 +474,20 @@
             ]
         },
         {
+            "name": "aodn_csiro_cmar",
+            "owner": "aodn_csiro_cmar",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
             "name": "aodn_dsto",
             "owner": "aodn_dsto",
             "permissions": [
@@ -492,8 +516,50 @@
             ]
         },
         {
+            "name": "aodn_ran_ctd",
+            "owner": "aodn_ran_ctd",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
+            "name": "aodn_ran_sst",
+            "owner": "aodn_ran_sst",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
             "name": "argo",
             "owner": "argo",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
+            "name": "auv_viewer_track",
+            "owner": "auv_viewer_track",
             "permissions": [
                 {
                     "role": "harvest_read_group",
@@ -562,20 +628,6 @@
             ]
         },
         {
-            "name": "srs",
-            "owner": "srs",
-            "permissions": [
-                {
-                    "role": "harvest_read_group",
-                    "type": "read"
-                },
-                {
-                    "role": "harvest_write_group",
-                    "type": "write"
-                }
-            ]
-        },
-        {
             "name": "srs_altimetry",
             "owner": "srs_altimetry",
             "permissions": [
@@ -620,6 +672,34 @@
         {
             "name": "srs_oc_soop_rad",
             "owner": "srs_oc_soop_rad",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
+            "name": "srs_oc_ljco_aeronet",
+            "owner": "srs_oc_ljco_aeronet",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
+            "name": "srs_sst",
+            "owner": "srs_sst",
             "permissions": [
                 {
                     "role": "harvest_read_group",
@@ -1228,20 +1308,6 @@
             ]
         },
         {
-            "name": "legacy_auv",
-            "owner": "legacy",
-            "permissions": [
-                {
-                    "role": "harvest_read_group",
-                    "type": "read"
-                },
-                {
-                    "role": "harvest_write_group",
-                    "type": "write"
-                }
-            ]
-        },
-        {
             "name": "legacy_model",
             "owner": "legacy",
             "permissions": [
@@ -1370,6 +1436,62 @@
         {
             "name": "dw_srs",
             "owner": "dw_srs",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
+            "name": "wodb",
+            "owner": "wodb",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
+            "name": "aodn_aims_ctd",
+            "owner": "aodn_aims_ctd",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
+            "name": "aodn_nt_sattag_oliveridley",
+            "owner": "aodn_nt_sattag_oliveridley",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
+            "name": "anmn_wave",
+            "owner": "anmn_wave",
             "permissions": [
                 {
                     "role": "harvest_read_group",
