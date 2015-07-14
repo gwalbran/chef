@@ -135,7 +135,7 @@ if node['postgresql'] && node['postgresql']['clusters']
     end if cluster['config']
 
     # apply non production limits for VMs
-    if node['vagrant']
+    if Chef::Config[:dev]
       cluster_config['max_connections'] = node[:imos_postgresql][:config]['max_connections']
       cluster_config['shared_buffers'] = node[:imos_postgresql][:config]['shared_buffers']
     end

@@ -12,7 +12,7 @@ include_recipe "imos_apache2"
 include_recipe "tomcat"
 
 # Make sure the user includes recipe[ssl], we're not going to do it for him
-if !node['vagrant'] && !node.run_list.include?("recipe[ssl]")
+if ! Chef::Config[:dev] && !node.run_list.include?("recipe[ssl]")
   Chef::Application.fatal!("Your node must include recipe[ssl]")
 end
 

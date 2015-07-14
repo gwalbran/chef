@@ -46,9 +46,9 @@ action :configure do
     job_parameters[key] = value
   end
 
-  # On vagrant machines, run through the mock_filter function, preventing
-  # talend jobs from hitting production resources
-  if node['vagrant']
+  # On dev machines, run through the mock_filter function, preventing talend
+  # jobs from hitting production resources
+  if Chef::Config[:dev]
     mocked_job_parameters = {}
     job_parameters.each do |key, value|
       mocked_job_parameters[key] = mock_filter(key, value)

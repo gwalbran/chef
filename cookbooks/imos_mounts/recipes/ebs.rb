@@ -19,8 +19,8 @@ mount "/mnt/ebs" do
   action [:mount, :enable]
 end
 
-# Mock apache log directory on vagrant
-if node['vagrant']
+# Mock apache log directory on dev boxes
+if Chef::Config[:dev]
   directory "/mnt/ebs/log/apache2" do
     recursive true
   end

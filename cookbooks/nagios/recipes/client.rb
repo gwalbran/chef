@@ -70,7 +70,7 @@ end
 # it might contain a few more things on top of nagios_servers
 allowed_hosts = nagios_servers + node['nagios']['allowed_hosts']
 
-if node['vagrant']
+if Chef::Config[:dev]
   allowed_hosts.push('127.0.0.1')
 end
 
@@ -91,9 +91,9 @@ service node['nagios']['nrpe']['service_name'] do
   supports :restart => true, :reload => true, :status => true
 end
 
-# Mock nsca config for vagrant machines, so it doesn't update production nagios
+# Mock nsca config for dev machines, so it doesn't update production nagios
 # servers
-if node['vagrant']
+if Chef::Config[:dev]
   node.set['nagios']['nsca']['send_nsca'] = "/bin/true"
 end
 

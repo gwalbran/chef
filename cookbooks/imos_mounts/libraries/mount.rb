@@ -33,7 +33,7 @@ class Chef
         require 'fileutils'
 
         def need_mock?(run_context)
-          run_context.node.attributes['vagrant'] && @new_resource.fstype != 'fuse.sshfs'
+          Chef::Config[:dev] && @new_resource.fstype != 'fuse.sshfs'
         end
 
         def initialize(new_resource, run_context)

@@ -32,10 +32,10 @@ define :ncwms do
     })
   end
 
-  # On vagrant, we'll create the ncwms cache dir, so it doesn't fail
+  # On dev machines, we'll create the ncwms cache dir, so it doesn't fail
   # On real production machines we'd like it to fail if the directory is not in
   # place
-  if node['vagrant']
+  if Chef::Config[:dev]
     directory app_parameters['cache_dir'] do
       owner     node['tomcat']['user']
       group     node['tomcat']['group']

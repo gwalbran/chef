@@ -20,8 +20,8 @@ geoserver_layers = {}
 
           geoserver_url = "http://#{app_vhost}/#{application['name']}"
 
-          if node['vagrant']
-            Chef::Log.warn("Geoserver layer probing is disabled on mocked vagrant machines")
+          if Chef::Config[:dev]
+            Chef::Log.warn("Geoserver layer probing is disabled on mocked dev machines")
             geoserver_layers[host_name][geoserver_url] = []
           elsif application['monitored'] == false
             Chef::Log.warn("Geoserver layer probing explicitly disabled in node")

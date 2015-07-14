@@ -80,11 +80,11 @@ end
 
 Chef::Log.info(route53_records)
 
-########################
-# Don't run on vagrant #
-########################
-if node['vagrant']
-  Chef::Log.info("imos_dns is strictly disabled on mocked vagrant machines")
+##########################
+# Don't run on dev boxes #
+##########################
+if Chef::Config[:dev]
+  Chef::Log.info("imos_dns is strictly disabled on mocked dev machines")
   return
 end
 

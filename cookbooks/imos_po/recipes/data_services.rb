@@ -112,7 +112,7 @@ if node['imos_po']['data_services']['cronjobs']
 
       cronjob_sanitizer = Chef::Recipe::CronjobSanitizer.new(
         allowed_cronjob_users,
-        node['vagrant'] # mocked or not (will affect MAILTO= line)
+        Chef::Config[:dev] # mocked or not (will affect MAILTO= line)
       )
 
       if File.exists?(data_services_dir) && File.exists?(data_services_cron_dir)

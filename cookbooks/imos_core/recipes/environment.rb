@@ -11,9 +11,9 @@
 # enrvironment quite yet
 #environment = node['chef_environment']
 
-# Treat then everything as production unless running with vagrant :)
-if node['vagrant']
-    environment = "dev"
+# Treat then everything as production unless running in dev mode
+if Chef::Config[:dev]
+    environment = "development"
 else
     environment = "production"
 end
