@@ -75,6 +75,15 @@ sudo 'data_services' do
   nopasswd true
 end
 
+# Allow projectofficer user to sudo as talend
+sudo 'projectofficer_as_talend' do
+  user     node['imos_po']['data_services']['user']
+  runas    node['talend']['user']
+  commands [ "ALL" ]
+  host     "ALL"
+  nopasswd true
+end
+
 # Inject those variables to the cronjobs
 # Please note all variables here must be fully expanded to avoid scripts
 # needing to evaluate them at runtime
@@ -94,7 +103,8 @@ data_services_vars = [
   "LOG_DIR='#{node['imos_po']['data_services']['log_dir']}'",
   "S3CMD_CONFIG='#{node['imos_po']['s3']['config_file']}'",
   "S3_BUCKET='#{node['imos_po']['s3']['bucket']}'",
-  "MAILX_CONFIG='#{node['imos_po']['mailx']['config_file']}'"
+  "MAILX_CONFIG='#{node['imos_po']['mailx']['config_file']}'",
+  "HARVESTER_TRIGGER='sudo -u #{node['talend']['user']} #{node['talend']['trigger']['bin']} #{node['talend']['trigger']['config']}'"
 ]
 
 file "/etc/profile.d/data-services.sh" do
