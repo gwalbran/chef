@@ -28,10 +28,11 @@ include_recipe 'packer'
 package "zip"
 package "shunit2"
 
+jenkins_user_data_bag = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])
+
 # Copy the private key
-jenkins_ssh_key = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])['ssh_priv_key']
 file "/home/jenkins/.ssh/id_rsa" do
-  content jenkins_ssh_key
+  content jenkins_user_data_bag['ssh_priv_key']
   user    node['imos_jenkins']['user']
   group   node['imos_jenkins']['group']
   mode    00400
@@ -47,4 +48,11 @@ template "/home/jenkins/.ssh/config" do
   variables({
     :user => 'jenkins'
   })
+end
+
+# S3 configuration
+s3cmd_config node['imos_jenkins']['s3cmd']['config_file'] do
+  owner      node['imos_jenkins']['user']
+  access_key jenkins_user_data_bag['access_key_id']
+  secret_key jenkins_user_data_bag['secret_access_key']
 end

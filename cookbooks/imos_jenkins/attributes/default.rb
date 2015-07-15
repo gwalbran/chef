@@ -13,3 +13,5 @@ default['imos_jenkins']['ant']['versions']    = [ "1.8.4" ]
 default['imos_jenkins']['username']  = "jenkins"
 default['imos_jenkins']['email']     = "sys.admin@emii.org.au"
 default['imos_jenkins']['executors'] = node['cpu']['total'] ? (node['cpu']['total']).to_i : 2
+
+default['imos_jenkins']['s3cmd']['config_file'] = ::File.join(node['jenkins']['master']['home'], ".s3cfg")
