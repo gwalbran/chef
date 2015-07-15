@@ -20,9 +20,13 @@ main() {
     declare -r JOB_NAME=$1; shift; export JOB_NAME
     local file=$1; shift
     local command=$1; shift
+    local file_basename=`basename $file`
 
     if [ ! -f $file ]; then
         # not a file - ignore event
+        return 0
+    elif [ ${file_basename:0:1} == "." ]; then
+        # file is hidden, usually a rsync file in progress
         return 0
     elif lsof $file >& /dev/null; then
         # file is still being accessed
