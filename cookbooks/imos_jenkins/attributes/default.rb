@@ -5,9 +5,10 @@ default['imos_jenkins']['master_url']            = "https://jenkins.aodn.org.au/
 default['imos_jenkins']['master']['jvm_options'] = '-Xmx2G'
 default['imos_jenkins']['master']['ssh_port']    = 2222
 
-default['imos_jenkins']['maven']['versions']  = [ "3.2.2" ]
-default['imos_jenkins']['grails']['versions'] = [ "1.3.7", "2.1.0", "2.2.0", "2.4.4" ]
-default['imos_jenkins']['ant']['versions']    = [ "1.8.4" ]
+default['imos_jenkins']['maven']['versions']    = [ "3.2.2" ]
+default['imos_jenkins']['grails']['versions']   = [ "1.3.7", "2.1.0", "2.2.0", "2.4.4" ]
+default['imos_jenkins']['ant']['versions']      = [ "1.8.4" ]
+default['imos_jenkins']['git']['clone_timeout'] = 20
 
 # Global environment settings for master
 default['imos_jenkins']['username']  = "jenkins"
