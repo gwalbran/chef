@@ -9,6 +9,21 @@
 
 define :thredds do
 
+  def thredds_config_file(thredds_config_base, source, destination, app_parameters, instance_service_name)
+    template ::File.join(thredds_config_base, destination) do
+      cookbook  "external_templates"
+      source    "thredds/#{source}.erb"
+      owner     node['tomcat']['user']
+      group     node['tomcat']['group']
+      mode      00644
+      backup    3
+      variables ({
+        :root => app_parameters['root']
+      })
+      notifies :restart, "service[#{instance_service_name}]", :delayed
+    end
+  end
+
   app_parameters          = params[:app_parameters]
   instance_parameters     = params[:instance_parameters]
   instance_service_name   = params[:instance_service_name]
@@ -28,24 +43,13 @@ define :thredds do
     recursive true
   end
 
-  # Configuration files
-  config_files = []
-  if app_parameters['config_files']
-    config_files = app_parameters['config_files']
-  end
+  # Main catalog file
+  thredds_config_file(thredds_config_base, app_parameters['catalog'], "catalog.xml", app_parameters, instance_service_name)
 
-  config_files.each do |config_file|
-    template "#{thredds_config_base}/#{config_file}" do
-      cookbook "external_templates"
-      source   "#{app_parameters['artifact']}/#{config_file}.erb"
-      owner    node['tomcat']['user']
-      group    node['tomcat']['group']
-      mode     00644
-      backup   3
-      variables ({
-        :root => app_parameters['root']
-      })
-      notifies :restart, "service[#{instance_service_name}]", :delayed
+  # Other configuration files (usually referenced by catalog.xml)
+  if app_parameters['config_files']
+    app_parameters['config_files'].each do |config_file|
+      thredds_config_file(thredds_config_base, config_file, config_file, app_parameters, instance_service_name)
     end
   end
 
