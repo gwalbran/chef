@@ -264,7 +264,12 @@ if node['postgresql'] && node['postgresql']['clusters']
       roles                         modified_roles
       default_role_connection_limit node[:imos_postgresql][:default_role_connection_limit]
     end
-    PostgresqlHelper.save_roles_state(cluster_name, all_roles)
+
+    ruby_block "roles_#{cluster_name}" do
+      block do
+        PostgresqlHelper.save_roles_state(cluster_name, all_roles)
+      end
+    end
 
     # Create databases
     modified_databases = PostgresqlHelper.modified_databases(cluster_name, all_databases)
@@ -282,7 +287,13 @@ if node['postgresql'] && node['postgresql']['clusters']
         custom_extensions custom_extensions
       end
     end
-    PostgresqlHelper.save_databases_state(cluster_name, all_databases)
+
+    ruby_block "databases_#{cluster_name}" do
+      block do
+        PostgresqlHelper.save_databases_state(cluster_name, all_databases)
+      end
+    end
+
   end
 end
 
