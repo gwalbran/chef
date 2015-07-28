@@ -16,7 +16,8 @@
         app_artifact = app['artifact']
 
         if app_artifact == "ncwms_prod"
-          ncwms_url = "https://#{app_vhost}/#{app_name}"
+          protocol = webapp_instance['https'] ? "https://" : "http://"
+          ncwms_url = "#{protocol}#{app_vhost}/#{app_name}"
 %>
 define service {
   service_description ncwms GetMap <%= ncwms_url %>
