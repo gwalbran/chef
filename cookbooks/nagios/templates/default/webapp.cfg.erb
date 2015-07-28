@@ -4,6 +4,7 @@
 
 <%
 tomcat_ports = []
+tomcat_jndi_checks = []
 @nodes.each do |n|
   host_name = node['nagios']['server']['normalize_hostname'] ? n[node['nagios']['host_name_attribute']].downcase : n[node['nagios']['host_name_attribute']]
 
@@ -37,6 +38,22 @@ define service {
   use default-service-pnp
 }
 
+<%    webapp_instance['apps'].each do |webapp|
+        webapp_name = webapp['name']
+        webapp['jndis'].each do |jndi| %>
+
+define service {
+  service_description <%= tomcat_name %> jmx jndi <%= app_tomcat_port %> <%= jndi %>
+  check_command check_jmx_jndi_<%= app_tomcat_port %>_<%= jndi %>
+  host_name <%= host_name %>
+  servicegroups tomcat
+  use default-service-pnp
+}
+
+<%        # Collect commands to define
+          tomcat_jndi_checks.push("#{app_tomcat_port}_#{jndi}")
+        end if webapp['jndis']
+      end if webapp_instance['apps'] %>
 
 <%
       # collect all ports, so we can define commands
@@ -99,3 +116,10 @@ define command {
         command_line    $USER1$/run_if_critical_hard $SERVICESTATE$ $SERVICESTATETYPE$ $SERVICEATTEMPT$ $USER1$/check_nrpe -H $HOSTADDRESS$ -c restart_tomcat_<%= tomcat_port %> -t 20
 }
 <% end -%>
+
+<% tomcat_jndi_checks.uniq.each do |tomcat_jndi_check| -%>
+define command {
+        command_name    check_jmx_jndi_<%= tomcat_jndi_check %>
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_jmx_jndi_<%= tomcat_jndi_check %> -t 20
+}
+<% end %>

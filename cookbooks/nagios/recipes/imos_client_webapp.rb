@@ -25,5 +25,20 @@ if node['webapps'] and node['webapps']['instances']
       parameters "-U service:jmx:rmi:///jndi/rmi://localhost:#{jmx_remote_port}/jmxrmi -O 'java.lang:type=Memory' -A HeapMemoryUsage -K used -u B"
       action :add
     end
+
+    webapp_instance['apps'].each do |webapp|
+      webapp_name = webapp['name']
+
+      webapp['jndis'].each do |jndi|
+        resource = Chef::EncryptedDataBagItem.load('jndi_resources', jndi)['resource']
+
+        nagios_nrpecheck "check_jmx_jndi_#{app_tomcat_port}_#{jndi}" do
+          command "#{node['nagios']['plugin_dir']}/check_jmx/check_jmx"
+          parameters "-U service:jmx:rmi:///jndi/rmi://localhost:#{jmx_remote_port}/jmxrmi -O 'Catalina:type=DataSource,context=/#{webapp_name},host=localhost,class=javax.sql.DataSource,name=\"#{resource}\"' -A maxIdle"
+          action :add
+        end
+      end if webapp['jndis']
+    end if webapp_instance['apps']
+
   end
 end
