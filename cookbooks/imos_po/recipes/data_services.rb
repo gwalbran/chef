@@ -104,7 +104,7 @@ data_services_vars = [
   "S3CMD_CONFIG='#{node['imos_po']['s3']['config_file']}'",
   "S3_BUCKET='#{node['imos_po']['s3']['bucket']}'",
   "MAILX_CONFIG='#{node['imos_po']['mailx']['config_file']}'",
-  "HARVESTER_TRIGGER='sudo -u #{node['talend']['user']} #{node['talend']['trigger']['bin']} #{node['talend']['trigger']['config']}'"
+  "HARVESTER_TRIGGER='sudo -u #{node['talend']['user']} #{node['talend']['trigger']['bin']} -c #{node['talend']['trigger']['config']}'"
 ]
 
 file "/etc/profile.d/data-services.sh" do
