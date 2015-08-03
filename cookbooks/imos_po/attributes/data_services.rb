@@ -26,6 +26,9 @@ default['imos_po']['data_services']['owned_dirs'] = [
   node['imos_po']['data_services']['log_dir']
 ]
 
+# Node definition should override this attribute
+default['imos_po']['data_services']['monitored_watch_jobs'] = []
+
 # env file for data-services repository
 default['imos_po']['data_services']['env'] = ::File.join(node['imos_po']['data_services']['dir'], "env")
 
