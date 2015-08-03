@@ -312,6 +312,7 @@ end
   dns
   chef
   backup
+  input
   talend
   sql
   ncwms
