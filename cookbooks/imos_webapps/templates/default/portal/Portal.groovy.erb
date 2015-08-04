@@ -85,6 +85,16 @@ dataSource {
 }
 <% end %>
 
+<%
+external_links = []
+if @custom_parameters['external_links']
+  @custom_parameters['external_links'].each do |external_link|
+    external_links << Chef::EncryptedDataBagItem.load('imos_webapps_portal_external_links', external_link).
+      to_hash.select { |k, v| ! ignore_keys.include? k }
+  end
+end
+%>
+
 portal {
     <% if @custom_parameters['branding_base'] %>
     brandingBase = "<%= @custom_parameters['branding_base'] %>"
@@ -104,23 +114,9 @@ portal {
 
     header {
         logo = "<%= @custom_parameters['header_logo'] || @custom_parameters['name'].upcase + '_logo.png' %>"
-        externalLinks = [
-            [
-                linkText: "eMII",
-                tooltipText: "e-Marine Information Infrastructure",
-                href: "http://www.emii.org.au"
-            ],
-            [
-                linkText: "<%= @custom_parameters['header_link_text'] || @custom_parameters['name'].upcase %>",
-                tooltipText: "<%= @custom_parameters['header_tooltip_text'] || 'Integrated Marine Observing System' %>",
-                href: "<%= @custom_parameters['header_href'] || 'http://imos.org.au/' + @custom_parameters['name'] + '.html' %>"
-            ],
-            [
-                linkText: "Help",
-                tooltipText: "Portal help files",
-                href: help.url
-            ]
-        ]
+<% if ! external_links.empty? %>
+        externalLinks = <%= GroovyIndenter.indent(external_links.to_groovy) %>
+<% end %>
     }
 
     // Change authentication emails for IMOS
