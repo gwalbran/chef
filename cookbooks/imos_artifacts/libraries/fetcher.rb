@@ -38,37 +38,38 @@ module ImosArtifacts
 
     def self.download_file(uri, filename, username = nil, password = nil)
       File.open(filename, "wb") do |output|
-        file_content = Fetcher.get_uri_content_retry(uri, username, password)
-        if ! file_content
+        begin
+          IO.copy_stream(Fetcher.get_uri_retry(uri, username, password), output)
+        rescue
           Chef::Application.fatal!("Error downloading file from '#{uri}'")
         end
-        output.write(file_content)
+
         Chef::Log.info "Cached '#{uri}' at '#{filename}'"
       end
 
       return filename
     end
 
-    def self.get_uri_content(uri, username, password)
+    def self.get_uri(uri, username, password)
       begin
-        open_uri_obj = nil
+        open_uri_io_object = nil
         if username && password
           Chef::Log.info "Using authentication to download artifact, username: '#{username}'"
-          open_uri_obj = open(uri, "rb", :http_basic_authentication => [ username, password ])
+          open_uri_io_object = open(uri, "rb", :http_basic_authentication => [ username, password ])
         else
-          open_uri_obj = open(uri, "rb")
+          open_uri_io_object = open(uri, "rb")
         end
 
-        return open_uri_obj.read
+        return open_uri_io_object
       rescue
         return nil
       end
     end
 
-    def self.get_uri_content_retry(uri, username, password, retries = 3)
+    def self.get_uri_retry(uri, username, password, retries = 3)
       for i in 1..retries do
-        content = Fetcher.get_uri_content(uri, username, password)
-        content and return content
+        open_uri_io_object = Fetcher.get_uri(uri, username, password)
+        open_uri_io_object and return open_uri_io_object
 
         Chef::Log.warn "Retrying #{i}/#{retries} '#{uri}'"
         sleep 2

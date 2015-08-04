@@ -52,7 +52,7 @@ module ImosArtifacts
       artifact_url = nil
       artifact_filename = nil
 
-      json = JSON.parse(Fetcher.get_uri_content_retry("#{@url}/#{@api}", @username, @password))
+      json = JSON.parse(Fetcher.get_uri_retry("#{@url}/#{@api}", @username, @password).read)
 
       # Abort run if there are no archived artifacts on jenkins
       Chef::Application.fatal!("Jenkins build contains no archived artifacts!", 1) if json['artifacts'].empty?
