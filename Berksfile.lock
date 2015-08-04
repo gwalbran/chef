@@ -350,6 +350,7 @@ GRAPH
     chef_handler (>= 0.0.0)
     imos_backup (>= 0.0.0)
     imos_core (>= 0.0.0)
+    imos_po (>= 0.0.0)
     imos_users (>= 0.0.0)
     nginx (>= 0.0.0)
     nginx_simplecgi (>= 0.0.0)

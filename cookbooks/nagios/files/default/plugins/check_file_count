@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# Written by Dan Fruehauf <dan.fruehauf@utas.edu.au>
+
+#
+# This script checks if a directory has more than X files
+#
+
+# prints usage and exit
+usage() {
+    echo "Usage: $0 [OPTIONS]... DIR"
+    echo "Counts files in a directory"
+    echo "
+Options:
+  -d, --directory            Directory to monitor.
+  -r, --recursive            Recurse into sub directories.
+  -w, --warning              Warning threshold.
+  -c, --critical             Critical threshold."
+    exit 3
+}
+
+
+# "$@" - parameters, see usage
+main() {
+    # parse options with getopt
+    local tmp_getops
+    tmp_getops=`getopt -o hd:rw:c: --long help,directory:,recursive,warning:,critical: -- "$@"`
+    [ $? != 0 ] && usage
+
+    eval set -- "$tmp_getops"
+    local -i recursive=0
+    local directory=0
+    local -i warning=0
+    local -i critical=0
+
+    # parse the options
+    while true ; do
+        case "$1" in
+            -h|--help) usage;;
+            -d|--directory) directory=$2; shift 2;;
+            -r|--recursive) recursive=1; shift 1;;
+            -w|--warning) warning=$2; shift 2;;
+            -c|--critical) critical=$2; shift 2;;
+            --) shift; break;;
+            *) usage;;
+        esac
+    done
+
+    [ x"$directory" = x ] && usage
+    [ $warning -eq 0 ] && usage
+    [ $critical -eq 0 ] && usage
+    [ $critical -lt $warning ] && usage
+
+    if [ ! -d $directory ]; then
+        echo "CRITICAL: Directory '$directory' does not exist"
+        return 2
+    fi
+
+    local -i num_files=0
+    if [ $recursive -eq 1 ]; then
+        num_files=`find $directory -type f | wc -l` || return 3
+    else
+        num_files=`find $directory -maxdepth 1 -type f | wc -l` || return 3
+    fi
+
+    local -i retval=0
+    if [ $num_files -lt $warning ]; then
+        echo "OK: Directory '$directory' has '$num_files' files"
+        retval=0
+    elif [ $num_files -ge $critical ]; then
+        echo "CRITICAL: Directory '$directory' has '$num_files' files"
+        retval=2
+    else
+        echo "WARNING: Directory '$directory' has '$num_files' files"
+        retval=1
+    fi
+
+    return $retval
+}
+
+main "$@"
