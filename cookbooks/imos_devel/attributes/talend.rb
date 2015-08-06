@@ -12,9 +12,9 @@ default['imos_devel']['talend']['packages'] = [
         "unzip" => true
     },
     {
-        "source_url" => "http://binary.aodn.org.au/static/talend/TOS-Spatial-5.1.1.zip",
-        "checksum" => "fc674d2d44e20fb3fc88c25117952ef8044d53e1c17dbd36c7c257dce050ba15",
-        "unzip_filter" => "TOS-Spatial-5.1.1/plugins/*",
+        "source_url" => "http://binary.aodn.org.au/static/talend/TOS-Spatial-5.4.1.zip",
+        "checksum" => "ce94b134bd464faf4a5743aa8fa84227000115f28427a87912e59b3dd2b721c8",
+        "unzip_filter" => "TOS-Spatial-5.4.1/plugins/*",
         "install_to" => "plugins",
         "unzip" => true
     },
