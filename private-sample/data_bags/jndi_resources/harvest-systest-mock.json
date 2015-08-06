@@ -1,5 +1,5 @@
 {
-    "id": "harvest-systest",
+    "id": "harvest-systest-mock",
     "resource": "jdbc/harvest_read",
     "driver": "org.postgresql.Driver",
     "url": "jdbc:postgresql://dbprod.emii.org.au:5432/harvest?loginTimeout=1000&amp;ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory",

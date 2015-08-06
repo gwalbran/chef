@@ -23,5 +23,6 @@ packer/cookbooks*
 
 data_bags/jndi_resources/harvest-read-po-rc.json
 data_bags/jndi_resources/harvest-read-po.json
+data_bags/jndi_resources/harvest-systest.json
 data_bags/users/restore.json
 data_bags/users/sshfs.json
