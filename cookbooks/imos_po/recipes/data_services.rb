@@ -17,7 +17,7 @@ def generate_env_file(file_path, vars)
   file file_path do
     user    node['imos_po']['data_services']['user']
     group   "projectofficer"
-    mode    00440
+    mode    00444
     content env_content
   end
 end
@@ -95,6 +95,16 @@ data_services_vars = [
   "S3CMD_CONFIG='#{node['imos_po']['s3']['config_file']}'",
   "S3_BUCKET='#{node['imos_po']['s3']['bucket']}'"
 ]
+
+file "/etc/profile.d/data-services.sh" do
+  mode    00644
+  user    'root'
+  group   'root'
+  content "#!/bin/bash
+test -f #{data_services_dir}/env && source #{data_services_dir}/env
+test -d #{data_services_dir}/profile.d && source #{data_services_dir}/profile.d/*
+"
+end
 
 # plant env file in data-services repo with all related variables
 generate_env_file(node['imos_po']['data_services']['env'],  data_services_vars)
