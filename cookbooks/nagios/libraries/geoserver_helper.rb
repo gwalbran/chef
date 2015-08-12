@@ -13,7 +13,7 @@ module Nagios
       end
     end
 
-    def decode_geoserver_layers( dir )
+    def decode_geoserver_layers(dir)
       # decode a geoserver config directory into an array of layers
       # returns [{:prefix=>string, :name=>string, :enabled=>bool}]
 
@@ -133,14 +133,47 @@ module Nagios
 
       return get_layers_for_git_repo(
         geoserver_data_bag['layers'],
+        geoserver_data_bag['layer_filters'],
         git_repo, git_branch
       )
+    end
+
+    # return true if layer_name matches any regex filter
+    def match_filters(layer_filters, layer_name)
+      # empty filter? monitor all layers
+      nil == layer_filters and return true
+
+      include_patterns = []
+      layer_filters['include'] and include_patterns = layer_filters['include']
+
+      exclude_patterns = []
+      layer_filters['exclude'] and exclude_patterns = layer_filters['exclude']
+
+      # by default, if there are layer filters, black list everything, that is
+      # don't monitor anything by default
+      retval = false
+
+      # whitelist first
+      include_patterns.each do |pattern|
+        if (layer_name =~ /#{pattern}/) != nil
+          retval = true
+        end
+      end
+
+      # then blacklist
+      exclude_patterns.each do |pattern|
+        if (layer_name =~ /#{pattern}/) != nil
+          retval = false
+        end
+      end
+
+      return retval
     end
 
     # assemble an array of monitored layers
     # probe git geoserver config repository for layers and merge with the layers
     # provided in the data bag, giving priority to layers in the data bag
-    def get_layers_for_git_repo(data_bag_layers, git_repo, git_branch)
+    def get_layers_for_git_repo(data_bag_layers, layer_filters, git_repo, git_branch)
 
       # if the git repository is unspecified, return the original
       # items in the data bag
@@ -151,13 +184,14 @@ module Nagios
       # clone and extract layers
       tmp_dir = Dir.mktmpdir
       clone_git_repo(tmp_dir, git_repo, git_branch)
-      layers = decode_geoserver_layers( tmp_dir )
+      layers = decode_geoserver_layers(tmp_dir)
       FileUtils.rm_rf(tmp_dir)
 
       # translate to expected template structure
       retval = []
       layers.each() do |layer|
         next if not layer[:enabled]
+        next if not match_filters(layer_filters, layer[:name])
         # layer is wms, unless it has a '_data' or '_url' suffix, then it's wfs
         type = "wms"
         if layer[:name][-5,5] == "_data" || layer[:name][-4,4] == "_url"
