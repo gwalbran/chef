@@ -11,6 +11,7 @@
 define :s3cmd_config do
   access_key = params[:access_key]
   secret_key = params[:secret_key]
+  host_base  = params[:host_base] || node['imos_core']['s3cmd']['host_base']
 
   if Chef::Config['dev']
     # Mock s3cmd on mocked machines
@@ -32,6 +33,7 @@ define :s3cmd_config do
     variables(
       :access_key => access_key,
       :secret_key => secret_key,
+      :host_base  => host_base,
       :https      => params[:https]
     )
   end
