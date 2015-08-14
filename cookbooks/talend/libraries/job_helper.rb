@@ -52,7 +52,7 @@ class Talend
 
     # Get the command to be executed by a trigger
     def self.job_command_single_file(resource)
-      "#{job_script_path(resource)} --context_param paramFile=\"#{job_conf_file(resource)}\""
+      "#{job_script_path(resource)} --context_param paramFile=\"#{job_conf_file(resource)}\" -- --context_param base=%{base} --context_param fileList=%{file_list} --context_param logDir=%{log_dir}"
     end
 
     def self.get_job_parameters(resource, node)

@@ -66,12 +66,16 @@ def execute_for_files(item, tmp_base, files_to_process)
   retval = 0
   Dir.mktmpdir { |tmp_log_dir|
     file_list = prepare_file_list(files_to_process)
-    extra_talend_parameters = "--context_param base=#{tmp_base} --context_param fileList=#{file_list} --context_param logDir=#{tmp_log_dir}"
+    exec = exec % {
+        :base => tmp_base,
+        :file_list => file_list,
+        :log_dir => tmp_log_dir
+    }
     puts "'#{name}': #{files_to_process}"
-    puts "Executing '#{exec} -- #{extra_talend_parameters}' for '#{files_to_process}'"
+    puts "Executing '#{exec}' for '#{files_to_process}'"
 
     if ! @noop
-      `#{exec} -- #{extra_talend_parameters}`
+      `#{exec}`
       retval += $?.exitstatus
 
       stats_file = File.join(tmp_log_dir, "stats_file.txt")
