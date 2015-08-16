@@ -18,3 +18,4 @@ end
 include_recipe 'apache2'
 include_recipe 'imos_apache2::fix_awstats_conf_file'
 include_recipe 'imos_apache2::static_content'
+include_recipe 'imos_apache2::vhosts'
