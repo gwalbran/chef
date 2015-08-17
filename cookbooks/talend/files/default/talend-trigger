@@ -115,7 +115,7 @@ def match_and_execute(tmp_base, files)
         end
       end
 
-      retval += execute_for_files(item, tmp_base, files_to_process) unless files_to_process.empty?
+      retval += execute_for_files(item, tmp_base, files_to_process.uniq) unless files_to_process.empty?
 
       files_processed += files_to_process
     end
@@ -133,13 +133,17 @@ def match_and_execute(tmp_base, files)
   return retval
 end
 
-def handle_files(files)
+def handle_files(files, delete = false)
   retval = 0
   files_to_index = []
 
   Dir.mktmpdir { |tmp_base|
-    files.each do |file|
-      files_to_index << prepare_file(tmp_base, file)
+    if delete
+      files_to_index = files
+    else
+      files.each do |file|
+        files_to_index << prepare_file(tmp_base, file)
+      end
     end
 
     retval = match_and_execute(tmp_base, files_to_index)
@@ -164,6 +168,24 @@ opts = Trollop::options do
       Feed files from STDIN with base at `IMOS/ACORN/radial`:
           find /mnt/opendap/1/IMOS/opendap/ACORN/radial -type f | #{File.basename(__FILE__)} --stdin -c config.conf -b IMOS/ACORN/radial
 
+      Delete an indexed file:
+          #{File.basename(__FILE__)} -c config.conf
+            -d IMOS/ACORN/radial/FRE/2015/07/31/IMOS_ACORN_RV_20150731T000500Z_FRE_FV00_radial.nc
+
+    Example config file:
+    {
+        "triggers": [
+            {
+                "name": "some_name",
+                "exec": "/usr/bin/executable --base %{base} --file_list %{file_list} --log_dir %{log_dir}",
+                "regex": [
+                    "^something\\.nc$",
+                    "^somethin.*\\.nc$"
+                ]
+            }
+        ]
+    }
+
     Options:
 EOS
   opt :config, "Config file",
@@ -175,6 +197,9 @@ EOS
   opt :base, "Base for all files, used for bulk loading",
     :type => :string,
     :short => '-b'
+  opt :delete, "Delete mode (deletes files from index)",
+    :short => '-d',
+    :default => false
   opt :stdin, "Read files from STDIN",
     :short => '-s',
     :default => false
@@ -205,4 +230,4 @@ end
 @noop = opts[:noop]
 @base = opts[:base]
 
-exit(handle_files(files))
+exit(handle_files(files, opts[:delete]))
