@@ -10,7 +10,7 @@
 # Setup log rotation (/etc/logrotate.d/apache2) for apache
 logrotate_app "apache2" do
   cookbook "logrotate"
-  path "#{node['apache']['log_dir']}*.log"
+  path File.join(node['apache']['log_dir'], '*.log')
   frequency "daily"
   postrotate "  /etc/init.d/apache2 reload > /dev/null"
   prerotate "  if [ -d /etc/logrotate.d/httpd-prerotate ]; then
