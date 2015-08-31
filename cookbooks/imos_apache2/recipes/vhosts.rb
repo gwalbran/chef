@@ -7,18 +7,6 @@
 # All rights reserved - Do Not Redistribute
 #
 
-# Setup log rotation (/etc/logrotate.d/apache2) for apache
-logrotate_app "apache2" do
-  cookbook "logrotate"
-  path File.join(node['apache']['log_dir'], '*.log')
-  frequency "daily"
-  postrotate "  /etc/init.d/apache2 reload > /dev/null"
-  prerotate "  if [ -d /etc/logrotate.d/httpd-prerotate ]; then
-    run-parts /etc/logrotate.d/httpd-prerotate;
-  fi; "
-  create "644 root adm"
-end
-
 if node['apache'] && node['apache']['vhosts']
   node['apache']['vhosts'].each do |vhost|
     apache_for_webapp vhost['name'] do
@@ -35,4 +23,16 @@ if node['apache'] && node['apache']['vhosts']
     end
 
   end
+end
+
+# Setup log rotation (/etc/logrotate.d/apache2) for apache
+logrotate_app "apache2" do
+  cookbook "logrotate"
+  path File.join(node['apache']['log_dir'], '*.log')
+  frequency "daily"
+  postrotate "  /etc/init.d/apache2 reload > /dev/null"
+  prerotate "  if [ -d /etc/logrotate.d/httpd-prerotate ]; then
+    run-parts /etc/logrotate.d/httpd-prerotate;
+  fi; "
+  create "644 root adm"
 end
