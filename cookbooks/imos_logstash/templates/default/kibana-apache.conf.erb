@@ -26,29 +26,23 @@
   ErrorLog <%= node['apache']['log_dir'] %>/<%= @params[:server_name] %>.error.log
   CustomLog <%= node['apache']['log_dir'] %>/<%= @params[:server_name] %>.access.log combined
 
+  # Proxy for kibana-int/{dashboard,temp} stuff (if you don't want auth on /, then you will want these to be protected)
+  <LocationMatch "^/(kibana-int/dashboard/|kibana-int/temp)(.*)$">
+    ProxyPassMatch <%= @params[:es_scheme] %><%= @params[:es_server] %>:<%= @params[:es_port] %>/$1$2
+    ProxyPassReverse <%= @params[:es_scheme] %><%= @params[:es_server] %>:<%= @params[:es_port] %>$1$2
+  </LocationMatch>
+
+  # Proxy for _aliases and .*/_search and _cluster/health
+  <LocationMatch "^/(_nodes|_aliases|.*/_aliases|_search|.*/_search|_mapping|.*/_mapping|_cluster/health)$">
+    ProxyPassMatch <%= @params[:es_scheme] %><%= @params[:es_server] %>:<%= @params[:es_port] %>/$1
+    ProxyPassReverse <%= @params[:es_scheme] %><%= @params[:es_server] %>:<%= @params[:es_port] %>/$1
+  </LocationMatch>
+
   # Set global proxy timeouts
   <Proxy <%= @params[:es_scheme] %><%= @params[:es_server] %>:<%= @params[:es_port] %>>
     Order allow,deny
     Allow from all
     ProxySet connectiontimeout=5 timeout=90
   </Proxy>
-
-  # Proxy for cluster health
-  <LocationMatch "^(/_cluster/health)$">
-    ProxyPassMatch http://<%= @params[:es_server] %>:<%= @params[:es_port] %>/$1
-    ProxyPassReverse http://<%= @params[:es_server] %>:<%= @params[:es_port] %>/$1
-  </LocationMatch>
-
-  # Proxy for _aliases and .*/_search
-  <LocationMatch "^/(_nodes|_aliases|.*/_aliases|_search|.*/_search|_mapping|.*/_mapping)$">
-    ProxyPassMatch <%= @params[:es_scheme] %><%= @params[:es_server] %>:<%= @params[:es_port] %>/$1
-    ProxyPassReverse <%= @params[:es_scheme] %><%= @params[:es_server] %>:<%= @params[:es_port] %>/$1
-  </LocationMatch>
-
-  # Proxy for kibana-int/{dashboard,temp} stuff (if you don't want auth on /, then you will want these to be protected)
-  <LocationMatch "^/(kibana-int/dashboard/|kibana-int/temp)(.*)$">
-    ProxyPassMatch <%= @params[:es_scheme] %><%= @params[:es_server] %>:<%= @params[:es_port] %>/$1$2
-    ProxyPassReverse <%= @params[:es_scheme] %><%= @params[:es_server] %>:<%= @params[:es_port] %>$1$2
-  </LocationMatch>
 
 </VirtualHost>
