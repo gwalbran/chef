@@ -102,7 +102,9 @@ file "/etc/profile.d/data-services.sh" do
   group   'root'
   content "#!/bin/bash
 test -f #{data_services_dir}/env && source #{data_services_dir}/env
-test -d #{data_services_dir}/profile.d && source #{data_services_dir}/profile.d/*
+for file in #{data_services_dir}/profile.d/*; do
+    source $file
+done
 "
 end
 
