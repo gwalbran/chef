@@ -75,7 +75,8 @@ define :geoserver do
           file = ::File.join(data_dir, file)
           current_var_value = Chef::Recipe::XMLHelper.get_xml_value(file, "#{xpath}")
           Chef::Log.info "Current value of injected geoserver variable in '#{file}', '#{xpath}' => '#{current_var_value}'"
-          if ! current_var_value || current_var_value != value
+          if ! current_var_value || current_var_value.to_s != value.to_s
+            Chef::Log.info "Injecting new variable value in '#{file}', '#{xpath}' => '#{value}' (was '#{current_var_value}')"
             need_change = true
           end
         end
