@@ -2,26 +2,9 @@
 # authentication
 #
 
-require 'openssl'
-require 'net/ssh'
-
-def get_key_pair
-  ssh_private_key = Chef::EncryptedDataBagItem.load("users", "chef")['ssh_private_key']
-  key = OpenSSL::PKey::RSA.new(ssh_private_key)
-  private_key = key.to_pem
-  public_key = "#{key.ssh_type} #{[key.to_blob].pack('m0')}"
-  return { :private_key => private_key, :public_key => public_key }
-end
-
-def set_jenkins_creds
-  # Set the private key on the Jenkins executor
-  private_key = get_key_pair()[:private_key]
-  node.run_state[:jenkins_private_key] = private_key
-end
-
 def configure_jenkins_security
   # Create the 'chef' user with the public key
-  public_key = get_key_pair()[:public_key]
+  public_key = Chef::Recipe::JenkinsHelper.get_key_pair()[:public_key]
   jenkins_user 'chef' do
     full_name 'chef system user'
     public_keys [public_key]
@@ -85,7 +68,6 @@ def configure_jenkins_security
   end
 end
 
-set_jenkins_creds
 configure_jenkins_security
 
 # Define all jenkins users

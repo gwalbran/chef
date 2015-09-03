@@ -10,5 +10,6 @@ default["imos_jenkins"]["plugins"] = %w{
   maven-plugin
   repository
   role-strategy
+  token-macro
   validating-string-parameter
 }

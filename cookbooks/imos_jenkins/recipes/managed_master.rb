@@ -15,9 +15,12 @@ node.set['jenkins']['master']['jvm_options'] = node['imos_jenkins']['master']['j
 
 include_recipe "jenkins::master"
 
+Chef::Recipe::JenkinsHelper.authenticate node
+
 include_recipe "imos_jenkins::keys"
-include_recipe "imos_jenkins::authentication"
 include_recipe "imos_jenkins::plugins"
+
+include_recipe "imos_jenkins::security"
 include_recipe "imos_jenkins::tools"
 include_recipe "imos_jenkins::global_env"
 include_recipe "imos_jenkins::jobs"

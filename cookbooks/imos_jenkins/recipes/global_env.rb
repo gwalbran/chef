@@ -17,6 +17,17 @@ global_environment.each do |k, v|
   global_environment_groovy_code += "envVars.put(\"#{k}\", \"#{v}\")" + "\n"
 end
 
+if !Chef::Config[:dev]
+  global_environment_groovy_code += <<-EOH
+
+  // Set main URL
+  def jenkinsLocationConfiguration = JenkinsLocationConfiguration.get()
+    jenkinsLocationConfiguration.setUrl("#{node['imos_jenkins']['master_url']}")
+    jenkinsLocationConfiguration.save()
+
+  EOH
+end
+
 jenkins_script 'set_global_properties' do
   command <<-EOH.gsub(/^ {4}/, '')
     import jenkins.model.*
@@ -49,11 +60,6 @@ jenkins_script 'set_global_properties' do
     instance.setSlaveAgentPort(#{node['imos_jenkins']['ajp_port'].to_i})
 
     instance.save()
-
-    // Set main URL
-    def jenkinsLocationConfiguration = JenkinsLocationConfiguration.get()
-    jenkinsLocationConfiguration.setUrl("#{node['imos_jenkins']['master_url']}")
-    jenkinsLocationConfiguration.save()
   EOH
 end
 
