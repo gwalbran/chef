@@ -7,9 +7,11 @@ default["imos_jenkins"]["plugins"] = %w{
   git-client
   grails
   greenballs
+  job-log-logger-plugin
   maven-plugin
   repository
   role-strategy
+  throttle-concurrents
   token-macro
   validating-string-parameter
 }
