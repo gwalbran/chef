@@ -51,7 +51,7 @@ The symbolic links should look lively now.
 **In case you plan on using real infrastructure, it is advised to create a new
 private repository just with the private definitions and link `private` to it.**
 
-## Private Sample Repository
+## Private Sample Repository (Project Officer box etc)
 
 Read more [here](doc/README.examples.md) for more examples of nodes and how to
 use them.

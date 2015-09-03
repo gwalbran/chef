@@ -27,6 +27,11 @@ To run the PO Box, cd to your chef directory and run:
 $ bin/po-box.sh
 ```
 
+To halt the PO Box:
+```
+$ bin/po-box.sh halt
+```
+
 The services mentioned will be exposed on 10.11.12.13, or po.aodn.org.au.
 Relevant links are:
  * http://po.aodn.org.au/imos123
@@ -131,5 +136,5 @@ for transient system testing.
 
 To run:
 ```
-$ vagrant up systest
+$ bin/systest-box.sh
 ```
