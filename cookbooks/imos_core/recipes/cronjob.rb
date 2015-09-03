@@ -20,7 +20,7 @@ node['cronjobs'].each do |job|
     weekday job['weekday']  || "*"
     command job['command']
     user job['user']        || "root"
-    mailto job['mailto']    || "sys.admin@emii.org.au"
+    mailto job['mailto']    || node[:imos_core][:cronjob][:email_address]
     path job['path']
     home job['home']
     shell job['shell']

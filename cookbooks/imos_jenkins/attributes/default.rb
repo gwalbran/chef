@@ -12,7 +12,7 @@ default['imos_jenkins']['git']['clone_timeout'] = 20
 
 # Global environment settings for master
 default['imos_jenkins']['username']  = "jenkins"
-default['imos_jenkins']['email']     = "sys.admin@emii.org.au"
+default['imos_jenkins']['email']     = node['email_contact'] || "root@localhost"
 default['imos_jenkins']['executors'] = node['cpu']['total'] ? (node['cpu']['total']).to_i : 2
 
 default['imos_jenkins']['s3cmd']['config_file'] = ::File.join(node['jenkins']['master']['home'], ".s3cfg")

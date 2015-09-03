@@ -1,1 +1,1 @@
-default[:email_forward][:email_address] = "sys.admin@emii.org.au"
+default[:email_forward][:email_address] = node['email_contact'] || "root@localhost"

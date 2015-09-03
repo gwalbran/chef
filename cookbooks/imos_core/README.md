@@ -27,7 +27,7 @@ Attributes
     <td><tt>[:email_forward][:email_address]</tt></td>
     <td>String</td>
     <td>Where to forward emails to</td>
-    <td><tt>sys.admin@emii.org.au</tt></td>
+    <td><tt>node['email_contact']</tt></td>
   </tr>
 </table>
 
