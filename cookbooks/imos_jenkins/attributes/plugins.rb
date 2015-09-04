@@ -14,4 +14,5 @@ default["imos_jenkins"]["plugins"] = %w{
   throttle-concurrents
   token-macro
   validating-string-parameter
+  xvfb
 }

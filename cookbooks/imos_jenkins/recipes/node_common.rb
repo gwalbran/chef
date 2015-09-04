@@ -22,11 +22,11 @@ include_recipe "imos_devel::vagrant"
 
 include_recipe 'imos_postgresql::sharpie_postgresql_9_1'
 include_recipe 'git'
-include_recipe 'xvfb'
 include_recipe 'packer'
 
-package "zip"
+package "firefox"
 package "shunit2"
+package "zip"
 
 jenkins_user_data_bag = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])
 
