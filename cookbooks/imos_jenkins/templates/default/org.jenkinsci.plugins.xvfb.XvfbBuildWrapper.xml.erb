@@ -3,7 +3,7 @@
   <installations>
     <org.jenkinsci.plugins.xvfb.XvfbInstallation>
       <name>default</name>
-      <home>/usr/bin</home>
+      <home><%= node['imos_jenkins']['xvfb']['path'] %></home>
       <properties/>
     </org.jenkinsci.plugins.xvfb.XvfbInstallation>
   </installations>
