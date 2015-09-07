@@ -15,7 +15,10 @@ node.set['nfs']['service_provider']['server'] = Chef::Provider::Service::Init::D
 
 node['mounts']['mounts'].each do |mount|
   # Skip sshfs mounts here, we need the user created first
-  next if mount['fstype'] == 'fuse.sshfs'
+  next if MountHelper.is_sshfs(mount)
+
+  actions = [:mount, :enable]
+  MountHelper.is_s3fs(mount) and actions = [:enable]
 
   # Make sure the mount point exists.
   directory mount['mount_point'] do
@@ -26,7 +29,7 @@ node['mounts']['mounts'].each do |mount|
     device  mount['device']
     fstype  mount['fstype']  || node['mounts']['fstype']
     options mount['options'] || node['mounts']['options']
-    action  [:mount, :enable]
+    action  actions
   end
 
 end if node['mounts'] && node['mounts']['mounts']
