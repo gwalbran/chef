@@ -17,6 +17,28 @@
 # limitations under the License.
 #
 
+class MountHelper
+  def self.is_sshfs(hash)
+    return hash['fstype'] == 'fuse.sshfs'
+  end
+
+  def self.is_sshfs_resource(resource)
+    return is_sshfs(resource_to_hash(resource))
+  end
+
+  def self.is_s3fs(hash)
+    return hash['fstype'] == 'fuse' && hash['device'].start_with?("s3fs#")
+  end
+
+  def self.is_s3fs_resource(resource)
+    return is_s3fs(resource_to_hash(resource))
+  end
+
+  def self.resource_to_hash(resource)
+    return { 'fstype' => resource.fstype, 'device' => resource.device }
+  end
+end
+
 # Mocking mounts when running in vagrant
 class Chef
   class Provider
@@ -33,7 +55,7 @@ class Chef
         require 'fileutils'
 
         def need_mock?(run_context)
-          Chef::Config[:dev] && @new_resource.fstype != 'fuse.sshfs'
+          Chef::Config[:dev] && ! MountHelper.is_sshfs_resource(@new_resource) && ! MountHelper.is_s3fs_resource(@new_resource)
         end
 
         def initialize(new_resource, run_context)

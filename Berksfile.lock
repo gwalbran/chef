@@ -123,6 +123,9 @@ DEPENDENCIES
   rsync_chroot
     git: git://github.com/danfruehauf/rsync_chroot.git
     revision: 8985578a8053deba0175182e89147a817ce7fb6f
+  s3fs-fuse
+    git: git://github.com/hw-cookbooks/s3fs-fuse.git
+    revision: 1ee352c469a70bf35ba960c2b2e0afc3bbd6756d
   samba
     git: git://github.com/aodn/samba-cookbook.git
     revision: aca49308e468d00104a764a60a5911bccc44f83e
@@ -189,6 +192,7 @@ GRAPH
   build-essential (2.0.2)
   chef-solo-search (0.5.2)
   chef_handler (1.1.6)
+  control_groups (0.1.6)
   cron (1.4.0)
   curl (2.0.1)
   database_migrations (0.0.1)
@@ -200,6 +204,9 @@ GRAPH
     monit (>= 0.0.0)
     xml (>= 0.0.0)
   external_templates (1.0.0)
+  fuse (0.1.2)
+    apt (>= 0.0.0)
+    yum (>= 0.0.0)
   git (4.0.3)
     build-essential (>= 0.0.0)
     dmg (>= 0.0.0)
@@ -403,6 +410,9 @@ GRAPH
   rbenv (0.7.3)
     java (> 1.4.0)
     ruby_build (>= 0.0.0)
+  rc_mon (0.2.0)
+    control_groups (>= 0.0.0)
+    runit (>= 0.0.0)
   route53 (0.3.3)
     build-essential (>= 0.0.0)
   rsync (0.8.8)
@@ -414,6 +424,8 @@ GRAPH
     build-essential (>= 0.0.0)
     yum (~> 3.0)
     yum-epel (>= 0.0.0)
+  s3fs-fuse (0.1.4)
+    rc_mon (>= 0.0.0)
   samba (0.11.5)
   smf (2.2.6)
     rbac (>= 1.0.1)
