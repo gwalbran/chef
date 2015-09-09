@@ -30,6 +30,12 @@ package "zip"
 
 jenkins_user_data_bag = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])
 
+directory node['jenkins']['master']['home'] do
+  user    node['imos_jenkins']['user']
+  group   node['imos_jenkins']['group']
+  mode    00755
+end
+
 # Copy the private key
 file "/home/jenkins/.ssh/id_rsa" do
   content jenkins_user_data_bag['ssh_priv_key']
