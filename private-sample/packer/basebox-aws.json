@@ -1,21 +1,22 @@
 {
   "variables": {
-    "chef_version": "12.3.0",
-    "source_ami": "ami-0b97d531",
     "region": "ap-southeast-2",
+    "instance_type": "t2.small",
+    "source_ami": "ami-0b97d531",
     "ami_name": "precise-server-amd64",
-    "version": "0.0"
+    "version": "0.0",
+    "chef_version": "12.3.0"
   },
   "builders": [
     {
+      "access_key": "{{user `access_key`}}",
+      "secret_key": "{{user `secret_key`}}",
       "type": "amazon-ebs",
       "region": "{{user `region`}}",
+      "instance_type": "{{user `instance_type`}}",
       "source_ami": "{{user `source_ami`}}",
-      "instance_type": "t2.small",
       "ami_name": "{{user `ami_name`}} {{user `version`}} {{timestamp}}",
-      "ssh_username": "ubuntu",
-      "access_key": "{{user `access_key`}}",
-      "secret_key": "{{user `secret_key`}}"
+      "ssh_username": "ubuntu"
     }
   ],
   "provisioners": [
