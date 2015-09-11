@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.box = ENV['VAGRANT_BOX'] || "precise-server-amd64-chef-12.3.0-1.0"
-  config.vm.box_url = ENV['VAGRANT_BOX_URL'] || "https://ci.aodn.org.au/job/chef_basebox/lastSuccessfulBuild/artifact/#{config.vm.box}.box"
+  config.vm.box_url = ENV['VAGRANT_BOX_URL'] || "https://ci.aodn.org.au/job/chef_basebox_virtualbox/lastSuccessfulBuild/artifact/#{config.vm.box}.box"
 
   ENV['CHEF_VERSION'] and config.omnibus.chef_version = ENV['CHEF_VERSION']
 
