@@ -12,6 +12,10 @@
 global_environment = Chef::Recipe::JenkinsHelper.global_environment
 global_environment['S3CMD_CONFIG'] = node['imos_jenkins']['s3cmd']['config_file']
 
+jenkins_user_data_bag = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])
+global_environment['AWS_ACCESS_KEY'] = jenkins_user_data_bag['access_key_id']
+global_environment['AWS_SECRET_KEY'] = jenkins_user_data_bag['secret_access_key']
+
 global_environment_groovy_code = ""
 global_environment.each do |k, v|
   global_environment_groovy_code += "envVars.put(\"#{k}\", \"#{v}\")" + "\n"
