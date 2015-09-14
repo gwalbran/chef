@@ -16,6 +16,7 @@
       "instance_type": "{{user `instance_type`}}",
       "source_ami": "{{user `source_ami`}}",
       "ami_name": "{{user `ami_name`}} {{user `version`}} {{timestamp}}",
+      "ami_description": "{{user `ami_name`}} {{user `version`}} {{timestamp}}",
       "ssh_username": "ubuntu"
     }
   ],
