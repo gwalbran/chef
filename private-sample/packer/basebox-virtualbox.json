@@ -79,7 +79,7 @@
       "data_bags_path": "../data_bags",
       "roles_path": "../roles",
       "run_list": [
-        "recipe[imos_core::vagrant]",
+        "recipe[imos_core::dev]",
         "role[base]",
         "role[backup]",
         "recipe[imos_java]"
