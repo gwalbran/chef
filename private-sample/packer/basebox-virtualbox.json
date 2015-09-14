@@ -63,7 +63,7 @@
       },
       "scripts": [
         "scripts/imos.sh",
-        "scripts/post-install.sh",
+        "scripts/virtualbox.sh",
         "scripts/chef-omnibus.sh"
       ],
       "environment_vars": [

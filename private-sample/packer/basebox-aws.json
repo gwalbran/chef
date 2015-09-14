@@ -5,7 +5,8 @@
     "source_ami": "ami-0b97d531",
     "ami_name": "precise-server-amd64",
     "version": "0.0",
-    "chef_version": "12.3.0"
+    "chef_version": "12.3.0",
+    "ssh_username": "ubuntu"
   },
   "builders": [
     {
@@ -17,7 +18,10 @@
       "source_ami": "{{user `source_ami`}}",
       "ami_name": "{{user `ami_name`}} {{user `version`}} {{timestamp}}",
       "ami_description": "{{user `ami_name`}} {{user `version`}} {{timestamp}}",
-      "ssh_username": "ubuntu"
+      "tags": {
+          "Name": "{{user `ami_name`}} {{user `version`}} {{timestamp}}"
+      },
+      "ssh_username": "{{user `ssh_username`}}"
     }
   ],
   "provisioners": [
@@ -26,10 +30,12 @@
       "execute_command": "sudo {{.Vars}} -S sh '{{.Path}}'",
       "scripts": [
         "scripts/imos.sh",
-        "scripts/post-install.sh",
+        "scripts/aws.sh",
         "scripts/chef-omnibus.sh"
       ],
       "environment_vars": [
+        "SSH_USERNAME={{user `ssh_username`}}",
+        "SSH_KEY={{user `ssh_key`}}",
         "CHEF_VERSION={{user `chef_version`}}"
       ]
     },
@@ -50,4 +56,3 @@
     }
   ]
 }
-
