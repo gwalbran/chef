@@ -70,6 +70,22 @@
                 </config>
             </resource>
         </replaceXML>
+
+<% if @custom_parameters['link_monitor'] && @custom_parameters['link_monitor']['enabled'] != false %>
+        <addXML xpath="appHandler" attName="class" value="org.fao.geonet.Geonetwork">
+            <param name="LinkMonitorEnabled" value="true"/>
+            <param name="LinkMonitorClass" value="org.fao.geonet.monitor.link.LinkMonitorService"/>
+            <param name="LinkMonitorInitialDelaySeconds" value="<%= @custom_parameters['link_monitor']['initial_delay_seconds'] || 5 %>"/>
+            <param name="LinkMonitorFixedDelaySeconds" value="<%= @custom_parameters['link_monitor']['fixed_delay_seconds'] || 120 %>"/>
+            <param name="LinkMonitorServiceReindexIntervalSeconds" value="<%= @custom_parameters['link_monitor']['reindex_interval_seconds'] || 1800 %>"/>
+            <param name="LinkMonitorServicePercentWorkingThreshold" value="<%= @custom_parameters['link_monitor']['percent_working_threshold'] || 90 %>"/>
+            <param name="LinkMonitorServiceMaxChecks" value="<%= @custom_parameters['link_monitor']['max_checks'] || 10 %>"/>
+            <param name="LinkMonitorServiceTimeout" value="<%= @custom_parameters['link_monitor']['timeout'] || 15 %>"/>
+            <param name="LinkMonitorServiceFreshness" value="<%= @custom_parameters['link_monitor']['freshness'] || 3600 %>"/>
+            <param name="LinkMonitorServiceUnknownAsWorking" value="<%= @custom_parameters['link_monitor']['unknown_as_working'] || "true" %>"/>
+            <param name="LinkMonitorServiceBetweenChecksIntervalMs" value="<%= @custom_parameters['link_monitor']['between_checks_interval_ms'] || "100" %>"/>
+        </addXML>
+<% end %>
     </file>
 
 <%
