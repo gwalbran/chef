@@ -45,7 +45,7 @@ default['imos_po']['data_services']['lib']       = ::File.join(node['imos_po']['
 default['imos_po']['data_services']['clone_repository'] = true
 
 # Required packages
-default['imos_po']['data_services']['packages'] = [ 'imagemagick', 'gdal-bin', 'sqlite3', 'heirloom-mailx', 'python-pip', 'python-dev', 'libnetcdf-dev', 'libhdf5-serial-dev', 'python-scipy', 'python-matplotlib', 'python-numpy', 'python-psycopg2', 'python-beautifulsoup', 'ipython', 'python-scipy' ]
+default['imos_po']['data_services']['packages'] = [ 'imagemagick', 'gdal-bin', 'sqlite3', 'heirloom-mailx', 'python-pip', 'python-dev', 'libnetcdf-dev', 'libhdf5-serial-dev', 'python-scipy', 'python-matplotlib', 'python-numpy', 'python-psycopg2', 'python-beautifulsoup', 'ipython', 'python-scipy' , 'lftp']
 
 # All required python plugins
 default['imos_po']['data_services']['python']['packages'] = [
