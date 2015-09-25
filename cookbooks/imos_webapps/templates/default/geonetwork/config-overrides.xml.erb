@@ -83,7 +83,7 @@
             <param name="LinkMonitorServiceTimeout" value="<%= @custom_parameters['link_monitor']['timeout'] || 15 %>"/>
             <param name="LinkMonitorServiceFreshness" value="<%= @custom_parameters['link_monitor']['freshness'] || 3600 %>"/>
             <param name="LinkMonitorServiceUnknownAsWorking" value="<%= @custom_parameters['link_monitor']['unknown_as_working'] || "true" %>"/>
-            <param name="LinkMonitorServiceBetweenChecksIntervalMs" value="<%= @custom_parameters['link_monitor']['between_checks_interval_ms'] || "100" %>"/>
+            <param name="LinkMonitorServiceBetweenChecksIntervalMs" value="<%= @custom_parameters['link_monitor']['between_checks_interval_ms'] || "1000" %>"/>
         </addXML>
 <% end %>
     </file>
