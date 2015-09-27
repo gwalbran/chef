@@ -7,6 +7,13 @@
     geoserver_url = @custom_parameters['geoserver']
     %>
 
+    <!-- set logging properties -->
+
+    <logging>
+        <logFile>/WEB-INF/log4j.cfg</logFile>
+        <logFile><%= File.join(@config_dir, 'log4j-overrides.cfg') %></logFile>
+    </logging>
+
     <!-- set default map layers -->
 
     <file name=".*WEB-INF/config-gui\.xml">
