@@ -12,6 +12,7 @@
         "recipe[imos_po]",
         "recipe[imos_po::data_services]",
         "recipe[imos_po::netcdf_checker]",
+        "recipe[imos_core::nco]",
         "recipe[imos_rsync]",
         "recipe[imos_webapps::generic_webapp]"
     ],
