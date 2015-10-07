@@ -77,6 +77,7 @@ logrotate_app "project-officer-processing" do
   path       log_file
   frequency  'daily'
   options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
+  rotate     365
 end
 
 logrotate_app "project-officer-processing-file-reports" do
@@ -85,6 +86,7 @@ logrotate_app "project-officer-processing-file-reports" do
   path       ::File.join(log_dir, "*", "*.log")
   frequency  'daily'
   options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
+  rotate     365
 end
 
 if Chef::Config[:dev]
