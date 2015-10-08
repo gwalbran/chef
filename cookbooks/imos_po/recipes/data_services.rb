@@ -93,7 +93,8 @@ data_services_vars = [
   "DATA_SERVICES_DIR='#{data_services_dir}'",
   "LOG_DIR='#{node['imos_po']['data_services']['log_dir']}'",
   "S3CMD_CONFIG='#{node['imos_po']['s3']['config_file']}'",
-  "S3_BUCKET='#{node['imos_po']['s3']['bucket']}'"
+  "S3_BUCKET='#{node['imos_po']['s3']['bucket']}'",
+  "MAILX_CONFIG='#{node['imos_po']['mailx']['config_file']}'"
 ]
 
 file "/etc/profile.d/data-services.sh" do
@@ -152,3 +153,4 @@ else
 end
 
 include_recipe "imos_po::watches"
+include_recipe "imos_po::mailx"

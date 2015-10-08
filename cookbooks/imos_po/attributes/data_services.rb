@@ -66,3 +66,6 @@ default['imos_po']['email_aliases'] = "/etc/incoming-aliases"
 default['imos_po']['s3']['password_data_bag'] = "s3_imos_data"
 default['imos_po']['s3']['bucket']            = "s3://imos-data"
 default['imos_po']['s3']['config_file']       = ::File.join(node['imos_po']['data_services']['dir'], "s3cfg")
+
+default['imos_po']['mailx']['password_data_bag'] = nil
+default['imos_po']['mailx']['config_file'] = ::File.join(node['imos_po']['data_services']['dir'], "mailrc")
