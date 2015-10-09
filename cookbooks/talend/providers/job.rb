@@ -132,13 +132,12 @@ end
 
 # Build wrapper script for job
 action :schedule do
+  # Change privileges of artifact job script
+  ::FileUtils.chmod(00755, Talend::JobHelper.job_script_path(new_resource))
+  ::FileUtils.chown(new_resource.owner, new_resource.group, Talend::JobHelper.job_script_path(new_resource))
 
   if new_resource.trigger['event'].empty?
     # Schedule using cron
-
-    # Change privileges of artifact job script
-    ::FileUtils.chmod(00755, Talend::JobHelper.job_script_path(new_resource))
-    ::FileUtils.chown(new_resource.owner, new_resource.group, Talend::JobHelper.job_script_path(new_resource))
 
     wrapper_script = ::File.join(job_bin_dir, "#{job_name}.sh")
 
