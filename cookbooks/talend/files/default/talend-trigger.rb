@@ -4,6 +4,14 @@ require 'json'
 require 'tempfile'
 require 'trollop'
 require 'open-uri'
+require 'logger'
+
+$logger = Logger.new(STDOUT)
+$logger.level = Logger::INFO
+$logger.formatter = proc do |severity, datetime, progname, msg|
+  "#{msg}\n"
+end
+
 
 @config = nil
 @noop = false
@@ -27,17 +35,17 @@ def parse_file_path(file)
     if file =~ Regexp.new("^https?://")
       # Strip 'http://something/'
       index_as = real_file.gsub(Regexp.new("^https?://[^/]+/"), "")
-      puts "Stripping base URL for #{file}"
-      puts "File indexed as: #{index_as}"
+      $logger.info "Stripping base URL for #{file}"
+      $logger.info "File indexed as: #{index_as}"
     elsif @base
       index_as = File.join(@base, real_file)
-      puts "file: #{index_as}"
+      $logger.info "file: #{index_as}"
     end
   end
 
   if index_as.nil?
-    puts "Don't know how to index file '#{real_file}'"
-    exit(1)
+    $logger.error "Don't know how to index file '#{real_file}'"
+    raise ArgumentError, "Don't know how to index file '#{real_file}'"
   end
 
   return real_file, index_as
@@ -47,7 +55,7 @@ def prepare_file(tmp_base, file)
   real_file, index_as = parse_file_path(file)
 
   if @noop
-    puts "'#{real_file}' => '#{index_as}'"
+    $logger.info "'#{real_file}' => '#{index_as}'"
   else
     target_dir = File.join(tmp_base, File.dirname(index_as))
     target_file = File.join(tmp_base, index_as)
@@ -71,8 +79,8 @@ def execute_for_files(item, tmp_base, files_to_process)
         :file_list => file_list,
         :log_dir => tmp_log_dir
     }
-    puts "'#{name}': #{files_to_process}"
-    puts "Executing '#{exec}' for '#{files_to_process}'"
+    $logger.info "'#{name}': #{files_to_process}"
+    $logger.info "Executing '#{exec}' for '#{files_to_process}'"
 
     if ! @noop
       `#{exec}`
@@ -80,15 +88,15 @@ def execute_for_files(item, tmp_base, files_to_process)
 
       stats_file = File.join(tmp_log_dir, "stats_file.txt")
       File.open(stats_file).each do |line|
-        puts line
+        $logger.info line
       end
     end
 
-    printf "#{name}: #{files_to_process.count} file(s) "
+    msg = "#{name}: #{files_to_process.count} file(s) "
     if 0 == retval
-      puts "OK"
+      $logger.info "#{msg} OK"
     else
-      puts "FAILED"
+      $logger.info "#{msg} FAILED"
     end
 
     File.unlink(file_list)
@@ -106,27 +114,28 @@ def match_and_execute(tmp_base, files)
   # that one harvester need and potentially speed up things
 
   @config['triggers'].each do |item|
+    files_to_process = []
+
     item['regex'].each do |regex|
 
-      files_to_process = []
       files.each do |file|
         if file =~ Regexp.new(regex)
           files_to_process << file
         end
       end
-
-      retval += execute_for_files(item, tmp_base, files_to_process.uniq) unless files_to_process.empty?
-
-      files_processed += files_to_process
     end
+
+    retval += execute_for_files(item, tmp_base, files_to_process.uniq) unless files_to_process.empty?
+
+    files_processed += files_to_process
   end
 
   files_not_processed = files.uniq - files_processed.uniq
   if ! files_not_processed.empty?
-    puts "Files not processed:"
-    puts "--------------------"
-    puts files_not_processed
-    puts "--------------------"
+    $logger.info "Files not processed:"
+    $logger.info "--------------------"
+    $logger.info files_not_processed
+    $logger.info "--------------------"
     retval += 1
   end
 
@@ -152,9 +161,10 @@ def handle_files(files, delete = false)
   return retval
 end
 
-# Arguments parsing
-opts = Trollop::options do
-  banner <<-EOS
+if __FILE__ == $0
+  # Arguments parsing
+  opts = Trollop::options do
+    banner <<-EOS
     Trigger harvesters for given files
 
     Example:
@@ -188,46 +198,47 @@ opts = Trollop::options do
 
     Options:
 EOS
-  opt :config, "Config file",
-    :type => :string,
-    :short => '-c'
-  opt :files, "Files to process (see example)",
-    :type => :strings,
-    :short => '-f'
-  opt :base, "Base for all files, used for bulk loading",
-    :type => :string,
-    :short => '-b'
-  opt :delete, "Delete mode (deletes files from index)",
-    :short => '-d',
-    :default => false
-  opt :stdin, "Read files from STDIN",
-    :short => '-s',
-    :default => false
-  opt :noop, "No-op, only shows what files will be indexed and how",
-    :short => '-n',
-    :default => false
+    opt :config, "Config file",
+      :type => :string,
+      :short => '-c'
+    opt :files, "Files to process (see example)",
+      :type => :strings,
+      :short => '-f'
+    opt :base, "Base for all files, used for bulk loading",
+      :type => :string,
+      :short => '-b'
+    opt :delete, "Delete mode (deletes files from index)",
+      :short => '-d',
+      :default => false
+    opt :stdin, "Read files from STDIN",
+      :short => '-s',
+      :default => false
+    opt :noop, "No-op, only shows what files will be indexed and how",
+      :short => '-n',
+      :default => false
+  end
+
+  Trollop::die :config, "Must specify config" if ! opts[:config]
+
+  files = []
+  if opts[:files]
+    files = opts[:files]
+  elsif opts[:stdin]
+    Trollop::die :base, "Must specify base when using with --stdin" if ! opts[:base]
+    files += STDIN.read.split("\n")
+  else
+    Trollop::die :files, "Must specify files" if ! opts[:files]
+  end
+
+  config_file = opts[:config]
+  begin
+    @config = JSON.parse(File.read(config_file))
+  rescue
+    Trollop::die :config, "Could not read config file '#{config_file}'"
+  end
+
+  @noop = opts[:noop]
+  @base = opts[:base]
+
+  exit(handle_files(files, opts[:delete]))
 end
-
-Trollop::die :config, "Must specify config" if ! opts[:config]
-
-files = []
-if opts[:files]
-  files = opts[:files]
-elsif opts[:stdin]
-  Trollop::die :base, "Must specify base when using with --stdin" if ! opts[:base]
-  files += STDIN.read.split("\n")
-else
-  Trollop::die :files, "Must specify files" if ! opts[:files]
-end
-
-config_file = opts[:config]
-begin
-  @config = JSON.parse(File.read(config_file))
-rescue
-  Trollop::die :config, "Could not read config file '#{config_file}'"
-end
-
-@noop = opts[:noop]
-@base = opts[:base]
-
-exit(handle_files(files, opts[:delete]))

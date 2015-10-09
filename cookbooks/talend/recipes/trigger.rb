@@ -18,6 +18,6 @@ gem_package 'trollop'
 cookbook_file node['talend']['trigger']['bin'] do
   owner  node['talend']['user']
   group  node['talend']['user']
-  source "talend-trigger"
+  source "talend-trigger.rb"
   mode   00755
 end
