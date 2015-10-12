@@ -1,0 +1,16 @@
+{
+    "id": "argo",
+    "artifact_filename": "Argo_harvester_Latest.zip",
+    "params": {
+        "jobName": "argo",
+        "Metadata_UUID": "4402cb50-e20a-44ee-93e6-4728259250d2",
+        "Metadata_SpatialTable": "profile_summary",
+        "Metadata_SpatialColumn": "position",
+        "Metadata_SpatialResolution": "5"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/Argo/dac/.*\\.nc$"
+        ]
+    }
+}

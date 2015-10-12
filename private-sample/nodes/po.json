@@ -226,6 +226,7 @@
         },
         "jobs": [
             "acorn_radial_nonqc",
+            "argo",
             "soop_co2"
         ]
     }
