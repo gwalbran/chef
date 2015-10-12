@@ -2,7 +2,6 @@
 
 declare -i -r LOGFILE_HISTORY_TO_KEEP=7
 
-
 # runs a talend job
 # $1 - script to run
 # $2 - config file
@@ -25,7 +24,6 @@ run_job() {
 
     # create pid guard
     echo $$ > $pid_lock_file
-
 
     # cycle log files in given directory, based on modification time
     local -i i=0
@@ -56,7 +54,6 @@ run_job() {
     local delta_secs=`expr $finish_date_secs - $start_date_secs`
     local delta_mins=`expr $delta_secs / 60`
     echo "finish;"`date --rfc-3339=seconds --date @$finish_date_secs`" $delta_mins minutes" >> "$log_file"
-
 
     # remove the pid guard
     rm $pid_lock_file
@@ -104,6 +101,4 @@ main() {
     run_job $job_executable $config_file $log_dir $LOGFILE_HISTORY_TO_KEEP
 }
 
-
 main "$@"
-

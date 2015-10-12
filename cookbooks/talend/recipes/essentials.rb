@@ -16,6 +16,7 @@ config_dir   = node['talend']['config_dir']
 data_dir     = node['talend']['working']
 bin_dir      = node['talend']['bin_dir']
 rubbish_dir  = node['talend']['rubbish_dir']
+etc_dir      = node['talend']['etc_dir']
 
 group talend_group
 
@@ -27,7 +28,7 @@ user talend_user do
 end
 
 # Create all relevant talend directories
-[ jobs_dir, data_dir, bin_dir, rubbish_dir ].each do |dir|
+[ jobs_dir, data_dir, bin_dir, rubbish_dir, etc_dir ].each do |dir|
   directory dir do
     owner     talend_user
     group     talend_group

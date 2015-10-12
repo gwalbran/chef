@@ -52,6 +52,16 @@ node['talend']['jobs'].each do |job_name|
   bag_item['cron'] and cron.merge!(bag_item['cron'])
   bag_item[environment] && bag_item[environment]['cron'] and cron.merge!(bag_item[environment]['cron'])
 
+  # Triggering can be enabled for talend job. If enabled, does not schedule as
+  # a cron job
+  event = {}
+  bag_item['event'] and event.merge!(bag_item['event'])
+  bag_item[environment] && bag_item[environment]['event'] and event.merge!(bag_item[environment]['event'])
+
+  trigger = {}
+  trigger['cron'] = cron
+  trigger['event'] = event
+
   job_common_name = get_job_common_name(job_name, bag_item)
 
   # If artifact_id is defined, use data bag, otherwise assemble one
@@ -93,11 +103,7 @@ node['talend']['jobs'].each do |job_name|
   talend_job job_id do
     action      :schedule
     common_name job_common_name
-    hour        cron['hour']
-    weekday     cron['weekday']
-    minute      cron['minute']
-    day         cron['day']
-    month       cron['month']
+    trigger     trigger
     mailto      bag_item['mailto'] || node['talend']['mailto']
     jobs_dir    jobs_dir
     data_dir    data_dir

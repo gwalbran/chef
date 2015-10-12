@@ -74,7 +74,11 @@ describe Chef::Recipe::CronjobSanitizer do
         file.write("0 * * * * test_user1 ls\n")
       }
 
-      cron_vars = [ "TEMP_DIR_1=/tmp/1", "TEMP_DIR_2=/tmp/2" ]
+      cron_vars = {
+        'TEMP_DIR_1' => "/tmp/1",
+        'TEMP_DIR_2' => "/tmp/2"
+      }
+
       cronjob_sanitizer.sanitize_cronjob_file(@unsanitized_cronjob, @sanitized_cronjob, "/bin", cron_vars)
 
       file = File.open(@sanitized_cronjob)
@@ -83,8 +87,9 @@ describe Chef::Recipe::CronjobSanitizer do
         contents << line
       }
 
-      expect(contents).to include("TEMP_DIR_1=/tmp/1\n")
-      expect(contents).to include("TEMP_DIR_2=/tmp/2\n")
+      expect(contents).to include("TEMP_DIR_1='/tmp/1'\n")
+      expect(contents).to include("TEMP_DIR_2='/tmp/2'\n")
+
       expect(contents).to include("MAILTO=test@example.com\n")
       expect(contents).to include("0 * * * * test_user1 /bin/ls\n")
     end

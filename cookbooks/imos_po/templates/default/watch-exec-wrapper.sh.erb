@@ -2,14 +2,6 @@
 
 source <%= @env %> || exit 255
 
-# source utility functions from data-services repository
-for file in <%= @lib %>/*; do
-    source $file
-done
-declare -r SYSLOG_FACILITY=<%= node['imos_po']['watches']['syslog_facility'] %>; export SYSLOG_FACILITY
-
-export LOG_DIR="<%= node['imos_po']['data_services']['log_dir'] %>"
-
 # main
 # example argument list:
 # ACORN file.nc process-file.sh /home/netcdf

@@ -1,0 +1,9 @@
+{
+    "id": "acorn_radial_nonqc",
+    "artifact_filename": "ACORN_radial_nonQC_harvester_Latest.zip",
+    "event": {
+        "regex": [
+            "^IMOS/ACORN/radial/.*/.*FV00_radial\\.nc$"
+        ]
+    }
+}

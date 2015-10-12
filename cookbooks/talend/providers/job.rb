@@ -10,6 +10,7 @@ attr_reader :job_java_dir
 attr_reader :job_log_dir
 attr_reader :job_conf_dir
 attr_reader :job_conf_file
+attr_reader :job_parameters
 
 # load current state
 
@@ -22,9 +23,8 @@ def load_current_resource
   @job_log_dir     = ::File.join(@job_dir, "log")
   @job_conf_dir    = ::File.join(@job_dir, "etc")
   @job_conf_file   = ::File.join(@job_conf_dir, "#{@job_name}.conf")
+  @job_parameters  = Talend::JobHelper.get_job_parameters(new_resource, node)
 end
-
-# External configure
 
 action :configure do
 
@@ -34,47 +34,27 @@ action :configure do
     ::FileUtils.chmod(0755, dir)
   end
 
-  job_parameters = {}
-
-  # Add common parameters
-  node['talend']['common_parameters'].each do |key, value|
-    job_parameters[key] = value
-  end
-
-  # Specific parameters
-  new_resource.params.each do |key, value|
-    job_parameters[key] = value
-  end
-
-  # On dev machines, run through the mock_filter function, preventing talend
-  # jobs from hitting production resources
-  if Chef::Config[:dev]
-    mocked_job_parameters = {}
-    job_parameters.each do |key, value|
-      mocked_job_parameters[key] = mock_filter(key, value)
-    end
-    job_parameters = mocked_job_parameters
-  end
-
   # Evaluate parameters
   evaluated_job_parameters = {}
-  job_parameters.each do |key, value|
-    begin
-      evaluated_job_parameters[key] = eval( %{"#{value}"} )
-    rescue
-      Chef::Log.warn("Talend '#{@job_name}' ignoring parameter '#{key}'")
+  @job_parameters.each do |key, value|
+    if value.kind_of? String
+      begin
+        evaluated_job_parameters[key] = eval( %{"#{value}"} )
+      rescue
+        Chef::Log.warn("Talend '#{@job_name}' ignoring parameter '#{key}'")
+      end
     end
   end
 
   # create job parameter file
   template job_conf_file do
-    cookbook "talend"
-    source "talend_config.erb"
-    owner  new_resource.owner
-    group  new_resource.group
-    mode 0644
+    cookbook  "talend"
+    source    "talend_config.erb"
+    owner     new_resource.owner
+    group     new_resource.group
+    mode      0644
     variables ({
-      :params => evaluated_job_parameters,
+      :params    => evaluated_job_parameters,
       :delimiter => new_resource.delimiter
     })
   end
@@ -90,9 +70,9 @@ action :configure do
         dir = eval( %{"#{dir}"} )
         directory dir do
           recursive true
-          owner new_resource.process_owner
-          group new_resource.process_group
-          mode 0755
+          owner     new_resource.process_owner
+          group     new_resource.process_group
+          mode      0755
         end
       end
     end
@@ -105,9 +85,9 @@ action :configure do
         dst = eval( %{"#{dst}"} )
         cookbook_file dst do
           source src
-          owner new_resource.owner
-          group new_resource.group
-          mode 0644
+          owner  new_resource.owner
+          group  new_resource.group
+          mode   0644
         end
       end
     end
@@ -150,64 +130,53 @@ action :remove do
   ::FileUtils.mv(job_dir, rubbish_dir_for_job)
 end
 
-# Schedule a deployed job
+# Build wrapper script for job
 action :schedule do
-
   # Change privileges of artifact job script
-  ::FileUtils.chmod(00755, job_script_path)
-  ::FileUtils.chown(new_resource.owner, new_resource.group, job_script_path)
+  ::FileUtils.chmod(00755, Talend::JobHelper.job_script_path(new_resource))
+  ::FileUtils.chown(new_resource.owner, new_resource.group, Talend::JobHelper.job_script_path(new_resource))
 
-  cron_wrapper_script = ::File.join(job_bin_dir, "#{job_name}.sh")
+  if new_resource.trigger['event'].empty?
+    # Schedule using cron
 
-  file cron_wrapper_script do
-    owner   new_resource.process_owner
-    group   new_resource.process_group
-    mode    0755
-    content "#!/bin/bash
+    wrapper_script = ::File.join(job_bin_dir, "#{job_name}.sh")
+
+    cron_command = "#{node['imos_task_spooler']['tsp_if_not_queued']} #{Talend::JobHelper.job_command(new_resource)}"
+
+    file wrapper_script do
+      owner   new_resource.process_owner
+      group   new_resource.process_group
+      mode    0755
+      content "#!/bin/bash
 #{cron_command}
 "
-  end
+    end
 
-  # schedule using cron
-  cron job_name do
-    minute  new_resource.minute
-    hour    new_resource.hour
-    day     new_resource.day
-    month   new_resource.month
-    weekday new_resource.weekday
+    cron job_name do
+      minute  new_resource.trigger['cron']['minute']  || node['talend']['minute']
+      hour    new_resource.trigger['cron']['hour']    || node['talend']['hour']
+      day     new_resource.trigger['cron']['day']     || "*"
+      month   new_resource.trigger['cron']['month']   || "*"
+      weekday new_resource.trigger['cron']['weekday'] || "*"
+      command wrapper_script
+      user    new_resource.process_owner
+      mailto  new_resource.mailto
+      path    new_resource.path
+      home    new_resource.home
+      shell   new_resource.shell
+    end
 
-    command cron_wrapper_script
-    user    new_resource.process_owner
+  else
+    # Trigger a job based on pattern matching
+    json = {}
 
-    mailto  new_resource.mailto
-    path    new_resource.path
-    home    new_resource.home
-    shell   new_resource.shell
-  end
-end
+    json['triggers'] = Talend::JobHelper.build_trigger_config(run_context, node)
 
-# Get the path to the installed linux job execution script
-def job_script_path
-  Dir[::File.join(job_java_dir, "**/*_run.sh")][0]
-end
-
-def get_run_job_file
-  ::File.join(new_resource.bin_dir, "run_job.sh")
-end
-
-# Get the command to be executed by cron to run the job
-def cron_command
-  task_spooler_cmd = node['talend']['task_spooler_cmd']
-  "#{node['imos_task_spooler']['tsp_if_not_queued']} #{job_name} #{get_run_job_file} -c #{job_conf_file} -l #{job_log_dir} -e #{job_script_path}"
-end
-
-# Return mocked config value if needs mocking, or original if not
-def mock_filter(config_item, config_value)
-  node['talend']['mocked_config_regexps'].each do |mocked_config_regexp, mocked_value|
-    if config_item.match /^#{mocked_config_regexp}$/
-      return mocked_value
+    file node['talend']['trigger']['config'] do
+      owner   new_resource.owner
+      group   new_resource.group
+      content JSON.pretty_generate(json, :indent => "    ")
     end
   end
 
-  return config_value
 end

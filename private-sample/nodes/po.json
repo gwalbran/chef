@@ -14,7 +14,9 @@
         "recipe[imos_po::netcdf_checker]",
         "recipe[imos_core::nco]",
         "recipe[imos_rsync]",
-        "recipe[imos_webapps::generic_webapp]"
+        "recipe[imos_webapps::generic_webapp]",
+        "recipe[talend]",
+        "recipe[talend::trigger]"
     ],
     "imos_users": {
         "groups": [ "users", "projectofficer" ]
@@ -191,6 +193,32 @@
                     }
                 ]
             }
+        ]
+    },
+    "talend": {
+        "data1": "/mnt/imos-t3",
+        "data2_ro": "/mnt/imos-t4",
+        "data2_rw": "/mnt/imos-t4",
+        "data3": "/mnt/opendap/2",
+        "geonetwork_data_bag": "geonetwork",
+        "jenkins_job": "talend_build",
+        "common_parameters": {
+            "Destination_Database": "harvest?loginTimeout=1000&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory",
+            "Destination_Port": "5432",
+            "Destination_Server": "#{node['talend']['destination_database_server']}",
+            "Destination_Schema": "#{@job_common_name}",
+            "Destination_Login": "#{@job_common_name}",
+            "Destination_Password": "#{Talend::PostgresqlHelper::get_role_password('postgresql_roles', 'db_po_main', @job_common_name)}",
+            "Metadata_Username": "#{Chef::EncryptedDataBagItem.load('passwords', node['talend']['geonetwork_data_bag'])['username']}",
+            "Metadata_Password": "#{Chef::EncryptedDataBagItem.load('passwords', node['talend']['geonetwork_data_bag'])['password']}",
+            "Metadata_URL": "#{Chef::EncryptedDataBagItem.load('passwords', node['talend']['geonetwork_data_bag'])['url']}",
+            "Metadata_SpatialTable": "#{@job_common_name}_map",
+            "Metadata_SpatialColumn": "geom",
+            "Metadata_SpatialResolution": "1"
+        },
+        "jobs": [
+            "acorn_radial_nonqc",
+            "soop_co2"
         ]
     }
 }

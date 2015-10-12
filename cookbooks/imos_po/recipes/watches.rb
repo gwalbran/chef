@@ -14,6 +14,9 @@ data_services_dir = node['imos_po']['data_services']['dir']
 data_services_watch_dir = File.join(data_services_dir, "watch.d")
 watch_exec_wrapper = node['imos_po']['watch_exec_wrapper']
 
+package 'libtrollop-ruby'
+package 'ruby-json'
+
 # Allow anyone in 'projectofficer' group to sudo to user 'projectofficer'
 sudo 'data_services_watches' do
   user     node['imos_po']['data_services']['user']
@@ -29,8 +32,7 @@ template watch_exec_wrapper do
   group  'root'
   mode   0755
   variables ({
-    :env => node['imos_po']['data_services']['env'],
-    :lib => node['imos_po']['data_services']['lib']
+    :env => node['imos_po']['data_services']['env']
   })
 end
 

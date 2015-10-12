@@ -1,0 +1,14 @@
+{
+    "id": "soop_co2",
+    "artifact_filename": "SOOP_CO2_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "63db5801-cc19-40ef-83b3-85ccba884cf7",
+        "Metadata_SpatialTable": "soop_co2_trajectory_map",
+        "Metadata_SpatialResolution": "3"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SOOP/SOOP-CO2/.*\\.nc$"
+        ]
+    }
+}
