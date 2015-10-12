@@ -8,20 +8,6 @@
 #
 # Sets up a server to allow project officers to do data manipulation
 
-def generate_env_file(file_path, vars)
-  env_content = "#!/bin/bash\n"
-  vars.each do |var|
-    env_content += "export #{var}\n"
-  end
-
-  file file_path do
-    user    node['imos_po']['data_services']['user']
-    group   "projectofficer"
-    mode    00444
-    content env_content
-  end
-end
-
 node['imos_po']['data_services']['packages'].each do |pkg|
   package pkg
 end
@@ -87,25 +73,25 @@ end
 # Inject those variables to the cronjobs
 # Please note all variables here must be fully expanded to avoid scripts
 # needing to evaluate them at runtime
-data_services_vars = [
-  "OPENDAP_DIR='#{node['imos_po']['data_services']['opendap_dir']}'",
-  "PUBLIC_DIR='#{node['imos_po']['data_services']['public_dir']}'",
-  "ARCHIVE_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
-  "INCOMING_DIR='#{node['imos_po']['data_services']['incoming_dir']}'",
-  "ERROR_DIR='#{node['imos_po']['data_services']['error_dir']}'",
-  "GRAVEYARD_DIR='#{node['imos_po']['data_services']['graveyard_dir']}'",
-  "OPENDAP_IMOS_DIR='#{node['imos_po']['data_services']['opendap_dir']}/1/IMOS/opendap'",
-  "PUBLIC_IMOS_DIR='#{node['imos_po']['data_services']['public_dir']}'",
-  "ARCHIVE_IMOS_DIR='#{node['imos_po']['data_services']['archive_dir']}'",
-  "WIP_DIR='#{node['imos_po']['wip_dir']}'",
-  "EMAIL_ALIASES='#{node['imos_po']['email_aliases']}'",
-  "DATA_SERVICES_DIR='#{data_services_dir}'",
-  "LOG_DIR='#{node['imos_po']['data_services']['log_dir']}'",
-  "S3CMD_CONFIG='#{node['imos_po']['s3']['config_file']}'",
-  "S3_BUCKET='#{node['imos_po']['s3']['bucket']}'",
-  "MAILX_CONFIG='#{node['imos_po']['mailx']['config_file']}'",
-  "HARVESTER_TRIGGER='sudo -u #{node['talend']['user']} #{node['talend']['trigger']['bin']} -c #{node['talend']['trigger']['config']}'"
-]
+data_services_vars = {
+  'OPENDAP_DIR'       => node['imos_po']['data_services']['opendap_dir'],
+  'PUBLIC_DIR'        => node['imos_po']['data_services']['public_dir'],
+  'ARCHIVE_DIR'       => node['imos_po']['data_services']['archive_dir'],
+  'INCOMING_DIR'      => node['imos_po']['data_services']['incoming_dir'],
+  'ERROR_DIR'         => node['imos_po']['data_services']['error_dir'],
+  'GRAVEYARD_DIR'     => node['imos_po']['data_services']['graveyard_dir'],
+  'OPENDAP_IMOS_DIR'  => node['imos_po']['data_services']['opendap_dir'] + "/1/IMOS/opendap",
+  'PUBLIC_IMOS_DIR'   => node['imos_po']['data_services']['public_dir'],
+  'ARCHIVE_IMOS_DIR'  => node['imos_po']['data_services']['archive_dir'],
+  'WIP_DIR'           => node['imos_po']['wip_dir'],
+  'EMAIL_ALIASES'     => node['imos_po']['email_aliases'],
+  'DATA_SERVICES_DIR' => data_services_dir,
+  'LOG_DIR'           => node['imos_po']['data_services']['log_dir'],
+  'S3CMD_CONFIG'      => node['imos_po']['s3']['config_file'],
+  'S3_BUCKET'         => node['imos_po']['s3']['bucket'],
+  'MAILX_CONFIG'      => node['imos_po']['mailx']['config_file'],
+  'HARVESTER_TRIGGER' => "sudo -u #{node['talend']['user']} #{node['talend']['trigger']['bin']} -c #{node['talend']['trigger']['config']}"
+}
 
 file "/etc/profile.d/data-services.sh" do
   mode    00644
@@ -120,7 +106,16 @@ done
 end
 
 # plant env file in data-services repo with all related variables
-generate_env_file(node['imos_po']['data_services']['env'],  data_services_vars)
+template node['imos_po']['data_services']['env'] do
+  source  "env.erb"
+  user    node['imos_po']['data_services']['user']
+  group   node['imos_po']['data_services']['group']
+  mode    00444
+  variables ({
+    :vars => data_services_vars,
+    :lib  => node['imos_po']['data_services']['lib']
+  })
+end
 
 if node['imos_po']['data_services']['cronjobs']
   # Install cron jobs for project officers

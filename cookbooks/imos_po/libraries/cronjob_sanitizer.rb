@@ -35,7 +35,7 @@ class Chef::Recipe::CronjobSanitizer
 
       file_out = File.new(cronjob_out, "w")
       file_out.write(chef_header())
-      file_out.write(cron_vars.join("\n") + "\n")
+      file_out.write(cron_vars.collect { |k, v| "#{k}='#{v}'" }.join("\n") + "\n")
       file_out.write file_out_buffer
       file_out.close
     rescue
