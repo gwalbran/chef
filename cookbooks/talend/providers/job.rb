@@ -141,7 +141,7 @@ action :schedule do
 
     wrapper_script = ::File.join(job_bin_dir, "#{job_name}.sh")
 
-    cron_command = "#{node['imos_task_spooler']['tsp_if_not_queued']} #{Talend::JobHelper.job_command(new_resource)}"
+    cron_command = "#{node['imos_task_spooler']['tsp_if_not_queued']} #{job_name} #{Talend::JobHelper.job_command(new_resource)}"
 
     file wrapper_script do
       owner   new_resource.process_owner
