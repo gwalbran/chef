@@ -54,7 +54,7 @@ default['imos_po']['data_services']['packages'] = [
   'lftp',
   'libhdf5-serial-dev',
   'libnetcdf-dev',
-  'mdbtools'
+  'mdbtools',
   'python-beautifulsoup',
   'python-dev',
   'python-matplotlib',
@@ -63,7 +63,7 @@ default['imos_po']['data_services']['packages'] = [
   'python-psycopg2',
   'python-scipy',
   'python-scipy',
-  'sqlite3',
+  'sqlite3'
 ]
 
 # All required python plugins
