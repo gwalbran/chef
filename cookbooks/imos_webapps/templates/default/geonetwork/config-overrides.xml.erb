@@ -86,6 +86,7 @@
             <param name="LinkMonitorFixedDelaySeconds" value="<%= @custom_parameters['link_monitor']['fixed_delay_seconds'] || 600 %>"/>
             <param name="LinkMonitorServiceReindexIntervalSeconds" value="<%= @custom_parameters['link_monitor']['reindex_interval_seconds'] || 1800 %>"/>
             <param name="LinkMonitorServicePercentWorkingThreshold" value="<%= @custom_parameters['link_monitor']['percent_working_threshold'] || 90 %>"/>
+            <param name="LinkMonitorServiceMaxFailureRate" value="<%= @custom_parameters['link_monitor']['max_failure_rate'] || 0.1 %>"/>
             <param name="LinkMonitorServiceMaxChecks" value="<%= @custom_parameters['link_monitor']['max_checks'] || 10 %>"/>
             <param name="LinkMonitorServiceTimeout" value="<%= @custom_parameters['link_monitor']['timeout'] || 15 %>"/>
             <param name="LinkMonitorServiceFreshness" value="<%= @custom_parameters['link_monitor']['freshness'] || 3600 %>"/>
