@@ -176,6 +176,14 @@
                         "config_template_dir":   "geonetwork",
                         "geoserver":             "http://localhost/geonetwork",
                         "jndis":                 [ "geonetwork" ],
+                        "injected_variables": [
+                            [ "wps.xml",          "/wps/enabled",                      "true" ],
+                            [ "wps.xml",          "/wps/maxAsynchronousProcesses",     1 ],
+                            [ "wps.xml",          "/wps/maxAsynchronousExecutionTime", 600 ],
+                            [ "wps.xml",          "/wps/resourceExpirationTimeout",    86400 ],
+                            [ "wps/gogoduck.xml", "/gogoduck/threadCount",             1 ],
+                            [ "wps/gogoduck.xml", "/gogoduck/fileLimit",               1024 ]
+                        ],
                         "custom_def":            "geonetwork",
                         "data_bag":              "catalogue_123_nogit",
                         "data_dir":              "/var/lib/geonetwork",
