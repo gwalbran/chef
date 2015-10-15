@@ -28,6 +28,8 @@ define :geoserver do
     recursive true
   end
 
+  package 'libnetcdf-dev' # Required by the gogoduck plugin
+
   geoserver_username = Chef::EncryptedDataBagItem.load('passwords', 'geoserver')['username']
   geoserver_password = Chef::EncryptedDataBagItem.load('passwords', 'geoserver')['password']
 
