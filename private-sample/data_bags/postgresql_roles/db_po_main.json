@@ -1,5 +1,5 @@
 {
-    "id": "dbprod_main",
+    "id": "db_po_main",
     "roles": [
         {
             "name": "harvest_read_group",
