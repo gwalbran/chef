@@ -82,6 +82,57 @@ Error files will be moved to `src/error` (directory will be created automaticall
 $ ls -l src/error/
 ```
 
+### Deploying Harvesters Not From Jenkins
+
+Data bag definitions for deploying harvesters are at `data_bags/talend/`:
+```
+$ ls -l data-bags/talend/
+```
+
+By default harvesters will be deployed from Jenkins using the job defined at
+`node['talend']['jenkins_job']` or what is defined in the talend data bag like:
+```
+$ cat data_bags/talend/acorn_radial_nonqc.json
+{
+    "id": "acorn_radial_nonqc",
+    "artifact_filename": "ACORN_radial_nonQC_harvester_Latest.zip",
+    "event": {
+        "regex": [
+            "^IMOS/ACORN/radial/.*/.*FV00_radial\\.nc$"
+        ]
+    }
+}
+```
+
+In order to deploy harvesters build from TOS, simply export them as a zip file,
+then place them in your `chef` directory, or in `chef/tmp` and modify the
+corresponding data bag to deploy the file directly (edit
+`data_bags/talend/acorn_radial_nonqc.json`):
+```
+{
+    "id": "acorn_radial_nonqc",
+    "artifact_id": "/vagrant/tmp/ACORN_radial_nonQC_harvester_1.0.zip",
+    "event": {
+        "regex": [
+            "^IMOS/ACORN/radial/.*/.*FV00_radial\\.nc$"
+        ]
+    }
+}
+```
+
+Notice `artifact_filename` becomes `artifact_id`. `/vagrant` will point to the
+root of your chef repository, so in your chef directory you are expected to
+have:
+```
+[user@host chef]$ ls -l tmp/ACORN_radial_nonQC_harvester_1.0.zip 
+-rw-------  1 dan  dan  17416021 Oct  9 11:56 tmp/ACORN_radial_nonQC_harvester_1.0.zip
+```
+
+Then you need to deploy the harvester running:
+```
+$ vagrant provision po
+```
+
 ### Importing Geonetwork Records
 
 By default, po box can import from https://catalogue-123.aodn.org.au/geonetwork
