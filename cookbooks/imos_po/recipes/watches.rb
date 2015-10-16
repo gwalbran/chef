@@ -37,7 +37,7 @@ template watch_exec_wrapper do
 end
 
 if node['imos_po']['data_services']['watches']
-  package 'incron'
+  include_recipe 'imos_core::incron'
   package 'lsof'
 
   template "/etc/incron.d/po" do
