@@ -1,0 +1,13 @@
+diff -urN incron-0.5.10/usertable.cpp incron-0.5.10.fork_and_wait/usertable.cpp
+--- incron-0.5.10/usertable.cpp	2012-04-07 08:19:27.000000000 +1000
++++ incron-0.5.10.fork_and_wait/usertable.cpp	2015-10-16 13:24:24.940584364 +1100
+@@ -410,6 +410,9 @@
+       pd.pWatch = NULL;
+     }
+ 
++    int status;
++    waitpid(pid, &status, 0);
++
+     s_procMap.insert(PROC_MAP::value_type(pid, pd));
+   }
+   else {
