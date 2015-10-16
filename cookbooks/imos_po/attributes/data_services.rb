@@ -47,7 +47,6 @@ default['imos_po']['data_services']['clone_repository'] = true
 # Required packages
 default['imos_po']['data_services']['packages'] = [
   'bc',
-  'gdal-bin',
   'heirloom-mailx',
   'imagemagick',
   'ipython',
