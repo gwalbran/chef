@@ -25,6 +25,9 @@ main() {
         return 0
     fi
 
+    # make file read only before giving it to incoming handlers
+    chmod -w $file
+
     eval $command $file "$@" 2>&1 | log_out
 
     # make sure file was handled, move to error directory if not
