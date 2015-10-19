@@ -10,8 +10,9 @@ source <%= @env %> || exit 255
 # "$@" - extra parameters for command
 main() {
     declare -r JOB_NAME=$1; shift; export JOB_NAME
-    local file=$1; shift
+    declare -r INCOMING_FILE=$1; shift; export INCOMING_FILE
     local command=$1; shift
+    local file=$INCOMING_FILE
     local file_basename=`basename $file`
 
     if [ ! -f $file ]; then
