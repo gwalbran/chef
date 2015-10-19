@@ -62,12 +62,18 @@ sudo 'data_services' do
 end
 
 # Allow projectofficer user to sudo as talend
-sudo 'projectofficer_as_talend' do
-  user     node['imos_po']['data_services']['user']
-  runas    node['talend']['user']
-  commands [ "ALL" ]
-  host     "ALL"
-  nopasswd true
+
+harvester_trigger_cmd = "/bin/true"
+if node['talend']
+  sudo 'projectofficer_as_talend' do
+    user     node['imos_po']['data_services']['user']
+    runas    node['talend']['user']
+    commands [ "ALL" ]
+    host     "ALL"
+    nopasswd true
+  end
+
+  harvester_trigger_cmd = "sudo -u #{node['talend']['user']} #{node['talend']['trigger']['bin']} -c #{node['talend']['trigger']['config']}"
 end
 
 # Inject those variables to the cronjobs
@@ -90,7 +96,7 @@ data_services_vars = {
   'S3CMD_CONFIG'      => node['imos_po']['s3']['config_file'],
   'S3_BUCKET'         => node['imos_po']['s3']['bucket'],
   'MAILX_CONFIG'      => node['imos_po']['mailx']['config_file'],
-  'HARVESTER_TRIGGER' => "sudo -u #{node['talend']['user']} #{node['talend']['trigger']['bin']} -c #{node['talend']['trigger']['config']}"
+  'HARVESTER_TRIGGER' => harvester_trigger_cmd
 }
 
 file "/etc/profile.d/data-services.sh" do
