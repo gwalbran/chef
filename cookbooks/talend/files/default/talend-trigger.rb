@@ -51,17 +51,20 @@ def parse_file_path(file)
   return real_file, index_as
 end
 
-def prepare_file(tmp_base, file)
+def prepare_file(tmp_base, file, is_deletion = false)
   real_file, index_as = parse_file_path(file)
 
-  if @noop
-    $logger.info "'#{real_file}' => '#{index_as}'"
+  if is_deletion
+    $logger.info "DEL '#{real_file}' => '#{index_as}'"
   else
-    target_dir = File.join(tmp_base, File.dirname(index_as))
-    target_file = File.join(tmp_base, index_as)
+    $logger.info "ADD '#{real_file}' => '#{index_as}'"
+    if ! @noop
+      target_dir = File.join(tmp_base, File.dirname(index_as))
+      target_file = File.join(tmp_base, index_as)
 
-    FileUtils.mkdir_p(target_dir)
-    FileUtils.cp(real_file, target_file)
+      FileUtils.mkdir_p(target_dir)
+      FileUtils.cp(real_file, target_file)
+    end
   end
 
   return index_as
@@ -147,14 +150,9 @@ def handle_files(files, delete = false)
   files_to_index = []
 
   Dir.mktmpdir { |tmp_base|
-    if delete
-      files_to_index = files
-    else
-      files.each do |file|
-        files_to_index << prepare_file(tmp_base, file)
-      end
+    files.each do |file|
+      files_to_index << prepare_file(tmp_base, file, delete)
     end
-
     retval = match_and_execute(tmp_base, files_to_index)
   }
 
