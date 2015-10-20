@@ -42,35 +42,30 @@ describe 'talend trigger' do
   describe 'match_and_execute' do
     before :each do
       @files_processed = {}
-      def execute_for_files(item, tmp_base, files_to_process)
-        @files_processed[item['name']] = files_to_process
+      def execute_for_files(name, item, tmp_base, files_to_process)
+        @files_processed[name] = files_to_process
         return 0
       end
 
       json = '
 {
-    "triggers": [
-        {
-            "name": "harvester1",
-            "regex": [
-                "^a/b/c/.*\\.nc$"
-            ]
-        },
-        {
-            "name": "harvester2",
-            "regex": [
-                "^b/c/d/.*\\.nc$",
-                "^c/d/e/.*\\.nc$"
-            ]
-        },
-        {
-            "name": "harvester3",
-            "regex": [
-                "^b/c/d/.*\\.nc$",
-                "^d/e/f/.*\\.nc$"
-            ]
-        }
-    ]
+    "harvester1": {
+        "regex": [
+            "^a/b/c/.*\\.nc$"
+        ]
+    },
+    "harvester2": {
+        "regex": [
+            "^b/c/d/.*\\.nc$",
+            "^c/d/e/.*\\.nc$"
+        ]
+    },
+    "harvester3": {
+        "regex": [
+            "^b/c/d/.*\\.nc$",
+            "^d/e/f/.*\\.nc$"
+        ]
+    }
 }'
       @config = JSON.parse(json)
     end

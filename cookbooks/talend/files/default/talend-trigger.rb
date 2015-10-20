@@ -70,9 +70,8 @@ def prepare_file(tmp_base, file, is_deletion = false)
   return index_as
 end
 
-def execute_for_files(item, tmp_base, files_to_process)
+def execute_for_files(name, item, tmp_base, files_to_process)
   exec = item['exec']
-  name = item['name']
 
   retval = 0
   Dir.mktmpdir { |tmp_log_dir|
@@ -116,11 +115,10 @@ def match_and_execute(tmp_base, files)
   # rather than the list of files. That way we can bunch together all the files
   # that one harvester need and potentially speed up things
 
-  @config['triggers'].each do |item|
+  @config.each do |name, item|
     files_to_process = []
 
     item['regex'].each do |regex|
-
       files.each do |file|
         if file =~ Regexp.new(regex)
           files_to_process << file
@@ -128,7 +126,7 @@ def match_and_execute(tmp_base, files)
       end
     end
 
-    retval += execute_for_files(item, tmp_base, files_to_process.uniq) unless files_to_process.empty?
+    retval += execute_for_files(name, item, tmp_base, files_to_process.uniq) unless files_to_process.empty?
 
     files_processed += files_to_process
   end
@@ -182,16 +180,13 @@ if __FILE__ == $0
 
     Example config file:
     {
-        "triggers": [
-            {
-                "name": "some_name",
-                "exec": "/usr/bin/executable --base %{base} --file_list %{file_list} --log_dir %{log_dir}",
-                "regex": [
-                    "^something\\.nc$",
-                    "^somethin.*\\.nc$"
-                ]
-            }
-        ]
+        "trigger_name": {
+            "exec": "/usr/bin/executable --base %{base} --file_list %{file_list} --log_dir %{log_dir}",
+            "regex": [
+                "^something\\.nc$",
+                "^somethin.*\\.nc$"
+            ]
+        }
     }
 
     Options:
