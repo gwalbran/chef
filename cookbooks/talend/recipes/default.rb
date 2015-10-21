@@ -114,11 +114,16 @@ node['talend']['jobs'].each do |job_name|
 
 end
 
-# Time to cleanup unused talend directories
+# Time to cleanup unused talend directories and triggers
 existing_talend_job_dirs = File.exist?(jobs_dir) ? Dir.entries(jobs_dir).select { |dir_name| dir_name != '.' && dir_name != '..' } : []
-job_to_cleanup = existing_talend_job_dirs - installed_talend_jobs
+existing_talend_triggers = Talend::JobHelper.get_triggers(node['talend']['trigger']['config'])
 
-job_to_cleanup.each do |job_id|
+dirs_to_cleanup = existing_talend_job_dirs - installed_talend_jobs
+triggers_to_cleanup = existing_talend_triggers - installed_talend_jobs
+
+jobs_to_cleanup = dirs_to_cleanup + triggers_to_cleanup
+
+jobs_to_cleanup.uniq.each do |job_id|
   talend_job job_id do
     action      :remove
     common_name job_id

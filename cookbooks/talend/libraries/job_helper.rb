@@ -9,8 +9,9 @@
 
 class Talend
   class JobHelper
-    # Static functions for paths in the talend hierarchy
+    require 'json'
 
+    # Static functions for paths in the talend hierarchy
     def self.job_dir(resource)
       ::File.join(resource.jobs_dir, resource.name)
     end
@@ -81,24 +82,32 @@ class Talend
       return job_parameters
     end
 
-    def self.build_trigger_config(run_context, node)
-      trigger_config = []
+    def self.get_triggers(trigger_file)
+      config = json_as_hash_from_file(trigger_file)
+      triggers = []
+      triggers = config.collect { |k, v| k }
+      return triggers
+    end
 
-      # Iterate on all talend jobs and create triggers
-      run_context.resource_collection.each do |resource|
-        if resource.is_a?(Chef::Resource::TalendJob) &&
-             resource.action.include?(:schedule) &&
-             ! resource.trigger['event'].empty?
-          job_parameters = get_job_parameters(resource, node)
-          trigger_config << {
-            'name'  => resource.name,
-            'exec'  => job_command_single_file(resource),
-            'regex' => resource.trigger['event']['regex']
-          }
-        end
+    def self.add_trigger(trigger_file, name, exec, regex)
+      config = json_as_hash_from_file(trigger_file)
+
+      config[name] = {
+        'exec'  => exec,
+        'regex' => regex
+      }
+
+      hash_as_json_to_file(trigger_file, config)
+    end
+
+    def self.remove_trigger(trigger_file, name)
+      config = json_as_hash_from_file(trigger_file)
+
+      if config[name]
+        config.delete(name)
       end
 
-      return trigger_config
+      hash_as_json_to_file(trigger_file, config)
     end
 
     private
@@ -112,6 +121,25 @@ class Talend
       end
 
       return config_value
+    end
+
+    def self.json_as_hash_from_file(file)
+      retval = {}
+      begin
+        retval = JSON.parse(File.read(file))
+      rescue
+        Chef::Log.warn("Not a valid json file '#{file}'")
+      end
+      return retval
+    end
+
+    def self.hash_as_json_to_file(file, config)
+      # Use a temp file to obtain atomicity for file modifications
+      tmp_file = Tempfile.new(File.basename(file), File.dirname(file))
+      tmp_file.write(JSON.pretty_generate(config, :indent => "    ") + "\n")
+      tmp_file.close
+      FileUtils.mv(tmp_file.path, file)
+      FileUtils.chmod(00644, file)
     end
 
   end
