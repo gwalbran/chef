@@ -7,6 +7,12 @@
 # All rights reserved - Do Not Redistribute
 #
 
+# Remove mlocate if there are foreign mounts, just because it'll start indexing
+# the whole mount point. Especially not good if there's a s3fs mount
+package 'mlocate' do
+  action :remove
+end
+
 # Most mounts would require the nfs package
 package 'nfs-common'
 
