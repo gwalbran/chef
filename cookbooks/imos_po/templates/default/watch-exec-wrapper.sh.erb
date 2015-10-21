@@ -33,7 +33,7 @@ main() {
 
     # make sure file was handled, move to error directory if not
     if [ -f $file ]; then
-        file_error $file "Not moved out of incoming directory"
+        file_error "Not moved out of incoming directory"
     fi
 }
 
