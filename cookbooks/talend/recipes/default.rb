@@ -64,16 +64,16 @@ node['talend']['jobs'].each do |job_name|
 
   job_common_name = get_job_common_name(job_name, bag_item)
 
-  # If artifact_id is defined, use data bag, otherwise assemble one
-  artifact_id = bag_item['artifact_id']
   artifact_manifest = nil
-  if ! artifact_id
+  if bag_item['artifact_id']
+    artifact_manifest = ImosArtifacts::Deployer.get_artifact_manifest(bag_item['artifact_id'])
+  elsif bag_item['artifact_filename']
     artifact_id = job_name
-    artifact_manifest = {
-      "id"       => job_name,
-      "job"      => bag_item['jenkins_job'] || node['talend']['jenkins_job'],
-      "filename" => bag_item['artifact_filename']
-    }
+    jenkins_job = bag_item['jenkins_job'] || node['talend']['jenkins_job']
+    artifact_filename = bag_item['artifact_filename']
+    artifact_manifest = ImosArtifacts::Deployer.get_artifact_manifest("#{jenkins_job}/#{artifact_filename}")
+  else
+    Chef::Application.fatal!("Data bag '#{}' does not have either artifact_id of artifact_filename defined")
   end
 
   job_id = "#{job_name}-#{artifact_id}"

@@ -117,7 +117,7 @@ template node['imos_po']['data_services']['env'] do
   source  "env.erb"
   user    node['imos_po']['data_services']['user']
   group   node['imos_po']['data_services']['group']
-  mode    00444
+  mode    00644
   variables ({
     :vars => data_services_vars,
     :lib  => node['imos_po']['data_services']['lib']
