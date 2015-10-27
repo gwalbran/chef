@@ -1,0 +1,13 @@
+{
+    "id": "abos_sots",
+    "artifact_filename": "ABOS_SOTS_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "723a3e85-04ae-40e6-ac2a-237a93d84abe",
+        "Metadata_SpatialTable": "timeseries"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ABOS/SOTS/.*\\.nc$"
+        ]
+    }
+}

@@ -227,6 +227,7 @@
             "Metadata_SpatialResolution": "1"
         },
         "jobs": [
+            "abos_sots",
             "acorn_radial_nonqc",
             "argo",
             "soop_co2"
