@@ -11,6 +11,7 @@
         "recipe[database_migrations]",
         "recipe[imos_po]",
         "recipe[imos_po::data_services]",
+        "recipe[imos_po::s3cmd]",
         "recipe[imos_po::netcdf_checker]",
         "recipe[imos_core::nco]",
         "recipe[imos_rsync]",
@@ -76,6 +77,7 @@
             "archive_dir": "/mnt/imos-t4/IMOS/archive",
             "incoming_dir": "/var/incoming",
             "error_dir": "/vagrant/src/error",
+            "data_dir": "/s3/imos-data",
             "graveyard_dir": "/vagrant/src/graveyard"
         }
     },

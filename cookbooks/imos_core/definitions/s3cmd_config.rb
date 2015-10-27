@@ -15,8 +15,15 @@ define :s3cmd_config do
 
   if Chef::Config['dev']
     # Mock s3cmd on mocked machines
-    link "/usr/bin/s3cmd" do
-      to "/bin/true"
+    cookbook_file "/usr/bin/s3cmd" do
+      cookbook "imos_core"
+      source   "s3cmd"
+      mode     00755
+    end
+
+    # mocked directory for bucket storage
+    directory "/s3" do
+      mode 00777
     end
 
     access_key = "MOCKED_access_key"

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# transform a bucket uri (s3://something/dir/file) to a file path under /mnt
+# like /mnt/something/dir/file
+bucket_uri_to_file_path() {
+    local bucket_uri=$1; shift
+    echo $bucket_uri | sed -e 's#s3://#/s3/#'
+}
+
+# main
+main() {
+    local cmd src dst
+    while [ x"$1" != x ]; do
+        if [ "${1:0:1}" = "-" ]; then
+            true
+        elif [ x"$cmd" = x ]; then
+            cmd=$1
+        elif [ x"$src" = x ]; then
+            src=$1
+        elif [ x"$dst" = x ]; then
+            dst=$1
+        fi
+        shift
+    done
+
+    [ x"$cmd" = x ] && echo "Command not specified" && exit 1
+    [ x"$src" = x ] && echo "Source file not specified" && exit 1
+
+    if [ "$cmd" == "sync" ] || [ "$cmd" == "put" ]; then
+        [ x"$dst" = x ] && echo "Destination not specified" && exit 1
+        dst=`bucket_uri_to_file_path $dst`
+        mkdir -p `dirname $dst`
+        chmod 664 $src
+        cp $src $dst
+    elif [ "$cmd" == "del" ]; then
+        rm -f $src
+    else
+        echo "Unknown command '$cmd'" && exit 1
+    fi
+}
+
+main "$@"
