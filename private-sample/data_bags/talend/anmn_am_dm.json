@@ -1,0 +1,12 @@
+{
+    "id": "anmn_am_dm",
+    "artifact_filename": "anmn_am_dm_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "89b495cc-7382-43c0-abef-d1e66738a924"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/AM/.*delayed.*\\.nc$"
+        ]
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "id": "anmn_acidification_nrt",
+    "artifact_filename": "ANMN_acidification_nrt_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "4d3d4aca-472e-4616-88a5-df0f5ab401ba",
+        "Metadata_SpatialTable": "anmn_am_nrt_map"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/AM/.*real-time.*\\.nc$"
+        ]
+    }
+}

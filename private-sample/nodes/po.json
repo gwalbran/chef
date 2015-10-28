@@ -229,6 +229,8 @@
         "jobs": [
             "abos_sots",
             "acorn_radial_nonqc",
+            "anmn_acidification_nrt",
+            "anmn_am_dm",
             "argo",
             "soop_co2"
         ]
