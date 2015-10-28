@@ -7,7 +7,8 @@
     },
     "event": {
         "regex": [
-            "^IMOS/ABOS/SOTS/.*\\.nc$"
+            "^IMOS/ABOS/SOTS/.*\\.nc$",
+            "^IMOS/ABOS/ASFS/SOFS/((?!_daily).)*\\.nc$"
         ]
     }
 }
