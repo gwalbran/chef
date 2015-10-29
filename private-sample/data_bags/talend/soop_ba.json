@@ -1,0 +1,13 @@
+{
+    "id": "soop_ba",
+    "artifact_filename": "SOOP_BA_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "8edf509b-1481-48fd-b9c5-b95b42247f82",
+        "Metadata_SpatialTable": "soop_ba_trajectory_map"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SOOP/SOOP-BA/.*\\.nc$"
+        ]
+    }
+}
