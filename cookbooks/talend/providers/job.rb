@@ -121,13 +121,15 @@ end
 
 # Remove a talend job
 action :remove do
-  rubbish_dir = new_resource.rubbish_dir
+  # Remove trigger for job (if there is one)
+  Talend::JobHelper.remove_trigger(node['talend']['trigger']['config'], job_name)
 
-  rubbish_dir_for_job = ::File.join(rubbish_dir, "#{job_name}-#{Time.now.strftime('%Y%m%d-%H%M%S')}")
-
-  Chef::Log.info("Talend '#{job_name}' was abandoned, moving to '#{rubbish_dir_for_job}'")
-
-  ::FileUtils.mv(job_dir, rubbish_dir_for_job)
+  if Dir.exists?(job_dir)
+    rubbish_dir = new_resource.rubbish_dir
+    rubbish_dir_for_job = ::File.join(rubbish_dir, "#{job_name}-#{Time.now.strftime('%Y%m%d-%H%M%S')}")
+    Chef::Log.info("Talend '#{job_name}' was abandoned, moving to '#{rubbish_dir_for_job}'")
+    ::FileUtils.mv(job_dir, rubbish_dir_for_job)
+  end
 end
 
 # Build wrapper script for job
@@ -168,15 +170,12 @@ action :schedule do
 
   else
     # Trigger a job based on pattern matching
-    json = {}
-
-    json['triggers'] = Talend::JobHelper.build_trigger_config(run_context, node)
-
-    file node['talend']['trigger']['config'] do
-      owner   new_resource.owner
-      group   new_resource.group
-      content JSON.pretty_generate(json, :indent => "    ")
-    end
+    Talend::JobHelper.add_trigger(
+      node['talend']['trigger']['config'],
+      new_resource.name,
+      Talend::JobHelper.job_command_single_file(new_resource),
+      new_resource.trigger['event']['regex']
+    )
   end
 
 end
