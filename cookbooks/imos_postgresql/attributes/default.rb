@@ -1,4 +1,3 @@
-
 default[:imos_postgresql][:postgresql_databases_data_bag] = 'postgresql_databases'
 default[:imos_postgresql][:postgresql_roles_data_bag]     = 'postgresql_roles'
 default[:imos_postgresql][:default_role_connection_limit] = 5
@@ -34,4 +33,3 @@ default[:imos_postgresql][:default_database_options] = {
   'lc_collate' => 'en_AU.UTF-8',
   'lc_ctype' => 'en_AU.UTF-8'
 }
-

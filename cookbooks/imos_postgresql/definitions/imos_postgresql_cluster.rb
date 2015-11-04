@@ -28,7 +28,8 @@ define :imos_postgresql_cluster, :name => nil, :version => nil, :config => nil, 
   recovery = params[:recovery]
   basebackup = params[:basebackup]
 
-  base_config_dir = "/etc/postgresql/#{version}/#{name}"
+  base_config_parent_dir = "/etc/postgresql/#{version}"
+  base_config_dir = "#{base_config_parent_dir}/#{name}"
   base_data_dir = "/var/lib/postgresql/#{version}/#{name}"
 
   hba_conf_file = "#{base_config_dir}/pg_hba.conf"
@@ -47,7 +48,10 @@ define :imos_postgresql_cluster, :name => nil, :version => nil, :config => nil, 
   # Drop default postgres cluster, that will take resources like tcp/ip ports
   execute "drop-default-postgres-cluster" do
     command <<-EOS
-      pg_ctlcluster #{version} main stop || exit 1;
+      if pg_ctlcluster #{version} main status; then
+        pg_ctlcluster #{version} main stop || exit 1;
+      fi
+
       PGDATADIR=$( pg_lsclusters -h | tr -s ' ' | grep ' main ' | cut -d " " -f 6 ) || exit 1;
       if [ -d "$PGDATADIR" ]; then
         mv $PGDATADIR $PGDATADIR.$(date '+%F.%s') || exit 1;
@@ -72,7 +76,13 @@ define :imos_postgresql_cluster, :name => nil, :version => nil, :config => nil, 
     action    :create
   end
 
-
+  [ base_config_parent_dir, base_config_dir ].each do |dir|
+    directory dir do
+      owner node[:imos_postgresql][:postgresql_service_user]
+      group node[:imos_postgresql][:postgresql_service_group]
+      mode  0755
+    end
+  end
 
   unless basebackup
 
@@ -175,4 +185,3 @@ define :imos_postgresql_cluster, :name => nil, :version => nil, :config => nil, 
   end
 
 end
-
