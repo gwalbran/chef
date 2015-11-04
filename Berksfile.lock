@@ -76,7 +76,8 @@ DEPENDENCIES
     path: cookbooks/imos_webapps
   java
     git: git://github.com/agileorbit-cookbooks/java.git
-    revision: 897df06b92b861d07358d6fc046013e186c13724
+    revision: 44cadd9085de42a75f0d084fdb8f84b7d7f49a25
+    ref: v1.35.0
   jenkins
     git: git://github.com/danfruehauf/jenkins.git
     revision: b2075960ac2097d3bc87a91d47139ba6929a82e3
@@ -317,8 +318,7 @@ GRAPH
     imos_java (>= 0.0.0)
     tomcat (>= 0.0.0)
   iptables (0.14.1)
-  java (1.36.0)
-    apt (>= 0.0.0)
+  java (1.35.0)
   jenkins (2.3.1)
     apt (~> 2.0)
     runit (~> 1.5)
