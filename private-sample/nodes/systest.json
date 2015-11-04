@@ -141,7 +141,7 @@
                 "vhost":          "geoserver-systest.aodn.org.au",
                 "aliases":        [ "geoserver-123.aodn.org.au" ],
                 "port":           "8082",
-                "java_options":   "-Xmx5G -Xms512m -Dgt2.jdbc.trace=true -XX:MaxPermSize=128m -DGEOSERVER_DATA_DIR=/mnt/ebs/geoserver",
+                "java_options":   "-Xmx5G -Xms512m -Dgt2.jdbc.trace=true -XX:MaxPermSize=128m -Duser.timezone=UTC -DGEOSERVER_DATA_DIR=/mnt/ebs/geoserver",
                 "data_dir":       "/mnt/ebs/geoserver",
                 "cached":         true,
                 "thread_control": true,
