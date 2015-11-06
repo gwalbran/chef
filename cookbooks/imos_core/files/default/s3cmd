@@ -28,13 +28,13 @@ main() {
 
     if [ "$cmd" == "sync" ] || [ "$cmd" == "put" ]; then
         [ x"$dst" = x ] && echo "Destination not specified" && exit 1
-        dst=`bucket_uri_to_file_path $dst`
-        mkdir -p `dirname $dst`
-        chmod 664 $src
-        cp $src $dst
+        dst=`bucket_uri_to_file_path $dst` && \
+            mkdir -p `dirname $dst` && \
+            chmod 664 $src && \
+            cp $src $dst
     elif [ "$cmd" == "del" ]; then
-        src=`bucket_uri_to_file_path $src`
-        rm -f $src
+        src=`bucket_uri_to_file_path $src` && \
+            rm -f $src
     else
         echo "Unknown command '$cmd'" && exit 1
     fi

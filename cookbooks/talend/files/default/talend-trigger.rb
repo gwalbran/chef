@@ -12,7 +12,6 @@ $logger.formatter = proc do |severity, datetime, progname, msg|
   "#{msg}\n"
 end
 
-
 @config = nil
 @noop = false
 
@@ -143,16 +142,24 @@ def match_and_execute(tmp_base, files)
   return retval
 end
 
-def handle_files(files, delete = false)
+def handle_files(files, delete = false, max_files)
   retval = 0
-  files_to_index = []
 
-  Dir.mktmpdir { |tmp_base|
-    files.each do |file|
-      files_to_index << prepare_file(tmp_base, file, delete)
-    end
-    retval = match_and_execute(tmp_base, files_to_index)
-  }
+  $logger.info "Going to process a total of '#{files.size}' files"
+
+  # Limit number of files in every iteration
+  slice_size = [files.size(), max_files].min
+  files.each_slice(slice_size).each do |files_slice|
+    $logger.info "Processing slice with '#{files_slice.size}' files"
+    files_to_index = []
+
+    Dir.mktmpdir { |tmp_base|
+      files_slice.each do |file|
+        files_to_index << prepare_file(tmp_base, file, delete)
+      end
+      retval = match_and_execute(tmp_base, files_to_index)
+    }
+  end
 
   return retval
 end
@@ -206,6 +213,9 @@ EOS
     opt :stdin, "Read files from STDIN",
       :short => '-s',
       :default => false
+    opt :max, "Max files to process at a time",
+      :short => '-m',
+      :default => 2048
     opt :noop, "No-op, only shows what files will be indexed and how",
       :short => '-n',
       :default => false
@@ -233,5 +243,5 @@ EOS
   @noop = opts[:noop]
   @base = opts[:base]
 
-  exit(handle_files(files, opts[:delete]))
+  exit(handle_files(files, opts[:delete], opts[:max]))
 end
