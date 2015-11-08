@@ -14,6 +14,7 @@ main() {
     local command=$1; shift
     local file=$INCOMING_FILE
     local file_basename=`basename $file`
+    declare -r TRANSACTION_ID=`date +%Y%m%d-%H%M%S`; export TRANSACTION_ID
 
     if [ ! -f $file ]; then
         # not a file - ignore event
