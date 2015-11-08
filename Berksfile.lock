@@ -114,6 +114,9 @@ DEPENDENCIES
     revision: 60acb62ca2ecb656b3a2e28f76e97cccbccdd4c1
   postfix
   python
+  rabbitmq
+    git: git://github.com/jjasghar/rabbitmq.git
+    revision: 39fab3715a8e6bc3341d7a9577c12aab7ba170e0
   rbenv
     git: git://github.com/fnichol/chef-rbenv.git
     revision: 0a3018634bafe58ad21c6ee271af015220e444b9
@@ -144,6 +147,9 @@ DEPENDENCIES
     revision: 4e28c886abc0c7d74dc806ef791b0d7a0322c061
     ref: v1.0.4
   sudo
+  supervisor
+    git: git://github.com/poise/supervisor.git
+    revision: 7c9aa287f66327a062287c1cb4b97b225d886e7c
   sysctl
     git: git://github.com/Youscribe/sysctl-cookbook.git
     revision: 5edc2518853244152d3067e9d36d3952744265b5
@@ -204,6 +210,12 @@ GRAPH
     java (>= 0.0.0)
     monit (>= 0.0.0)
     xml (>= 0.0.0)
+  erlang (1.5.8)
+    apt (>= 1.7.0)
+    build-essential (>= 0.0.0)
+    yum (~> 3.0)
+    yum-epel (>= 0.0.0)
+    yum-erlang_solutions (>= 0.0.0)
   external_templates (1.0.0)
   fuse (0.1.2)
     apt (>= 0.0.0)
@@ -290,8 +302,10 @@ GRAPH
     imos_users (>= 0.0.0)
     logrotate (>= 0.0.0)
     python (>= 0.0.0)
+    rabbitmq (>= 0.0.0)
     rsyslog (>= 0.0.0)
     sudo (>= 0.0.0)
+    supervisor (>= 0.0.0)
   imos_postgresql (0.2.0)
     backup (>= 0.0.0)
   imos_rsync (0.1.0)
@@ -407,6 +421,10 @@ GRAPH
   python (1.4.6)
     build-essential (>= 0.0.0)
     yum-epel (>= 0.0.0)
+  rabbitmq (4.4.0)
+    erlang (~> 1.5.0)
+    yum-epel (>= 0.0.0)
+    yum-erlang_solutions (>= 0.0.0)
   rbac (1.0.3)
   rbenv (0.7.3)
     java (> 1.4.0)
@@ -441,6 +459,8 @@ GRAPH
     apache2 (>= 0.0.0)
     windows (>= 0.0.0)
   sudo (2.6.0)
+  supervisor (0.4.12)
+    python (>= 0.0.0)
   sysctl (0.1.9)
   talend (1.0.0)
     imos_artifacts (>= 0.0.0)
@@ -463,5 +483,7 @@ GRAPH
   yum (3.2.0)
   yum-epel (0.3.6)
     yum (~> 3.0)
+  yum-erlang_solutions (0.2.3)
+    yum (~> 3.2)
   yum-mysql-community (0.1.17)
     yum (>= 3.0)

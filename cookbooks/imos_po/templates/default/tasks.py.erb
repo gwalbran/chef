@@ -1,0 +1,13 @@
+#!/usr/bin/python
+
+from celery import Celery
+import subprocess
+from os import system
+
+app = Celery('tasks', backend='amqp', broker='<%= node['imos_po']['data_services']['celeryd']['broker'] %>')
+
+@app.task(ignore_result=True)
+def handle_file(job_name, file_path, command, extra_params):
+    command = [ "<%= node['imos_po']['watch_exec_wrapper'] %>", job_name, file_path, command ] + extra_params
+    print command
+    subprocess.call(command)

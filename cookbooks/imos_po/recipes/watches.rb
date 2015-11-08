@@ -35,6 +35,7 @@ end
 
 if node['imos_po']['data_services']['watches']
   include_recipe 'imos_core::incron'
+  include_recipe 'rabbitmq'
   package 'lsof'
 
   template "/etc/incron.d/po" do
@@ -49,8 +50,41 @@ if node['imos_po']['data_services']['watches']
     })
   end
 
+  template "/etc/incron.d/po" do
+    source    "incron.d.erb"
+    variables ({
+      :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
+      :data_services_dir => data_services_dir
+    })
+  end
+
   service "incron" do
     action [:start, :enable]
+  end
+
+
+  # Celeryd configuration
+  python_pip "celery"
+  python_pip "boto"
+  include_recipe "supervisor"
+
+  directory node['imos_po']['data_services']['celeryd']['dir']
+  template node['imos_po']['data_services']['celeryd']['tasks'] do
+    source "tasks.py.erb"
+  end
+
+  cookbook_file node['imos_po']['data_services']['celeryd']['queuer'] do
+    cookbook "imos_po"
+    source   "queuer.py"
+    mode     00755
+  end
+
+  supervisor_service "celery_po" do
+    action    :enable
+    autostart true
+    command   "celeryd -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
+    directory node['imos_po']['data_services']['celeryd']['dir']
+    user      node['imos_po']['data_services']['user']
   end
 
 end

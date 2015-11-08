@@ -88,3 +88,9 @@ default['imos_po']['s3']['config_file']       = ::File.join(node['imos_po']['dat
 
 default['imos_po']['mailx']['password_data_bag'] = nil
 default['imos_po']['mailx']['config_file'] = ::File.join(node['imos_po']['data_services']['dir'], "mailrc")
+
+default['imos_po']['data_services']['celeryd']['broker']    = "amqp://"
+default['imos_po']['data_services']['celeryd']['dir']       = ::File.join(node['imos_po']['data_services']['dir'], "celeryd")
+default['imos_po']['data_services']['celeryd']['tasks']     = ::File.join(node['imos_po']['data_services']['celeryd']['dir'], "tasks.py")
+default['imos_po']['data_services']['celeryd']['queuer']    = ::File.join(node['imos_po']['data_services']['celeryd']['dir'], "queuer.py")
+default['imos_po']['data_services']['celeryd']['max_tasks'] = 4
