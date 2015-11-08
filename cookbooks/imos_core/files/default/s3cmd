@@ -30,7 +30,7 @@ main() {
         [ x"$dst" = x ] && echo "Destination not specified" && exit 1
         dst=`bucket_uri_to_file_path $dst` && \
             mkdir -p `dirname $dst` && \
-            chmod 664 $src && \
+            sudo chmod 664 $src && \
             cp $src $dst
     elif [ "$cmd" == "del" ]; then
         src=`bucket_uri_to_file_path $src` && \
