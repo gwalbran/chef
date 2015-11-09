@@ -52,6 +52,7 @@ end
 
 def prepare_file(tmp_base, file, is_deletion = false)
   real_file, index_as = parse_file_path(file)
+  real_file = File.absolute_path(real_file)
 
   if is_deletion
     $logger.info "DEL '#{real_file}' => '#{index_as}'"
@@ -62,7 +63,11 @@ def prepare_file(tmp_base, file, is_deletion = false)
       target_file = File.join(tmp_base, index_as)
 
       FileUtils.mkdir_p(target_dir)
-      FileUtils.cp(real_file, target_file)
+      FileUtils.symlink(real_file, target_file)
+      if ! File.exist?(target_file)
+        $logger.fatal "Could not create symlink '#{real_file}' => '#{index_as}'"
+        exit(1)
+      end
     end
   end
 
