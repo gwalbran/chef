@@ -70,7 +70,12 @@ if node['imos_po']['data_services']['watches']
 
   directory node['imos_po']['data_services']['celeryd']['dir']
   template node['imos_po']['data_services']['celeryd']['tasks'] do
-    source "tasks.py.erb"
+    source    "tasks.py.erb"
+    variables ({
+      :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
+      :data_services_dir => data_services_dir
+    })
+    notifies  :restart, "supervisor_service[celery_po]"
   end
 
   cookbook_file node['imos_po']['data_services']['celeryd']['queuer'] do

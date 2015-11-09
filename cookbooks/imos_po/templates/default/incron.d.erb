@@ -2,13 +2,8 @@
 @watchlists.each do |job_name, watchlist|
   watchlist['path'].each do |path|
     path = ::File.join(node['imos_po']['data_services']['incoming_dir'], path)
-    execute = ::File.join(@data_services_dir, watchlist['execute'])
-    execute_params = watchlist['execute_params']
-    if execute_params
-      execute_params.gsub!("$", "$$")
-    end
 %>
-<%= path %> IN_CLOSE_WRITE,IN_MOVED_TO <%= node['imos_po']['data_services']['celeryd']['queuer'] %> <%= job_name %> $@/$# <%= execute %> <%= execute_params %>
+<%= path %> IN_CLOSE_WRITE,IN_MOVED_TO <%= node['imos_po']['data_services']['celeryd']['queuer'] %> <%= job_name %> $@/$#
 <%
   end
 end %>
