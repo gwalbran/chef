@@ -68,12 +68,31 @@ if node['imos_po']['data_services']['watches']
   python_pip "boto"
   include_recipe "supervisor"
 
+  celery_config = node['imos_po']['data_services']['celeryd']['config']
+
   directory node['imos_po']['data_services']['celeryd']['dir']
   template node['imos_po']['data_services']['celeryd']['tasks'] do
     source    "tasks.py.erb"
     variables ({
+      :celery_config     => ::File.basename(celery_config),
       :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
       :data_services_dir => data_services_dir
+    })
+    notifies  :restart, "supervisor_service[celery_po]"
+  end
+
+  backend = node['imos_po']['data_services']['celeryd']['backend']
+  password_data_bag = node['imos_po']['data_services']['celeryd']['password_data_bag']
+  if Chef::Config[:dev] # TODO
+    password_data_bag = nil
+    backend = "rabbitmq"
+  end
+
+  template celery_config do
+    source    "celeryconfig.py.erb"
+    variables ({
+      :password_data_bag => password_data_bag,
+      :backend           => backend
     })
     notifies  :restart, "supervisor_service[celery_po]"
   end
@@ -87,7 +106,7 @@ if node['imos_po']['data_services']['watches']
   supervisor_service "celery_po" do
     action    :enable
     autostart true
-    command   "celeryd -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
+    command   "celeryd --config=#{celery_config} -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
     directory node['imos_po']['data_services']['celeryd']['dir']
     user      node['imos_po']['data_services']['user']
   end

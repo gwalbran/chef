@@ -4,7 +4,8 @@ from celery import Celery
 import subprocess
 from os import system
 
-app = Celery('tasks', backend='amqp', broker='<%= node['imos_po']['data_services']['celeryd']['broker'] %>')
+app = Celery('tasks')
+app.config_from_object('<%= @celery_config.gsub(/.py$/, "") %>')
 
 def watch_exec_wrapper(job_name, file_path, execute, execute_params):
     command = [

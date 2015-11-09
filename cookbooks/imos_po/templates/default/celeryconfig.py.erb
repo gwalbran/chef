@@ -1,0 +1,19 @@
+import urllib
+
+<% if @backend == "sqs" %>
+<% cred_data_bag = Chef::EncryptedDataBagItem.load("passwords", @password_data_bag) %>
+BROKER_URL = 'sqs://{0}:{1}@'.format(
+    urllib.quote("<%= cred_data_bag['access_key_id'] %>", safe=''),
+    urllib.quote("<%= cred_data_bag['secret_access_key'] %>", safe='')
+)
+BROKER_TRANSPORT = 'sqs'
+<% else # amqp + rabbitmq by default %>
+BROKER_URL = 'amqp://'
+BROKER_TRANSPORT = 'amqp'
+<% end %>
+
+BROKER_TRANSPORT_OPTIONS = {
+<% node['imos_po']['data_services']['celeryd']['transport_opts'].each do |k, v| %>
+<%= "    '#{k}': #{v}," %>
+<% end %>
+}
