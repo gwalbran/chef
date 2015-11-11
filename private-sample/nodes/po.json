@@ -115,7 +115,8 @@
                 {
                     "type": "host", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5"
                 }
-            ]
+            ],
+            "postgresql_version": "9.4"
         }]
     },
     "imos_devel": {
