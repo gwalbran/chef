@@ -70,7 +70,8 @@
             ],
             "config": {
                 "data_directory": "/mnt/ebs/pgsql"
-            }
+            },
+            "postgresql_version": "9.4"
         }]
     },
     "squid": {
