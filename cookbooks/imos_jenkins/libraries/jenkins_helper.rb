@@ -124,15 +124,8 @@ configure_view = { view ->
 GROOVY
   end
 
-  def self.canonicalized_path(path)
-    while ::File.symlink?(path)
-      path = ::File.readlink(path)
-    end
-    path.chomp
-  end
-
   def self.java_home
-    canonicalized_path('/usr/bin/java').gsub('/jre/bin/java', '')
+    ::File.realpath('/usr/bin/java').gsub('/jre/bin/java', '')
   end
 
   def self.global_environment
