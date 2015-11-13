@@ -29,7 +29,9 @@ template watch_exec_wrapper do
   group  'root'
   mode   0755
   variables ({
-    :env => node['imos_po']['data_services']['env']
+    :env   => node['imos_po']['data_services']['env'],
+    :user  => node['imos_po']['data_services']['user'],
+    :group => node['imos_po']['data_services']['group']
   })
 end
 

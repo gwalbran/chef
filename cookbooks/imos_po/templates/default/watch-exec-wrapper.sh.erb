@@ -28,7 +28,8 @@ main() {
     fi
 
     # make file read only before giving it to incoming handlers
-    chmod -w $file
+    sudo chmod 00444 $file && sudo chown <% @user %>:<%= @group %> $file || \
+        file_error "Error setting permissions"
 
     eval $command $file "$@" 2>&1 | log_out
 
