@@ -12,12 +12,6 @@ node['imos_po']['data_services']['packages'].each do |pkg|
   package pkg
 end
 
-node['imos_po']['data_services']['python']['packages'].each do |python_pkg|
-  python_pip python_pkg['name'] do
-    version python_pkg['version']
-  end
-end
-
 data_services_dir = node['imos_po']['data_services']['dir']
 data_services_cron_dir = File.join(data_services_dir, "cron.d")
 
@@ -33,6 +27,7 @@ if node['imos_po']['data_services']['clone_repository']
     group       node['imos_po']['data_services']['group']
     ssh_wrapper node['git_ssh_wrapper']
     notifies    :create, "ruby_block[data_services_cronjobs]", :immediately
+    notifies    :run,    "execute[python_requirements]",       :immediately
   end
 
 else
@@ -40,7 +35,14 @@ else
   ruby_block "#{data_services_dir}_dummy" do
     block do end
     notifies :create, "ruby_block[data_services_cronjobs]", :immediately
+    notifies :run,    "execute[python_requirements]",       :immediately
   end
+end
+
+python_requirements = ::File.join(data_services_dir, "requirements.txt")
+execute "python_requirements" do
+  command "pip install -r #{python_requirements}"
+  action  :nothing # Runs only if the data_services git repo updated
 end
 
 node['imos_po']['data_services']['owned_dirs'].each do |dir|
@@ -154,7 +156,7 @@ if node['imos_po']['data_services']['cronjobs']
         end
       end
     end
-    action :nothing
+    action :nothing # Runs only if the data_services git repo updated
   end
 else
   ruby_block "data_services_cronjobs" do

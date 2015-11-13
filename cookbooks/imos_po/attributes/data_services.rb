@@ -66,20 +66,6 @@ default['imos_po']['data_services']['packages'] = [
   'sqlite3'
 ]
 
-# All required python plugins
-default['imos_po']['data_services']['python']['packages'] = [
-  { 'name' => 'netCDF4' },
-  { 'name' => 'OWSLib' },
-  { 'name' => 'Wicken' },
-  { 'name' => 'lxml' },
-  { 'name' => 'cf_units' },
-  { 'name' => 'requests' },
-  { 'name' => 'python-dateutil' },
-  { 'name' => 'six' },
-  { 'name' => 'petulant-bear', 'version' => '0.1.3' },
-  { 'name' => 'PyYAML' }
-]
-
 default['imos_po']['email_aliases'] = "/etc/incoming-aliases"
 
 default['imos_po']['s3']['password_data_bag'] = "s3_imos_data"
