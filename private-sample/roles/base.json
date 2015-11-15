@@ -14,7 +14,6 @@
         }
     },
     "run_list": [
-        "recipe[ohai_plugins]",
         "recipe[imos_chef_solo]",
         "recipe[imos_core::lvm]",
         "recipe[imos_mounts]",

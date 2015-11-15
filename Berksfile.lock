@@ -100,12 +100,6 @@ DEPENDENCIES
     git: git://github.com/opscode-cookbooks/nginx.git
     revision: f5a4fcffc390a027f32129c9b6c28860b5dfd6c3
   ntp
-  ohai
-    git: git://github.com/opscode-cookbooks/ohai.git
-    revision: d47ade2365789b69d93b559e46db20ffa1589c7a
-    ref: v1.1.12
-  ohai_plugins
-    path: cookbooks/ohai_plugins
   omnibus_updater
   packer
     git: git://github.com/sit/chef-packer.git
@@ -268,7 +262,6 @@ GRAPH
     ruby_build (>= 0.0.0)
     xvfb (>= 0.0.0)
   imos_dns (0.1.0)
-    ohai_plugins (>= 0.0.0)
     route53 (>= 0.0.0)
   imos_firewall (0.1.0)
   imos_java (1.5.4)
@@ -376,7 +369,6 @@ GRAPH
     imos_users (>= 0.0.0)
     nginx (>= 0.0.0)
     nginx_simplecgi (>= 0.0.0)
-    ohai_plugins (>= 0.0.0)
     php (>= 0.0.0)
     sudo (>= 0.0.0)
     yum (>= 0.0.0)
@@ -396,8 +388,6 @@ GRAPH
     runit (>= 0.0.0)
   ntp (1.6.2)
   ohai (1.1.12)
-  ohai_plugins (0.1.0)
-    ohai (>= 0.0.0)
   omnibus_updater (1.0.0)
   openssl (1.1.0)
   packer (0.3.0)
