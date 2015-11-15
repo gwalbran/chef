@@ -1,6 +1,0 @@
-name             'database_migrations'
-maintainer       'IMOS'
-maintainer_email 'developers@emii.org.au'
-license          'All rights reserved'
-description      'Executes database migrations'
-version          '0.0.1'

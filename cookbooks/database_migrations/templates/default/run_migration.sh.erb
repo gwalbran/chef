@@ -1,9 +1,0 @@
-#!/bin/bash
-
-cd <%= @liquibase_dir %> && \
-./gradlew update \
-    -PchangeLogFile="<%= @changelog_file %>" \
-    -PdefaultSchemaName="<%= @default_schema_name %>" \
-    -PjdbcUrl="<%= @jdbc_url %>" \
-    -PdbUsername="<%= @username %>" \
-    -PdbPassword="<%= @password %>"

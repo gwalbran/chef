@@ -8,7 +8,6 @@
         "recipe[imos_dns::etc_hosts]",
         "recipe[imos_postgresql::official_postgresql]",
         "recipe[imos_devel::talend]",
-        "recipe[database_migrations]",
         "recipe[imos_po]",
         "recipe[imos_po::data_services]",
         "recipe[imos_po::s3cmd]",
@@ -58,11 +57,6 @@
                 }
             ]
         }
-    },
-    "database_migrations": {
-        "migrations": [
-            "marvl_data_atlas"
-        ]
     },
     "imos_po": {
         "netcdf_checker": {
