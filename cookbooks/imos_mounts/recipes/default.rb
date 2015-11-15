@@ -13,6 +13,8 @@ package 'mlocate' do
   action :remove
 end
 
+include_recipe 'imos_mounts::s3fs'
+
 # Most mounts would require the nfs package
 package 'nfs-common'
 

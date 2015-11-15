@@ -8,3 +8,4 @@ version          "0.1.0"
 
 depends 'nfs'
 depends 'users'
+depends 's3fs-fuse'

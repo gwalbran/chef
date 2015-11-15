@@ -1,0 +1,13 @@
+<%
+access_key = ""
+secret_key = ""
+if Chef::Config[:dev]
+  # No real credentials on vagrant boxes!
+  access_key = "MOCKED"
+  secret_key = "MOCKED"
+elsif node['imos_mounts']['s3fs']['password_data_bag']
+  s3_data_bag = Chef::EncryptedDataBagItem.load("passwords", node['imos_mounts']['s3fs']['password_data_bag'])
+  access_key = s3_data_bag['access_key_id']
+  secret_key = s3_data_bag['secret_access_key']
+end %>
+<%= access_key %>:<%= secret_key %>

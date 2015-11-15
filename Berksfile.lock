@@ -295,6 +295,7 @@ GRAPH
     logstash (>= 0.0.0)
   imos_mounts (0.1.0)
     nfs (>= 0.0.0)
+    s3fs-fuse (>= 0.0.0)
     users (>= 0.0.0)
   imos_po (0.1.0)
     imos_core (>= 0.0.0)
