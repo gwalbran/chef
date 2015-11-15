@@ -19,7 +19,7 @@ node['imos_vsftpd']['ftp_dir_tree']['data_bags'].each do |data_bag_pattern|
     Chef::Log.info("Creating FTP directory '#{directory}'")
 
     directory directory do
-      owner     data_bag['user']  or node['imos_vsftpd']['ftp_dir_tree']['user']
+      owner     data_bag['owner'] or node['imos_vsftpd']['ftp_dir_tree']['owner']
       group     data_bag['group'] or node['imos_vsftpd']['ftp_dir_tree']['group']
       mode      data_bag['mode']  or node['imos_vsftpd']['ftp_dir_tree']['mode']
       recursive true
