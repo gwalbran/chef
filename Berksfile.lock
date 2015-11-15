@@ -40,8 +40,6 @@ DEPENDENCIES
     path: cookbooks/imos_chef_solo
   imos_core
     path: cookbooks/imos_core
-  imos_depth_service
-    path: cookbooks/imos_depth_service
   imos_devel
     path: cookbooks/imos_devel
   imos_dns
@@ -72,6 +70,8 @@ DEPENDENCIES
     path: cookbooks/imos_vsftpd
   imos_webapps
     path: cookbooks/imos_webapps
+  imos_websites
+    path: cookbooks/imos_websites
   java
     git: git://github.com/agileorbit-cookbooks/java.git
     revision: 44cadd9085de42a75f0d084fdb8f84b7d7f49a25
@@ -90,7 +90,6 @@ DEPENDENCIES
   minitest-handler
     git: git://github.com/btm/minitest-handler-cookbook.git
     revision: 927aea60705339db0d71de8e4d8314cb8f419fc3
-  mysql
   nagios
     path: cookbooks/nagios
   nfs
@@ -122,11 +121,6 @@ DEPENDENCIES
   s3fs-fuse
     git: git://github.com/hw-cookbooks/s3fs-fuse.git
     revision: 1ee352c469a70bf35ba960c2b2e0afc3bbd6756d
-  samba
-    git: git://github.com/aodn/samba-cookbook.git
-    revision: aca49308e468d00104a764a60a5911bccc44f83e
-  sofs
-    path: cookbooks/sofs
   squid
     git: git://github.com/opscode-cookbooks/squid.git
     revision: 0d8d278f1d75bed74657c1efd10809eb545e62a4
@@ -250,8 +244,6 @@ GRAPH
     sudo (>= 0.0.0)
     sysctl (>= 0.0.0)
     unattended_upgrades (>= 0.0.0)
-  imos_depth_service (0.1.0)
-    imos_apache2 (>= 0.0.0)
   imos_devel (0.1.0)
     apt (>= 0.0.0)
     git (>= 0.0.0)
@@ -324,6 +316,11 @@ GRAPH
     imos_core (>= 0.0.0)
     imos_java (>= 0.0.0)
     tomcat (>= 0.0.0)
+  imos_websites (0.1.0)
+    application (>= 0.0.0)
+    git (>= 0.0.0)
+    imos_apache2 (>= 0.0.0)
+    imos_core (>= 0.0.0)
   iptables (0.14.1)
   java (1.35.0)
   jenkins (2.3.1)
@@ -356,7 +353,7 @@ GRAPH
   minitest-handler (1.2.1)
     chef_handler (>= 0.0.0)
   monit (0.7.5)
-  mysql (6.0.21)
+  mysql (6.1.2)
     smf (>= 0.0.0)
     yum-mysql-community (>= 0.0.0)
   nagios (4.1.14)
@@ -435,14 +432,8 @@ GRAPH
     yum-epel (>= 0.0.0)
   s3fs-fuse (0.1.4)
     rc_mon (>= 0.0.0)
-  samba (0.11.5)
-  smf (2.2.6)
+  smf (2.2.7)
     rbac (>= 1.0.1)
-  sofs (0.1.0)
-    application (>= 0.0.0)
-    git (>= 0.0.0)
-    imos_apache2 (>= 0.0.0)
-    imos_core (>= 0.0.0)
   squid (0.5.0)
   ssl (1.1.0)
   subversion (1.0.4)
@@ -475,5 +466,5 @@ GRAPH
     yum (~> 3.0)
   yum-erlang_solutions (0.2.3)
     yum (~> 3.2)
-  yum-mysql-community (0.1.17)
-    yum (>= 3.0)
+  yum-mysql-community (0.1.19)
+    yum (>= 3.2)

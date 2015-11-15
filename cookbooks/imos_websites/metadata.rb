@@ -1,8 +1,8 @@
-name             "sofs"
+name             "imos_websites"
 maintainer       "IMOS"
 maintainer_email "developers@emii.org.au"
 license          "All rights reserved"
-description      "Installs/Configures Southern Ocean Flux Station plot imagery web site"
+description      "IMOS Websites Cookbook"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          "0.1.0"
 

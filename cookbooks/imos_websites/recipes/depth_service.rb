@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: imos_depth_service
-# Recipe:: default
+# Cookbook Name:: imos_websites
+# Recipe:: depth_service
 #
 # Copyright 2013, IMOS
 #
@@ -11,7 +11,7 @@ package 'libdbd-pgsql'
 package 'libdbi-perl'
 package 'libcgi-simple-perl'
 
-directory node['imos_depth_service']['base'] do
+directory node['imos_websites']['depth_service']['base'] do
   owner     node['apache']['user']
   group     node['apache']['group']
   mode      00755
@@ -25,8 +25,8 @@ database_user = data_bag['username']
 database_pass = data_bag['password']
 database_schema = data_bag['schema']
 
-template "#{node['imos_depth_service']['base']}/depth.xml" do
-  source    "depth.xml.erb"
+template ::File.join(node['imos_websites']['depth_service']['base'], "depth.xml") do
+  source    "depth_service/depth.xml.erb"
   owner     node['apache']['user']
   group     node['apache']['group']
   mode      00755
