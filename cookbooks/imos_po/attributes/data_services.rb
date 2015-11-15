@@ -83,3 +83,5 @@ default['imos_po']['data_services']['celeryd']['config']            = ::File.joi
 default['imos_po']['data_services']['celeryd']['tasks']             = ::File.join(node['imos_po']['data_services']['celeryd']['dir'], "tasks.py")
 default['imos_po']['data_services']['celeryd']['queuer']            = ::File.join(node['imos_po']['data_services']['celeryd']['dir'], "queuer.py")
 default['imos_po']['data_services']['celeryd']['max_tasks']         = 4
+
+default['imos_po']['data_services']['create_watched_directories'] = false

@@ -68,6 +68,7 @@
         },
         "wip_dir": "/tmp",
         "data_services": {
+            "create_watched_directories": true,
             "user": "vagrant",
             "group": "vagrant",
             "clone_repository": false,

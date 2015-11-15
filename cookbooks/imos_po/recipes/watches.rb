@@ -73,7 +73,7 @@ if node['imos_po']['data_services']['watches']
 
   backend = node['imos_po']['data_services']['celeryd']['backend']
   password_data_bag = node['imos_po']['data_services']['celeryd']['password_data_bag']
-  if Chef::Config[:dev] # TODO
+  if Chef::Config[:dev]
     password_data_bag = nil
     backend = "rabbitmq"
   end
@@ -136,20 +136,34 @@ logrotate_app "project-officer-processing-file-reports" do
   rotate     365
 end
 
+ruby_block "verify_watched_directories" do
+  block do
+    all_paths = []
+    watchlists = Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir)
+    watchlists.each do |job_name, watchlist|
+      watchlist['path'].each do |path|
+        all_paths << ::File.join(node['imos_po']['data_services']['incoming_dir'], path)
+      end
+    end
+
+    missing_paths = all_paths.select { |path| ! ::File.directory?(path) }
+
+    if ! missing_paths.empty? && ! node['imos_po']['data_services']['create_watched_directories']
+      Chef::Application.fatal!("Watched pathes do not exist: '#{missing_paths}'")
+    else
+      missing_paths.each do |path|
+        ::FileUtils.mkdir_p path
+        ::FileUtils.chown 'vagrant', 'vagrant', path
+      end
+    end
+  end
+end
+
+# TODO remove once completely on s3 and not moving files to /mnt/opendap
 if Chef::Config[:dev]
   # Change ownership of /mnt to vagrant, so the production hierarchy can be
   # created (/mnt/opendap/1, etc)
   execute "fix opendap permissions" do
     command "mkdir -p #{node['imos_po']['data_services']['opendap_dir']}/1 && chown vagrant:vagrant #{node['imos_po']['data_services']['opendap_dir']}/1"
-  end
-
-  # Create watched directories in incoming directory
-  watchlists = Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir)
-  watchlists.each do |job_name, watchlist|
-    watchlist['path'].each do |path|
-      path = ::File.join(node['imos_po']['data_services']['incoming_dir'], path)
-      ::FileUtils.mkdir_p path
-      ::FileUtils.chown 'vagrant', 'vagrant', path
-    end
   end
 end
