@@ -24,9 +24,6 @@ def watch_exec_wrapper(job_name, file_path, execute, execute_params):
     path = ::File.join(node['imos_po']['data_services']['incoming_dir'], path)
     execute = ::File.join(@data_services_dir, watchlist['execute'])
     execute_params = watchlist['execute_params']
-    if execute_params
-      execute_params.gsub!("$", "$$")
-    end
 %>
 @app.task(ignore_result=True)
 def <%= job_name %>(file_path):
