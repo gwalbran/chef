@@ -26,16 +26,20 @@ if node['imos_po']['data_services']['clone_repository']
     user        'root'
     group       node['imos_po']['data_services']['group']
     ssh_wrapper node['git_ssh_wrapper']
-    notifies    :create, "ruby_block[data_services_cronjobs]", :immediately
-    notifies    :run,    "execute[python_requirements]",       :immediately
+    notifies    :create, "ruby_block[data_services_cronjobs]",                                :immediately
+    notifies    :run,    "execute[python_requirements]",                                      :immediately
+    notifies    :create, "template[#{node['imos_po']['data_services']['celeryd']['tasks']}]", :immediately
+    notifies    :create, "template[/etc/incron.d/po]",                                        :immediately
   end
 
 else
   # Dummy block to generate the cronjobs when git is not checked out by the recipe
   ruby_block "#{data_services_dir}_dummy" do
     block do end
-    notifies :create, "ruby_block[data_services_cronjobs]", :immediately
-    notifies :run,    "execute[python_requirements]",       :immediately
+    notifies :create, "ruby_block[data_services_cronjobs]",                                :immediately
+    notifies :run,    "execute[python_requirements]",                                      :immediately
+    notifies :create, "template[#{node['imos_po']['data_services']['celeryd']['tasks']}]", :immediately
+    notifies :create, "template[/etc/incron.d/po]",                                        :immediately
   end
 end
 

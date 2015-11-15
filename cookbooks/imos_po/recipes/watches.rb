@@ -42,18 +42,6 @@ if node['imos_po']['data_services']['watches']
 
   template "/etc/incron.d/po" do
     source    "incron.d.erb"
-    mode      00644
-    owner     "root"
-    group     "root"
-    variables ({
-      :watchlists         => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
-      :watch_exec_wrapper => watch_exec_wrapper,
-      :data_services_dir  => data_services_dir
-    })
-  end
-
-  template "/etc/incron.d/po" do
-    source    "incron.d.erb"
     variables ({
       :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
       :data_services_dir => data_services_dir
