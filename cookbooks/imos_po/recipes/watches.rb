@@ -149,7 +149,7 @@ ruby_block "verify_watched_directories" do
     missing_paths = all_paths.select { |path| ! ::File.directory?(path) }
 
     if ! missing_paths.empty? && ! node['imos_po']['data_services']['create_watched_directories']
-      Chef::Application.fatal!("Watched pathes do not exist: '#{missing_paths}'")
+      Chef::Log.warn("Watched pathes do not exist: '#{missing_paths}'")
     else
       missing_paths.each do |path|
         ::FileUtils.mkdir_p path
