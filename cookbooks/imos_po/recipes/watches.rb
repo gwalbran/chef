@@ -14,6 +14,9 @@ data_services_dir = node['imos_po']['data_services']['dir']
 data_services_watch_dir = File.join(data_services_dir, "watch.d")
 watch_exec_wrapper = node['imos_po']['watch_exec_wrapper']
 
+po_user  = node['imos_po']['data_services']['user']
+po_group = node['imos_po']['data_services']['group']
+
 # Allow anyone in 'projectofficer' group to sudo to user 'projectofficer'
 sudo 'data_services_watches' do
   user     node['imos_po']['data_services']['user']
@@ -30,8 +33,8 @@ template watch_exec_wrapper do
   mode   0755
   variables ({
     :env   => node['imos_po']['data_services']['env'],
-    :user  => node['imos_po']['data_services']['user'],
-    :group => node['imos_po']['data_services']['group']
+    :user  => po_user,
+    :group => po_group
   })
 end
 
@@ -46,12 +49,27 @@ if node['imos_po']['data_services']['watches']
       :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
       :data_services_dir => data_services_dir
     })
+    notifies  :create, "ruby_block[create_error_directories]", :immediately
   end
 
   service "incron" do
     action [:start, :enable]
   end
 
+  ruby_block "create_error_directories" do
+    block do
+      all_paths = []
+      watchlists = Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir)
+      watchlists.each do |job_name, watchlist|
+        watchlist['path'].each do |path|
+          path = ::File.join(node['imos_po']['data_services']['error_dir'], job_name)
+          ::FileUtils.mkdir_p path
+          ::FileUtils.chown po_user, po_group, path
+          ::FileUtils.chmod 00775, path
+        end
+      end
+    end
+  end
 
   # Celeryd configuration
   python_pip "celery"
@@ -98,7 +116,7 @@ if node['imos_po']['data_services']['watches']
     autostart true
     command   "celeryd --config=#{celery_config} -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
     directory node['imos_po']['data_services']['celeryd']['dir']
-    user      node['imos_po']['data_services']['user']
+    user      po_user
   end
 
 end
@@ -115,12 +133,9 @@ file ::File.join(node['rsyslog']['config_prefix'], "rsyslog.d", "60-project-offi
   notifies :restart, "service[#{node['rsyslog']['service_name']}]"
 end
 
-log_file_user  = node['imos_po']['data_services']['user']
-log_file_group = node['imos_po']['data_services']['group']
-
 logrotate_app "project-officer-processing" do
   rotate     node['logrotate']['global']['rotate']
-  create     "644 #{log_file_user} #{log_file_group}"
+  create     "644 #{po_user} #{po_group}"
   path       log_file
   frequency  'daily'
   options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
@@ -129,7 +144,7 @@ end
 
 logrotate_app "project-officer-processing-file-reports" do
   rotate     node['logrotate']['global']['rotate']
-  create     "644 #{log_file_user} #{log_file_group}"
+  create     "644 #{po_user} #{po_group}"
   path       ::File.join(log_dir, "*", "*.log")
   frequency  'daily'
   options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
@@ -153,7 +168,7 @@ ruby_block "verify_watched_directories" do
     else
       missing_paths.each do |path|
         ::FileUtils.mkdir_p path
-        ::FileUtils.chown 'vagrant', 'vagrant', path
+        ::FileUtils.chown po_user, po_group, path
       end
     end
   end
