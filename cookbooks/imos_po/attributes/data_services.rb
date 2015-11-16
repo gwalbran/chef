@@ -51,7 +51,6 @@ default['imos_po']['data_services']['packages'] = [
   'heirloom-mailx',
   'imagemagick',
   'ipython',
-  'jq',
   'lftp',
   'libhdf5-serial-dev',
   'libnetcdf-dev',
