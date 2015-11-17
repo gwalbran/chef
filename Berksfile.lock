@@ -245,6 +245,7 @@ GRAPH
     build-essential (>= 0.0.0)
   imos_backup (0.1.0)
     backup (>= 0.0.0)
+    imos_core (>= 0.0.0)
     imos_users (>= 0.0.0)
     logrotate (>= 0.0.0)
   imos_chef_solo (0.1.0)

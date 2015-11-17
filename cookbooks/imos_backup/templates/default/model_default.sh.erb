@@ -68,8 +68,18 @@ process() {
 }
 
 store() {
-    mv <%= node[:backup][:backup_dir] %>/<%= @backup_name %>
-    cycle <%= node[:backup][:backup_dir] %>/<%= @backup_name %> <%= node[:backup][:backups_to_keep] %>
+<% if node[:imos_backup][:s3][:enable]
+     s3cfg = node[:imos_backup][:s3][:config_file]
+     s3path = ::File.join(node[:imos_backup][:s3][:bucket], node[:imos_backup][:s3][:path], node['fqdn'], @backup_name)
+     # Keep as many backups as a server would
+     backups_to_keep = node[:imos_backup][:server][:backups_to_keep]
+%>
+    s3 <%= s3path %> --config=<%= s3cfg %>
+    s3_cycle <%= s3path %> <%= backups_to_keep %> --config=<%= s3cfg %>
+<% else %>
+    mv <%= ::File.join(node[:backup][:backup_dir], @backup_name) %>
+    cycle <%= ::File.join(node[:backup][:backup_dir], @backup_name) %> <%= node[:backup][:backups_to_keep] %>
+<% end %>
 }
 
 notify() {

@@ -105,3 +105,12 @@ end
 if node[:imos_backup][:restore][:allow]
   include_recipe "imos_backup::restore"
 end
+
+if node[:imos_backup][:s3][:enable]
+  s3_data_bag = Chef::EncryptedDataBagItem.load("passwords", node[:imos_backup][:s3][:password_data_bag])
+  s3cmd_config node[:imos_backup][:s3][:config_file] do
+    owner      node[:backup][:username]
+    access_key s3_data_bag['access_key_id']
+    secret_key s3_data_bag['secret_access_key']
+  end
+end
