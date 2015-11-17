@@ -27,9 +27,9 @@ if node['imos_po']['data_services']['clone_repository']
     group       node['imos_po']['data_services']['group']
     ssh_wrapper node['git_ssh_wrapper']
     notifies    :create, "ruby_block[data_services_cronjobs]",                                :immediately
-    notifies    :run,    "execute[python_requirements]",                                      :immediately
-    notifies    :create, "template[#{node['imos_po']['data_services']['celeryd']['tasks']}]", :immediately
-    notifies    :create, "template[/etc/incron.d/po]",                                        :immediately
+    notifies    :run,    "execute[python_requirements]",                                      :delayed
+    notifies    :create, "template[#{node['imos_po']['data_services']['celeryd']['tasks']}]", :delayed
+    notifies    :create, "template[/etc/incron.d/po]",                                        :delayed
   end
 
 else
@@ -37,9 +37,9 @@ else
   ruby_block "#{data_services_dir}_dummy" do
     block do end
     notifies :create, "ruby_block[data_services_cronjobs]",                                :immediately
-    notifies :run,    "execute[python_requirements]",                                      :immediately
-    notifies :create, "template[#{node['imos_po']['data_services']['celeryd']['tasks']}]", :immediately
-    notifies :create, "template[/etc/incron.d/po]",                                        :immediately
+    notifies :run,    "execute[python_requirements]",                                      :delayed
+    notifies :create, "template[#{node['imos_po']['data_services']['celeryd']['tasks']}]", :delayed
+    notifies :create, "template[/etc/incron.d/po]",                                        :delayed
   end
 end
 
