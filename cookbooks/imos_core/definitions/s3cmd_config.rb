@@ -29,7 +29,11 @@ define :s3cmd_config do
     access_key = "MOCKED_access_key"
     secret_key = "MOCKED_secret_key"
   else
-    package 's3cmd'
+    package 's3cmd' do
+      action :remove
+    end
+    package 'python-pip'
+    python_pip "s3cmd"
   end
 
   template params[:name] do
