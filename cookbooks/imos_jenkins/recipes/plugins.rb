@@ -30,3 +30,20 @@ node["imos_jenkins"]["plugins"].each do |plugin_name|
     notifies :restart, 'service[jenkins]', :immediately
   end
 end
+
+# This could be improved by:
+#
+# 1. get the values from attributes/plugins.rb (against each plugin)
+# 2. set the values in jenkins through the API (rather than dumping a templated config file)
+jenkins_user_data_bag = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])
+template_src = 'hudson.plugins.s3.S3BucketPublisher.xml'
+template File.join(node['jenkins']['master']['home'], template_src) do
+  source "#{template_src}.erb"
+  mode   '0644'
+  owner  node['jenkins']['master']['user']
+  group  node['jenkins']['master']['group']
+  variables({
+    :access_key => jenkins_user_data_bag['access_key_id'],
+    :secret_key => jenkins_user_data_bag['secret_access_key']
+  })
+end
