@@ -17,10 +17,13 @@ define :imos_tomcat_context do
   service_notify_action = :restart
 
   # Cache artifact, so we can use it to determine parallel deploy version
-  cached_artifact = ImosArtifacts::Fetcher.new.fetch_artifact(artifact_manifest, node)
+  cached_artifact = cache_artifact do
+    artifact_manifest artifact_manifest
+  end
 
   if params[:parallel_deploy]
     version = ParallelDeploy.tomcat_version_for_artifact(cached_artifact)
+
     app_deploy_name = ParallelDeploy.add_version(app_name, version)
     context_file = File.join(context_dir, "#{app_deploy_name}.xml")
     Chef::Log.info("Invoking parallel deploy with version: '#{version}'")
@@ -32,6 +35,8 @@ define :imos_tomcat_context do
   file_destination = ::File.join(tomcat_webapps_dir, "#{app_deploy_name}.war")
   install_dir = ::File.join(tomcat_webapps_dir, app_deploy_name)
   Chef::Log.info("Deploying: '#{file_destination}' -> '#{install_dir}'")
+
+  Chef::Resource::ImosArtifacts::Deploy.send(:include, ImosArtifacts::Deployer)
 
   imos_artifacts_deploy artifact_name do
     install_dir       install_dir

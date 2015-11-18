@@ -12,5 +12,7 @@
 # Needed to build ruby gems
 include_recipe "build-essential"
 
+chef_gem 'aws-sdk'
 chef_gem 'nokogiri'
+
 package 'unzip'
