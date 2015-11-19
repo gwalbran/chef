@@ -14,12 +14,15 @@ module ImosArtifacts
     def self.get_metadata(artifact_manifest, node)
       require 'aws-sdk'
 
+      metadata = nil
+
       if (artifact_manifest['uri'])
-        self.get_uri_metadata(artifact_manifest, node)
+        metadata = self.get_uri_metadata(artifact_manifest, node)
       elsif
-        self.get_s3_metadata(artifact_manifest, node)
+        metadata = self.get_s3_metadata(artifact_manifest, node)
       end
 
+      metadata
     end
 
     def self.get_s3_metadata(artifact_manifest, node)
@@ -34,9 +37,8 @@ module ImosArtifacts
       # TODO: get latest
       artifact = s3.list_objects(
         bucket:   node['imos_artifacts']['s3']['bucket'],
-        prefix:   artifact_manifest['id'],
-        max_keys: 1
-      ).contents[0]
+        prefix:   artifact_manifest['id']
+      ).contents.select { |a| a['key'].end_with?('.war', '.zip')}.sort { |a, b| a['key'] <=> b['key'] }.last
 
       Chef::Application.fatal!(
         "No artifact found on S3, bucket: #{node['imos_artifacts']['s3']['bucket']}, prefix: #{artifact_manifest['id']}", 2
