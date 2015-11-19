@@ -34,7 +34,6 @@ module ImosArtifacts
         secret_access_key: jenkins_data_bag['secret_access_key']
       )
 
-      # TODO: get latest
       artifact = s3.list_objects(
         bucket:   node['imos_artifacts']['s3']['bucket'],
         prefix:   artifact_manifest['id']

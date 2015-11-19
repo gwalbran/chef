@@ -52,9 +52,6 @@ module ImosArtifacts
     end
 
     def self.extract_artifact(artifact_src, artifact_dest, install_dir, owner, group, remove_top_level_directory = false)
-
-      puts [artifact_src, artifact_dest, install_dir, owner, group, remove_top_level_directory]
-
       # Nuke install_dir if it exists
       if ::File.exists?(install_dir)
         FileUtils.rmtree install_dir

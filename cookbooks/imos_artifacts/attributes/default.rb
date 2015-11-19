@@ -3,3 +3,6 @@ default[:imos_artifacts][:jenkins_data_bag] = "jenkins-api"
 
 default[:imos_artifacts][:s3][:region]      = 'ap-southeast-2'
 default[:imos_artifacts][:s3][:bucket]      = 'imos-artifacts'
+
+default[:imos_artifacts][:download_retries] = 3
+
