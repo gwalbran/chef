@@ -11,17 +11,18 @@
 
 module ImosArtifacts
   class RemoteArtifact
-    def self.get_metadata(artifact_id, node)
-
+    def self.get_metadata(artifact_manifest, node)
       require 'aws-sdk'
 
-      artifact_manifest = ImosArtifacts::Deployer.get_artifact_manifest(artifact_id)
+      if (artifact_manifest['uri'])
+        self.get_uri_metadata(artifact_manifest, node)
+      elsif
+        self.get_s3_metadata(artifact_manifest, node)
+      end
 
-      # TODO
-      # uri = artifact_manifest['uri']
-      # filename = "#{Chef::Config[:file_cache_path]}/#{::File.basename(uri)}"
-      # use remote_file
+    end
 
+    def self.get_s3_metadata(artifact_manifest, node)
       jenkins_data_bag = Chef::EncryptedDataBagItem.load('users', 'jenkins')
 
       s3 = ::Aws::S3::Client.new(
@@ -30,11 +31,16 @@ module ImosArtifacts
         secret_access_key: jenkins_data_bag['secret_access_key']
       )
 
+      # TODO: get latest
       artifact = s3.list_objects(
         bucket:   node['imos_artifacts']['s3']['bucket'],
-        prefix:   artifact_id,
+        prefix:   artifact_manifest['id'],
         max_keys: 1
       ).contents[0]
+
+      Chef::Application.fatal!(
+        "No artifact found on S3, bucket: #{node['imos_artifacts']['s3']['bucket']}, prefix: #{artifact_manifest['id']}", 2
+      ) unless artifact
 
       artifact_filename = ::File.basename(artifact['key'])
       download_prefix = ::File.join(Chef::Config[:file_cache_path], artifact_manifest['job'])
@@ -42,6 +48,12 @@ module ImosArtifacts
       {
         'cache_path' => download_prefix + "_" + artifact_filename,
         's3_key'     => artifact['key']
+      }
+    end
+
+    def self.get_uri_metadata(artifact_manifest, node)
+      {
+        'cache_path' => "#{Chef::Config[:file_cache_path]}/#{::File.basename(artifact_manifest['uri'])}"
       }
     end
   end

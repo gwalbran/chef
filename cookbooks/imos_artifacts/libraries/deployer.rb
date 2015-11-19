@@ -48,7 +48,7 @@ module ImosArtifacts
     end
 
     def self.is_uri(uri)
-      return uri.start_with?("/") || uri.start_with?("http://") || uri.start_with?("https://")
+      return uri.start_with?("file:///") || uri.start_with?("http://") || uri.start_with?("https://")
     end
 
     def self.extract_artifact(artifact_src, artifact_dest, install_dir, owner, group, remove_top_level_directory = false)
