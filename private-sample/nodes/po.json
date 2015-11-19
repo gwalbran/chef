@@ -36,6 +36,9 @@
         "group": "vagrant"
     },
     "imos_backup": {
+        "s3": {
+            "password_data_bag": "s3_imos_restore"
+        },
         "restore": {
             "allow": true,
             "ssh_opts": "-o StrictHostKeyChecking=no",
@@ -46,7 +49,7 @@
                     "files":      [ "geonetwork/public.dump" ]
                 },
                 {
-                    "from_host":  "2-nsp-mel.emii.org.au",
+                    "from_host":  "2-aws-syd.emii.org.au",
                     "from_model": "pgsql",
                     "files":      [
                         "harvest/aodn_dsto.dump",

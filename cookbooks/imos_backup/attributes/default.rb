@@ -45,7 +45,7 @@ default[:imos_backup][:imos_pgsql_lock_file] = ::File.join(node[:imos_backup][:l
 default[:imos_backup][:hours_valid_for] = 36
 
 # S3 attributes
-default[:imos_backup][:s3][:enable]            = false
+default[:imos_backup][:s3][:enable]            = true
 default[:imos_backup][:s3][:password_data_bag] = "s3_imos_backups"
 default[:imos_backup][:s3][:bucket]            = "imos-backups" # Need to omit the s3:// part
 default[:imos_backup][:s3][:path]              = "backups"

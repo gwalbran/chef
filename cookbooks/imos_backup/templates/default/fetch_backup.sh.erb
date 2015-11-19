@@ -4,15 +4,85 @@
 declare -r BACKUPS_USER=<%= @username %>
 declare -r BACKUPS_HOST=<%= node[:imos_backup][:restore][:from_host] %>
 
-# a bit of "slack" SSH options, but heck...
-declare -r SSH_OPTIONS='-o UserKnownHostsFile=<%= @known_hosts %> -o IdentityFile=<%= @id_rsa %> <%= node[:imos_backup][:restore][:ssh_opts] %>'
+# ssh or s3 options
+declare -r OPTIONS='--config <%= @s3cfg %>'
+
+# list backup on s3
+# $1 - dir to put the backup in
+# $2 - model of backup to retrieve
+# $3 - backup location on server
+_list_backups_s3() {
+    local host=$1; shift
+    local model=$1; shift
+    local backup_location=$1; shift
+
+    echo "Getting list of backups from '$BACKUPS_HOST/$backup_location'" 1>&2
+    s3cmd $OPTIONS ls $BACKUPS_HOST/$backup_location/ | tr -s " " \
+        | grep ' DIR ' | cut -d' ' -f3 | sort -r | xargs -L1 basename
+}
+
+# downloads backup from server (via ssh)
+# $1 - backup location on server
+# $2 - selected backup (usually a date/time string)
+# $3 - directory to download backups to
+# $4 - base directory for operation
+# $5 - backup file to download
+_download_backup_s3() {
+    local backup_location=$1; shift
+    local selected_backup=$1; shift
+    local dir=$1; shift
+    local base_dir=$1; shift
+    local backup_file=$1; shift
+
+    echo "Downloading '$BACKUPS_HOST/$backup_location/$selected_backup/$backup_file' -> '$dir/restore_operation/$backup_file'"
+    (mkdir -p $base_dir && cd $base_dir && \
+        s3cmd $OPTIONS --force get $BACKUPS_HOST/$backup_location/$selected_backup/$backup_file)
+}
+
+# list backup on remote server via ssh
+# $1 - host to list backups for (the host we want to restore from)
+# $2 - model of backup to retrieve
+# $3 - backup location on server
+_list_backups_ssh() {
+    local host=$1; shift
+    local model=$1; shift
+    local backup_location=$1; shift
+
+    echo "Getting list of backups from '$BACKUPS_USER@$BACKUPS_HOST:$backup_location'" 1>2
+
+    local tmp_batch_sftp=`mktemp`
+    echo "cd $backup_location" > $tmp_batch_sftp
+    echo "ls -1t" >> $tmp_batch_sftp
+
+    sftp -b $tmp_batch_sftp $OPTIONS $BACKUPS_USER@$BACKUPS_HOST | grep -v '^sftp>'
+    rm -f $tmp_batch_sftp
+}
+
+# downloads backup from server (via ssh)
+# $1 - backup location on server
+# $2 - selected backup (usually a date/time string)
+# $3 - directory to download backups to
+# $4 - base directory for operation
+# $5 - backup file to download
+_download_backup_ssh() {
+    local backup_location=$1; shift
+    local selected_backup=$1; shift
+    local dir=$1; shift
+    local base_dir=$1; shift
+    local backup_file=$1; shift
+
+    echo "Downloading '$BACKUPS_USER@$BACKUPS_HOST:$backup_location/$selected_backup/$backup_file' -> '$dir/restore_operation/$backup_file'"
+    (mkdir -p $base_dir && cd $base_dir && echo "get -r $backup_location/$selected_backup/$backup_file" | sftp $OPTIONS $BACKUPS_USER@$BACKUPS_HOST)
+}
 
 # fetches the latest remote backup from the given destination
-# $1 - dir to put the backup in
-# $2 - host to get backup for
-# $3 - model of backup to retrieve
+# $1 - how to fetch backup (ssh/s3)
+# $2 - dir to put the backup in
+# $3 - host to get backup for
+# $4 - model of backup to retrieve
 # "$@" - files to download, must be specified
 fetch_backup() {
+    local type=$1; shift
     local dir=$1; shift
     local host=$1; shift
     local model=$1; shift
@@ -20,14 +90,7 @@ fetch_backup() {
     [ x"$1" = x ] && echo "Did not specify any files to download" && return 1
 
     local backup_location="backups/$host/$model"
-    echo "Getting list of backups from '$BACKUPS_USER@$BACKUPS_HOST:$backup_location'"
-
-    local tmp_batch_sftp=`mktemp`
-    echo "cd $backup_location" > $tmp_batch_sftp
-    echo "ls -1t" >> $tmp_batch_sftp
-
-    local backup_list=`sftp -b $tmp_batch_sftp $SSH_OPTIONS $BACKUPS_USER@$BACKUPS_HOST | grep -v '^sftp>'`
-    rm -f $tmp_batch_sftp
+    local backup_list=`_list_backups_${type} $host $model $backup_location`
 
     if [ x"$backup_list" = x ]; then
         echo "Could not find backups at '$backup_location'"
@@ -60,8 +123,7 @@ fetch_backup() {
     local backup_file
     for backup_file in "$@"; do
         local base_dir=`dirname $dir/restore_operation/$backup_file`
-        echo "Downloading '$BACKUPS_USER@$BACKUPS_HOST:$backup_location/$selected_backup/$backup_file' -> '$dir/restore_operation/$backup_file'"
-        (mkdir -p $base_dir && cd $base_dir && echo "get -r $backup_location/$selected_backup/$backup_file" | sftp $SSH_OPTIONS $BACKUPS_USER@$BACKUPS_HOST)
+        _download_backup_${type} $backup_location $selected_backup $dir $base_dir $backup_file
 
         # when importing from one backup model to another - handle the required
         # file renames
@@ -113,8 +175,9 @@ Options:
 # "$@" - parameters, see usage() for more info
 main() {
     # parse options with getopt
-    local tmp_getops=`getopt -o hH:m:d: \
---long help,host:,model:,dir: -- "$@"`
+    local tmp_getops
+    tmp_getops=`getopt -o h3H:m:d: \
+--long help,s3,host:,model:,dir: -- "$@"`
     [ $? != 0 ] && usage
 
     eval set -- "$tmp_getops"
@@ -138,7 +201,12 @@ main() {
     [ x"$model" = x ] && usage
     [ x"$dir"   = x ] && usage
 
-    fetch_backup $dir $host $model "$@"
+    local type=ssh
+    if [ "${BACKUPS_HOST:0:5}" == "s3://" ]; then
+        type=s3
+    fi
+
+    fetch_backup $type $dir $host $model "$@"
 }
 
 main "$@"
