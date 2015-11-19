@@ -118,9 +118,6 @@ DEPENDENCIES
   rsync_chroot
     git: git://github.com/danfruehauf/rsync_chroot.git
     revision: 8985578a8053deba0175182e89147a817ce7fb6f
-  s3_file
-    git: git://github.com/adamsb6/s3_file.git
-    revision: 65d0cb4508588968a8651c0df9aaf46dbd0789c8
   s3fs-fuse
     git: git://github.com/hw-cookbooks/s3fs-fuse.git
     revision: 1ee352c469a70bf35ba960c2b2e0afc3bbd6756d
@@ -230,7 +227,6 @@ GRAPH
     logrotate (>= 0.0.0)
   imos_artifacts (1.0.0)
     build-essential (>= 0.0.0)
-    s3_file (>= 0.0.0)
   imos_backup (0.1.0)
     backup (>= 0.0.0)
     imos_core (>= 0.0.0)
@@ -433,7 +429,6 @@ GRAPH
     build-essential (>= 0.0.0)
     yum (~> 3.0)
     yum-epel (>= 0.0.0)
-  s3_file (2.6.2)
   s3fs-fuse (0.1.4)
     rc_mon (>= 0.0.0)
   smf (2.2.7)

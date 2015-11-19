@@ -48,7 +48,7 @@ module ImosArtifacts
 
       {
         'cache_path' => download_prefix + "_" + artifact_filename,
-        's3_key'     => artifact['key']
+        'uri'        => "https://s3-#{node[:imos_artifacts][:s3][:region]}.amazonaws.com/#{node['imos_artifacts']['s3']['bucket']}/#{artifact['key']}"
       }
     end
 
