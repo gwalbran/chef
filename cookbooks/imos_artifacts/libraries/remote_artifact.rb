@@ -26,6 +26,24 @@ module ImosArtifacts
     end
 
     def self.get_s3_metadata(artifact_manifest, node)
+      artifact = get_highest_version_from_s3(artifact_manifest, node)
+
+      artifact_filename = ::File.basename(artifact['key'])
+      download_prefix = ::File.join(Chef::Config[:file_cache_path], artifact_manifest['job'])
+
+      {
+        'cache_path' => download_prefix + "_" + artifact_filename,
+        'uri'        => "https://s3-#{node[:imos_artifacts][:s3][:region]}.amazonaws.com/#{node[:imos_artifacts][:s3][:bucket]}/#{artifact['key']}"
+      }
+    end
+
+    def self.get_uri_metadata(artifact_manifest, node)
+      {
+        'cache_path' => "#{Chef::Config[:file_cache_path]}/#{::File.basename(artifact_manifest['uri'])}"
+      }
+    end
+
+    def self.get_highest_version_from_s3(artifact_manifest, node)
       s3 = ::Aws::S3::Client.new(
         region:            node['imos_artifacts']['s3']['region'],
         access_key_id:     node['imos_artifacts']['s3']['access_key_id'],
@@ -41,19 +59,7 @@ module ImosArtifacts
         "No artifact found on S3, bucket: #{node['imos_artifacts']['s3']['bucket']}, prefix: #{artifact_manifest['id']}", 2
       ) unless artifact
 
-      artifact_filename = ::File.basename(artifact['key'])
-      download_prefix = ::File.join(Chef::Config[:file_cache_path], artifact_manifest['job'])
-
-      {
-        'cache_path' => download_prefix + "_" + artifact_filename,
-        'uri'        => "https://s3-#{node[:imos_artifacts][:s3][:region]}.amazonaws.com/#{node['imos_artifacts']['s3']['bucket']}/#{artifact['key']}"
-      }
-    end
-
-    def self.get_uri_metadata(artifact_manifest, node)
-      {
-        'cache_path' => "#{Chef::Config[:file_cache_path]}/#{::File.basename(artifact_manifest['uri'])}"
-      }
+      artifact
     end
   end
 end

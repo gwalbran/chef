@@ -18,9 +18,9 @@ module ImosArtifacts
         expect(manifest['id']).to eq ("file.war")
         expect(manifest['uri']).to eq ("http://test.com/file.war")
 
-        manifest = Deployer.get_artifact_manifest("/some/path/file.war")
+        manifest = Deployer.get_artifact_manifest("file:///some/path/file.war")
         expect(manifest['id']).to eq ("file.war")
-        expect(manifest['uri']).to eq ("/some/path/file.war")
+        expect(manifest['uri']).to eq ("file:///some/path/file.war")
       end
 
       it 'manifest from job' do
