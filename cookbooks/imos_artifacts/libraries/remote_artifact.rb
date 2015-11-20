@@ -26,12 +26,10 @@ module ImosArtifacts
     end
 
     def self.get_s3_metadata(artifact_manifest, node)
-      jenkins_data_bag = Chef::EncryptedDataBagItem.load('users', 'jenkins')
-
       s3 = ::Aws::S3::Client.new(
         region:            node['imos_artifacts']['s3']['region'],
-        access_key_id:     jenkins_data_bag['access_key_id'],
-        secret_access_key: jenkins_data_bag['secret_access_key']
+        access_key_id:     node['imos_artifacts']['s3']['access_key_id'],
+        secret_access_key: node['imos_artifacts']['s3']['secret_access_key']
       )
 
       artifact = s3.list_objects(
