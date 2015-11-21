@@ -92,7 +92,7 @@ declare -r SYSTEST_VM_NAME=systest
 # main function for systest box
 # "$@" - arguments
 systest_box_main() {
-    _handle_private_key data_bags/users/restore.json || return 1
+    _handle_private_key data_bags/passwords/s3_imos_restore.json || return 1
     _mock_data_bag private-sample/data_bags/jndi_resources/harvest-systest.json || return 1
 
     _run_vm $SYSTEST_VM_NAME "$@" || return 1
@@ -120,7 +120,7 @@ po_box_main() {
     _clone_git_repo $DATA_SERVICES_GIT_REPO src/data-services || return 1
 
     local -i retval=0
-    _handle_private_key data_bags/users/restore.json; let retval=$retval+$?
+    _handle_private_key data_bags/passwords/s3_imos_restore.json; let retval=$retval+$?
     _handle_private_key data_bags/users/sshfs.json > /dev/null
 
     _mock_data_bag private-sample/data_bags/jndi_resources/harvest-read-po.json; let retval=$retval+$?
