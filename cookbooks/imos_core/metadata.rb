@@ -12,6 +12,7 @@ version          "0.1.0"
   cron
   build-essential
   git_ssh_wrapper
+  python
   unattended_upgrades
   sudo
 }.each do |cookbook|

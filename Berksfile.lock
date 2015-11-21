@@ -255,6 +255,7 @@ GRAPH
     cron (>= 0.0.0)
     git_ssh_wrapper (>= 0.0.0)
     logrotate (>= 0.0.0)
+    python (>= 0.0.0)
     sudo (>= 0.0.0)
     sysctl (>= 0.0.0)
     unattended_upgrades (>= 0.0.0)
