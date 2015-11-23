@@ -10,7 +10,8 @@ describe 'imos_vsftpd::ftp_dir_tree' do
 
   before do
     stub_search(:ftp_users, 'id:*').and_return([
-      JSON.parse(File.read('test/fixtures/data_bags/ftp_users/ftp_users.json')),
+      JSON.parse(File.read('test/fixtures/data_bags/ftp_users/test_1.json')),
+      JSON.parse(File.read('test/fixtures/data_bags/ftp_users/test_2.json'))
     ])
 
     stub_search(:ftp_dir_tree, 'id:*').and_return([

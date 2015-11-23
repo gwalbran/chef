@@ -1,0 +1,9 @@
+{
+    "id": "test_2",
+    "firstname": "test_user_firstname_2",
+    "lastname": "test_user_lastname_2",
+    "email": "test_user_2@test.com",
+    "organisation": "test",
+    "password": "test_password_2",
+    "mapping": "test_dir2"
+}

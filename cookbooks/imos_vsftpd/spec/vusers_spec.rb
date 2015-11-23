@@ -10,7 +10,8 @@ describe 'imos_vsftpd::vusers' do
 
   before do
     stub_search(:ftp_users, 'id:*').and_return([
-      JSON.parse(File.read('test/fixtures/data_bags/ftp_users/ftp_users.json'))
+      JSON.parse(File.read('test/fixtures/data_bags/ftp_users/test_1.json')),
+      JSON.parse(File.read('test/fixtures/data_bags/ftp_users/test_2.json'))
     ])
   end
 
@@ -44,12 +45,6 @@ describe 'imos_vsftpd::vusers' do
       }
     )
   end
-
-  it 'should create vuser directories' do
-    expect(chef_run).to create_directory("/ftp/test_dir1")
-    expect(chef_run).to create_directory("/ftp/test_dir2")
-  end
-
 
   it 'should create vsftpd password file' do
     pwdfile_content = "test_1:test_password_1\ntest_2:test_password_2\n"
