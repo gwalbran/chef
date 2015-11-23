@@ -17,3 +17,4 @@ src
 .bundle
 
 private
+private-sample/data_bags/passwords/s3_imos_restore.json
