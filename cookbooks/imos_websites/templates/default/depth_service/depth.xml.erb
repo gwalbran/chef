@@ -17,7 +17,7 @@ sub get_depth {
 
     my $dbh = DBI->connect("DBI:Pg:dbname=$database_name;host=$database_host", "$database_user", "$database_pass");
 
-    my $sql_query = "SELECT depth FROM $database_schema.world_depth WHERE ST_DWithin(geom, GeomFromText(?, 4326), 0.1) ORDER BY ST_Distance(geom, GeomFromText(?, 4326)) LIMIT 1";
+    my $sql_query = "SELECT depth FROM $database_schema.world_depth WHERE ST_DWithin(geom, GeomFromText(?, 4326), 0.12) ORDER BY ST_Distance(geom, GeomFromText(?, 4326)) LIMIT 1";
 
     my $sth = $dbh->prepare($sql_query);
     $sth->execute($point, $point);
