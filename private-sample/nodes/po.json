@@ -227,7 +227,10 @@
         },
         "jobs": [
             "abos_sots",
+            "acorn_hourly_avg_nonqc",
+            "acorn_hourly_avg_qc",
             "acorn_radial_nonqc",
+            "acorn_radial_qc",
             "anmn_acidification_nrt",
             "anmn_am_dm",
             "argo",

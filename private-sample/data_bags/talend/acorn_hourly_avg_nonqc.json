@@ -1,0 +1,9 @@
+{
+    "id": "acorn_hourly_avg_nonqc",
+    "artifact_filename": "ACORN_hourly_averaged_nonQC_harvester_Latest.zip",
+    "event": {
+        "regex": [
+            "^IMOS/ACORN/gridded_1h-avg-current-map_non-QC/.*/.*FV00_1-hour-avg\\.nc$"
+        ]
+    }
+}

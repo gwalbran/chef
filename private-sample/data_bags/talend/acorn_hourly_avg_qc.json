@@ -1,0 +1,9 @@
+{
+    "id": "acorn_hourly_avg_qc",
+    "artifact_filename": "ACORN_HOURLY_AVG_QC_harvester_Latest.zip",
+    "event": {
+        "regex": [
+            "^IMOS/ACORN/gridded_1h-avg-current-map_QC/.*/.*FV01_1-hour-avg\\.nc$"
+        ]
+    }
+}
