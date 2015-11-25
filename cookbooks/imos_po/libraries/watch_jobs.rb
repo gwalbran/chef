@@ -14,12 +14,12 @@ class Chef::Recipe::WatchJobs
     watchlists = {}
     if File.exists?(watch_dir)
       Dir.foreach(watch_dir) do |file|
-        next if file == '.' or file == '..'
-
-        file_full_path = ::File.join(watch_dir, file)
-
-        watch_config = JSON.parse(File.read(file_full_path))
-        watchlists[file] = watch_config
+        if file.end_with?(".json")
+          file_full_path = ::File.join(watch_dir, file)
+          watch_config = JSON.parse(File.read(file_full_path))
+          watch_id = file.gsub(/\.json$/, "")
+          watchlists[watch_id] = watch_config
+        end
       end
     end
 
