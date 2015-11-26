@@ -38,6 +38,29 @@ template watch_exec_wrapper do
   })
 end
 
+ruby_block "verify_watched_directories" do
+  block do
+    all_paths = []
+    watchlists = Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir)
+    watchlists.each do |job_name, watchlist|
+      watchlist['path'].each do |path|
+        all_paths << ::File.join(node['imos_po']['data_services']['incoming_dir'], path)
+      end
+    end
+
+    missing_paths = all_paths.select { |path| ! ::File.directory?(path) }
+
+    if ! missing_paths.empty? && ! node['imos_po']['data_services']['create_watched_directories']
+      Chef::Log.warn("Watched pathes do not exist: '#{missing_paths}'")
+    else
+      missing_paths.each do |path|
+        ::FileUtils.mkdir_p path
+        ::FileUtils.chown po_user, po_group, path
+      end
+    end
+  end
+end
+
 if node['imos_po']['data_services']['watches']
   include_recipe 'imos_core::incron'
   include_recipe 'rabbitmq'
@@ -166,29 +189,6 @@ logrotate_app "project-officer-processing-file-reports" do
   frequency  'daily'
   options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
   rotate     365
-end
-
-ruby_block "verify_watched_directories" do
-  block do
-    all_paths = []
-    watchlists = Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir)
-    watchlists.each do |job_name, watchlist|
-      watchlist['path'].each do |path|
-        all_paths << ::File.join(node['imos_po']['data_services']['incoming_dir'], path)
-      end
-    end
-
-    missing_paths = all_paths.select { |path| ! ::File.directory?(path) }
-
-    if ! missing_paths.empty? && ! node['imos_po']['data_services']['create_watched_directories']
-      Chef::Log.warn("Watched pathes do not exist: '#{missing_paths}'")
-    else
-      missing_paths.each do |path|
-        ::FileUtils.mkdir_p path
-        ::FileUtils.chown po_user, po_group, path
-      end
-    end
-  end
 end
 
 # TODO remove once completely on s3 and not moving files to /mnt/opendap
