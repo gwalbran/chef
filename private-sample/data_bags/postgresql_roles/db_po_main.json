@@ -1,6 +1,17 @@
 {
     "id": "db_po_main",
     "roles": [
+         {
+            "name": "admin",
+            "password": "admin",
+            "memberof": [
+                "harvest_read_group",
+                "data_warehouse_read_group"
+            ],
+            "privileges": [
+                "superuser"
+            ]
+        },
         {
             "name": "harvest_read_group",
             "privileges": [
