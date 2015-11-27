@@ -45,7 +45,7 @@ module ImosArtifacts
       @minor_version = Regexp.last_match(3).to_i
       @patch_version = safe_patch_version(Regexp.last_match(6))
       @special_modifier = Regexp.last_match(8)
-      @special = Regexp.last_match(9)
+      @special = Regexp.last_match(9) || ""
     end
 
     def safe_patch_version(match)
