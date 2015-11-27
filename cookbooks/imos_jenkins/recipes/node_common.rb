@@ -19,6 +19,7 @@ include_recipe "imos_devel::nco_devel"
 include_recipe "imos_devel::chef_dk"
 include_recipe "imos_devel::talend"
 include_recipe "imos_devel::vagrant"
+include_recipe "imos_po::packages"
 
 include_recipe 'imos_postgresql::official_postgresql'
 include_recipe 'git'

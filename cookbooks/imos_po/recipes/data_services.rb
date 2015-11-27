@@ -8,9 +8,7 @@
 #
 # Sets up a server to allow project officers to do data manipulation
 
-node['imos_po']['data_services']['packages'].each do |pkg|
-  package pkg
-end
+include_recipe "imos_po::packages"
 
 data_services_dir = node['imos_po']['data_services']['dir']
 data_services_cron_dir = File.join(data_services_dir, "cron.d")
