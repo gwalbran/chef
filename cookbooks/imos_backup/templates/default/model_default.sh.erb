@@ -68,7 +68,7 @@ process() {
 }
 
 store() {
-<% if node[:imos_backup][:s3][:enable]
+<% if node[:imos_backup][:s3][:enable] && ! node[:imos_backup][:restore][:allow]
      s3cfg = node[:imos_backup][:s3][:config_file]
      s3path = ::File.join(node[:imos_backup][:s3][:bucket], node[:imos_backup][:s3][:path], node['fqdn'], @backup_name)
      # Keep as many backups as a server would

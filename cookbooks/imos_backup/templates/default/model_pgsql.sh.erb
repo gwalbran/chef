@@ -38,7 +38,5 @@ store() {
 }
 
 notify() {
-    # backup or imos_backup
     nagios_status "<%= node[:imos_backup][:status_dir] %>"
 }
-
