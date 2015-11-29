@@ -17,3 +17,13 @@ BROKER_TRANSPORT_OPTIONS = {
 <%= "    '#{k}': #{v}," %>
 <% end %>
 }
+
+<%
+# Create automatic routing for all queues, kindly stolen from:
+# http://stackoverflow.com/questions/9167663/celery-per-task-concurrency-limits-of-workers-per-task
+celery_routes = {}
+@watchlists.each do |job_name, watchlist|
+  celery_routes["tasks.#{job_name}"] = { "queue" => job_name }
+end
+%>
+CELERY_ROUTES = <%= celery_routes.to_json %>

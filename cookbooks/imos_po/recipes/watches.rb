@@ -38,6 +38,29 @@ template watch_exec_wrapper do
   })
 end
 
+ruby_block "verify_watched_directories" do
+  block do
+    all_paths = []
+    watchlists = Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir)
+    watchlists.each do |job_name, watchlist|
+      watchlist['path'].each do |path|
+        all_paths << ::File.join(node['imos_po']['data_services']['incoming_dir'], path)
+      end
+    end
+
+    missing_paths = all_paths.select { |path| ! ::File.directory?(path) }
+
+    if ! missing_paths.empty? && ! node['imos_po']['data_services']['create_watched_directories']
+      Chef::Log.warn("Watched pathes do not exist: '#{missing_paths}'")
+    else
+      missing_paths.each do |path|
+        ::FileUtils.mkdir_p path
+        ::FileUtils.chown po_user, po_group, path
+      end
+    end
+  end
+end
+
 if node['imos_po']['data_services']['watches']
   include_recipe 'imos_core::incron'
   include_recipe 'rabbitmq'
@@ -86,7 +109,7 @@ if node['imos_po']['data_services']['watches']
       :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
       :data_services_dir => data_services_dir
     })
-    notifies  :restart, "supervisor_service[celery_po]"
+    notifies  :create,  "ruby_block[celery_po_supervisor]"
   end
 
   backend = node['imos_po']['data_services']['celeryd']['backend']
@@ -96,13 +119,16 @@ if node['imos_po']['data_services']['watches']
     backend = "rabbitmq"
   end
 
+  celery_po_supervisor = ::File.join(node['supervisor']['dir'], "celery_po.conf")
+
   template celery_config do
     source    "celeryconfig.py.erb"
     variables ({
+      :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
       :password_data_bag => password_data_bag,
       :backend           => backend
     })
-    notifies  :restart, "supervisor_service[celery_po]"
+    notifies  :create,  "ruby_block[celery_po_supervisor]"
   end
 
   cookbook_file node['imos_po']['data_services']['celeryd']['queuer'] do
@@ -111,12 +137,26 @@ if node['imos_po']['data_services']['watches']
     mode     00755
   end
 
-  supervisor_service "celery_po" do
-    action    :enable
-    autostart true
-    command   "celeryd --config=#{celery_config} -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
-    directory node['imos_po']['data_services']['celeryd']['dir']
-    user      po_user
+  supervisor_service "celery_po" do # TODO This is here to clean the previously declared resource
+    action :disable
+  end
+
+  # Why in a ruby_block? Because we need to be able to notify the resource
+  # creation AFTER the data-services git repository was updated. This is the
+  # only sane way unfortunately.
+  ruby_block "celery_po_supervisor" do
+    block do
+      Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir).each do |job_name, watchlist|
+        f = Chef::Resource::SupervisorService.new("celery_po_#{job_name}", run_context)
+        f.autostart true
+        f.command "celeryd --queues=#{job_name} --config=#{celery_config} -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
+        f.directory node['imos_po']['data_services']['celeryd']['dir']
+        f.user po_user
+        f.run_action :enable
+        f.run_action :restart
+      end
+    end
+    action :nothing
   end
 
 end
@@ -149,29 +189,6 @@ logrotate_app "project-officer-processing-file-reports" do
   frequency  'daily'
   options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
   rotate     365
-end
-
-ruby_block "verify_watched_directories" do
-  block do
-    all_paths = []
-    watchlists = Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir)
-    watchlists.each do |job_name, watchlist|
-      watchlist['path'].each do |path|
-        all_paths << ::File.join(node['imos_po']['data_services']['incoming_dir'], path)
-      end
-    end
-
-    missing_paths = all_paths.select { |path| ! ::File.directory?(path) }
-
-    if ! missing_paths.empty? && ! node['imos_po']['data_services']['create_watched_directories']
-      Chef::Log.warn("Watched pathes do not exist: '#{missing_paths}'")
-    else
-      missing_paths.each do |path|
-        ::FileUtils.mkdir_p path
-        ::FileUtils.chown po_user, po_group, path
-      end
-    end
-  end
 end
 
 # TODO remove once completely on s3 and not moving files to /mnt/opendap
