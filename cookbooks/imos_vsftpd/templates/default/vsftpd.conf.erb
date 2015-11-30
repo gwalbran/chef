@@ -53,3 +53,6 @@ pasv_enable=yes
 pasv_min_port=64000
 pasv_max_port=64100
 pasv_address=<%= node['network']['public_ipv4'] %>
+
+# Prevent users from creating new directories
+cmds_denied=MKD
