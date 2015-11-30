@@ -53,6 +53,8 @@ private repository just with the private definitions and link `private` to it.**
 
 ## Private Sample Repository (Project Officer box etc)
 
+[Click here for Project Officer box documentation](doc/README.po-box.md)
+
 Read more [here](doc/README.examples.md) for more examples of nodes and how to
 use them.
 
