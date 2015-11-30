@@ -1,17 +1,6 @@
 {
     "id": "db_po_main",
     "roles": [
-         {
-            "name": "admin",
-            "password": "admin",
-            "memberof": [
-                "harvest_read_group",
-                "data_warehouse_read_group"
-            ],
-            "privileges": [
-                "superuser"
-            ]
-        },
         {
             "name": "harvest_read_group",
             "privileges": [
@@ -172,6 +161,17 @@
                 "harvest_anmn_acoustics_read_group",
                 "publications_read_group",
                 "ftp_user_registration_read_group"
+            ]
+        },
+        {
+            "name": "admin",
+            "password": "admin",
+            "memberof": [
+                "harvest_read_group",
+                "data_warehouse_read_group"
+            ],
+            "privileges": [
+                "superuser"
             ]
         },
         {
