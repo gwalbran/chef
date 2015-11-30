@@ -89,6 +89,10 @@ module ImosArtifacts
         expect(Version.new("Portal2-2.34-production.war")).to be < Version.new("Portal2-2.34.1-production.war")
       end
 
+      it 'test_compare_version_special_absent' do
+        expect(Version.new("geoserver-1.0.1.war")).to be < Version.new("geoserver-1.0.1-imos.war")
+      end
+
       it 'test_extracts_version_number_from_wfs_scanner' do
         expect("1.1.0").to eq(wfs_scanner_war.version)
       end
