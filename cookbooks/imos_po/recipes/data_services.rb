@@ -38,6 +38,10 @@ else
     notifies :run,    "execute[python_requirements]",                                      :delayed
     notifies :create, "template[#{node['imos_po']['data_services']['celeryd']['tasks']}]", :delayed
     notifies :create, "template[/etc/incron.d/po]",                                        :delayed
+    # Always trigger creation of supervisor jobs. That is due to tasks.py file
+    # being managed out of the vagrant box in this case. So if the tasks.py
+    # file does not need an update, it will not create those celery jobs.
+    notifies :create, "ruby_block[celery_po_supervisor]",                                  :delayed
   end
 end
 

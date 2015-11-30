@@ -119,8 +119,6 @@ if node['imos_po']['data_services']['watches']
     backend = "rabbitmq"
   end
 
-  celery_po_supervisor = ::File.join(node['supervisor']['dir'], "celery_po.conf")
-
   template celery_config do
     source    "celeryconfig.py.erb"
     variables ({
