@@ -1,0 +1,14 @@
+{
+    "id": "soop_trv",
+    "artifact_filename": "SOOP_TRV_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "8af21108-c535-43bf-8dab-c1f45a26088c",
+        "Metadata_SpatialTable": "soop_trv_trajectory_map",
+        "Metadata_SpatialResolution": "3"
+    },
+    "event": {
+       "regex": [
+           "^IMOS/SOOP/SOOP-TRV/.*\\.nc$"
+       ]
+    }
+}
