@@ -32,6 +32,10 @@ main() {
             mkdir -p `dirname $dst` && \
             sudo chmod 664 $src && \
             cp $src $dst
+    elif [ "$cmd" == "get" ]; then
+        [ x"$dst" = x ] && echo "Destination not specified" && exit 1
+        src=`bucket_uri_to_file_path $src` && \
+            cp $src $dst
     elif [ "$cmd" == "del" ]; then
         src=`bucket_uri_to_file_path $src` && \
             rm -f $src
