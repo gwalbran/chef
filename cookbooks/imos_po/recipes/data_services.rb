@@ -17,38 +17,27 @@ if node['imos_po']['data_services']['clone_repository']
   # Use this so we can deploy private repositories
   include_recipe "imos_core::git_deploy_key"
 
-  git data_services_dir do
+  git "data_services" do
+    destination data_services_dir
     repository  node['imos_po']['data_services']['repo']
     revision    node['imos_po']['data_services']['branch']
     action      :sync
     user        'root'
     group       node['imos_po']['data_services']['group']
     ssh_wrapper node['git_ssh_wrapper']
-    notifies    :create, "ruby_block[data_services_cronjobs]",                                :immediately
-    notifies    :run,    "execute[python_requirements]",                                      :delayed
-    notifies    :create, "template[#{node['imos_po']['data_services']['celeryd']['tasks']}]", :delayed
-    notifies    :create, "template[/etc/incron.d/po]",                                        :delayed
   end
-
 else
   # Dummy block to generate the cronjobs when git is not checked out by the recipe
-  ruby_block "#{data_services_dir}_dummy" do
-    block do end
-    notifies :create, "ruby_block[data_services_cronjobs]",                                :immediately
-    notifies :run,    "execute[python_requirements]",                                      :delayed
-    notifies :create, "template[#{node['imos_po']['data_services']['celeryd']['tasks']}]", :delayed
-    notifies :create, "template[/etc/incron.d/po]",                                        :delayed
-    # Always trigger creation of supervisor jobs. That is due to tasks.py file
-    # being managed out of the vagrant box in this case. So if the tasks.py
-    # file does not need an update, it will not create those celery jobs.
-    notifies :create, "ruby_block[celery_po_supervisor]",                                  :delayed
+  ruby_block "data_services_dummy" do
+  block do end
+    notifies :create, "ruby_block[data_services_cronjobs]", :immediately
   end
 end
 
 python_requirements = ::File.join(data_services_dir, "requirements.txt")
 execute "python_requirements" do
-  command "pip install -r #{python_requirements}"
-  action  :nothing # Runs only if the data_services git repo updated
+  command    "pip install -r #{python_requirements}"
+  subscribes :run, 'git[data_services]', :delayed
 end
 
 node['imos_po']['data_services']['owned_dirs'].each do |dir|
@@ -162,12 +151,12 @@ if node['imos_po']['data_services']['cronjobs']
           cronjob_full_path = File.join(data_services_cron_dir, cronjob)
           cronjob_dest      = File.join("/etc/cron.d", "_po_#{cronjob}")
 
-          # Run those scripts as 'nobody'!
           cronjob_sanitizer.sanitize_cronjob_file(cronjob_full_path, cronjob_dest, data_services_dir, data_services_vars)
         end
       end
     end
-    action :nothing # Runs only if the data_services git repo updated
+    action     :nothing # Runs only if the data_services git repo updated
+    subscribes :create, 'git[data_services]', :immediately
   end
 else
   ruby_block "data_services_cronjobs" do

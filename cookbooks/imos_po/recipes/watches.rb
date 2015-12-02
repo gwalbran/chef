@@ -72,7 +72,8 @@ if node['imos_po']['data_services']['watches']
       :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
       :data_services_dir => data_services_dir
     })
-    notifies  :create, "ruby_block[create_error_directories]", :immediately
+    notifies   :create, "ruby_block[create_error_directories]", :immediately
+    subscribes :create, 'git[data_services]',                   :delayed
   end
 
   service "incron" do
@@ -103,13 +104,14 @@ if node['imos_po']['data_services']['watches']
 
   directory node['imos_po']['data_services']['celeryd']['dir']
   template node['imos_po']['data_services']['celeryd']['tasks'] do
-    source    "tasks.py.erb"
-    variables ({
+    source     "tasks.py.erb"
+    variables  ({
       :celery_config     => ::File.basename(celery_config),
       :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
       :data_services_dir => data_services_dir
     })
-    notifies  :create,  "ruby_block[celery_po_supervisor]"
+    subscribes :create, 'git[data_services]', :delayed
+    notifies   :create, "ruby_block[celery_po_supervisor]"
   end
 
   backend = node['imos_po']['data_services']['celeryd']['backend']
@@ -126,7 +128,7 @@ if node['imos_po']['data_services']['watches']
       :password_data_bag => password_data_bag,
       :backend           => backend
     })
-    notifies  :create,  "ruby_block[celery_po_supervisor]"
+    notifies  :create, "ruby_block[celery_po_supervisor]"
   end
 
   cookbook_file node['imos_po']['data_services']['celeryd']['queuer'] do
@@ -154,7 +156,7 @@ if node['imos_po']['data_services']['watches']
         f.run_action :restart
       end
     end
-    action :nothing
+    subscribes :create, 'git[data_services]', :delayed
   end
 
 end
