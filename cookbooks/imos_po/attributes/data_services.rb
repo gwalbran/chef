@@ -11,6 +11,8 @@ default['imos_po']['data_services']['cron_allowed_users']  = [ 'ftp', 'nobody' ]
 default['imos_po']['data_services']['cronjobs'] = true
 default['imos_po']['data_services']['watches']  = true
 
+default['imos_po']['data_services']['cronjob_prefix'] = "_po_"
+
 # Directories scripts are likely to access
 default['imos_po']['data_services']['opendap_dir']   = '/mnt/opendap'
 default['imos_po']['data_services']['public_dir']    = '/mnt/public'

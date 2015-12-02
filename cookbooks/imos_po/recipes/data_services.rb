@@ -26,12 +26,6 @@ if node['imos_po']['data_services']['clone_repository']
     group       node['imos_po']['data_services']['group']
     ssh_wrapper node['git_ssh_wrapper']
   end
-else
-  # Dummy block to generate the cronjobs when git is not checked out by the recipe
-  ruby_block "data_services_dummy" do
-  block do end
-    notifies :create, "ruby_block[data_services_cronjobs]", :immediately
-  end
 end
 
 python_requirements = ::File.join(data_services_dir, "requirements.txt")
@@ -130,9 +124,6 @@ if node['imos_po']['data_services']['cronjobs']
   # Install cron jobs for project officers
   ruby_block "data_services_cronjobs" do
     block do
-      # Remove old cronjobs if there are any
-      FileUtils.rm Dir.glob('/etc/cron.d/_po_*')
-
       allowed_cronjob_users = node['imos_po']['data_services']['cron_allowed_users'].dup
       Users.find_users_in_groups(node['imos_po']['data_services']['cron_allowed_groups']).each do |user|
         allowed_cronjob_users << user['id']
@@ -144,18 +135,31 @@ if node['imos_po']['data_services']['cronjobs']
         Chef::Config[:dev] # mocked or not (will affect MAILTO= line)
       )
 
+      cronjob_prefix = node['imos_po']['data_services']['cronjob_prefix']
+
       if File.exists?(data_services_dir) && File.exists?(data_services_cron_dir)
-        Dir.foreach(data_services_cron_dir) do |cronjob|
-          next if cronjob == '.' or cronjob == '..'
+        Dir.mktmpdir { |tmp_cronjobs|
+          Dir.foreach(data_services_cron_dir) do |cronjob|
+            next if cronjob == '.' or cronjob == '..'
 
-          cronjob_full_path = File.join(data_services_cron_dir, cronjob)
-          cronjob_dest      = File.join("/etc/cron.d", "_po_#{cronjob}")
+            cronjob_full_path = File.join(data_services_cron_dir, cronjob)
+            cronjob_dest      = File.join(tmp_cronjobs, "#{cronjob_prefix}#{cronjob}")
 
-          cronjob_sanitizer.sanitize_cronjob_file(cronjob_full_path, cronjob_dest, data_services_dir, data_services_vars)
-        end
+            cronjob_sanitizer.sanitize_cronjob_file(cronjob_full_path, cronjob_dest, data_services_dir, data_services_vars)
+          end
+
+          crond_base = "/etc/cron.d"
+          existing_cronjobs = Dir.chdir(crond_base)   { Dir.glob("#{cronjob_prefix}*") }
+          new_cronjobs =      Dir.chdir(tmp_cronjobs) { Dir.glob("#{cronjob_prefix}*") }
+
+          # Figure out what jobs needs to be deleted, delete only them
+          cronjobs_to_delete = existing_cronjobs - new_cronjobs
+          Dir.chdir(crond_base) { FileUtils.rm_f(cronjobs_to_delete) }
+
+          Dir.chdir(tmp_cronjobs) { FileUtils.mv(new_cronjobs, crond_base, :force => true) }
+        }
       end
     end
-    action     :nothing # Runs only if the data_services git repo updated
     subscribes :create, 'git[data_services]', :immediately
   end
 else
