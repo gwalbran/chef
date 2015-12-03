@@ -1,0 +1,14 @@
+{
+    "id": "soop_xbt_nrt",
+    "artifact_filename": "SOOP_XBT_NRT_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "35234913-aa3c-48ec-b9a4-77f822f66ef8",
+        "Metadata_SpatialTable": "soop_xbt_nrt_profiles_map",
+        "Metadata_SpatialResolution": "2"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SOOP/SOOP-XBT/REALTIME/.*\\.csv$"
+        ]
+    }
+}

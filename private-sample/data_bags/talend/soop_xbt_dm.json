@@ -1,0 +1,14 @@
+{
+    "id": "soop_xbt_dm",
+    "artifact_filename": "SOOP_XBT_DM_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "911f6b96-fa33-4621-9d8c-4d1cc14d94d0",
+        "Metadata_SpatialTable": "soop_xbt_dm_profile_map",
+        "Metadata_SpatialResolution": "2"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SOOP/SOOP-XBT/DELAYED/.*\\.nc$"
+        ]
+    }
+}
