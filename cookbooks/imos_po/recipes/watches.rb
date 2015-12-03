@@ -62,23 +62,13 @@ ruby_block "verify_watched_directories" do
 end
 
 if node['imos_po']['data_services']['watches']
-  include_recipe 'imos_core::incron'
+  package 'incron' do # TODO remove after incron was removed from hosts
+    action :remove
+  end
+
   include_recipe 'rabbitmq'
   package 'lsof'
-
-  template "/etc/incron.d/po" do
-    source    "incron.d.erb"
-    variables ({
-      :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
-      :data_services_dir => data_services_dir
-    })
-    notifies   :create, "ruby_block[create_error_directories]", :immediately
-    subscribes :create, 'git[data_services]',                   :delayed
-  end
-
-  service "incron" do
-    action [:start, :enable]
-  end
+  package 'python-pyinotify'
 
   ruby_block "create_error_directories" do
     block do
@@ -131,10 +121,26 @@ if node['imos_po']['data_services']['watches']
     notifies  :create, "ruby_block[celery_po_supervisor]"
   end
 
-  cookbook_file node['imos_po']['data_services']['celeryd']['queuer'] do
+  cookbook_file node['imos_po']['data_services']['celeryd']['inotify'] do
     cookbook "imos_po"
-    source   "queuer.py"
+    source   "inotify.py"
     mode     00755
+  end
+
+  template node['imos_po']['data_services']['celeryd']['inotify-config'] do
+    source    "inotify-config.py.erb"
+    variables ({
+      :watchlists => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
+    })
+    subscribes :create, 'git[data_services]', :delayed
+  end
+
+  supervisor_service "inotify_po" do
+    command    node['imos_po']['data_services']['celeryd']['inotify']
+    directory  node['imos_po']['data_services']['celeryd']['dir']
+    user       po_user
+    action     [:enable, :restart]
+    subscribes :create, 'git[data_services]', :delayed
   end
 
   supervisor_service "celery_po" do # TODO This is here to clean the previously declared resource
