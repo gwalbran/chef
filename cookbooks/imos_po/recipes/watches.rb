@@ -199,11 +199,18 @@ logrotate_app "project-officer-processing-file-reports" do
   rotate     365
 end
 
-# TODO remove once completely on s3 and not moving files to /mnt/opendap
 if Chef::Config[:dev]
-  # Change ownership of /mnt to vagrant, so the production hierarchy can be
-  # created (/mnt/opendap/1, etc)
-  execute "fix opendap permissions" do
-    command "mkdir -p #{node['imos_po']['data_services']['opendap_dir']}/1 && chown vagrant:vagrant #{node['imos_po']['data_services']['opendap_dir']}/1"
+  # TODO remove once completely on s3 and not moving files to /mnt/opendap
+  ruby_block "create_mocked_directories" do
+    block do
+      [
+        ::File.join(node['imos_po']['data_services']['opendap_dir'], "1"),
+        node['imos_po']['data_services']['archive_dir']
+      ].each do |path|
+        ::FileUtils.mkdir_p path
+        ::FileUtils.chown po_user, po_group, path
+        ::FileUtils.chmod 00775, path
+      end
+    end
   end
 end
