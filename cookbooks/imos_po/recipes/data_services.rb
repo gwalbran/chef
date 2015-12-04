@@ -30,7 +30,7 @@ end
 
 python_requirements = ::File.join(data_services_dir, "requirements.txt")
 execute "python_requirements" do
-  command    "pip install -r #{python_requirements}"
+  command    "cat #{python_requirements} | xargs -n 1 pip install"
   subscribes :run, 'git[data_services]', :delayed
 end
 

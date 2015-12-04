@@ -85,6 +85,8 @@ if node['imos_po']['data_services']['watches']
     end
   end
 
+  directory node['imos_po']['data_services']['celeryd']['dir']
+
   # Celeryd configuration
   python_pip "celery"
   python_pip "boto"
@@ -92,7 +94,6 @@ if node['imos_po']['data_services']['watches']
 
   celery_config = node['imos_po']['data_services']['celeryd']['config']
 
-  directory node['imos_po']['data_services']['celeryd']['dir']
   template node['imos_po']['data_services']['celeryd']['tasks'] do
     source     "tasks.py.erb"
     variables  ({
@@ -162,7 +163,8 @@ if node['imos_po']['data_services']['watches']
         f.run_action :restart
       end
     end
-    subscribes :create, 'git[data_services]', :delayed
+    subscribes :create, 'git[data_services]',     :delayed
+    subscribes :create, 'python_pip[supervisor]', :delayed
   end
 
 end
