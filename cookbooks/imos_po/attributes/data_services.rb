@@ -59,13 +59,11 @@ default['imos_po']['data_services']['packages'] = [
   'mdbtools',
   'python-beautifulsoup',
   'python-dev',
-  'python-matplotlib',
-  'python-numpy',
   'python-pip',
   'python-psycopg2',
-  'python-scipy',
-  'python-scipy',
-  'sqlite3'
+  'sqlite3',
+  'libxft-dev', 'libpng-dev', # For building matplotlib
+  'libblas-dev', 'liblapack-dev', 'gfortran' # For building scipy
 ]
 
 default['imos_po']['email_aliases'] = "/etc/incoming-aliases"
