@@ -84,6 +84,13 @@
         "role[backup]",
         "recipe[imos_java]"
       ],
+      "json": {
+        "imos_backup": {
+          "s3": {
+            "enable": false
+          }
+        }
+      },
       "skip_install": true
     }
   ]
