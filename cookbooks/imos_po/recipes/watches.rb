@@ -141,7 +141,7 @@ if node['imos_po']['data_services']['watches']
     directory  node['imos_po']['data_services']['celeryd']['dir']
     user       po_user
     action     [:enable, :restart]
-    subscribes :create, 'git[data_services]', :delayed
+    subscribes :restart, 'git[data_services]', :delayed
   end
 
   supervisor_service "celery_po" do # TODO This is here to clean the previously declared resource
