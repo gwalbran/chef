@@ -53,6 +53,10 @@ sed -i -e 's/%admin ALL=(ALL) ALL/%admin ALL=NOPASSWD:ALL/g' /etc/sudoers
 echo "vagrant ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 sed -i -e 's/%sudo ALL=(ALL) ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers
 
+# Leave also in /etc/sudoers.d/vagrant, because /etc/sudoers might get overwritten
+echo "vagrant ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/vagrant
+chmod 0440 /etc/sudoers.d/vagrant
+
 # Fix apt repositories to use main ones
 sed -i -e 's#http://us.archive.ubuntu.com/ubuntu/#http://archive.ubuntu.com/ubuntu/#g' /etc/apt/sources.list
 
