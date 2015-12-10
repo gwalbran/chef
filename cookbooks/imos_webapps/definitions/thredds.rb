@@ -58,4 +58,10 @@ define :thredds do
     to app_parameters['cache_dir']
   end
 
+  directory app_parameters['cache_dir'] do
+    owner     node['tomcat']['user']
+    group     node['tomcat']['group']
+    mode      0755
+    recursive true
+  end
 end
