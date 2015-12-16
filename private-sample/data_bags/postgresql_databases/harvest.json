@@ -133,7 +133,7 @@
         },
         {
             "name": "anmn_acoustics",
-            "owner": "postgres",
+            "owner": "anmn_acoustics",
             "permissions": [
                 {
                     "role": "harvest_anmn_acoustics_read_group",
@@ -141,6 +141,14 @@
                 },
                 {
                     "role": "harvest_anmn_acoustics_write_group",
+                    "type": "write"
+                },
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
                     "type": "write"
                 }
             ]
