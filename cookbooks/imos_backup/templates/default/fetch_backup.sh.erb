@@ -7,6 +7,9 @@ declare -r BACKUPS_HOST=<%= node[:imos_backup][:restore][:from_host] %>
 # ssh or s3 options
 declare -r OPTIONS='--config <%= @s3cfg %>'
 
+# set PATH, because we might be running from cron
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games
+
 # list backup on s3
 # $1 - dir to put the backup in
 # $2 - model of backup to retrieve
