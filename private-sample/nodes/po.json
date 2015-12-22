@@ -233,7 +233,9 @@
             "argo",
             "soop_ba",
             "soop_co2",
-            "soop_trv"
+            "soop_trv",
+            "soop_xbt_nrt",
+            "soop_xbt_dm"
         ]
     }
 }
