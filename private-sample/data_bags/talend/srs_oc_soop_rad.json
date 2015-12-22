@@ -1,0 +1,14 @@
+{
+    "id": "srs_oc_soop_rad",
+    "artifact_filename": "SRS_OC_SOOP_RAD_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "28f8bfed-ca6a-472a-84e4-42563ce4df3f",
+        "Metadata_SpatialTable": "srs_oc_soop_rad_trajectory_map",
+        "Metadata_SpatialResolution": "3"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SRS/OC/radiometer/.*\\.nc$"
+        ]
+    }
+}
