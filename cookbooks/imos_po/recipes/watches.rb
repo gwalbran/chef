@@ -207,9 +207,13 @@ if Chef::Config[:dev]
         ::File.join(node['imos_po']['data_services']['opendap_dir'], "1"),
         node['imos_po']['data_services']['archive_dir']
       ].each do |path|
-        ::FileUtils.mkdir_p path
-        ::FileUtils.chown po_user, po_group, path
-        ::FileUtils.chmod 00775, path
+        begin
+          ::FileUtils.mkdir_p path
+          ::FileUtils.chown po_user, po_group, path
+          ::FileUtils.chmod 00775, path
+        rescue
+          Chef::Log.warn("Error creating or setting permissions on mocked directory: '#{path}'")
+        end
       end
     end
   end
