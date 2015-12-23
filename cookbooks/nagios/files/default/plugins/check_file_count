@@ -64,14 +64,16 @@ main() {
     fi
 
     local -i retval=0
+    local perf_data="num_files=$num_files"
+    local error_string="Directory '$directory' has '$num_files' files | $perf_data"
     if [ $num_files -lt $warning ]; then
-        echo "OK: Directory '$directory' has '$num_files' files"
+        echo "OK: $error_string"
         retval=0
     elif [ $num_files -ge $critical ]; then
-        echo "CRITICAL: Directory '$directory' has '$num_files' files"
+        echo "CRITICAL: $error_string"
         retval=2
     else
-        echo "WARNING: Directory '$directory' has '$num_files' files"
+        echo "WARNING: $error_string"
         retval=1
     fi
 
