@@ -13,11 +13,19 @@ input_jobs = []
     n['imos_po']['data_services']['monitored_watch_jobs'].each do |input_job|
 %>
 define service {
-  service_description input <%= input_job %>
+  service_description input error <%= input_job %>
   host_name <%= host_name %>
-  check_command check_input_<%= input_job %>
+  check_command check_input_error_<%= input_job %>
   servicegroups input
-  use default-service
+  use default-service-pnp
+}
+
+define service {
+  service_description input incoming <%= input_job %>
+  host_name <%= host_name %>
+  check_command check_input_incoming_<%= input_job %>
+  servicegroups input
+  use default-service-pnp
 }
 <%
       input_jobs << input_job
@@ -28,7 +36,12 @@ end
 
 <% input_jobs.uniq.each do |input_job| -%>
 define command {
-        command_name    check_input_<%= input_job %>
-        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_input_<%= input_job %> -t 20
+        command_name    check_input_error_<%= input_job %>
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_input_error_<%= input_job %> -t 20
+}
+
+define command {
+        command_name    check_input_incoming_<%= input_job %>
+        command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c check_input_incoming_<%= input_job %> -t 20
 }
 <% end -%>
