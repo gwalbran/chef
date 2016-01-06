@@ -265,6 +265,8 @@
             "faimms",
             "soop_asf_fmt",
             "soop_asf_mt",
+            "gsla_dm00",
+            "gsla_nrt00",
             "soop_ba",
             "soop_co2",
             "soop_sst",

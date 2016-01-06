@@ -1,0 +1,9 @@
+{
+    "id": "gsla_dm00",
+    "artifact_filename": "GSLA_DM00_harvester_Latest.zip",
+    "event": {
+        "regex": [
+            "^IMOS/OceanCurrent/GSLA/DM00/.*/.*_GSLA_FV02_DM00_.*\\.nc\\.gz$"
+        ]
+    }
+}
