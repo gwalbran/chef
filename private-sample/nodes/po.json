@@ -51,8 +51,7 @@
                     "from_host":  "2-aws-syd.emii.org.au",
                     "from_model": "pgsql",
                     "files":      [
-                        "harvest/aodn_dsto.dump",
-                        "harvest/soop_asf_mft.dump"
+                        "harvest/aodn_dsto.dump"
                     ]
                 }
             ]
@@ -231,8 +230,11 @@
             "anmn_acidification_nrt",
             "anmn_am_dm",
             "argo",
+            "soop_asf_fmt",
+            "soop_asf_mt",
             "soop_ba",
             "soop_co2",
+            "soop_sst",
             "soop_trv",
             "soop_xbt_nrt",
             "soop_xbt_dm",

@@ -986,8 +986,8 @@
             ]
         },
         {
-            "name": "soop_asf_mft",
-            "owner": "soop_asf_mft",
+            "name": "soop_asf_fmt",
+            "owner": "soop_asf_fmt",
             "permissions": [
                 {
                     "role": "harvest_read_group",
