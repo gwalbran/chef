@@ -128,7 +128,7 @@ if node['imos_po']['data_services']['watches']
     mode     00755
   end
 
-  template node['imos_po']['data_services']['celeryd']['inotify-config'] do
+  template node['imos_po']['data_services']['celeryd']['inotify_config'] do
     source    "inotify-config.py.erb"
     variables ({
       :watchlists => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
@@ -142,10 +142,6 @@ if node['imos_po']['data_services']['watches']
     user       po_user
     action     [:enable, :restart]
     subscribes :restart, 'git[data_services]', :delayed
-  end
-
-  supervisor_service "celery_po" do # TODO This is here to clean the previously declared resource
-    action :disable
   end
 
   # Why in a ruby_block? Because we need to be able to notify the resource

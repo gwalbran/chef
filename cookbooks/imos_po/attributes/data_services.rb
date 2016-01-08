@@ -82,7 +82,7 @@ default['imos_po']['data_services']['celeryd']['dir']               = ::File.joi
 default['imos_po']['data_services']['celeryd']['config']            = ::File.join(node['imos_po']['data_services']['celeryd']['dir'], "celeryconfig.py")
 default['imos_po']['data_services']['celeryd']['tasks']             = ::File.join(node['imos_po']['data_services']['celeryd']['dir'], "tasks.py")
 default['imos_po']['data_services']['celeryd']['inotify']           = ::File.join(node['imos_po']['data_services']['celeryd']['dir'], "inotify.py")
-default['imos_po']['data_services']['celeryd']['inotify-config']    = ::File.join(node['imos_po']['data_services']['celeryd']['dir'], "inotify-config.py")
+default['imos_po']['data_services']['celeryd']['inotify_config']    = ::File.join(node['imos_po']['data_services']['celeryd']['dir'], "inotify-config.py")
 default['imos_po']['data_services']['celeryd']['max_tasks']         = 1
 
 default['imos_po']['data_services']['create_watched_directories'] = false
