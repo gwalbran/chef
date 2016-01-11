@@ -50,8 +50,9 @@ else
   raise 'Unknown web server option provided for Nagios server'
 end
 
-# find nagios web interface users from the users data bag
-sysadmins = Users.find_users_in_groups(node['nagios']['users_databag_groups'])
+# Define in nagios any user with a 'htpasswd' attribute
+all_users = search('users', 'id:*')
+sysadmins = all_users.select { |user| ! user['htpasswd'].nil? }
 
 case node['nagios']['server_auth_method']
 when "openid"
