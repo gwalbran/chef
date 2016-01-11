@@ -1,0 +1,14 @@
+{
+    "id": "soop_asf_fmt",
+    "artifact_filename": "SOOP_ASF_FMT_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "07818819-2e5c-4a12-9395-0082b57b2fe8",
+        "Metadata_SpatialTable": "soop_asf_fmt_trajectory_map",
+        "Metadata_SpatialResolution": "5"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SOOP/SOOP-ASF/.*/IMOS_SOOP-ASF_FMT_.*\\.nc$"
+        ]
+    }
+}

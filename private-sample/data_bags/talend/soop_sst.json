@@ -1,0 +1,20 @@
+{
+    "id": "soop_sst",
+    "artifact_filename": "SOOP_SST_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "67f0b6ea-518f-4af5-9d21-dd3c08c7cb5c",
+        "Metadata_SpatialTable": "soop_sst_dm_trajectory_data",
+        "Metadata_SpatialColumn": "geom",
+        "Metadata_SpatialResolution": "4",
+
+        "Metadata_UUID_NRT": "ca15915b-38c5-4e95-8d25-9cc42c4dd485",
+        "Metadata_SpatialTable_NRT": "soop_sst_nrt_trajectory_data",
+        "Metadata_SpatialColumn_NRT": "geom",
+        "Metadata_SpatialResolution_NRT": "4"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SOOP/SOOP-SST/.*\\.nc$"
+        ]
+    }
+}
