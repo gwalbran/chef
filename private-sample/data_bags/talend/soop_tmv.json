@@ -1,0 +1,13 @@
+{
+    "id": "soop_tmv",
+    "artifact_filename": "SOOP_TMV_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "02640f4e-08d0-4f3a-956b-7f9b58966ccc",
+        "Metadata_SpatialTable": "soop_tmv_trajectory_map"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SOOP/SOOP-TMV/.*\\.nc$"
+        ]
+    }
+}
