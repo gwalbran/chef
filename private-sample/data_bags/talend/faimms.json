@@ -1,0 +1,13 @@
+{
+    "id": "faimms",
+    "artifact_filename": "FAIMMS_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "4260aa0a-0d0a-4dd0-9ebc-74d2bf937e21",
+        "Metadata_SpatialTable": "faimms_timeseries_map"
+    },
+    "event": {
+        "regex": [
+           "^IMOS/FAIMMS/.*/IMOS_FAIMMS.*\\.nc$"
+       ]
+    }
+}
