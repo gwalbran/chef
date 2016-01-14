@@ -100,6 +100,11 @@ portal {
     brandingBase = "<%= @custom_parameters['branding_base'] %>"
     <% end %>
 
+    logo = "<%= @custom_parameters['logo'] || @custom_parameters['name'].upcase + '_logo.png' %>"
+    <% if @custom_parameters['secondary_logo'] %>
+    secondaryLogo = "<%= @custom_parameters['secondary_logo'] %>"
+    <% end %>
+
     instance {
         // The name is used to load instance specific data migrations, in most
         // cases this should not be an issue for you so feel free to put any
@@ -113,7 +118,6 @@ portal {
     }
 
     header {
-        logo = "<%= @custom_parameters['header_logo'] || @custom_parameters['name'].upcase + '_logo.png' %>"
 <% if ! external_links.empty? %>
         externalLinks = <%= GroovyIndenter.indent(external_links.to_groovy) %>
 <% end %>
