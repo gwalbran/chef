@@ -1,0 +1,41 @@
+{
+    "id": "catalogue_123",
+    "site": {
+        "name": "IMOS Catalogue 123",
+        "account": {
+            "use": "false",
+            "username": {},
+            "password": {}
+        },
+        "url": "https://catalogue-123.aodn.org.au/geonetwork",
+        "icon": "default.gif"
+    },
+    "content": {
+        "validate": "false",
+        "importxslt": "none"
+    },
+    "options": {
+        "every": "0 0 0 ? * *",
+        "oneRunOnly": "false",
+        "status": "active",
+        "validate": "false",
+        "recurse": "true",
+        "subtype": "waf"
+    },
+    "privileges": {
+        "group": {
+            "@id": "1",
+            "operation": [
+                {
+                    "@name": "view"
+                },
+                {
+                    "@name": "dynamic"
+                },
+                {
+                    "@name": "featured"
+                }
+            ]
+        }
+    }
+}

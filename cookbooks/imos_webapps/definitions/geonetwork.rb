@@ -138,4 +138,17 @@ define :geonetwork do
     end
   end
 
+  if app_parameters['config']
+    geonetwork_manager_config = ::File.join(instance_base_directory, "geonetwork-config-#{app_name}.json")
+    template geonetwork_manager_config do
+      source    "geonetwork/geonetwork-config.json.erb"
+      owner     node['tomcat']['user']
+      group     node['tomcat']['user']
+      mode      0644
+      variables ({
+        :config => app_parameters['config']
+      })
+    end
+  end
+
 end

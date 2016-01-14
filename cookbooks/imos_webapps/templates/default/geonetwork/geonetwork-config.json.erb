@@ -1,0 +1,14 @@
+<%
+ignore_keys = [ 'id', 'chef_type', 'data_bag' ]
+
+output_hash = {}
+@config.keys.each do |data_bag_type|
+  output_hash[data_bag_type] = []
+  @config[data_bag_type].each do |data_bag|
+    data_bag_hash = Chef::DataBagItem.load("imos_webapps_geonetwork_#{data_bag_type}", data_bag).to_hash
+    data_bag_hash.select! { |k, v| ! ignore_keys.include?(k) }
+    output_hash[data_bag_type] << data_bag_hash
+  end
+end
+%>
+<%= JSON.pretty_generate(output_hash, :indent => "    ") %>

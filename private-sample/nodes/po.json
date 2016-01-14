@@ -1,6 +1,6 @@
 {
     "chef_environment": "_default",
-    "name": "dev.json",
+    "name": "po.json",
     "run_list": [
         "role[base]",
         "role[restore]",
@@ -176,7 +176,12 @@
                         "config_template_dir":   "geonetwork",
                         "geoserver":             "http://localhost/geonetwork",
                         "jndis":                 [ "geonetwork" ],
-                        "injected_variables": [
+                        "config":                {
+                            "users":        [ "admin" ],
+                            "harvesters":   [ "catalogue_123" ],
+                            "vocabularies": [ "aodn_parameter" ]
+                        },
+                        "injected_variables":    [
                             [ "wps.xml",          "/wps/enabled",                      "true" ],
                             [ "wps.xml",          "/wps/maxAsynchronousProcesses",     1 ],
                             [ "wps.xml",          "/wps/maxAsynchronousExecutionTime", 600 ],

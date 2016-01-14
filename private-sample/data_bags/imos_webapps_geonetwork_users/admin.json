@@ -1,0 +1,10 @@
+{
+    "id": "admin",
+    "username": "admin",
+    "name": "admin",
+    "surname": "admin",
+    "email": "root@localhost",
+    "profile": "Administrator",
+    "kind": "gov",
+    "password": "admin"
+}
