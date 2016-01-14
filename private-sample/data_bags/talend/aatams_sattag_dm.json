@@ -3,11 +3,11 @@
     "artifact_filename": "aatams_sattag_dm_harvester_Latest.zip",
     "params": {
         "aatams_sattag_nrt_Schema": "aatams_sattag_nrt",
-
         "Metadata_UUID": "06b09398-d3d0-47dc-a54a-a745319fbece",
         "Metadata_SpatialTable": "aatams_sattag_dm_profile_map",
         "Metadata_SpatialColumn": "geom",
-        "Metadata_SpatialResolution": "2"
+        "Metadata_SpatialResolution": "2",
+        "exclude": ".*ct91.mdb|.*ct101.mdb|.*ct110.mdb"
     },
     "event": {
         "regex": [
