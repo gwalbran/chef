@@ -1,6 +1,7 @@
 {
     "id": "catalogue_123",
     "site": {
+        "@type": "webdav",
         "name": "IMOS Catalogue 123",
         "account": {
             "use": "false",
