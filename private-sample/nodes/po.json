@@ -179,7 +179,10 @@
                             [ "wps.xml",          "/wps/resourceExpirationTimeout",    86400 ],
                             [ "wps/gogoduck.xml", "/gogoduck/threadCount",             1 ],
                             [ "wps/gogoduck.xml", "/gogoduck/fileLimit",               1024 ]
-                        ]
+                        ],
+                        "config_ftl":         {
+                            "data_bag": "default"
+                        }
                     },
                     {
                         "name":                  "geonetwork",
