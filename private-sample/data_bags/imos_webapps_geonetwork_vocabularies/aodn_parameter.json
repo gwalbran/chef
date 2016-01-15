@@ -1,5 +1,6 @@
 {
     "id": "aodn_parameter",
+    "key": "external.theme.aodn_aodn-discovery-parameter-vocabulary_version-1-1",
     "url": "http://vocabs.ands.org.au/repository/api/download/165/aodn_aodn-discovery-parameter-vocabulary_version-1-1.rdf",
     "dir": "theme",
     "type": "external",
