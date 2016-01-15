@@ -33,6 +33,9 @@ define :geoserver do
   geoserver_username = Chef::EncryptedDataBagItem.load('passwords', 'geoserver')['username']
   geoserver_password = Chef::EncryptedDataBagItem.load('passwords', 'geoserver')['password']
 
+  protocol = app_parameters['https'] ? "https" : "http"
+  geoserver_url = "#{protocol}://#{instance_vhost}/#{app_name}"
+
   if app_parameters['data_bag']
     # Load given data bag for instance
     geoserver_data_bag = Chef::DataBagItem.load("geoserver", app_parameters['data_bag']).to_hash
@@ -50,9 +53,6 @@ define :geoserver do
     end
 
     # Inject proxyBaseUrl to global.xml at /global/settings/proxyBaseUrl
-    protocol = app_parameters['https'] ? "https" : "http"
-    geoserver_url = "#{protocol}://#{instance_vhost}/#{app_name}"
-
     geoserver_injected_variables = []
     geoserver_injected_variables << [ "global.xml", "/global/settings/proxyBaseUrl", geoserver_url ]
     if app_parameters['injected_variables']
@@ -104,5 +104,43 @@ define :geoserver do
       :username => geoserver_username,
       :password => geoserver_password
     })
+  end
+
+  if app_parameters['config_ftl']
+    config_ftl = nil
+
+    if app_parameters['config_ftl']['data_bag']
+      Chef::Log.info "Getting config.ftl config from data bag '#{app_parameters['config_ftl']['data_bag']}'"
+      config_ftl.nil? and config_ftl = {}
+      config_ftl_data_bag =
+        Chef::EncryptedDataBagItem.load('imos_webapps_geoserver_config_ftl', app_parameters['config_ftl']['data_bag'])
+      config_ftl.merge!(config_ftl_data_bag.to_hash.dup['values'])
+    end
+
+    if app_parameters['config_ftl']['overrides']
+      Chef::Log.info "Overriding config.ftl config: '#{app_parameters['config_ftl']['overrides']}'"
+      config_ftl.nil? and config_ftl = {}
+      config_ftl.merge!(app_parameters['config_ftl']['overrides'])
+    end
+
+    # Define baseurl, only if there isn't anything else defined
+    if ! config_ftl.nil? && ! config_ftl['baseurl']
+      Chef::Log.info "Adding config.ftl baseurl: '#{geoserver_url}'"
+      config_ftl['baseurl'] = geoserver_url
+    end
+
+    # Configure config.ftl only if there's anything to do
+    if ! config_ftl.nil?
+      template ::File.join(data_dir, "workspaces", "config.ftl") do
+        source    "geoserver/config.ftl.erb"
+        owner     node['tomcat']['user']
+        group     node['tomcat']['user']
+        mode      0644
+        notifies  :restart, "service[#{instance_service_name}]", :delayed
+        variables ({
+          :config => config_ftl
+        })
+      end
+    end
   end
 end

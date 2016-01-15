@@ -1,0 +1,10 @@
+{
+    "id": "default",
+    "values": {
+        "baseMetadataShow":    "https://catalogue-rc.aodn.org.au/geonetwork/srv/en/metadata.show?uuid=",
+        "baseurlDataServer":   "https://data.aodn.org.au/IMOS/public",
+        "baseurlDataServerS3": "https://imos-data.s3-ap-southeast-2.amazonaws.com",
+        "baseurlStaticImages": "https://static.emii.org.au/images/portalImages",
+        "baseurlThredds":      "http://thredds.aodn.org.au"
+    }
+}
