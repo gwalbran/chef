@@ -162,12 +162,27 @@
                         ]
                     },
                     {
-                        "name":       "geoserver",
-                        "artifact":   "geoserver_prod",
-                        "custom_def": "geoserver",
-                        "data_dir":   "/vagrant/src/geoserver",
-                        "mock_jndis": false,
-                        "jndis":      [ "harvest-read-po", "harvest-read-po-rc", "local-harvest-read" ]
+                        "name":               "geoserver",
+                        "artifact":           "geoserver_prod",
+                        "custom_def":         "geoserver",
+                        "data_dir":           "/vagrant/src/geoserver",
+                        "mock_jndis":         false,
+                        "jndis":              [
+                            "harvest-read-po",
+                            "harvest-read-po-rc",
+                            "local-harvest-read"
+                        ],
+                        "injected_variables": [
+                            [ "wps.xml",          "/wps/enabled",                      "true" ],
+                            [ "wps.xml",          "/wps/maxAsynchronousProcesses",     1 ],
+                            [ "wps.xml",          "/wps/maxAsynchronousExecutionTime", 600 ],
+                            [ "wps.xml",          "/wps/resourceExpirationTimeout",    86400 ],
+                            [ "wps/gogoduck.xml", "/gogoduck/threadCount",             1 ],
+                            [ "wps/gogoduck.xml", "/gogoduck/fileLimit",               1024 ]
+                        ],
+                        "config_ftl":         {
+                            "data_bag": "default"
+                        }
                     },
                     {
                         "name":                  "geonetwork",
@@ -181,14 +196,6 @@
                             "harvesters":   [ "catalogue_123" ],
                             "vocabularies": [ "aodn_parameter" ]
                         },
-                        "injected_variables":    [
-                            [ "wps.xml",          "/wps/enabled",                      "true" ],
-                            [ "wps.xml",          "/wps/maxAsynchronousProcesses",     1 ],
-                            [ "wps.xml",          "/wps/maxAsynchronousExecutionTime", 600 ],
-                            [ "wps.xml",          "/wps/resourceExpirationTimeout",    86400 ],
-                            [ "wps/gogoduck.xml", "/gogoduck/threadCount",             1 ],
-                            [ "wps/gogoduck.xml", "/gogoduck/fileLimit",               1024 ]
-                        ],
                         "custom_def":            "geonetwork",
                         "data_bag":              "catalogue_123_nogit",
                         "data_dir":              "/var/lib/geonetwork",
