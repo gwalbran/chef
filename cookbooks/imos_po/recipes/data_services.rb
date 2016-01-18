@@ -120,7 +120,7 @@ template node['imos_po']['data_services']['env'] do
   })
 end
 
-if node['imos_po']['data_services']['cronjobs']
+if ! node['imos_po']['data_services']['cronjobs'].empty?
   # Install cron jobs for project officers
   ruby_block "data_services_cronjobs" do
     block do
@@ -137,11 +137,21 @@ if node['imos_po']['data_services']['cronjobs']
 
       cronjob_prefix = node['imos_po']['data_services']['cronjob_prefix']
 
+      cronjobs = []
+      node['imos_po']['data_services']['cronjobs'].each do |cronjob_pattern|
+        Dir.glob(::File.join(data_services_cron_dir, cronjob_pattern)).each do |cronjob|
+          cronjobs << ::File.basename(cronjob)
+        end
+      end
+
+      Chef::Log.info("Configuring cronjobs '#{cronjobs}'")
+
       if File.exists?(data_services_dir) && File.exists?(data_services_cron_dir)
         Dir.mktmpdir { |tmp_cronjobs|
-          Dir.foreach(data_services_cron_dir) do |cronjob|
+          cronjobs.uniq.each do |cronjob|
             next if cronjob == '.' or cronjob == '..'
 
+            Chef::Log.info("Configuring cronjob '#{cronjob}'")
             cronjob_full_path = File.join(data_services_cron_dir, cronjob)
             cronjob_dest      = File.join(tmp_cronjobs, "#{cronjob_prefix}#{cronjob}")
 
