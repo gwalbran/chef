@@ -8,7 +8,7 @@ default['imos_po']['data_services']['cron_allowed_groups'] = [ 'projectofficer' 
 default['imos_po']['data_services']['cron_allowed_users']  = [ 'ftp', 'nobody' ]
 
 # Enable/disable installation of the cronjobs and watches
-default['imos_po']['data_services']['cronjobs'] = true
+default['imos_po']['data_services']['cronjobs'] = [ "*" ]
 default['imos_po']['data_services']['watches']  = true
 
 default['imos_po']['data_services']['cronjob_prefix'] = "_po_"
