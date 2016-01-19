@@ -151,7 +151,7 @@ def add_harvester(auth_username, auth_password, url, xml_param, harvester_name)
     xml_doc = Nokogiri::XML(xml_param)
     node = xml_doc.at_css "node"
     node['id'] = entity_id
-    xml_param = xml_doc.to_s  
+    xml_param = xml_doc.to_s
   else
     http_post_request_xml_body(
       auth_username, auth_password,
@@ -360,7 +360,7 @@ if __FILE__ == $0
   EOS
   opt :url, "Geonetwork URL",
     :type => :string,
-    :short => '-g' 
+    :short => '-g'
   opt :config, "Config file",
     :type => :string,
     :short => '-c'
