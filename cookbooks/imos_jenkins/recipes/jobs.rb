@@ -80,7 +80,7 @@ def jenkins_pipepline_for_app(app_id, pipeline_databag)
     upstream_project = job_name
   end
 
-  jenkins_view app_id do
+  imos_jenkins_view app_id do
     code Chef::Recipe::JenkinsHelper.groovy_code_for_pipeline(app_id, pipeline_databag)
   end
 end
@@ -174,7 +174,7 @@ data_bag('build_views').each do |item_id|
     action = :delete
   end
 
-  jenkins_view view_databag['id'] do
+  imos_jenkins_view view_databag['id'] do
     jobs   jobs
     action action
   end

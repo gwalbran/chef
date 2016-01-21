@@ -77,9 +77,8 @@ DEPENDENCIES
     revision: 44cadd9085de42a75f0d084fdb8f84b7d7f49a25
     ref: v1.35.0
   jenkins
-    git: git://github.com/danfruehauf/jenkins.git
-    revision: b2075960ac2097d3bc87a91d47139ba6929a82e3
-    ref: jenkins
+    git: git://github.com/chef-cookbooks/jenkins.git
+    revision: 1e969ac1f60828b089d138dcc19b718af18700e9
   kibana
     git: git://github.com/lusis/chef-kibana.git
     revision: aadfd38bc6e2877bc2c23694a0ea24390b76bd8a
