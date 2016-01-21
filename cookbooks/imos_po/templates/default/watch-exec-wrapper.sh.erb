@@ -2,19 +2,23 @@
 
 source <%= @env %> || exit 255
 
+<% if node['imos_po']['data_services']['tmp_dir'] %>
+export TMPDIR=<%= node['imos_po']['data_services']['tmp_dir'] %>
+<% end %>
+
 # main
 # example argument list:
 # ACORN file.nc process-file.sh /home/netcdf
-# $1 - file to run command with
-# $2 - command to run
+# $1 - job name
+# $2 - file to run command with
+# $3 - command to run
 # "$@" - extra parameters for command
 main() {
-    declare -r JOB_NAME=$1; shift; export JOB_NAME
-    declare -r INCOMING_FILE=$1; shift; export INCOMING_FILE
+    local job_name=$1; shift
+    local file=$1; shift
     local command=$1; shift
-    local file=$INCOMING_FILE
+
     local file_basename=`basename $file`
-    declare -r TRANSACTION_ID=`date +%Y%m%d-%H%M%S`; export TRANSACTION_ID
 
     if [ ! -f $file ]; then
         # not a file - ignore event
@@ -27,16 +31,43 @@ main() {
         return 0
     fi
 
-    # make file read only before giving it to incoming handlers
-    sudo chmod 00444 $file && sudo chown <%= @user %>:<%= @group %> $file || \
-        file_error "Error setting permissions"
+    local tmp_processing_dir=`mktemp -d`
+    local tmp_file_to_process="$tmp_processing_dir/"`basename $file`
+    chmod 755 $tmp_processing_dir # make directory world readable
 
-    eval $command $file "$@" 2>&1 | log_out
+    # make file read only before giving it to incoming handlers
+    if ! mv -T -n -- $file $tmp_file_to_process; then
+        _file_error "Error renaming '$file' -> '$tmp_file_to_process'"
+        rmdir $tmp_processing_dir
+        return 1
+    fi
+
+    if ! sudo chown <%= @user %>:<%= @group %> $tmp_file_to_process; then
+        _file_error "Error chown file"
+        rmdir $tmp_processing_dir
+        return 1
+    fi
+
+    if ! chmod 00444 $tmp_file_to_process; then
+        _file_error "Error chmod file"
+        rmdir $tmp_processing_dir
+        return 1
+    fi
+
+    # set environment and run command
+    declare -r JOB_NAME=$job_name; export JOB_NAME
+    declare -r INCOMING_FILE=$tmp_file_to_process; export INCOMING_FILE
+    declare -r TRANSACTION_ID=`date +%Y%m%d-%H%M%S`; export TRANSACTION_ID
+    eval $command $tmp_file_to_process "$@" 2>&1 | log_out
 
     # make sure file was handled, move to error directory if not
-    if [ -f $file ]; then
-        file_error "Not moved out of incoming directory"
+    if [ -f $tmp_file_to_process ]; then
+        _file_error "File not handled"
+        rmdir $tmp_processing_dir
+        return 1
     fi
+
+    rmdir $tmp_processing_dir
 }
 
 main "$@"

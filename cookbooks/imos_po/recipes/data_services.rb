@@ -63,6 +63,14 @@ node['imos_po']['data_services']['owned_dirs'].each do |dir|
   end
 end
 
+if node['imos_po']['data_services']['tmp_dir']
+  directory node['imos_po']['data_services']['tmp_dir'] do
+    user      'root'
+    group     'root'
+    mode      01777
+  end
+end
+
 # Allow anyone in 'projectofficer' group to sudo to user 'projectofficer'
 sudo 'data_services' do
   group    "projectofficer"
