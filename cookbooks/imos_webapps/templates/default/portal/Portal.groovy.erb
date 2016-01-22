@@ -37,6 +37,8 @@ end
 
 %>
 
+<%= "allowAnyHost = #{@custom_parameters['allow_any_host'] or 'false'}" %>
+
 <%= "knownServers = #{GroovyIndenter.indent(known_servers.to_groovy)}" %>
 
 <%
