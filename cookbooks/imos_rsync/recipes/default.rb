@@ -45,9 +45,10 @@ end
 # Define all the shares
 node['imos_rsync']['serve'].each do |data_bag_name|
   data_bag = Chef::EncryptedDataBagItem.load('rsync_serve', data_bag_name)
+  path = Chef::Recipe::RsyncHelper.amend_path(data_bag['path'], node['imos_rsync']['incoming_dir'])
 
   rsync_serve data_bag['id'] do
-    path             data_bag['path']
+    path             path
     comment          "#{data_bag['id']}"
     secrets_file     rsyncd_secrets_path
     auth_users       data_bag['auth_users'].join(" ")

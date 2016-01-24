@@ -18,8 +18,9 @@ end
 if node['imos_rsync'] && node['imos_rsync']['chroot_users']
   node['imos_rsync']['chroot_users'].each do |data_bag_name|
     data_bag = Chef::EncryptedDataBagItem.load('rsync_chroot_users', data_bag_name)
+    directory = Chef::Recipe::RsyncHelper.amend_path(data_bag['directory'], node['imos_rsync']['incoming_dir'])
 
-    directory data_bag['directory'] do
+    directory directory do
       recursive true
       owner     node['imos_rsync']['user']
       mode      00755
@@ -28,8 +29,8 @@ if node['imos_rsync'] && node['imos_rsync']['chroot_users']
     rsync_chroot_user "rsync_chroot_#{data_bag['id']}" do
       user      data_bag['user'] || node['imos_rsync']['user']
       key       data_bag['ssh_key']
-      directory data_bag['directory']
-      comment   data_bag['email']
+      directory directory
+      comment   data_bag['email'] or data_bag['id']
     end
   end
 end
