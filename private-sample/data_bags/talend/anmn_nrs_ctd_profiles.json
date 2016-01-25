@@ -1,0 +1,12 @@
+{
+    "id": "anmn_nrs_ctd_profiles",
+    "artifact_filename": "ANMN_NRS_CTD_PROFILES_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "7b901002-b1dc-46c3-89f2-b4951cedca48"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*/Biogeochem_profiles/.*_FV01_.*\\.nc"
+        ]
+    }
+}

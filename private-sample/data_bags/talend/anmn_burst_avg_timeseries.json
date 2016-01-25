@@ -1,0 +1,16 @@
+{
+    "id": "anmn_burst_avg_timeseries",
+    "artifact_filename": "ANMN_BURST_AVG_TIMESERIES_harvester_Latest.zip",
+    "params": {
+        "Destination_Schema": "anmn_burst_avg",
+        "Destination_Password": "anmn_burst_avg",
+        "Destination_Login": "anmn_burst_avg",
+        "Metadata_UUID": "8964658c-6ee1-4015-9bae-2937dfcc6ab9"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*_FV02_.*-burst-averaged.*\\.nc$"
+        ]
+    }
+
+}

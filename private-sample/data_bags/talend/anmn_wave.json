@@ -1,0 +1,12 @@
+{
+    "id": "anmn_wave",
+    "artifact_filename": "ANMN_WAVE_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "aaebf991-b79d-4670-a1c5-a0de9bf649ce"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*/Wave/.*_FV01_.*(ADCP|AWAC).*\\.nc"
+        ]
+    }
+}

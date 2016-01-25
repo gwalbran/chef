@@ -1,0 +1,16 @@
+{
+    "id": "anmn_adcp_timeseries",
+    "artifact_filename": "ANMN_velocity_timeseries_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "ae86e2f5-eaaf-459e-a405-e654d85adb9c",
+        "Metadata_SpatialTable": "anmn_velocity_timeseries_map",
+        "Destination_Login": "anmn_velocity",
+        "Destination_Schema": "anmn_velocity",
+        "Destination_Password": "anmn_velocity"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*/Velocity/.*FV01.*\\.nc$"
+        ]
+    }
+}
