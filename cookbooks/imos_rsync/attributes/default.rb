@@ -11,6 +11,12 @@ default['imos_rsync']['incoming_dir'] = "/var/lib/incoming"
 
 # User for chroot rsync uploads
 default['imos_rsync']['user'] = 'rsync'
+# Be part of 'users' group so you rsync_chroot can share directories with FTP
+default['imos_rsync']['group'] = 'users'
+
+# Create or not destination directories for imos_rsync::chroot. Usually
+# ftp_dir_tree will create them
+default['imos_rsync']['create_directories'] = false
 
 default['imos_rsync']['users'] = []
 default['imos_rsync']['serve'] = []
