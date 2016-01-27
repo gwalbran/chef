@@ -26,7 +26,7 @@
     ],
     "imos_dns": {
         "etc_hosts": {
-            "10.11.12.13": "po.aodn.org.au geoserver-123.aodn.org.au geoserver-rc.aodn.org.au"
+            "10.11.12.13": "po.aodn.org.au geoserver-123.aodn.org.au geoserver-rc.aodn.org.au thredds.aodn.org.au thredds-1-aws-syd.aodn.org.au"
         }
     },
     "tz": "Australia/Hobart",
@@ -138,7 +138,7 @@
                 "vhost":         "po.aodn.org.au",
                 "aliases":       [ "10.11.12.13" ],
                 "port":          "8080",
-                "java_options":  "-Xmx3G -Xms1G -XX:PermSize=512m -Duser.timezone=UTC -DGEOSERVER_DATA_DIR=/vagrant/src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork",
+                "java_options":  "-Xmx3G -Xms1G -XX:PermSize=512m -Duser.timezone=UTC -DGEOSERVER_DATA_DIR=/vagrant/src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork -Dtds.content.root.path=$CATALINA_HOME/content",
                 "apps": [
                     {
                         "name":                 "imos123",
@@ -178,7 +178,8 @@
                             [ "wps.xml",          "/wps/maxAsynchronousExecutionTime", 600 ],
                             [ "wps.xml",          "/wps/resourceExpirationTimeout",    86400 ],
                             [ "wps/gogoduck.xml", "/gogoduck/threadCount",             1 ],
-                            [ "wps/gogoduck.xml", "/gogoduck/fileLimit",               1024 ]
+                            [ "wps/gogoduck.xml", "/gogoduck/fileLimit",               1024 ],
+                            [ "ncwms.xml",        "/ncwms/wfsServer",                  "http://localhost:8080/geoserver/ows" ]
                         ],
                         "config_ftl":         {
                             "data_bag": "default"
@@ -205,11 +206,16 @@
                         }
                     },
                     {
-                        "name":       "ncwms",
-                        "artifact":   "ncwms_prod",
-                        "custom_def": "ncwms",
-                        "cache_dir":  "/mnt/opendap/1/cache/ncwmsCache",
-                        "root":       "/mnt/opendap"
+                        "name":         "thredds",
+                        "artifact":     "thredds_prod",
+                        "custom_def":   "thredds",
+                        "cache_dir":    "/tmp",
+                        "root":         "/s3/imos-data",
+                        "catalog":      "imos.xml",
+                        "config_files": [
+                            "threddsConfig.xml",
+                            "wmsConfig.xml"
+                        ]
                     }
                 ]
             }
