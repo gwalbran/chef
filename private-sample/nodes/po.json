@@ -209,7 +209,7 @@
                         "name":         "thredds",
                         "artifact":     "thredds_prod",
                         "custom_def":   "thredds",
-                        "cache_dir":    "/tmp",
+                        "cache_dir":    "/tmp/thredds-cache",
                         "root":         "/s3/imos-data",
                         "catalog":      "imos.xml",
                         "config_files": [
