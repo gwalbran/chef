@@ -74,6 +74,16 @@ $ ls -l src/error/
 
 ## Deploying Harvesters Not From Jenkins
 
+First you need to export the job from TOS:
+
+  * Open the job in Talend Open Studio
+  * In the "Repository" panel on the left, under **Job Designs**, right-click on the *main harvester job* and select "Export Job"
+  * In the dialog box, select the location of the archive file (something like `/vagrant/tmp/Name_of_harvester_0.1.zip` is convenient). Under "Options", all the boxes should be ticked except "Apply to children" (see screenshot below).
+  * Only the main harvester job should be ticked in the "Select items to export" section on the left (this is the default).
+  * Click `Finish`
+
+![](talend_export_job.png?raw=true)
+
 Data bag definitions for deploying harvesters are at `data_bags/talend/`:
 ```
 $ ls -l data-bags/talend/
