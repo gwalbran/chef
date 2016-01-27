@@ -118,6 +118,11 @@ have:
 -rw-------  1 dan  dan  17416021 Oct  9 11:56 tmp/ACORN_radial_nonQC_harvester_1.0.zip
 ```
 
+Alternatively, you can use the `bin/talend-local.rb` utility to do the same:
+```
+$ bin/talend-local.rb data_bags/talend/acorn_radial_nonqc.json tmp/ACORN_radial_nonQC_harvester_1.0.zip
+```
+
 Then you need to deploy the harvester running:
 ```
 $ vagrant provision po
