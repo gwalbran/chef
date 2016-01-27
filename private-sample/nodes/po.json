@@ -149,6 +149,7 @@
                         "css_name":             "IMOS",
                         "header_logo":          "IMOS_logo.png",
                         "geonetwork_url":       "http://10.11.12.13/geonetwork",
+                        "allow_any_host":       true,
                         "feature_toggles":      {
                             "hierarchicalFacets": true
                         },
