@@ -1,0 +1,16 @@
+{
+    "id": "anmn_nrs_rt_biogeochem_timeseries",
+    "artifact_filename": "ANMN_NRS_RT_Biogeochem_timeseries_harvester_Latest.zip",
+    "params": {
+        "Destination_Password": "anmn_nrs_rt_bio",
+        "Destination_Login": "anmn_nrs_rt_bio",
+        "Destination_Schema": "anmn_nrs_rt_bio",
+        "Metadata_UUID": "13b3900f-2623-463c-98a7-ea60ac8e61ae",
+        "Metadata_SpatialTable": "anmn_nrs_rt_bio_timeseries_map"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*/Biogeochem_timeseries/.*_FV00_.*realtime.*\\.nc"
+        ]
+    }
+}

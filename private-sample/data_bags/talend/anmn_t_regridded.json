@@ -1,0 +1,15 @@
+{
+    "id": "anmn_t_regridded",
+    "artifact_filename": "ANMN_T_REGRIDDED_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "ae6af5ff-9503-492b-b917-4e3c1a0c19ee",
+        "Metadata_SpatialTable": "anmn_regridded_temperature_map",
+        "include": ".*FV02.*regridded.*",
+        "exclude": ".*FV02.*burst_averaged.*"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*/Temperature/.*_FV02_.*-regridded.*\\.nc$"
+        ]
+    }
+}

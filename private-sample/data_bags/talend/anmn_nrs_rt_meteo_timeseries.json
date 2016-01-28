@@ -1,0 +1,15 @@
+{
+    "id": "anmn_nrs_rt_meteo_timeseries",
+    "artifact_filename": "ANMN_NRS_RT_Meteo_timeseries_harvester_Latest.zip",
+    "params": {
+        "Destination_Login": "anmn_nrs_rt_meteo",
+        "Destination_Password": "anmn_nrs_rt_meteo",
+        "Destination_Schema": "anmn_nrs_rt_meteo",
+        "Metadata_UUID": "f3910f5c-c568-4af0-b773-13c0e57ada6b"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*/Meteorology/.*_FV00_.*realtime.*\\.nc"
+        ]
+    }
+}

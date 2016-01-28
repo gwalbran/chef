@@ -1,0 +1,17 @@
+{
+    "id": "anmn_ts_timeseries",
+    "artifact_filename": "ANMN_TS_timeseries_harvester_Latest.zip",
+    "params": {
+        "Destination_Login": "anmn_ts",
+        "Destination_Password": "anmn_ts",
+        "Destination_Schema": "anmn_ts",
+        "Metadata_UUID": "7e13b5f3-4a70-4e31-9e95-335efa491c5c"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*/Temperature/.*_FV01_.*\\.nc$",
+            "^IMOS/ANMN/.*/CTD_timeseries/.*_FV01_.*(SBE|XR-420).*_END-.*\\.nc$",
+            "^IMOS/ANMN/.*/Velocity/.*_FV01_.*\\.nc$"
+        ]
+    }
+}

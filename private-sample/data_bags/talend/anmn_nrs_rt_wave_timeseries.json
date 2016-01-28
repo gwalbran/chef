@@ -1,0 +1,15 @@
+{
+    "id": "anmn_nrs_rt_wave_timeseries",
+    "artifact_filename": "ANMN_NRS_RT_Wave_timeseries_harvester_Latest.zip",
+    "params": {
+        "Destination_Login": "anmn_nrs_rt_wave",
+        "Destination_Password": "anmn_nrs_rt_wave",
+        "Destination_Schema": "anmn_nrs_rt_wave",
+        "Metadata_UUID": "72dbe843-2fb1-4b2e-8b7e-4661d857affb"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*/Wave/.*_FV00_.*realtime.*\\.nc"
+        ]
+    }
+}
