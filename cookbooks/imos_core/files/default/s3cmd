@@ -39,6 +39,11 @@ main() {
     elif [ "$cmd" == "del" ]; then
         src=`bucket_uri_to_file_path $src` && \
             rm -f $src
+    elif [ "$cmd" == "ls" ]; then
+        src=`bucket_uri_to_file_path $src` && \
+        if test -d $src; then
+            ls -1 $src | sed -e 's/^/dummy dummy dummy /' # mock 3 fields like s3cmd
+        fi
     else
         echo "Unknown command '$cmd'" && exit 1
     fi
