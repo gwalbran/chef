@@ -21,7 +21,7 @@
 %>
 define service {
   service_description ncwms GetMap <%= ncwms_url %>
-  check_command check_ncwms!GetMap!<%= ncwms_url %>!500!10
+  check_command check_ncwms!GetMap!<%= ncwms_url %>!10!10
   host_name <%= host_name %>
   use default-service
   servicegroups ncwms
@@ -29,7 +29,7 @@ define service {
 
 define service {
   service_description ncwms GetFeatureInfo <%= ncwms_url %>
-  check_command check_ncwms!GetFeatureInfo!<%= ncwms_url %>!150!10
+  check_command check_ncwms!GetFeatureInfo!<%= ncwms_url %>!10!10
   host_name <%= host_name %>
   use default-service
   servicegroups ncwms
