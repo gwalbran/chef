@@ -9,6 +9,7 @@
     },
     "event": {
         "regex": [
+            "^IMOS/ANMN/AM/.*\\.nc$",
             "^IMOS/ANMN/NSW/.*\\.nc$",
             "^IMOS/ANMN/QLD/.*\\.nc$",
             "^IMOS/ANMN/SA/.*\\.nc$",
