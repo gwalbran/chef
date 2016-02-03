@@ -35,11 +35,7 @@
                     "type": "write"
                 },
                 {
-                    "role": "anmn",
-                    "type": "write"
-                },
-                {
-                    "role": "anmn_realtime",
+                    "role": "anmn_metadata",
                     "type": "write"
                 },
                 {
@@ -426,20 +422,6 @@
             ]
         },
         {
-            "name": "anmn",
-            "owner": "anmn",
-            "permissions": [
-                {
-                    "role": "harvest_read_group",
-                    "type": "read"
-                },
-                {
-                    "role": "harvest_write_group",
-                    "type": "write"
-                }
-            ]
-        },
-        {
             "name": "anmn_acidification_nrt",
             "owner": "anmn_acidification_nrt",
             "permissions": [
@@ -454,8 +436,8 @@
             ]
         },
         {
-            "name": "anmn_realtime",
-            "owner": "anmn_realtime",
+            "name": "anmn_metadata",
+            "owner": "anmn_metadata",
             "permissions": [
                 {
                     "role": "harvest_read_group",
