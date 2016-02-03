@@ -416,12 +416,8 @@
             "password": "anmn_acidification_nrt"
         },
         {
-            "name": "anmn_realtime",
-            "password": "anmn_realtime"
-        },
-        {
-            "name": "anmn",
-            "password": "anmn"
+            "name": "anmn_metadata",
+            "password": "anmn_metadata"
         },
         {
             "name": "anmn_t_regridded",
