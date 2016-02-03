@@ -1,0 +1,15 @@
+{
+    "id": "anmn_realtime",
+    "artifact_filename": "ANMN_metadata_harvester_Latest.zip",
+    "params": {
+        "Destination_Login": "anmn_metadata",
+        "Destination_Password": "anmn_metadata",
+        "Destination_Schema": "anmn_metadata",
+        "keepDeletedFiles": "false"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*(REAL_TIME|realtime).*\\.nc$"
+        ]
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "id": "anmn_delayed",
+    "artifact_filename": "ANMN_metadata_harvester_Latest.zip",
+    "params": {
+        "Destination_Login": "anmn_metadata",
+        "Destination_Password": "anmn_metadata",
+        "Destination_Schema": "anmn_metadata",
+        "keepDeletedFiles": "true"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/NSW/.*\\.nc$",
+            "^IMOS/ANMN/QLD/.*\\.nc$",
+            "^IMOS/ANMN/SA/.*\\.nc$",
+            "^IMOS/ANMN/WA/.*\\.nc$",
+            "^IMOS/ANMN/NRS/NRS.*\\.nc$",
+            "^IMOS/ANMN/NRS/SEQ.*\\.nc$"
+        ]
+    }
+}
