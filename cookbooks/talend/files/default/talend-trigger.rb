@@ -184,7 +184,7 @@ if __FILE__ == $0
             -f http://data.aodn.org.au/IMOS/opendap/ACORN/radial/FRE/2015/07/31/IMOS_ACORN_RV_20150731T000500Z_FRE_FV00_radial.nc
 
       Feed files from STDIN with base at `IMOS/ACORN/radial`:
-          find /mnt/opendap/1/IMOS/opendap/ACORN/radial -type f | #{File.basename(__FILE__)} --stdin -c config.conf -b IMOS/ACORN/radial
+          cd /mnt/opendap/1/IMOS/opendap/ACORN/radial && find . -type f | #{File.basename(__FILE__)} --stdin -c config.conf -b IMOS/ACORN/radial
 
       Delete an indexed file:
           #{File.basename(__FILE__)} -c config.conf
