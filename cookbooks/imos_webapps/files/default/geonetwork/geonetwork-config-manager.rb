@@ -117,16 +117,27 @@ def add_user(auth_username, auth_password, url, param_hash)
     File.join(url, @prefix, "xml.info?type=users"),
     "//info/users/user", "username", param_hash['username'],
     "id/text()")
-  service = "user.update?operation=newuser"
 
   if entity_id.to_i > @NULL_ENTITY_ID
     param_hash[:id] = entity_id
-    service = "user.update?operation=editinfo"
-  end
+    http_post_request(
+      auth_username, auth_password,
+      File.join(url, @prefix, "user.update?operation=editinfo"), param_hash)
 
-  http_post_request(
-    auth_username, auth_password,
-    File.join(url, @prefix, service), param_hash)
+    pw_reset_param = {
+      'id' => entity_id,
+      'username' => param_hash['username'],
+      'password' => param_hash['password'],
+      'profile' => param_hash['profile']}
+
+    http_post_request(
+      auth_username, auth_password,
+      File.join(url, @prefix, "user.update?operation=resetpw"), pw_reset_param)
+  else
+    http_post_request(
+      auth_username, auth_password,
+      File.join(url, @prefix, "user.update?operation=newuser"), param_hash)
+  end
 end
 
 # Adds a harvester to a GeoNetwork instance
@@ -212,7 +223,7 @@ def add_vocab(auth_username, auth_password, url, param_hash)
   if xml_doc
     xml_doc.xpath(File.join("//response/thesauri/thesaurus")).each do |vocab|
       vocab_key = vocab.xpath("key/text()").to_s
-      download_param = Hash['ref' => vocab_key]
+      download_param = {'ref' => vocab_key}
       xml_res = get_xml_content(
       auth_username, auth_password,
       File.join(url, @prefix, "thesaurus.download"), download_param)
@@ -290,7 +301,7 @@ def manage_vocabs(url, username, password)
     vocabs_to_delete = present_vocabs - vocabs_to_configure
 
     vocabs_to_delete.each do |vocab_key|
-      delete_param = Hash['ref' => vocab_key]
+      delete_param = {'ref' => vocab_key}
       delete_vocab(username, password, url, delete_param)
     end
 
@@ -301,7 +312,7 @@ def manage_vocabs(url, username, password)
     end
 
     if vocabs_added > 0
-      rebuild_param = Hash['reset' => 'yes']
+      rebuild_param = {'reset' => 'yes'}
       http_post_request(username, password,
         File.join(url, @prefix, "metadata.admin.index.rebuild"), rebuild_param)
     end

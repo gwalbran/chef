@@ -27,6 +27,11 @@ define :geonetwork do
   # removed if a deployment takes place
   core_schema_plugins_lock_file = File.join(webapp_dir, "core_schema_plugins.lock")
 
+  # Install gems required for geonetwork config manager script
+  chef_gem 'xml-simple'
+  chef_gem 'equivalent-xml'
+  chef_gem 'trollop'
+
   # This solves https://github.com/aodn/chef/issues/809, so we clean and
   # redeploy the core schema plugins if there is a new geonetwork deployment
   # We prevent from re-deploying schema plugins if the lock file we placed
