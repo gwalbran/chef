@@ -15,7 +15,8 @@ talend_jobs = []
 
   if n['run_list'].include?("recipe[talend]") && n['talend'] && n['talend']['jobs']
     n['talend']['jobs'].each do |talend_job|
-      if ! talend_jobs_ignore.include?(talend_job)
+      talend_job_data_bag = Chef::DataBagItem.load("talend", talend_job)
+      if ! talend_jobs_ignore.include?(talend_job) && ! talend_job_data_bag.has_key?('event')
 %>
 define service {
   service_description talend <%= talend_job %>

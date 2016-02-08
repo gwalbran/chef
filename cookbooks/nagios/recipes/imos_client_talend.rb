@@ -14,7 +14,7 @@ if node.recipe?("talend") && node['talend'] && node['talend']['jobs']
     # cookbook, and we should call something like Talend::GetLogFileForJob()
     talend_job_data_bag = Chef::DataBagItem.load("talend", job_name)
     job_id = talend_job_data_bag['id']
-    if job_id
+    if job_id && ! talend_job_data_bag.has_key?('event')
       talend_console_log_file = ::File.join(node['talend']['jobs_dir'], "#{job_name}-#{job_id}", 'log', 'console.log')
       # nrpe check per job
       nagios_nrpecheck "check_talend_#{job_name}" do
