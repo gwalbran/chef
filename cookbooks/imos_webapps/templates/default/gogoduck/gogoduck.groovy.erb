@@ -7,6 +7,7 @@ grails.mail.default.from = "emiioffice@emii.org.au"
 %>
 grails {
     mail {
+        disabled = false
         host = "<%= mail_credentials['host'] || 'localhost' %>"
         port = <%= mail_credentials['port'] || 25 %>
         props = [ "mail.smtp.auth": "true" ]
