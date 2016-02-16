@@ -146,7 +146,7 @@ end if @params[:proxy_pass]
 <% end %>
 
 <% if @params[:redirect_to_https] %>
-  ReWriteCond %{SERVER_PORT} !^443$
+  RewriteCond %{SERVER_PORT} !^443$
   RewriteRule ^/(.*) https://%{HTTP_HOST}/$1 [NC,NE,R,L]
 <% end %>
 
