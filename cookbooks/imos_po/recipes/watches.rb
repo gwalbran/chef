@@ -62,10 +62,6 @@ ruby_block "verify_watched_directories" do
 end
 
 if node['imos_po']['data_services']['watches']
-  package 'incron' do # TODO remove after incron was removed from hosts
-    action :remove
-  end
-
   include_recipe 'rabbitmq'
   package 'lsof'
   package 'python-pyinotify'
