@@ -314,6 +314,7 @@ end
   chef
   backup
   input
+  jenkins
   talend
   sql
   ncwms

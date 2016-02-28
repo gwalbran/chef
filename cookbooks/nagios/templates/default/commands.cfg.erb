@@ -37,6 +37,11 @@ define command {
   command_line    $USER1$/check_sql -s -d $ARG1$ -U $ARG2$ -P $ARG3$ -r -e $ARG4$ -q $ARG5$
 }
 
+define command {
+  command_name    check_jenkins
+  command_line    $USER1$/check_jenkins -U $ARG1$ -j $ARG2$
+}
+
 <%
 # Probe DNS server from /etc/resolv.conf
 dns_server = %x{ grep '^nameserver ' /etc/resolv.conf | head -1 | cut -d' ' -f2 }

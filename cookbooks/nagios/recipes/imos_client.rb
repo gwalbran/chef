@@ -29,7 +29,8 @@ nagios_plugins_3rd_party = [
   # on his nagios plugins
   # Plugin on nagios exchange:
   # http://exchange.nagios.org/directory/Plugins/Databases/Others/check_sql/details
-  [ "check_sql", "https://raw.github.com/danfruehauf/nagios-plugins/master/check_sql/check_sql" ]
+  [ "check_sql",     "https://raw.github.com/danfruehauf/nagios-plugins/master/check_sql/check_sql" ],
+  [ "check_jenkins", "https://raw.github.com/danfruehauf/nagios-plugins/master/check_jenkins/check_jenkins" ]
 ]
 
 nagios_plugins_3rd_party.each do |plugin_pair|
