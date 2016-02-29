@@ -1,0 +1,9 @@
+{
+    "id": "srs_sst",
+    "artifact_filename": "SRS_SST_harvester_Latest.zip",
+    "event": {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/.*\\.nc$"
+        ]
+    }
+}
