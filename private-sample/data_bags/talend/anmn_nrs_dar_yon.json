@@ -1,0 +1,15 @@
+{
+    "id": "anmn_nrs_dar_yon",
+    "artifact_filename": "ANMN_NRS_DAR_YON_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "006bb7dc-860b-4b89-bf4c-6bd930bd35b7",
+        "Metadata_SpatialTable": "anmn_nrs_dar_yon_timeseries_map"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/.*/IMOS_ANMN_.*_NRSDAR_FV0.*",
+            "^IMOS/ANMN/.*/IMOS_ANMN_.*_NRSYON_FV0.*",
+            "^IMOS/ANMN/.*/IMOS_ANMN_.*_NRSBEA_FV0.*"
+        ]
+    }
+}
