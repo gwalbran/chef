@@ -1,0 +1,20 @@
+{
+    "id": "abos_sofs_fl",
+    "artifact_filename": "ABOS_SOFS_surfaceflux_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID_rt": "80ffbf9d-9547-41aa-8fa1-cf028c58556a",
+        "Metadata_SpatialTable_rt": "abos_sofs_surfaceflux_rt_map",
+        "Metadata_SpatialColumn_rt": "geom",
+        "Metadata_SpatialResolution_rt": "1",
+        "Metadata_UUID_dm": "b355a5a5-e6ec-45c7-8506-103cf160431a",
+        "Metadata_SpatialTable_dm": "abos_sofs_surfaceflux_dm_map",
+        "Metadata_SpatialColumn_dm": "geom",
+        "Metadata_SpatialResolution_dm": "1"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ABOS/ASFS/SOFS/Surface_fluxes/Real-time/.*\\.nc$",
+            "^IMOS/ABOS/ASFS/SOFS/Surface_fluxes/IMOS_ABOS.*\\.nc$"
+        ]
+    }
+}

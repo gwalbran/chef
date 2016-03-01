@@ -1,0 +1,20 @@
+{
+    "id": "abos_sofs_sp",
+    "artifact_filename": "ABOS_SOFS_surfaceprop_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID_rt": "9fdb1eee-bc28-43a9-88c5-972324784837",
+        "Metadata_SpatialTable_rt": "abos_sofs_surfaceprop_rt_map",
+        "Metadata_SpatialColumn_rt": "geom",
+        "Metadata_SpatialResolution_rt": "1",
+        "Metadata_UUID_dm": "bbd0c85b-7218-4065-8180-421b1c1d6bbe",
+        "Metadata_SpatialTable_dm": "abos_sofs_surfaceprop_dm_map",
+        "Metadata_SpatialColumn_dm": "geom",
+        "Metadata_SpatialResolution_dm": "1"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ABOS/ASFS/SOFS/Surface_properties/Real-time/.*\\.nc$",
+            "^IMOS/ABOS/ASFS/SOFS/Surface_properties/IMOS_ABOS.*1-min-avg.*\\.nc$"
+        ]
+    }
+}
