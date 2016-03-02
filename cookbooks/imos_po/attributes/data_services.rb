@@ -87,3 +87,6 @@ default['imos_po']['data_services']['celeryd']['inotify_config']    = ::File.joi
 default['imos_po']['data_services']['celeryd']['max_tasks']         = 1
 
 default['imos_po']['data_services']['create_watched_directories'] = false
+
+default['imos_po']['data_services']['credentials_pattern'] = "*"
+default['imos_po']['data_services']['credentials_prefix'] = "IMOS_PO_CREDS"
