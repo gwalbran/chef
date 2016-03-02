@@ -13,6 +13,26 @@ include_recipe "imos_po::packages"
 data_services_dir = node['imos_po']['data_services']['dir']
 data_services_cron_dir = File.join(data_services_dir, "cron.d")
 
+def imos_po_credentials
+  creds = {}
+  pattern = node['imos_po']['data_services']['credentials_pattern']
+  prefix = node['imos_po']['data_services']['credentials_prefix']
+  search('imos_po_credentials', "id:#{pattern}").each do |data_bag|
+    data_bag_hash = data_bag.to_hash
+
+    data_bag_hash.delete('chef_type')
+    data_bag_hash.delete('data_bag')
+    id = data_bag_hash.delete('id')
+    Chef::Log.info("Installing imos_po credentials from data bag '#{id}'")
+
+    data_bag_hash.each do |k, v|
+      key = "#{prefix}_#{id}_#{k}".upcase
+      creds[key] = v
+    end
+  end
+  return creds
+end
+
 if node['imos_po']['data_services']['clone_repository']
   # Use this so we can deploy private repositories
   include_recipe "imos_core::git_deploy_key"
@@ -95,6 +115,7 @@ data_services_vars = {
   'MAILX_CONFIG'      => node['imos_po']['mailx']['config_file'],
   'HARVESTER_TRIGGER' => harvester_trigger_cmd
 }
+data_services_vars.merge!(imos_po_credentials)
 
 file "/etc/profile.d/data-services.sh" do
   mode    00644
