@@ -1,0 +1,15 @@
+{
+    "id": "aatams_sattag_nrt",
+    "artifact_filename": "aatams_sattag_nrt_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "b4e742f9-58e5-46b8-b365-15430ea45599",
+        "Metadata_SpatialTable": "aatams_sattag_nrt_profile_map",
+        "Metadata_SpatialResolution": "2",
+        "metadata_file": "['imos_po']['data_services']['dir']/AATAMS/aatams_sattag_metadata.csv"
+    },
+    "event": {
+        "regex": [
+           "^IMOS/AATAMS/AATAMS_sattag_nrt/.*/IMOS_AATAMS-SATTAG_TSP_.*\\.nc$"
+        ]
+    }
+}

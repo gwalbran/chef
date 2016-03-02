@@ -244,6 +244,7 @@
             "Metadata_SpatialResolution": "1"
         },
         "jobs": [
+            "aatams_sattag_nrt",
             "abos_sots",
             "acorn_hourly_avg_nonqc",
             "acorn_hourly_avg_qc",
