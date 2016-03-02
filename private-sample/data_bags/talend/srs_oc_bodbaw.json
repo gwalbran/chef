@@ -1,0 +1,14 @@
+{
+    "id": "srs_oc_bodbaw",
+    "artifact_filename": "SRS_OC_BODBAW_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "744ac2a9-689c-40d3-b262-0df6863f0327",
+        "Metadata_SpatialTable": "srs_oc_bodbaw_trajectory_profile_map",
+        "Metadata_SpatialResolution": "3"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SRS/OC/BODBAW/.*\\.nc$"
+        ]
+    }
+}
