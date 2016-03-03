@@ -1,0 +1,9 @@
+#!/usr/bin/python
+
+import sys
+sys.path.insert(0, "<%= node['imos_po']['data_services']['celeryd']['dir'] %>")
+from tasks import *
+
+for line in sys.stdin:
+    src_file, dst_file = line.rstrip('\n').split(" ")
+    async_upload.delay(src_file, dst_file)

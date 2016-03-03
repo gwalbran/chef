@@ -90,3 +90,5 @@ default['imos_po']['data_services']['create_watched_directories'] = false
 
 default['imos_po']['data_services']['credentials_pattern'] = "*"
 default['imos_po']['data_services']['credentials_prefix'] = "IMOS_PO_CREDS"
+
+default['imos_po']['data_services']['async_upload']['max_tasks'] = 4

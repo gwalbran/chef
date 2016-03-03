@@ -87,11 +87,6 @@ if node['talend']
   harvester_trigger_cmd = "sudo -u #{node['talend']['user']} #{node['talend']['trigger']['bin']} -c #{node['talend']['trigger']['config']}"
 end
 
-s3cmd = "s3cmd --config=#{node['imos_po']['s3']['config_file']}"
-if Chef::Config[:dev]
-  s3cmd = "s3cmd-mocked"
-end
-
 # Inject those variables to the cronjobs
 # Please note all variables here must be fully expanded to avoid scripts
 # needing to evaluate them at runtime
@@ -110,7 +105,7 @@ data_services_vars = {
   'DATA_SERVICES_DIR' => data_services_dir,
   'LOG_DIR'           => node['imos_po']['data_services']['log_dir'],
   'DATA_DIR'          => node['imos_po']['data_services']['data_dir'],
-  'S3CMD'             => s3cmd,
+  'S3CMD'             => Chef::Recipe::WatchJobs.get_s3cmd(node),
   'S3_BUCKET'         => node['imos_po']['s3']['bucket'],
   'MAILX_CONFIG'      => node['imos_po']['mailx']['config_file'],
   'HARVESTER_TRIGGER' => harvester_trigger_cmd
