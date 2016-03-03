@@ -279,6 +279,7 @@
             "soop_xbt_nrt",
             "soop_xbt_dm",
             "srs_oc_bodbaw",
+            "srs_oc_ljco_aeronet",
             "srs_oc_soop_rad",
             "srs_sst"
         ]

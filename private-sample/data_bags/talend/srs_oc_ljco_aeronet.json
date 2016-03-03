@@ -1,0 +1,13 @@
+{
+    "id": "srs_oc_ljco_aeronet",
+    "artifact_filename": "SRS_LJCO_AERONET_TS_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "6e23b9bf-e360-479f-9157-26250fe57ac3",
+        "Metadata_SpatialResolution": "5"
+     },
+    "event": {
+        "regex": [
+            "^IMOS/SRS/OC/LJCO/AERONET/Lucinda\\.lev20$"
+        ]
+    }
+}
