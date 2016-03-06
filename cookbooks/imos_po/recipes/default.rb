@@ -14,6 +14,4 @@ if ! node['imos_users'] ||
   Chef::Application.fatal!("Must have projectofficer group defined in your node")
 end
 
-include_recipe "imos_po::matlab"
 include_recipe "imos_po::netcdf_nco"
-include_recipe "imos_po::wip"

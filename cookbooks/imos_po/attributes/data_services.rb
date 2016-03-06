@@ -22,12 +22,14 @@ default['imos_po']['data_services']['error_dir']     = '/mnt/err'
 default['imos_po']['data_services']['graveyard_dir'] = '/mnt/graveyard'
 default['imos_po']['data_services']['log_dir']       = '/var/log/data-services'
 default['imos_po']['data_services']['data_dir']      = '/mnt/imos-data'
+default['imos_po']['data_services']['wip_dir']       = '/mnt/wip'
 default['imos_po']['data_services']['tmp_dir']       = nil
 
 default['imos_po']['data_services']['owned_dirs'] = [
   node['imos_po']['data_services']['error_dir'],
   node['imos_po']['data_services']['graveyard_dir'],
-  node['imos_po']['data_services']['log_dir']
+  node['imos_po']['data_services']['log_dir'],
+  node['imos_po']['data_services']['wip_dir']
 ]
 
 # Node definition should override this attribute
