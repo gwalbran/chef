@@ -84,8 +84,8 @@ end
 
 harvester_trigger_cmd = "/bin/true"
 if node['talend']
-  sudo 'projectofficer_as_talend' do
-    user     node['imos_po']['data_services']['user']
+  sudo 'projectofficer_talend' do
+    group    node['imos_po']['data_services']['group']
     runas    node['talend']['user']
     commands [ "ALL" ]
     host     "ALL"

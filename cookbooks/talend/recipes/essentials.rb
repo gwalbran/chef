@@ -46,14 +46,5 @@ cookbook_file ::File.join(bin_dir, "run_job.sh") do
   mode   0755
 end
 
-# Allow project officers to invoke commands as talend
-sudo 'projectofficers_talend' do
-  group     'projectofficer'
-  runas     talend_user
-  commands  ["ALL"]
-  host      "ALL"
-  nopasswd  true
-end
-
 # Include bash aliases
 include_recipe "talend::bash_aliases"

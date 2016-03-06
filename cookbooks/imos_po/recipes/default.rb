@@ -17,4 +17,3 @@ end
 include_recipe "imos_po::matlab"
 include_recipe "imos_po::netcdf_nco"
 include_recipe "imos_po::wip"
-include_recipe "imos_po::sudo"

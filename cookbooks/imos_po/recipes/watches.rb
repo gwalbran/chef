@@ -17,11 +17,18 @@ watch_exec_wrapper = node['imos_po']['watch_exec_wrapper']
 po_user  = node['imos_po']['data_services']['user']
 po_group = node['imos_po']['data_services']['group']
 
-# Allow anyone in 'projectofficer' group to sudo to user 'projectofficer'
+# Allow processing user to sudo chown stuff in tmp sandbox directories
+# Allow it also to parse ftp/rsync logs
+sudo_chown_user_group = "#{node['imos_po']['data_services']['user']}\\:#{node['imos_po']['data_services']['group']}"
+sudo_chown_targets = ::File.join(node['imos_po']['data_services']['tmp_dir'], "*")
 sudo 'data_services_watches' do
   user     node['imos_po']['data_services']['user']
   runas    'root'
-  commands [ "/bin/cat /etc/rsyncd.conf", "/bin/cat /var/log/vsftpd.log" ]
+  commands [
+    "/bin/cat /etc/rsyncd.conf",
+    "/bin/cat /var/log/vsftpd.log",
+    "/bin/chown #{sudo_chown_user_group} #{sudo_chown_targets}"
+  ]
   host     "ALL"
   nopasswd true
 end
