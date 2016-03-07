@@ -17,3 +17,5 @@ default['imos_jenkins']['email']     = node['email_contact'] || "root@localhost"
 default['imos_jenkins']['executors'] = node['cpu']['total'] ? (node['cpu']['total']).to_i : 2
 
 default['imos_jenkins']['s3cmd']['config_file'] = ::File.join(node['jenkins']['master']['home'], ".s3cfg")
+
+default['imos_jenkins']['monitored_jobs'] = []
