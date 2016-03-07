@@ -19,8 +19,12 @@ po_group = node['imos_po']['data_services']['group']
 
 # Allow processing user to sudo chown stuff in tmp sandbox directories
 # Allow it also to parse ftp/rsync logs
+tmp_dir = Dir.tmpdir
+if node['imos_po']['data_services']['tmp_dir']
+  tmp_dir = node['imos_po']['data_services']['tmp_dir']
+end
 sudo_chown_user_group = "#{node['imos_po']['data_services']['user']}\\:#{node['imos_po']['data_services']['group']}"
-sudo_chown_targets = ::File.join(node['imos_po']['data_services']['tmp_dir'], "*")
+sudo_chown_targets = ::File.join(tmp_dir, "*")
 sudo 'data_services_watches' do
   user     node['imos_po']['data_services']['user']
   runas    'root'
