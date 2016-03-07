@@ -202,9 +202,21 @@
                         "custom_def":            "geonetwork",
                         "data_bag":              "catalogue_123_nogit",
                         "data_dir":              "/var/lib/geonetwork",
-                        "classification_scheme": {
-                            "parameterCategories": "http://vocab.aodn.org.au/def/ClassScheme/parameter1",
-                            "platformCategories":  "http://vocab.aodn.org.au/def/ClassScheme/platform1"
+                        "concept_schemes": {
+                            "parameterCategories": {
+                                "vocabularyScheme": "http://vocab.aodn.org.au/def/discovery_parameter/1",
+                                "classificationScheme": "http://vocab.aodn.org.au/def/parameter_classes/1"
+                            },
+                            "platformCategories": {
+                                "vocabularyScheme": "http://vocab.aodn.org.au/def/platform/1",
+                                "classificationScheme": "http://vocab.aodn.org.au/def/platform_classes/1"
+                            }
+                        },
+                        "term_vocabulary": {
+                            "parameterName":                    "external.theme.pp_scheme_australiandiscoveryparametervocabulary",
+                            "parameterUnits":                   "external.theme.pp_scheme_aodnunitsofmeasurevocabulary",
+                            "parameterDeterminationInstrument": "external.theme.pp_scheme_aodninstrumentvocabulary",
+                            "platform":                         "external.theme.pp_scheme_aodnplatformvocabulary"
                         }
                     },
                     {
