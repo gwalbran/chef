@@ -155,6 +155,7 @@
                         },
                         "known_servers":        [
                             "catami",
+                            "geoserver_123_ncwms",
                             "geoserver_123_aodn",
                             "geoserver_po_aodn",
                             "geoserver_rc_aodn",
