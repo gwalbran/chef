@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+import argparse
+import boto
+from boto.s3.prefix import Prefix
+
+def get_object_with_version(bucket, key, version, f):
+    k = bucket.get_key(key, version_id=version)
+    k.get_contents_to_filename(f)
+
+def list_object_versions(bucket, key):
+    for k in bucket.list_versions(key, delimiter='/'):
+        if type(k) is Prefix:
+            print k.name
+        else:
+            print "%s %s %s" % (k.version_id, k.last_modified, k.name)
+
+if __name__=='__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-a", "--anonymous", help="connect anonymously", action='store_true')
+    parser.add_argument("-b", "--bucket", help="bucket name to connect to", required=True)
+    parser.add_argument("-k", "--key", help="key (object name)", required=True)
+    parser.add_argument("-o", "--output", help="download object to file")
+    parser.add_argument("-v", "--version", help="together with '-o', specify version to download")
+
+    args = parser.parse_args()
+    
+    conn = boto.connect_s3(anon=args.anonymous)
+    bucket = conn.get_bucket(args.bucket)
+
+    if args.output and args.version:
+        get_object_with_version(bucket, args.key, args.version, args.output)
+    else:
+        list_object_versions(bucket, args.key)

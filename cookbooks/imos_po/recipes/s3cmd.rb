@@ -14,3 +14,7 @@ s3cmd_config node['imos_po']['s3']['config_file'] do
   access_key s3_data_bag['access_key_id']
   secret_key s3_data_bag['secret_access_key']
 end
+
+cookbook_file "/usr/local/bin/s3lsv" do
+  mode 00755
+end

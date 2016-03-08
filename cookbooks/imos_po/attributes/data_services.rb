@@ -59,6 +59,7 @@ default['imos_po']['data_services']['packages'] = [
   'libnetcdf-dev',
   'mdbtools',
   'python-beautifulsoup',
+  'python-boto',
   'python-dev',
   'python-pip',
   'python-psycopg2',
