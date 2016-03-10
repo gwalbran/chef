@@ -105,7 +105,7 @@ if node['imos_po']['data_services']['watches']
     source     "tasks.py.erb"
     variables  ({
       :celery_config     => ::File.basename(celery_config),
-      :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
+      :watch_dir         => data_services_watch_dir,
       :data_services_dir => data_services_dir
     })
     subscribes :create, 'git[data_services]', :delayed
@@ -122,7 +122,7 @@ if node['imos_po']['data_services']['watches']
   template celery_config do
     source    "celeryconfig.py.erb"
     variables ({
-      :watchlists        => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
+      :watch_dir          => data_services_watch_dir,
       :password_data_bag => password_data_bag,
       :backend           => backend
     })
@@ -138,7 +138,7 @@ if node['imos_po']['data_services']['watches']
   template node['imos_po']['data_services']['celeryd']['inotify_config'] do
     source    "inotify-config.py.erb"
     variables ({
-      :watchlists => Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir),
+      :watch_dir => data_services_watch_dir
     })
     subscribes :create, 'git[data_services]', :delayed
   end

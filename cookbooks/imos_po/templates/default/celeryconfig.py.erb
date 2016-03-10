@@ -22,7 +22,8 @@ BROKER_TRANSPORT_OPTIONS = {
 # Create automatic routing for all queues, kindly stolen from:
 # http://stackoverflow.com/questions/9167663/celery-per-task-concurrency-limits-of-workers-per-task
 celery_routes = {}
-@watchlists.each do |job_name, watchlist|
+watchlists = Chef::Recipe::WatchJobs.get_watches(@watch_dir)
+watchlists.each do |job_name, watchlist|
   celery_routes["tasks.#{job_name}"] = { "queue" => job_name }
 end
 %>

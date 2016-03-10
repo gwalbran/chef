@@ -2,7 +2,8 @@ mask = pyinotify.IN_MOVED_TO | pyinotify.IN_CLOSE_WRITE
 
 watched_directories = {
 <%
-@watchlists.each do |job_name, watchlist|
+watchlists = Chef::Recipe::WatchJobs.get_watches(@watch_dir)
+watchlists.each do |job_name, watchlist|
   watchlist['path'].each do |path|
     path = ::File.join(node['imos_po']['data_services']['incoming_dir'], path)
 %>
