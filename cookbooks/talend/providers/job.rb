@@ -170,11 +170,13 @@ action :schedule do
 
   else
     # Trigger a job based on pattern matching
+    trigger_regex = new_resource.trigger['event']['regex'].dup
+    trigger_regex << "^___#{job_name}___$"
     Talend::JobHelper.add_trigger(
       node['talend']['trigger']['config'],
       new_resource.name,
       Talend::JobHelper.job_command_single_file(new_resource),
-      new_resource.trigger['event']['regex']
+      trigger_regex
     )
   end
 

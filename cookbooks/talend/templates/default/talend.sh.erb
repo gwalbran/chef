@@ -19,6 +19,14 @@ talend_run() {
     sudo -u $TALEND_USER $TALEND_JOBS_DIR/$talend_job/bin/${talend_job}.sh
 }
 
+# triggers liquibase migrations for event driven talend job
+# $1 - name of job to run
+talend_liqui() {
+    local talend_job=$1; shift
+    local talend_regex="___${talend_job}___"
+    sudo -u $TALEND_USER <%= node['talend']['trigger']['bin'] %> -c <%= node['talend']['trigger']['config'] %> --delete -f $talend_regex,$talend_regex
+}
+
 # runs a talend job urgently, or moves it forward in queue
 # $1 - name of job to run urgently
 talend_urgent() {
@@ -113,7 +121,7 @@ alias talend_show_running='_talend_show_jobs running'
 alias talend_show_queued='_talend_show_jobs queued'
 
 # auto complete for all relevant talend commands
-for talend_command in talend_run talend_cd talend_log talend_dequeue talend_urgent talend_version; do
+for talend_command in talend_run talend_cd talend_log talend_dequeue talend_urgent talend_version talend_liqui; do
     complete -o bashdefault -o default -o nospace -F _talend_jobs $talend_command 2>/dev/null \
         || complete -o default -o nospace -F _talend_jobs $talend_command
 done
