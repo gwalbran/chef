@@ -1,0 +1,19 @@
+{
+    "id": "srs_oc_ljco_wws",
+    "artifact_filename": "SRS_OC_LJCO_WWS_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID_monthly_weather_fv01": "e219c92c-696c-407a-ac1b-f451b8d88f06",
+        "Metadata_SpatialTable_monthly_weather_fv01": "visualisation_wms_mtw_monthly_fv01",
+
+        "Metadata_UUID_daily_wqm_fv02": "1fd45581-f79b-48ac-8a93-3ef70d6832dc",
+        "Metadata_SpatialTable_daily_wqm_fv02": "visualisation_wms_daily_wqm_fv02",
+
+        "Metadata_UUID_hourly_wqm_fv01": "43c8e6e0-05b2-4b02-a5c4-089914af37f7",
+        "Metadata_SpatialTable_hourly_wqm_fv01": "visualisation_wms_hourly_wqm_fv01"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SRS/OC/LJCO/.*\\.nc$"
+        ]
+    }
+}

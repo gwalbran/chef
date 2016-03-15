@@ -548,6 +548,10 @@
             ]
         },
         {
+            "name": "srs_oc_ljco_wws",
+            "password": "srs_oc_ljco_wws"
+        },
+        {
             "name": "srs_sst",
             "password": "srs_sst"
         },
