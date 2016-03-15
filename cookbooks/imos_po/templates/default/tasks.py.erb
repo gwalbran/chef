@@ -2,7 +2,7 @@
 
 from celery import Celery
 import subprocess
-from os import system
+from os import system, path
 
 app = Celery('tasks')
 app.config_from_object('<%= @celery_config.gsub(/.py$/, "") %>')
@@ -33,3 +33,22 @@ def <%= job_name %>(file_path):
 <%
   end
 end %>
+
+<%
+s3cmd_parts = Chef::Recipe::WatchJobs.get_s3cmd(node).split(" ")
+s3cmd_quoted = s3cmd_parts.map{ |s| "\"#{s}\""}.join(', ')
+%>
+@app.task(ignore_result=True)
+def async_upload(src_path, dst_path):
+    command = [
+        <%= s3cmd_quoted %>,
+        "sync",
+        "--no-preserve",
+        src_path,
+        path.join("<%= node['imos_po']['s3']['bucket'] %>", dst_path)
+    ]
+    print command
+    ret = subprocess.call(command)
+    if ret != 0:
+        raise Exception("ERROR uploading '%s' -> '%s'" % (src_path, dst_path))
+

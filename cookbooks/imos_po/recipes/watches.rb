@@ -49,6 +49,12 @@ template watch_exec_wrapper do
   })
 end
 
+template "/usr/local/bin/async-upload.py" do
+  owner 'root'
+  group 'root'
+  mode  0755
+end
+
 ruby_block "verify_watched_directories" do
   block do
     all_paths = []
@@ -145,6 +151,15 @@ if node['imos_po']['data_services']['watches']
 
   supervisor_service "inotify_po" do
     command    node['imos_po']['data_services']['celeryd']['inotify']
+    directory  node['imos_po']['data_services']['celeryd']['dir']
+    user       po_user
+    action     [:enable, :restart]
+    subscribes :restart, 'git[data_services]', :delayed
+  end
+
+  async_upload_max_tasks = node['imos_po']['data_services']['async_upload']['max_tasks']
+  supervisor_service "async_upload_po" do
+    command    "celeryd --queues=async_upload --config=#{celery_config} -A tasks -c #{async_upload_max_tasks}"
     directory  node['imos_po']['data_services']['celeryd']['dir']
     user       po_user
     action     [:enable, :restart]

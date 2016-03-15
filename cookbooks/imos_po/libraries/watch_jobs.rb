@@ -26,4 +26,13 @@ class Chef::Recipe::WatchJobs
     return watchlists
   end
 
+  def self.get_s3cmd(node)
+    s3cmd = "s3cmd --config=#{node['imos_po']['s3']['config_file']}"
+    if Chef::Config[:dev]
+      s3cmd = "s3cmd-mocked"
+    end
+
+    return s3cmd
+  end
+
 end

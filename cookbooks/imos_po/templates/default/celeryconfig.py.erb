@@ -26,5 +26,6 @@ watchlists = Chef::Recipe::WatchJobs.get_watches(@watch_dir)
 watchlists.each do |job_name, watchlist|
   celery_routes["tasks.#{job_name}"] = { "queue" => job_name }
 end
+celery_routes["tasks.async_upload"] = { "queue" => "async_upload" }
 %>
 CELERY_ROUTES = <%= celery_routes.to_json %>
