@@ -688,6 +688,20 @@
             ]
         },
         {
+            "name": "srs_oc_ljco_wws",
+            "owner": "srs_oc_ljco_wws",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
             "name": "srs_sst",
             "owner": "srs_sst",
             "permissions": [
