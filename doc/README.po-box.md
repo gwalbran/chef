@@ -1,5 +1,7 @@
 # PO Box
 
+This file documents specifics of the Project Officers Box. For functionality that is also available in the IMOS production environment, see [README.data-tools.md](./README.data-tools.md)
+
 ## What is it?
 
 Intended for Project Officers (PO), this box is a utility box for data
