@@ -4,14 +4,15 @@ These tools are available in the production environment for
 
 ## Bulk Async Upload
 
-Upload many files asynchronously by piping them to
-`async-upload.py`.
+Upload many files asynchronously by piping them to `async-upload.py`.
 
 Example usage for a single file:
 ```
 $ echo "SRC DST" | async-upload.py
-$ echo "/tmp/IMOS_ACORN_V_20100716T060000Z_BONC_FV00_sea-state.n IMOS/ACORN/vector/BONC/2010/07/16/IMOS_ACORN_V_20100716T060000Z_BONC_FV00_sea-state.nc" | async-upload.py
+$ echo "/tmp/IMOS_ACORN_V_20100716T060000Z_BONC_FV00_sea-state.nc IMOS/ACORN/vector/BONC/2010/07/16/IMOS_ACORN_V_20100716T060000Z_BONC_FV00_sea-state.nc" | async-upload.py
 ```
+
+**Note:** `SRC` must be given as an absolute path!
 
 Uploading multiple files:
 ```
