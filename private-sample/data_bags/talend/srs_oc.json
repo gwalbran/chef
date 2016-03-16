@@ -1,0 +1,9 @@
+{
+    "id": "srs_oc",
+    "artifact_filename": "SRS_OC_harvester_Latest.zip",
+     "event": {
+        "regex": [
+            "^IMOS/SRS/OC/gridded/.*\\.nc$"
+        ]
+    }
+}
