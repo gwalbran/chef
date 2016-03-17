@@ -262,8 +262,13 @@
             "Metadata_SpatialResolution": "1"
         },
         "jobs": [
+            "aatams_sattag_dm",
             "aatams_sattag_nrt",
+            "abos_currents",
+            "abos_sofs_fl",
+            "abos_sofs_sp",
             "abos_sots",
+            "abos_ts",
             "acorn_hourly_avg_nonqc",
             "acorn_hourly_avg_qc",
             "acorn_radial_nonqc",
@@ -282,7 +287,6 @@
             "anmn_t_regridded",
             "anmn_ts_timeseries",
             "anmn_wave",
-            "aatams_sattag_dm",
             "argo",
             "faimms",
             "soop_asf_fmt",

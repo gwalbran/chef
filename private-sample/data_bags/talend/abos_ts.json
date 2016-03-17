@@ -1,0 +1,18 @@
+{
+    "id": "abos_ts",
+    "artifact_filename": "ABOS_TS_SINGLE_INST_timeseries_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "c117a4a5-32b8-488a-8b98-ac3b7a0abc2a",
+        "Metadata_SpatialTable": "timeseries"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ABOS/.*/Velocity/.*FV01.*\\.nc$",
+            "^IMOS/ABOS/.*/Temperature/.*FV01.*\\.nc$",
+            "^IMOS/ABOS/.*/CTD_timeseries/.*FV01.*\\.nc$",
+            "^IMOS/ABOS/.*/Biogeochem_timeseries/.*FV01.*\\.nc$",
+            "^IMOS/ABOS/ASFS/SOFS/Sub-surface_temperature_pressure_conductivity/.*FV01.*\\.nc$",
+            "^IMOS/ABOS/SOTS/Pulse/.*RAS.*\\.nc$"
+        ]
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "id": "abos_currents",
+    "artifact_filename": "ABOS_CURRENTS_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "f7e49e83-4579-413c-b092-2187dca8395d"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ABOS/.*/Velocity/.*_FV01_.*\\.nc$",
+            "^IMOS/ABOS/.*/Sub-surface_currents/.*_FV01_.*\\.nc$"
+        ]
+    }
+}
