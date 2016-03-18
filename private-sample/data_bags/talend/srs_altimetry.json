@@ -1,0 +1,13 @@
+{
+    "id": "srs_altimetry",
+    "artifact_filename": "SRS_ALTIMETRY_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "78d588ed-79dd-47e2-b806-d39025194e7e",
+        "Metadata_SpatialTable": "srs_altimetry_timeseries_map"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/SRS/ALTIMETRY/.*\\.nc$"
+        ]
+    }
+}
