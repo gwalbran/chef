@@ -75,7 +75,7 @@
             "error_dir": "/vagrant/src/error",
             "data_dir": "/s3/imos-data",
             "graveyard_dir": "/vagrant/src/graveyard",
-            "wip_dir": "/tmp"
+            "wip_dir": "/tmp/wip"
         }
     },
     "postgresql": {
