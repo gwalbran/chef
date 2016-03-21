@@ -56,7 +56,8 @@ main() {
 
     # set environment and run command
     declare -r JOB_NAME=$job_name; export JOB_NAME
-    declare -r INCOMING_FILE=$tmp_file_to_process; export INCOMING_FILE
+    declare -r HANDLED_FILE=$tmp_file_to_process; export HANDLED_FILE
+    declare -r INCOMING_FILE=$file; export INCOMING_FILE
     declare -r TRANSACTION_ID=`date +%Y%m%d-%H%M%S`; export TRANSACTION_ID
     eval $command $tmp_file_to_process "$@" 2>&1 | log_out
 
