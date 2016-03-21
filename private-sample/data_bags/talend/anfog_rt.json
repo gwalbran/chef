@@ -2,7 +2,7 @@
     "id": "anfog_rt",
     "artifact_filename": "ANFOG_RT_harvester_Latest.zip",
     "params": {
-        "Harvestlisting_RT_File": "#{node['imos_po']['wip_dir']}/ANFOG/RT/HarvestmissionList.csv",
+        "Harvestlisting_RT_File": "#{node['imos_po']['data_services']['wip_dir']}/ANFOG/RT/HarvestmissionList.csv",
         "Metadata_UUID": "a681fdba-c6d9-44ab-90b9-113b0ed03536",
         "Metadata_SpatialTable": "anfog_rt_trajectory_map"
     },
