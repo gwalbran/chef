@@ -2,6 +2,44 @@
 
 These tools are available in the production environment for 
 
+
+## List and download object versions on S3
+
+Explore previous versions of objects using `s3lsv`. The given `KEY` is matched as a prefix to the object name, up to the next `/`.
+
+Basic usage:
+```
+$ s3lsv
+usage: s3-lsv.py [-h] [-a] -b BUCKET -k KEY [-o OUTPUT] [-v VERSION]
+s3-lsv.py: error: argument -b/--bucket is required
+
+$ s3lsv -a -b imos-data -k IMOS/
+IMOS/AATAMS/
+IMOS/ABOS/
+...
+IMOS/SRS/
+
+$ s3lsv -a -b imos-data -k IMOS/ANMN
+IMOS/ANMN/
+
+$ s3lsv -a -b imos-data -k IMOS/ANMN/NRS/REAL_TIME/NRSNSI/Meteorology/IMOS_ANMN-NRS_MT_20160203T050622Z_NRSNSI_FV00_NRSNSI-Surface-14-2016-02-MET-realtime.nc
+BtPodx1OrsnrHkeoouSir7HqW4Q.kODS 2016-03-20T00:36:05.000Z IMOS/ANMN/NRS/REAL_TIME/NRSNSI/Meteorology/IMOS_ANMN-NRS_MT_20160203T050622Z_NRSNSI_FV00_NRSNSI-Surface-14-2016-02-MET-realtime.nc
+hqmnGrxqXjIvGS9Hv.6EBphjpaSYH9y1 2016-03-19T00:36:08.000Z IMOS/ANMN/NRS/REAL_TIME/NRSNSI/Meteorology/IMOS_ANMN-NRS_MT_20160203T050622Z_NRSNSI_FV00_NRSNSI-Surface-14-2016-02-MET-realtime.nc
+TUhTmVkKVK.fv3Qnq1aTkqg0lGGsy3oz 2016-03-18T00:35:36.000Z IMOS/ANMN/NRS/REAL_TIME/NRSNSI/Meteorology/IMOS_ANMN-NRS_MT_20160203T050622Z_NRSNSI_FV00_NRSNSI-Surface-14-2016-02-MET-realtime.nc
+...
+```
+
+To download a particular version, use the `-o` and `-v` switches, e.g.
+```
+$ s3lsv -a -b imos-data -k IMOS/ACORN/radial/TAN/2016/01/01/IMOS_ACORN_RV_20160101T235000Z_TAN_FV00_radial.nc
+na5gI3LrPUyyfZ3JsHDFDV3WTAmFt2n5 2016-01-01T23:55:13.000Z IMOS/ACORN/radial/TAN/2016/01/01/IMOS_ACORN_RV_20160101T235000Z_TAN_FV00_radial.nc
+
+$ s3lsv -a -b imos-data -k IMOS/ACORN/radial/TAN/2016/01/01/IMOS_ACORN_RV_20160101T235000Z_TAN_FV00_radial.nc -o /tmp/file.nc -v na5gI3LrPUyyfZ3JsHDFDV3WTAmFt2n5
+$ ls -l /tmp/file.nc
+-rw-rw-r-- 1 vagrant vagrant 263728 Jan  2 10:55 /tmp/file.nc
+```
+
+
 ## Bulk Async Upload
 
 Upload many files asynchronously by piping them to `async-upload.py`.
