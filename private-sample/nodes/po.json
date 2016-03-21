@@ -273,6 +273,8 @@
             "acorn_hourly_avg_qc",
             "acorn_radial_nonqc",
             "acorn_radial_qc",
+            "anfog_dm",
+            "anfog_rt",
             "anmn_acidification_nrt",
             "anmn_adcp_timeseries",
             "anmn_am_dm",

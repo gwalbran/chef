@@ -14,17 +14,16 @@ default['imos_po']['data_services']['watches']  = true
 default['imos_po']['data_services']['cronjob_prefix'] = "_po_"
 
 # Directories scripts are likely to access
-default['imos_po']['data_services']['opendap_dir']   = '/mnt/opendap'
-default['imos_po']['data_services']['public_dir']    = '/mnt/public'
-default['imos_po']['data_services']['archive_dir']   = '/mnt/archive'
-default['imos_po']['data_services']['incoming_dir']  = '/mnt/incoming'
-default['imos_po']['data_services']['error_dir']     = '/mnt/err'
-default['imos_po']['data_services']['log_dir']       = '/var/log/data-services'
-default['imos_po']['data_services']['data_dir']      = '/mnt/imos-data'
-default['imos_po']['data_services']['wip_dir']       = '/mnt/wip'
-default['imos_po']['data_services']['tmp_dir']       = nil
+default['imos_po']['data_services']['archive_dir']  = '/mnt/archive'
+default['imos_po']['data_services']['incoming_dir'] = '/mnt/incoming'
+default['imos_po']['data_services']['error_dir']    = '/mnt/err'
+default['imos_po']['data_services']['log_dir']      = '/var/log/data-services'
+default['imos_po']['data_services']['data_dir']     = '/mnt/imos-data'
+default['imos_po']['data_services']['wip_dir']      = '/mnt/wip'
+default['imos_po']['data_services']['tmp_dir']      = nil
 
 default['imos_po']['data_services']['owned_dirs'] = [
+  node['imos_po']['data_services']['archive_dir'],
   node['imos_po']['data_services']['error_dir'],
   node['imos_po']['data_services']['log_dir'],
   node['imos_po']['data_services']['wip_dir']

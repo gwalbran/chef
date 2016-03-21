@@ -216,23 +216,3 @@ logrotate_app "project-officer-processing-file-reports" do
   options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
   rotate     365
 end
-
-if Chef::Config[:dev]
-  # TODO remove once completely on s3 and not moving files to /mnt/opendap
-  ruby_block "create_mocked_directories" do
-    block do
-      [
-        ::File.join(node['imos_po']['data_services']['opendap_dir'], "1"),
-        node['imos_po']['data_services']['archive_dir']
-      ].each do |path|
-        begin
-          ::FileUtils.mkdir_p path
-          ::FileUtils.chown po_user, po_group, path
-          ::FileUtils.chmod 00775, path
-        rescue
-          Chef::Log.warn("Error creating or setting permissions on mocked directory: '#{path}'")
-        end
-      end
-    end
-  end
-end

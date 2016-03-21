@@ -1,0 +1,15 @@
+{
+    "id": "anfog_dm",
+    "artifact_filename": "ANFOG_DM_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "c317b0fe-02e8-4ff9-96c9-563fd58e82ac",
+        "Metadata_SpatialTable": "anfog_dm_trajectory_map",
+        "Metadata_SpatialResolution": "2"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANFOG/slocum_glider/.*FV01.*\\.nc$",
+            "^IMOS/ANFOG/seaglider/.*FV01.*\\.nc$"
+        ]
+    }
+}

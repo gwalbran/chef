@@ -99,13 +99,9 @@ end
 # Please note all variables here must be fully expanded to avoid scripts
 # needing to evaluate them at runtime
 data_services_vars = {
-  'OPENDAP_DIR'       => node['imos_po']['data_services']['opendap_dir'],
-  'PUBLIC_DIR'        => node['imos_po']['data_services']['public_dir'],
   'ARCHIVE_DIR'       => node['imos_po']['data_services']['archive_dir'],
   'INCOMING_DIR'      => node['imos_po']['data_services']['incoming_dir'],
   'ERROR_DIR'         => node['imos_po']['data_services']['error_dir'],
-  'OPENDAP_IMOS_DIR'  => node['imos_po']['data_services']['opendap_dir'] + "/1/IMOS/opendap",
-  'PUBLIC_IMOS_DIR'   => node['imos_po']['data_services']['public_dir'],
   'ARCHIVE_IMOS_DIR'  => node['imos_po']['data_services']['archive_dir'],
   'WIP_DIR'           => node['imos_po']['data_services']['wip_dir'],
   'EMAIL_ALIASES'     => node['imos_po']['email_aliases'],
