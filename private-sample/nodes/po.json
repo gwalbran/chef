@@ -62,7 +62,6 @@
             "repo": "https://github.com/aodn/compliance-checker.git",
             "branch": "IMOS-Checker"
         },
-        "wip_dir": "/tmp",
         "data_services": {
             "create_watched_directories": true,
             "user": "vagrant",
@@ -75,7 +74,8 @@
             "incoming_dir": "/var/incoming",
             "error_dir": "/vagrant/src/error",
             "data_dir": "/s3/imos-data",
-            "graveyard_dir": "/vagrant/src/graveyard"
+            "graveyard_dir": "/vagrant/src/graveyard",
+            "wip_dir": "/tmp"
         }
     },
     "postgresql": {
