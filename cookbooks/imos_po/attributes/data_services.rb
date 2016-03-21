@@ -52,11 +52,14 @@ default['imos_po']['data_services']['clone_repository'] = true
 default['imos_po']['data_services']['packages'] = [
   'bc',
   'heirloom-mailx',
+  'gdal-bin', 'python-gdal', # for geotiff use in python
   'imagemagick',
   'ipython',
   'lftp',
+  'libblas-dev', 'liblapack-dev', 'gfortran', # For building scipy
   'libhdf5-serial-dev',
   'libnetcdf-dev',
+  'libxft-dev', 'libpng-dev', # For building matplotlib
   'mdbtools',
   'python-beautifulsoup',
   'python-boto',
@@ -64,8 +67,6 @@ default['imos_po']['data_services']['packages'] = [
   'python-pip',
   'python-psycopg2',
   'sqlite3',
-  'libxft-dev', 'libpng-dev', # For building matplotlib
-  'libblas-dev', 'liblapack-dev', 'gfortran', # For building scipy
   'zip'
 ]
 
