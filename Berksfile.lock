@@ -56,6 +56,8 @@ DEPENDENCIES
     path: cookbooks/imos_mounts
   imos_po
     path: cookbooks/imos_po
+  imos_postfix
+    path: cookbooks/imos_postfix
   imos_postgresql
     path: cookbooks/imos_postgresql
   imos_rsync
@@ -291,6 +293,8 @@ GRAPH
     rsyslog (>= 0.0.0)
     sudo (>= 0.0.0)
     supervisor (>= 0.0.0)
+  imos_postfix (0.1.0)
+    postfix (>= 0.0.0)
   imos_postgresql (0.2.0)
     backup (>= 0.0.0)
   imos_rsync (0.1.0)
