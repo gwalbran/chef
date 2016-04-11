@@ -1,0 +1,7 @@
+{
+    "id": "auv_viewer_track",
+    "artifact_filename": "AUV_VIEWER_TRACK_harvester_Latest.zip",
+    "event": {
+        "regex": ["^IMOS/AUV/auv_viewer_data/csv_outputs/.*\\.csv$"]
+    }
+}
