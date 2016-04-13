@@ -27,7 +27,7 @@
         "recipe[imos_core::locale]",
         "recipe[imos_core::email_forward]",
         "recipe[imos_core::environment]",
-        "recipe[postfix]",
+        "recipe[imos_postfix]",
         "recipe[imos_core::motd]",
         "recipe[imos_core::unattended_upgrades]",
         "recipe[imos_core::logrotate]",
