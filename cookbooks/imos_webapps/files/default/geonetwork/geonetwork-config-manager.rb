@@ -30,15 +30,18 @@ $logger.level = Logger::INFO
 #
 def http_post_request(username, password, url, param_hash)
   uri = URI.parse(url)
-  http = Net::HTTP.new(uri.host, uri.port)
   req = Net::HTTP::Post.new(uri.request_uri)
   req.basic_auth(username, password)
   req.set_form_data(param_hash)
 
-  begin
-    res = http.request(req)
-  rescue
+  res = Net::HTTP::start(uri.hostname, uri.port) do |http|
+    http.request(req)
+  end
+
+  case res
+  when not(Net::HTTPSuccess)
     $logger.info "GeoNetwork http service #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+    exit 1
   end
 end
 
@@ -53,16 +56,19 @@ end
 #
 def http_post_request_xml_body(username, password, url, xml_param)
   uri = URI.parse(url)
-  http = Net::HTTP.new(uri.host, uri.port)
   req = Net::HTTP::Post.new(uri.request_uri)
   req.basic_auth(username, password)
   req.body = xml_param
   req.content_type = 'text/xml'
 
-  begin
-    res = http.request(req)
-  rescue
-    $logger.info "GeoNetwork http service #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+  res = Net::HTTP::start(uri.hostname, uri.port) do |http|
+    http.request(req)
+  end
+
+  case res
+  when not(Net::HTTPSuccess)
+    $logger.info "GeoNetwork http service with xml body #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+    exit 1
   end
 end
 
@@ -83,19 +89,24 @@ end
 def entity_exists(username, password, url, entity_xpath, id_element, id, found_xpath)
   entity_id = @NULL_ENTITY_ID
   uri = URI.parse(url)
-  http = Net::HTTP.new(uri.host, uri.port)
   req = Net::HTTP::Post.new(uri.request_uri)
   req.basic_auth(username, password)
 
-  begin
-    xml_doc = Nokogiri::XML(http.request(req).body)
-    xml_doc.xpath(File.join(entity_xpath)).each do |entity|
-      if id == entity.search(id_element).xpath('text()').to_s
-        entity_id = entity.xpath(found_xpath).to_s
-      end
+  res = Net::HTTP::start(uri.hostname, uri.port) do |http|
+    http.request(req)
+  end
+
+  case res
+  when not(Net::HTTPSuccess)
+    $logger.info "GeoNetwork http service with #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+    exit 1
+  end
+
+  xml_doc = Nokogiri::XML(res.body)
+  xml_doc.xpath(File.join(entity_xpath)).each do |entity|
+    if id == entity.search(id_element).xpath('text()').to_s
+      entity_id = entity.xpath(found_xpath).to_s
     end
-  rescue
-    $logger.info "GeoNetwork http service #{url} failed with error code #{res.code} and stacktrace #{res.body}"
   end
 
   return entity_id
@@ -184,20 +195,23 @@ end
 def get_xml_content(username, password, url, param_hash=nil)
   response = nil
   uri = URI.parse(url)
-  http = Net::HTTP.new(uri.host, uri.port)
   req = Net::HTTP::Post.new(uri.request_uri)
   req.basic_auth(username, password)
   if param_hash
     req.set_form_data(param_hash)
   end
 
-  begin
-    response = Nokogiri::XML(http.request(req).body)
-  rescue
-    $logger.info "GeoNetwork http service #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+  res = Net::HTTP::start(uri.hostname, uri.port) do |http|
+    http.request(req)
   end
 
-  return response
+  case res
+  when not(Net::HTTPSuccess)
+    $logger.info "GeoNetwork http service with xml body #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+    exit 1
+  end
+
+  return Nokogiri::XML(res.body)
 end
 
 # Adds a vocabulary to a GeoNetwork instance.
@@ -320,9 +334,9 @@ def manage_vocabs(url, username, password)
 end
 
 def main(url, username, password)
-  manage_users(url, username, password)
   manage_harvesters(url, username, password)
   manage_vocabs(url, username, password)
+  manage_users(url, username, password)
 end
 
 if __FILE__ == $0
