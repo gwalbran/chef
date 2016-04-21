@@ -8,7 +8,8 @@
     },
     "event": {
         "regex": [
-            "^IMOS/SOOP/SOOP-CO2/.*\\.nc$"
+            "^IMOS/SOOP/SOOP-CO2/.*\\.nc$",
+            "^Future_Reef_MAP/underway/RTM-Wakmatha/.*\\.nc$"
         ]
     }
 }
