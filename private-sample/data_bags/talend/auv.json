@@ -1,0 +1,12 @@
+{
+    "id": "auv",
+    "artifact_filename": "AUV_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "af5d0ff9-bb9c-4b7c-a63c-854a630b6984",
+        "Metadata_SpatialTable": "auv_trajectory_map",
+        "Metadata_SpatialResolution": "5"
+    },
+    "event": {
+        "regex": ["^IMOS/AUV/.*/hydro_netcdf/IMOS_AUV.*\\.nc$"]
+    }
+}

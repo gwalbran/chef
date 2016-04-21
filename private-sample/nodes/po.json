@@ -290,6 +290,8 @@
             "anmn_ts_timeseries",
             "anmn_wave",
             "argo",
+            "auv",
+            "auv_viewer_track",
             "faimms",
             "soop_asf_fmt",
             "soop_asf_mt",
