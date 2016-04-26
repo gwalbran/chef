@@ -17,6 +17,7 @@ $logger.level = Logger::INFO
 
 @config = nil
 @prefix = 'srv/eng'
+@logo_path = 'data/resources/images/harvesting'
 @NULL_ENTITY_ID = -1
 
 # Generates a HTTP POST request to GeoNetwork with provided credentials
@@ -38,8 +39,7 @@ def http_post_request(username, password, url, param_hash)
     http.request(req)
   end
 
-  case res
-  when not(Net::HTTPSuccess)
+  if not res.kind_of? Net::HTTPSuccess
     $logger.info "GeoNetwork http service #{url} failed with error code #{res.code} and stacktrace #{res.body}"
     exit 1
   end
@@ -65,8 +65,7 @@ def http_post_request_xml_body(username, password, url, xml_param)
     http.request(req)
   end
 
-  case res
-  when not(Net::HTTPSuccess)
+  if not res.kind_of? Net::HTTPSuccess
     $logger.info "GeoNetwork http service with xml body #{url} failed with error code #{res.code} and stacktrace #{res.body}"
     exit 1
   end
@@ -96,8 +95,7 @@ def entity_exists(username, password, url, entity_xpath, id_element, id, found_x
     http.request(req)
   end
 
-  case res
-  when not(Net::HTTPSuccess)
+  if not res.kind_of? Net::HTTPSuccess
     $logger.info "GeoNetwork http service with #{url} failed with error code #{res.code} and stacktrace #{res.body}"
     exit 1
   end
@@ -205,13 +203,27 @@ def get_xml_content(username, password, url, param_hash=nil)
     http.request(req)
   end
 
-  case res
-  when not(Net::HTTPSuccess)
+  if not res.kind_of? Net::HTTPSuccess
     $logger.info "GeoNetwork http service with xml body #{url} failed with error code #{res.code} and stacktrace #{res.body}"
     exit 1
   end
 
   return Nokogiri::XML(res.body)
+end
+
+# Adds a logo to a GeoNetwork instance.
+#
+# * *Args* :
+#   - +data_dir+ -> GeoNetwork data directory
+#   - +url+ -> GeoNetwork instance URL
+#   - +param_hash+ -> List of vocab parameters in hash format
+#
+def add_logo(data_dir, param_hash)
+  download_link = param_hash['link']
+  filename = param_hash['image']
+  download = open(download_link)
+  IO.copy_stream(download,
+    File.join(data_dir, @logo_path, filename))
 end
 
 # Adds a vocabulary to a GeoNetwork instance.
@@ -275,6 +287,12 @@ def delete_vocab(auth_username, auth_password, url, param_hash)
     File.join(url, @prefix, "thesaurus.delete"), param_hash)
 end
 
+def manage_logos(data_dir)
+  @config['logos'].each do |logo|
+    add_logo(data_dir, logo)
+  end if @config['logos']
+end
+
 def manage_users(url, username, password)
   @config['users'].each do |user|
     add_user(username, password, url, user)
@@ -333,7 +351,8 @@ def manage_vocabs(url, username, password)
   end    
 end
 
-def main(url, username, password)
+def main(url, data_dir, username, password)
+  manage_logos(data_dir)
   manage_harvesters(url, username, password)
   manage_vocabs(url, username, password)
   manage_users(url, username, password)
@@ -346,7 +365,7 @@ if __FILE__ == $0
   Configure a Geonetwork instance with settings defined in external configuration
 
   Example:
-    ./geonetwork-config-manager.rb -g "http://catalogue-123.aodn.org.au/geonetwork" -c "geonetwork-config.json" -u "admin" -p "admin"
+    ./geonetwork-config-manager.rb -g "http://catalogue-123.aodn.org.au/geonetwork" -d "/mnt/ebs/geonetwork_portal" -c "geonetwork-config.json" -u "admin" -p "admin"
 
   Example config file:
   {
@@ -386,6 +405,9 @@ if __FILE__ == $0
   opt :url, "Geonetwork URL",
     :type => :string,
     :short => '-g'
+  opt :data_dir, "Geonetwork data directory",
+    :type => :string,
+    :short => '-d'
   opt :config, "Config file",
     :type => :string,
     :short => '-c'
@@ -398,6 +420,7 @@ if __FILE__ == $0
   end
 
   Trollop::die :url, "Must specify Geonetwork URL" if ! opts[:url]
+  Trollop::die :url, "Must specify Geonetwork data directory" if ! opts[:data_dir]
   Trollop::die :config, "Must specify configuration file" if ! opts[:config]
   Trollop::die :username, "Must specify Geonetwork username" if ! opts[:username]
   Trollop::die :password, "Must specify Geonetwork password" if ! opts[:password]
@@ -409,6 +432,6 @@ if __FILE__ == $0
     Trollop::die :config, "Could not read config file '#{config_file}'"
   end
 
-  main(opts[:url], opts[:username], opts[:password])
+  main(opts[:url], opts[:data_dir], opts[:username], opts[:password])
   exit(0)
 end
