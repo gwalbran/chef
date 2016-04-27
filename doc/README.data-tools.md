@@ -39,6 +39,21 @@ $ ls -l /tmp/file.nc
 -rw-rw-r-- 1 vagrant vagrant 263728 Jan  2 10:55 /tmp/file.nc
 ```
 
+To list recursilvely file objects from a given bucket
+```
+$ s3_ls_recur UWA
+UWA/RV_Falkor/2015_03_Perth_Canyon/Bottle_data/SOI_FK150301_Bottle_data_20150302T231800Z.nc
+UWA/RV_Falkor/2015_03_Perth_Canyon/Bottle_data/SOI_FK150301_Bottle_data_20150306T003500Z.nc
+UWA/RV_Falkor/2015_03_Perth_Canyon/Bottle_data/SOI_FK150301_Bottle_data_20150306T225900Z.nc
+UWA/RV_Falkor/2015_03_Perth_Canyon/Bottle_data/SOI_FK150301_Bottle_data_20150308T005300Z.nc
+UWA/RV_Falkor/2015_03_Perth_Canyon/Bottle_data/SOI_FK150301_Bottle_data_20150309T230500Z.nc
+UWA/RV_Falkor/2015_03_Perth_Canyon/Bottle_data/SOI_FK150301_Bottle_data_20150311T000400Z.nc
+```
+
+To download recursively a bucket with the latest version of file objects available
+```
+$ s3_dl_recur_latest_version UWA /tmp/download_test
+```
 
 ## Bulk Async Upload
 
