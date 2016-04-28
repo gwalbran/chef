@@ -1,0 +1,7 @@
+{
+  "id": "sendgrid",
+  "host": "smtp.sendgrid.net",
+  "port": 587,
+  "username": "sengridusername",
+  "password": "sendgridpassword"
+}
