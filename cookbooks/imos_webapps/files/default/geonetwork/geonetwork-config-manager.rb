@@ -257,7 +257,11 @@ def add_vocab(auth_username, auth_password, url, param_hash)
         if EquivalentXml.equivalent?(
             vocab_content_to_add, xml_res,
             opts = { :element_order => false, :normalize_whitespace => true })
-            vocab_not_present = false
+          vocab_not_present = false
+        elsif vocab_key == param_hash['key']
+          # If the vocab files are not equivalent but the key already exists replace with the updated file
+          delete_param = {'ref' => vocab_key}
+          delete_vocab(auth_username, auth_password, url, delete_param)
         end
       end
     end
