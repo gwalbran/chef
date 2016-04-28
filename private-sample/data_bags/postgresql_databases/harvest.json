@@ -492,6 +492,20 @@
             ]
         },
         {
+            "name": "aodn_imas_fluorometry",
+            "owner": "aodn_imas_fluorometry",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
             "name": "aodn_nt_sattag_hawksbill",
             "owner": "aodn_nt_sattag_hawksbill",
             "permissions": [
