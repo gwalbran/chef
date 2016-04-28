@@ -224,6 +224,13 @@
             ]
         },
         {
+            "name": "aodn_imas_fluorometry",
+            "password": "aodn_imas_fluorometry",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
             "name": "aodn_ran_sst",
             "password": "aodn_ran_sst",
             "memberof": [
