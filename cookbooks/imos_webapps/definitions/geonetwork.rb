@@ -154,6 +154,15 @@ define :geonetwork do
         :config => app_parameters['config']
       })
     end
+
+    geonetwork_manager_script = ::File.join(instance_base_directory, "geonetwork-config-manager.rb")
+    cookbook_file geonetwork_manager_script do
+      source "geonetwork/geonetwork-config-manager.rb"
+      owner  node['tomcat']['user']
+      group  node['tomcat']['user']
+      mode   0644
+      action :create
+    end
   end
 
 end

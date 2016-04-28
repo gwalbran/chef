@@ -17,6 +17,7 @@ $logger.level = Logger::INFO
 
 @config = nil
 @prefix = 'srv/eng'
+@logo_path = 'data/resources/images/harvesting'
 @NULL_ENTITY_ID = -1
 
 # Generates a HTTP POST request to GeoNetwork with provided credentials
@@ -30,15 +31,17 @@ $logger.level = Logger::INFO
 #
 def http_post_request(username, password, url, param_hash)
   uri = URI.parse(url)
-  http = Net::HTTP.new(uri.host, uri.port)
   req = Net::HTTP::Post.new(uri.request_uri)
   req.basic_auth(username, password)
   req.set_form_data(param_hash)
 
-  begin
-    res = http.request(req)
-  rescue
+  res = Net::HTTP::start(uri.hostname, uri.port) do |http|
+    http.request(req)
+  end
+
+  if not res.kind_of? Net::HTTPSuccess
     $logger.info "GeoNetwork http service #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+    exit 1
   end
 end
 
@@ -53,16 +56,18 @@ end
 #
 def http_post_request_xml_body(username, password, url, xml_param)
   uri = URI.parse(url)
-  http = Net::HTTP.new(uri.host, uri.port)
   req = Net::HTTP::Post.new(uri.request_uri)
   req.basic_auth(username, password)
   req.body = xml_param
   req.content_type = 'text/xml'
 
-  begin
-    res = http.request(req)
-  rescue
-    $logger.info "GeoNetwork http service #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+  res = Net::HTTP::start(uri.hostname, uri.port) do |http|
+    http.request(req)
+  end
+
+  if not res.kind_of? Net::HTTPSuccess
+    $logger.info "GeoNetwork http service with xml body #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+    exit 1
   end
 end
 
@@ -83,19 +88,23 @@ end
 def entity_exists(username, password, url, entity_xpath, id_element, id, found_xpath)
   entity_id = @NULL_ENTITY_ID
   uri = URI.parse(url)
-  http = Net::HTTP.new(uri.host, uri.port)
   req = Net::HTTP::Post.new(uri.request_uri)
   req.basic_auth(username, password)
 
-  begin
-    xml_doc = Nokogiri::XML(http.request(req).body)
-    xml_doc.xpath(File.join(entity_xpath)).each do |entity|
-      if id == entity.search(id_element).xpath('text()').to_s
-        entity_id = entity.xpath(found_xpath).to_s
-      end
+  res = Net::HTTP::start(uri.hostname, uri.port) do |http|
+    http.request(req)
+  end
+
+  if not res.kind_of? Net::HTTPSuccess
+    $logger.info "GeoNetwork http service with #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+    exit 1
+  end
+
+  xml_doc = Nokogiri::XML(res.body)
+  xml_doc.xpath(File.join(entity_xpath)).each do |entity|
+    if id == entity.search(id_element).xpath('text()').to_s
+      entity_id = entity.xpath(found_xpath).to_s
     end
-  rescue
-    $logger.info "GeoNetwork http service #{url} failed with error code #{res.code} and stacktrace #{res.body}"
   end
 
   return entity_id
@@ -184,20 +193,37 @@ end
 def get_xml_content(username, password, url, param_hash=nil)
   response = nil
   uri = URI.parse(url)
-  http = Net::HTTP.new(uri.host, uri.port)
   req = Net::HTTP::Post.new(uri.request_uri)
   req.basic_auth(username, password)
   if param_hash
     req.set_form_data(param_hash)
   end
 
-  begin
-    response = Nokogiri::XML(http.request(req).body)
-  rescue
-    $logger.info "GeoNetwork http service #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+  res = Net::HTTP::start(uri.hostname, uri.port) do |http|
+    http.request(req)
   end
 
-  return response
+  if not res.kind_of? Net::HTTPSuccess
+    $logger.info "GeoNetwork http service with xml body #{url} failed with error code #{res.code} and stacktrace #{res.body}"
+    exit 1
+  end
+
+  return Nokogiri::XML(res.body)
+end
+
+# Adds a logo to a GeoNetwork instance.
+#
+# * *Args* :
+#   - +data_dir+ -> GeoNetwork data directory
+#   - +url+ -> GeoNetwork instance URL
+#   - +param_hash+ -> List of vocab parameters in hash format
+#
+def add_logo(data_dir, param_hash)
+  download_link = param_hash['link']
+  filename = param_hash['image']
+  download = open(download_link)
+  IO.copy_stream(download,
+    File.join(data_dir, @logo_path, filename))
 end
 
 # Adds a vocabulary to a GeoNetwork instance.
@@ -231,7 +257,11 @@ def add_vocab(auth_username, auth_password, url, param_hash)
         if EquivalentXml.equivalent?(
             vocab_content_to_add, xml_res,
             opts = { :element_order => false, :normalize_whitespace => true })
-            vocab_not_present = false
+          vocab_not_present = false
+        elsif vocab_key == param_hash['key']
+          # If the vocab files are not equivalent but the key already exists replace with the updated file
+          delete_param = {'ref' => vocab_key}
+          delete_vocab(auth_username, auth_password, url, delete_param)
         end
       end
     end
@@ -259,6 +289,12 @@ def delete_vocab(auth_username, auth_password, url, param_hash)
   http_post_request(
     auth_username, auth_password,
     File.join(url, @prefix, "thesaurus.delete"), param_hash)
+end
+
+def manage_logos(data_dir)
+  @config['logos'].each do |logo|
+    add_logo(data_dir, logo)
+  end if @config['logos']
 end
 
 def manage_users(url, username, password)
@@ -319,10 +355,11 @@ def manage_vocabs(url, username, password)
   end    
 end
 
-def main(url, username, password)
-  manage_users(url, username, password)
+def main(url, data_dir, username, password)
+  manage_logos(data_dir)
   manage_harvesters(url, username, password)
   manage_vocabs(url, username, password)
+  manage_users(url, username, password)
 end
 
 if __FILE__ == $0
@@ -332,7 +369,7 @@ if __FILE__ == $0
   Configure a Geonetwork instance with settings defined in external configuration
 
   Example:
-    ./geonetwork-config-manager.rb -g "http://catalogue-123.aodn.org.au/geonetwork" -c "geonetwork-config.json" -u "admin" -p "admin"
+    ./geonetwork-config-manager.rb -g "http://catalogue-123.aodn.org.au/geonetwork" -d "/mnt/ebs/geonetwork_portal" -c "geonetwork-config.json" -u "admin" -p "admin"
 
   Example config file:
   {
@@ -372,6 +409,9 @@ if __FILE__ == $0
   opt :url, "Geonetwork URL",
     :type => :string,
     :short => '-g'
+  opt :data_dir, "Geonetwork data directory",
+    :type => :string,
+    :short => '-d'
   opt :config, "Config file",
     :type => :string,
     :short => '-c'
@@ -384,6 +424,7 @@ if __FILE__ == $0
   end
 
   Trollop::die :url, "Must specify Geonetwork URL" if ! opts[:url]
+  Trollop::die :url, "Must specify Geonetwork data directory" if ! opts[:data_dir]
   Trollop::die :config, "Must specify configuration file" if ! opts[:config]
   Trollop::die :username, "Must specify Geonetwork username" if ! opts[:username]
   Trollop::die :password, "Must specify Geonetwork password" if ! opts[:password]
@@ -395,6 +436,6 @@ if __FILE__ == $0
     Trollop::die :config, "Could not read config file '#{config_file}'"
   end
 
-  main(opts[:url], opts[:username], opts[:password])
+  main(opts[:url], opts[:data_dir], opts[:username], opts[:password])
   exit(0)
 end
