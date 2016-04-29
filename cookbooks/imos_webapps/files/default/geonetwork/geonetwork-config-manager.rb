@@ -355,10 +355,19 @@ def manage_vocabs(url, username, password)
   end    
 end
 
-def main(url, data_dir, username, password)
+def manage_reindex(url, username, password, do_reindex)
+  if do_reindex
+    rebuild_param = {'reset' => 'yes'}
+    http_post_request(username, password,
+      File.join(url, @prefix, "metadata.admin.index.rebuild"), rebuild_param)
+  end
+end
+
+def main(url, data_dir, username, password, do_reindex)
   manage_logos(data_dir)
   manage_harvesters(url, username, password)
   manage_vocabs(url, username, password)
+  manage_reindex(url, username, password, do_reindex)
   manage_users(url, username, password)
 end
 
@@ -421,6 +430,8 @@ if __FILE__ == $0
   opt :password, "Geonetwork password",
     :type => :string,
     :short => '-p'
+  opt :reindex, "Geonetwork lucene reindex",
+    :short => '-r'
   end
 
   Trollop::die :url, "Must specify Geonetwork URL" if ! opts[:url]
@@ -436,6 +447,6 @@ if __FILE__ == $0
     Trollop::die :config, "Could not read config file '#{config_file}'"
   end
 
-  main(opts[:url], opts[:data_dir], opts[:username], opts[:password])
+  main(opts[:url], opts[:data_dir], opts[:username], opts[:password], opts[:reindex])
   exit(0)
 end
