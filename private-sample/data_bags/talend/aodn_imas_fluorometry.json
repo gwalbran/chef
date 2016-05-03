@@ -4,6 +4,7 @@
     "params": {
         "Metadata_UUID" : "48446a64-307f-4ed5-90e8-4b0c6e319028",
         "Metadata_SpatialResolution" : "2",
-        "Threddscatalog" : "http://thredds.imas.utas.edu.au/thredds/catalog/IMAS/AMcMinn_FRRF_l_Astrolabe/catalog.xml"
+        "Threddscatalog" : "http://thredds.imas.utas.edu.au/thredds/catalog/IMAS/AMcMinn_FRRF_l_Astrolabe/catalog.xml",
+        "include" : "*\\.nc"
     }
 }
