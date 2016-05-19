@@ -1,6 +1,7 @@
 define :imos_tomcat_context do
   artifact_name       = @params[:name]
   app_name            = @params[:app_name]
+  is_default_app      = @params[:is_default_app]
   config_template_dir = @params[:config_template_dir]
   config_file         = @params[:config_file_name]
   base_directory      = ::File.join(node['tomcat']['base'], @params[:tomcat_instance_name])
@@ -13,13 +14,18 @@ define :imos_tomcat_context do
   # Assume jenkins job is given if data bag is not available
   artifact_manifest = ImosArtifacts::Deployer.get_artifact_manifest(artifact_name)
 
-  app_deploy_name = app_name
+  # determine whether this is to be the default tomcat application
+  # NOTE: this assumes that having a default app and parallel deployment are mutually
+  # exclusive. The default app configuration will take precendence.
+  is_default_app == 'true' ? app_deploy_name = 'ROOT' : app_deploy_name = app_name
+
   service_notify_action = :restart
 
   # Cache artifact, so we can use it to determine parallel deploy version
   cached_artifact = ImosArtifacts::Fetcher.new.fetch_artifact(artifact_manifest, node)
 
-  if params[:parallel_deploy]
+  # Parallel deploy option is mutually exclusive with the default app flag
+  if params[:parallel_deploy] && is_default_app != 'true'
     version = ParallelDeploy.tomcat_version_for_artifact(cached_artifact)
     app_deploy_name = ParallelDeploy.add_version(app_name, version)
     context_file = File.join(context_dir, "#{app_deploy_name}.xml")
@@ -50,6 +56,9 @@ define :imos_tomcat_context do
     mode   0755
     action :create
   end
+
+  # Inject default app flag to make available in the template
+  params[:template_variables][:is_default_app]  = is_default_app
 
   if config_file
     template "#{config_dir}/#{config_file}" do

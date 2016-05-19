@@ -6,6 +6,7 @@
 
 define :imos_tomcat_webapp do
   application_name     = params[:application_name]
+  is_default_app       = params[:is_default_app]
   artifact_name        = params[:artifact_name]
   data_directories     = params[:data_directories]
   config_template_dir  = params[:config_template_dir]
@@ -47,6 +48,7 @@ define :imos_tomcat_webapp do
   # Install war & context xml into place
   imos_tomcat_context artifact_name do
     app_name             application_name
+    is_default_app       is_default_app
     tomcat_instance_name tomcat_instance_name
     service_name         service_name
     parallel_deploy      custom_parameters['parallel_deploy']
@@ -55,6 +57,7 @@ define :imos_tomcat_webapp do
     base_directory       base_directory
     template_variables   ({
       :custom_parameters     => custom_parameters,
+      :is_default_app        => is_default_app,
       :tomcat_instance_name  => tomcat_instance_name,
       :tomcat_base_directory => base_directory,
       :tomcat_data_directory => data_directory,

@@ -1,4 +1,4 @@
-grails.serverURL = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
+grails.serverURL = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['is_default_app'] == 'true' ? '' : @custom_parameters['name'] %>"
 spatialsearch.url = "<%= @custom_parameters['spatialsearch_url'] || 'http://search-123.aodn.org.au/search/search/index' %>"
 wmsScanner.url = "<%= @custom_parameters['wms_scanner_url'] || 'http://wmsscanner.aodn.org.au/wmsscanner/' %>"
 wfsScanner.url = "<%= @custom_parameters['wfs_scanner_url'] || 'http://wfsscanner.aodn.org.au/wfsscanner/' %>"
@@ -116,7 +116,7 @@ portal {
 
         // URL to serve your site CSS from, this does not have to be from within
         // portal's context e.g. http://me.example.com/static/css/portal.css
-        css = "/<%= @custom_parameters['name'] %>/css/<%= @custom_parameters['css_name'] || @custom_parameters['name'].upcase %>.css"
+        css = "<%= @custom_parameters['is_default_app'] == 'true' ? '' : "/#{@custom_parameters['name']}" %>/css/<%= @custom_parameters['css_name'] || @custom_parameters['name'].upcase %>.css"
     }
 
     header {
