@@ -11,7 +11,7 @@ grails {
         disabled            = <%= !@custom_parameters['mail_enabled'] || (Chef::Config[:dev] == true) %>
         adminEmailAddress   = "aatams_admin@emii.org.au"
         systemEmailAddress  = "aatams_system@emii.org.au"
-        supportEmailAddress = "info@emii.org.au"
+        supportEmailAddress = "info@aodn.org.au"
         host                = "<%= mail_credentials['host'] || 'localhost' %>"
         port                = <%= mail_credentials['port'] || 25 %>
         props               = [ "mail.smtp.auth": "true" ]
