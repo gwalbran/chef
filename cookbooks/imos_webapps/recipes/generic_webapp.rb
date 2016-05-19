@@ -34,6 +34,7 @@ if node['webapps'] && node['webapps']['instances']
 
     instance_parameters        = instance
     instance_name              = instance['name']
+    instance_default_app       = instance['default_app']
     instance_vhost             = instance['vhost']
     instance_aliases           = instance['aliases']
     instance_tomcat_port       = instance['port']
@@ -47,7 +48,7 @@ if node['webapps'] && node['webapps']['instances']
     # vhost aliases!!!)
     apps = []
     instance_apps.each do |app|
-      apps << { app['name'] => app['aliases'] }
+      apps << { :name => app['name'], :aliases => app['aliases'], :is_default_app => app['name'] == instance_default_app ? 'true' : 'false' }
     end
 
     # Make sure we don't have port duplicates
@@ -92,6 +93,7 @@ if node['webapps'] && node['webapps']['instances']
     # Build all the web apps
     instance_apps.each do |instance_app|
       app_name               = instance_app['name']
+      is_default_app         = instance_app['name'] == instance_default_app ? 'true' : 'false'
       backup                 = instance_app['backup']
       jndis                  = instance_app['jndis']
       artifact               = instance_app['artifact']
@@ -105,10 +107,14 @@ if node['webapps'] && node['webapps']['instances']
       app_parameters = instance_parameters.dup
       app_parameters.merge!(instance_app)
 
+      # Inject default app flag into parameters
+      app_parameters[:is_default_app] = is_default_app
+
       # App specific configuration, we can have many apps on one tomcat instance
       # Artifact setup
       imos_tomcat_webapp app_name do
         application_name     app_name
+        is_default_app       is_default_app
         artifact_name        artifact
         jndis                jndis
         backup               backup

@@ -1,7 +1,7 @@
 <%
 main_app_path = nil
-if @params[:apps] && @params[:apps].first
-  main_app_path = @params[:apps].first.keys.first
+if @params[:apps] && @params[:apps].any?  && !@params[:apps].detect {|p| p[:is_default_app] == 'true'}
+  main_app_path = @params[:apps].first[:name]
 end
 
 # Logs
@@ -57,7 +57,7 @@ end
 <%
 if @params[:cached]
   @params[:apps].each do |app|
-    app_name = app.keys.first
+    app_name = app[:name]
 %>
   ProxyRemote http://localhost:<%= @params[:app_port] %>/<%= app_name %> http://localhost:3128
 <%
@@ -89,9 +89,11 @@ end
 <%
 proxied_apps = []
 @params[:apps].each do |app|
-  app_name = app.keys.first
-  aliases  = app.values.first
-  proxied_apps << [ app_name, @params[:app_port], aliases ]
+
+  app_name = app[:name]
+  aliases  = app[:aliases]
+  is_default_app = app[:is_default_app] ? app[:is_default_app] : 'false'
+  proxied_apps << [ app_name, @params[:app_port], aliases, is_default_app ]
 end if @params[:apps]
 
 @params[:proxy_pass].each do |proxy_pair|
@@ -117,14 +119,19 @@ end if @params[:proxy_pass]
      app_name    = proxied_app[0]
      app_port    = proxied_app[1]
      app_aliases = proxied_app[2]
+     is_default_app = proxied_app[3]
+
+     # set URL paths to either / or /app_name depending on is_default_app flag
+     is_default_app == 'true' ? app_path = '' : app_path = "#{app_name}"
+
 %>
-  ProxyPass           /<%= app_name %> http://localhost:<%= app_port %>/<%= app_name %> retry=0
-  ProxyPassReverse    /<%= app_name %> http://localhost:<%= app_port %>/<%= app_name %>
+  ProxyPass           /<%= app_path %> http://localhost:<%= app_port %>/<%= app_path %> retry=0
+  ProxyPassReverse    /<%= app_path %> http://localhost:<%= app_port %>/<%= app_path %>
 
   # take care of extra aliases per app
   # forward all aliases to /name
 <%   app_aliases.each do |_alias| %>
-  RewriteRule ^/<%= _alias %>/*$ http://%{HTTP_HOST}/<%= app_name %>
+  RewriteRule ^/<%= _alias %>/*$ http://%{HTTP_HOST}/<%= app_path %>
 <%   end if app_aliases -%>
 <% end %>
 
