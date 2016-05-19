@@ -8,7 +8,6 @@ define :imos_tomcat_context do
   service_name        = @params[:service_name]
   config_dir          = File.join(base_directory, "conf", app_name)
   context_dir         = File.join(base_directory, "conf", "Catalina", "localhost")
-  context_file        = File.join(context_dir, "#{app_name}.xml")
   tomcat_webapps_dir = ::File.join(base_directory, "webapps")
 
   # Assume jenkins job is given if data bag is not available
@@ -18,6 +17,7 @@ define :imos_tomcat_context do
   # NOTE: this assumes that having a default app and parallel deployment are mutually
   # exclusive. The default app configuration will take precendence.
   is_default_app == 'true' ? app_deploy_name = 'ROOT' : app_deploy_name = app_name
+  context_file        = File.join(context_dir, "#{app_deploy_name}.xml")
 
   service_notify_action = :restart
 
