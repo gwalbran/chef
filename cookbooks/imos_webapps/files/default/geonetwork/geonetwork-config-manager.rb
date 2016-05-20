@@ -172,11 +172,11 @@ def add_harvester(auth_username, auth_password, url, xml_param, harvester_name)
     node = xml_doc.at_css "node"
     node['id'] = entity_id
     xml_param = xml_doc.to_s
-  else
-    http_post_request_xml_body(
-      auth_username, auth_password,
-      File.join(url, @prefix, service), xml_param)
   end
+
+  http_post_request_xml_body(
+    auth_username, auth_password,
+    File.join(url, @prefix, service), xml_param)
 end
 
 # Get xml data from GeoNetwork for vocab files
