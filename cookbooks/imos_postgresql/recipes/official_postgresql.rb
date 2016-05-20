@@ -271,6 +271,18 @@ if node['postgresql'] && node['postgresql']['clusters']
       end
     end
 
+    # Create tablespaces
+    Chef::Log.debug("All tablespaces: #{cluster['tablespaces']}")
+    cluster['tablespaces'].each do |tablespace|
+      Chef::Log.info("Processing tablespace: #{tablespace}")
+      imos_postgresql_tablespace tablespace['name'] do
+        cluster           cluster_name
+        port              cluster_config['port']
+        tablespace_name   tablespace['tablespace_name']
+        directory         tablespace['directory']
+      end
+    end if cluster['tablespaces']
+
     # Create databases
     modified_databases = PostgresqlHelper.modified_databases(cluster_name, all_databases)
     deleted_databases = PostgresqlHelper.deleted_databases(cluster_name, all_databases)
