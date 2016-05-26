@@ -23,6 +23,7 @@ define :apache_for_webapp do
   redirects       = params[:redirects]
   full_config     = params[:full_config]
   docroot         = params[:docroot]
+  proxy_exclusions = params[:proxy_exclusions]
   proxy_pass      = params[:proxy_pass]
   directory_index = params[:directory_index]
   content_repo    = params[:content_repo]
@@ -53,6 +54,7 @@ define :apache_for_webapp do
     domain            domain
     rules             rules
     full_config       full_config
+    proxy_exclusions  proxy_exclusions
     proxy_pass        proxy_pass
     docroot           docroot
     content_repo      content_repo
@@ -73,6 +75,7 @@ define :apache_for_webapp do
     domain          domain
     rules           rules
     full_config     full_config
+    proxy_exclusions proxy_exclusions
     proxy_pass      proxy_pass
     docroot         docroot
     content_repo    content_repo
