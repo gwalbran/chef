@@ -35,6 +35,7 @@ if node['webapps'] && node['webapps']['instances']
     instance_parameters        = instance
     instance_name              = instance['name']
     instance_default_app       = instance['default_app']
+    instance_proxy_exclusions  = instance['proxy_exclusions']
     instance_vhost             = instance['vhost']
     instance_aliases           = instance['aliases']
     instance_tomcat_port       = instance['port']
@@ -48,7 +49,7 @@ if node['webapps'] && node['webapps']['instances']
     # vhost aliases!!!)
     apps = []
     instance_apps.each do |app|
-      apps << { :name => app['name'], :aliases => app['aliases'], :is_default_app => app['name'] == instance_default_app ? 'true' : 'false' }
+      apps << { :name => app['name'], :aliases => app['aliases'], :is_default_app => app['name'] == instance_default_app ? 'true' : 'false', :proxy_exclusions => instance_proxy_exclusions }
     end
 
     # Make sure we don't have port duplicates
@@ -77,6 +78,7 @@ if node['webapps'] && node['webapps']['instances']
       vhost       instance_vhost
       tomcat_port instance_tomcat_port
       aliases     instance_aliases
+      proxy_exclusions instance_proxy_exclusions
       rules       instance_httpd_rules
       cached      instance['cached'] || false
       https       instance['https']  || false
