@@ -129,7 +129,7 @@ end if @params[:proxy_pass]
      # generate a proxy exclusion line for each exception in the list
      proxy_exclusions.each do |exclusion| %>
   ProxyPassMatch      <%= exclusion %> !
-     <% end if @params[:proxy_exclusions] %>
+     <% end if proxy_exclusions %>
   ProxyPass           /<%= app_path %> http://localhost:<%= app_port %>/<%= app_path %> retry=0
   ProxyPassReverse    /<%= app_path %> http://localhost:<%= app_port %>/<%= app_path %>
 
