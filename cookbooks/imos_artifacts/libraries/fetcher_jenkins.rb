@@ -18,21 +18,21 @@ module ImosArtifacts
     attr_reader :password
 
     def initialize(artifact_manifest, node)
-      job_name = artifact_manifest['job']
+      @job_name = artifact_manifest['job']
 
       if artifact_manifest['jenkins_data_bag']
         jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", artifact_manifest['jenkins_data_bag'])
-        @url = FetcherJenkins::get_job_url(jenkins_creds['url'], job_name, artifact_manifest['build_number'])
+        @url = FetcherJenkins::get_job_url(jenkins_creds['url'], @job_name, artifact_manifest['build_number'])
         @username = jenkins_creds['username']
         @password = jenkins_creds['password']
       else
         begin
           jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", node[:imos_artifacts][:jenkins_data_bag])
-          @url = FetcherJenkins::get_job_url(jenkins_creds['url'], job_name, artifact_manifest['build_number'])
+          @url = FetcherJenkins::get_job_url(jenkins_creds['url'], @job_name, artifact_manifest['build_number'])
           @username = jenkins_creds['username']
           @password = jenkins_creds['password']
         rescue
-          @url = FetcherJenkins::get_job_url(node[:imos_artifacts][:ci_url], job_name, artifact_manifest['build_number'])
+          @url = FetcherJenkins::get_job_url(node[:imos_artifacts][:ci_url], @job_name, artifact_manifest['build_number'])
           Chef::Log.warn("Not using authentication for jenkins download from '#{@url}'")
         end
       end
@@ -60,7 +60,7 @@ module ImosArtifacts
       if artifact_manifest['filename']
         json['artifacts'].each do |artifact|
 
-          if artifact['fileName'] == artifact_manifest['filename']
+          if artifact['fileName'].upcase  == artifact_manifest['filename'].upcase
             # This is the artifact we eventually want to do something with
             artifact_filename = artifact['fileName']
             artifact_url = "#{@url}/artifact/#{artifact['relativePath']}"
@@ -80,6 +80,9 @@ module ImosArtifacts
           end
         end
       end
+
+      # Handle missing artifact with a more useful error message
+      Chef::Application.fatal!("No artifacts found for '#{artifact_manifest['filename']}' in '#{@job_name}' job. Check Jenkins build results for this job.", 1) if artifact_filename.nil?
 
       Chef::Log.info("Downloading artifact version '#{current_version}'")
 
