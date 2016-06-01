@@ -1,0 +1,15 @@
+{
+    "id": "future_reef_map",
+    "artifact_filename": "Future_Reef_MAP_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "597351b5-7bce-44ac-aa04-5e59e5abb5e2",
+        "Metadata_SpatialTable": "future_reef_map_trajectory_map",
+        "Metadata_SpatialColumn": "geom",
+        "Metadata_SpatialResolution": "3"
+    },
+    "event": {
+        "regex": [
+            "^Future_Reef_MAP/underway/RTM-Wakmatha/.*\\.nc$"
+        ]
+    }
+}
