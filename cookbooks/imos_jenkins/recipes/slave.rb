@@ -12,6 +12,7 @@
 include_recipe 'imos_jenkins::node_common'
 
 package "daemon"
+gem_package "trollop"
 
 directory node['imos_jenkins']['slave']['directory'] do
   owner     node['imos_jenkins']['user']
