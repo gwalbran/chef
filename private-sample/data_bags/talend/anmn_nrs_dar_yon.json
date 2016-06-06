@@ -7,9 +7,7 @@
     },
     "event": {
         "regex": [
-            "^IMOS/ANMN/.*/IMOS_ANMN_.*_NRSDAR_FV0.*",
-            "^IMOS/ANMN/.*/IMOS_ANMN_.*_NRSYON_FV0.*",
-            "^IMOS/ANMN/.*/IMOS_ANMN_.*_NRSBEA_FV0.*"
+            "^IMOS/ANMN/NRS/REAL_TIME/.*_channel_.*/IMOS_ANMN_.*_FV0.*"
         ]
     }
 }
