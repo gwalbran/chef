@@ -22,8 +22,7 @@ apt_repository 'official_postgres' do
   uri 'http://apt.postgresql.org/pub/repos/apt/'
   distribution "#{node['lsb']['codename']}-pgdg"
   components ['main']
-  keyserver 'keyserver.ubuntu.com'
-  key 'ACCC4CF8'
+  key 'https://www.postgresql.org/media/keys/ACCC4CF8.asc'
 end
 
 # Other Packages
