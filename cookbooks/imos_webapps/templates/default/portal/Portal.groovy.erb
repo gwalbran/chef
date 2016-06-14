@@ -107,6 +107,10 @@ portal {
     secondaryLogo = "<%= @custom_parameters['secondary_logo'] %>"
     <% end %>
 
+    <% if @custom_parameters['initial_bbox'] %>
+    initialBbox = "<%= @custom_parameters['initial_bbox'] %>"
+    <% end %>
+
     instance {
         // The name is used to load instance specific data migrations, in most
         // cases this should not be an issue for you so feel free to put any
