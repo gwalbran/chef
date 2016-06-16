@@ -19,3 +19,12 @@ default['imos_jenkins']['executors'] = node['cpu']['total'] ? (node['cpu']['tota
 default['imos_jenkins']['s3cmd']['config_file'] = ::File.join(node['jenkins']['master']['home'], ".s3cfg")
 
 default['imos_jenkins']['monitored_jobs'] = []
+
+# Required packages
+default['imos_jenkins']['node_common']['packages'] = [
+  'checkinstall',
+  'expat',
+  'firefox',
+  'shunit2',
+  'zip'
+]

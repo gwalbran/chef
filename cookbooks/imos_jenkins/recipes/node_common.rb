@@ -19,17 +19,12 @@ include_recipe "imos_devel::nco_devel"
 include_recipe "imos_devel::chef_dk"
 include_recipe "imos_devel::talend"
 include_recipe "imos_devel::vagrant"
+include_recipe "imos_jenkins::packages"
 include_recipe "imos_po::packages"
 
 include_recipe 'imos_postgresql::official_postgresql'
 include_recipe 'git'
 include_recipe 'packer'
-
-package "checkinstall"
-package "expat"
-package "firefox"
-package "shunit2"
-package "zip"
 
 jenkins_user_data_bag = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])
 
