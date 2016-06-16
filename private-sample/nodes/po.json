@@ -281,6 +281,7 @@
             "anmn_burst_avg_timeseries",
             "anmn_delayed",
             "anmn_nrs_ctd_profiles",
+            "anmn_nrs_long_ts",
             "anmn_nrs_dar_yon",
             "anmn_nrs_rt_biogeochem_timeseries",
             "anmn_nrs_rt_meteo_timeseries",

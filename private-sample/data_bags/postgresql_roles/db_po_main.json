@@ -224,6 +224,13 @@
             ]
         },
         {
+            "name": "anmn_nrs_long_ts",
+            "password": "anmn_nrs_long_ts",
+            "memberof": [
+                "harvest_read_group"
+            ]
+       },
+       {
             "name": "aodn_imas_fluorometry",
             "password": "aodn_imas_fluorometry",
             "memberof": [

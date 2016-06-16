@@ -1,0 +1,12 @@
+{
+    "id": "anmn_nrs_long_ts",
+    "artifact_filename": "ANMN_NRS_LONG_TS_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "d3feff71-ebe1-4b66-91c6-149beceef205"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/NRS/.*/aggregated_products/IMOS_ANMN-NRS_.*_FV02_.*\\.nc"
+        ]
+    }
+}
