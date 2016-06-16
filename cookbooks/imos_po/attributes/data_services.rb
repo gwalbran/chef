@@ -58,6 +58,7 @@ default['imos_po']['data_services']['packages'] = [
   'libhdf5-serial-dev',
   'libnetcdf-dev',
   'mdbtools',
+  'p7zip',
   'python-beautifulsoup',
   'python-boto',
   'python-dev',
