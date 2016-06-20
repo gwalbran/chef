@@ -57,6 +57,7 @@ default['imos_po']['data_services']['packages'] = [
   'lftp',
   'libhdf5-serial-dev',
   'libnetcdf-dev',
+  'libproj0', # For Python/GDAL
   'mdbtools',
   'p7zip',
   'python-beautifulsoup',
