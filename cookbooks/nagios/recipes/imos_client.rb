@@ -25,12 +25,6 @@ end
 
 # Declare all nagios plugins we'll download from the web
 nagios_plugins_3rd_party = [
-  # TODO danfruehauf has a reputation of a dodgy person, no idea why we rely
-  # on his nagios plugins
-  # Plugin on nagios exchange:
-  # http://exchange.nagios.org/directory/Plugins/Databases/Others/check_sql/details
-  [ "check_sql",     "https://raw.github.com/danfruehauf/nagios-plugins/master/check_sql/check_sql" ],
-  [ "check_jenkins", "https://raw.github.com/danfruehauf/nagios-plugins/master/check_jenkins/check_jenkins" ]
 ]
 
 nagios_plugins_3rd_party.each do |plugin_pair|
