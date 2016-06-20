@@ -19,3 +19,12 @@ end
 link node['imos_po']['netcdf_checker']['executable'] do
   to ::File.join(node['imos_po']['netcdf_checker']['dir'], "cchecker.py")
 end
+
+Chef::Log.info("Installing IMOS Compliance Checker Plugin")
+execute "install_cc_plugin_imos" do
+  cwd node['imos_po']['netcdf_checker']['cc_plugin_dir']
+  command "pip install -e ."
+  subscribes :run, 'git[data_services]', :immediately
+  user 'root'
+end
+Chef::Log.info("Finished installing IMOS Compliance Checker Plugin")
