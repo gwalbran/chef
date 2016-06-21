@@ -206,6 +206,20 @@
             ]
         },
         {
+            "name": "anmn_nrs_long_ts",
+            "owner": "anmn_nrs_long_ts",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+       },
+       {
             "name": "parameters_mapping",
             "owner": "postgres",
             "permissions": [
