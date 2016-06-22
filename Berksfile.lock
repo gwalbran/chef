@@ -104,8 +104,8 @@ DEPENDENCIES
   packer
     git: git://github.com/sit/chef-packer.git
     revision: 60acb62ca2ecb656b3a2e28f76e97cccbccdd4c1
+  poise-python
   postfix
-  python
   rabbitmq
     git: git://github.com/jjasghar/rabbitmq.git
     revision: 39fab3715a8e6bc3341d7a9577c12aab7ba170e0
@@ -170,9 +170,7 @@ GRAPH
     unicorn (>= 0.0.0)
   apt (2.3.11)
   ark (0.4.2)
-  artifact (1.0.0)
   auditd (0.1.4)
-  aws (2.2.0)
   awstats (0.2.2)
     apache2 (>= 0.0.0)
     htpasswd (>= 0.0.0)
@@ -203,9 +201,6 @@ GRAPH
     yum-epel (>= 0.0.0)
     yum-erlang_solutions (>= 0.0.0)
   external_templates (1.0.0)
-  fuse (0.1.2)
-    apt (>= 0.0.0)
-    yum (>= 0.0.0)
   git (4.0.3)
     build-essential (>= 0.0.0)
     dmg (>= 0.0.0)
@@ -390,7 +385,6 @@ GRAPH
   ntp (1.6.2)
   ohai (1.1.12)
   omnibus_updater (1.0.0)
-  openssl (1.1.0)
   packer (0.3.0)
     ark (~> 0.4.0)
   passenger_apache2 (2.2.0)
@@ -404,11 +398,16 @@ GRAPH
     windows (>= 0.0.0)
     xml (>= 0.0.0)
     yum-epel (>= 0.0.0)
+  poise (2.7.1)
+  poise-archive (1.2.0)
+    poise (~> 2.6)
+  poise-languages (1.4.0)
+    poise (~> 2.5)
+    poise-archive (~> 1.0)
+  poise-python (1.4.0)
+    poise (~> 2.7)
+    poise-languages (~> 1.3)
   postfix (2.1.2)
-  postgresql (3.4.0)
-    apt (>= 1.9.0)
-    build-essential (>= 0.0.0)
-    openssl (>= 0.0.0)
   python (1.4.6)
     build-essential (>= 0.0.0)
     yum-epel (>= 0.0.0)
@@ -461,7 +460,6 @@ GRAPH
   vsftpd (0.0.1)
   windows (1.31.0)
     chef_handler (>= 0.0.0)
-  xfs (1.1.0)
   xml (1.2.4)
     build-essential (>= 0.0.0)
   xvfb (0.0.1)

@@ -22,9 +22,9 @@ include_recipe "imos_devel::vagrant"
 include_recipe "imos_jenkins::packages"
 include_recipe "imos_po::packages"
 
-include_recipe 'imos_postgresql::official_postgresql'
-include_recipe 'git'
-include_recipe 'packer'
+include_recipe "imos_postgresql::official_postgresql"
+include_recipe "git"
+include_recipe "packer"
 
 jenkins_user_data_bag = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])
 

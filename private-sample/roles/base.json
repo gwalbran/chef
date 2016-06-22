@@ -21,6 +21,7 @@
         "recipe[apt]",
         "recipe[imos_users]",
         "recipe[sudo]",
+        "recipe[poise-python]",
         "recipe[git]",
         "recipe[ntp]",
         "recipe[timezone-ii]",

@@ -17,7 +17,7 @@ define :s3cmd_config do
     action :remove
   end
   package 'python-pip'
-  python_pip "s3cmd"
+  python_package "s3cmd"
 
   mock_credentials = false
 

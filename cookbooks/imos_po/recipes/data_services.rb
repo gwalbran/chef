@@ -48,11 +48,7 @@ if node['imos_po']['data_services']['clone_repository']
   end
 end
 
-python_requirements = ::File.join(data_services_dir, "requirements.txt")
-execute "python_requirements" do
-  command    "cat #{python_requirements} | xargs -n 1 pip install"
-  subscribes :run, 'git[data_services]', :delayed
-end
+pip_requirements ::File.join(data_services_dir, "requirements.txt")
 
 node['imos_po']['data_services']['owned_dirs'].each do |dir|
   directory dir do
