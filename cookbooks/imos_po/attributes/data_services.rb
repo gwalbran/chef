@@ -54,7 +54,6 @@ default['imos_po']['data_services']['packages'] = [
   'imagemagick',
   'ipython',
   'gawk',
-  'jq',
   'lftp',
   'libhdf5-serial-dev',
   'libnetcdf-dev',
