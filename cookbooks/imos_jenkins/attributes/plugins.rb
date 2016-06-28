@@ -1,4 +1,5 @@
 default["imos_jenkins"]["plugins"] = %w{
+  aws-java-sdk
   build-name-setter
   build-pipeline-plugin
   copyartifact
@@ -11,6 +12,7 @@ default["imos_jenkins"]["plugins"] = %w{
   maven-plugin
   repository
   role-strategy
+  s3
   throttle-concurrents
   token-macro
   validating-string-parameter
