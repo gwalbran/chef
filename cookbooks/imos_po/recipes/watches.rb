@@ -101,8 +101,8 @@ if node['imos_po']['data_services']['watches']
   directory node['imos_po']['data_services']['celeryd']['dir']
 
   # Celeryd configuration
-  python_pip "celery"
-  python_pip "boto"
+  python_package "celery"
+  python_package "boto"
   include_recipe "supervisor"
 
   celery_config = node['imos_po']['data_services']['celeryd']['config']
@@ -182,7 +182,7 @@ if node['imos_po']['data_services']['watches']
       end
     end
     subscribes :create, 'git[data_services]',     :delayed
-    subscribes :create, 'python_pip[supervisor]', :delayed
+    subscribes :create, 'python_package[supervisor]', :delayed
   end
 
 end
