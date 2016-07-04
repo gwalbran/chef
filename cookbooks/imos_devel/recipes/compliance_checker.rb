@@ -7,6 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
+package 'python-pip'
 package 'python-virtualenv'
 
 # Install Compliance Checker prerequisites from requirements.txt
