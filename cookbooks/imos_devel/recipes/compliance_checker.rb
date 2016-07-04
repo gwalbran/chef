@@ -7,7 +7,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
-# Install Compliance Checker prerequisites
+package 'python-virtualenv'
+
+# Install Compliance Checker prerequisites from requirements.txt
 requirements_filename  = File.basename(node['imos_devel']['compliance_checker']['python_requirements_url'])
 requirements_full_path = File.join(Chef::Config[:file_cache_path], requirements_filename)
 
