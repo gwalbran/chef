@@ -102,6 +102,7 @@ data_services_vars = {
   'WIP_DIR'           => node['imos_po']['data_services']['wip_dir'],
   'EMAIL_ALIASES'     => node['imos_po']['email_aliases'],
   'DATA_SERVICES_DIR' => data_services_dir,
+  'PYTHONPATH'        => File::join(data_services_dir, 'lib', 'python'),
   'LOG_DIR'           => node['imos_po']['data_services']['log_dir'],
   'DATA_DIR'          => node['imos_po']['data_services']['data_dir'],
   'S3CMD'             => Chef::Recipe::WatchJobs.get_s3cmd(node),
