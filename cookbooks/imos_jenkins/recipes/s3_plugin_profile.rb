@@ -17,7 +17,7 @@ jenkins_script 'create S3 profile' do
     import hudson.plugins.s3.*
 
     def instance = Jenkins.getInstance()
-    def desc = inst.getDescriptor("hudson.plugins.s3.S3BucketPublisher")
+    def desc = instance.getDescriptor("hudson.plugins.s3.S3BucketPublisher")
 
     def s3profile = new S3Profile(
       "S3Profile-jenkins",
