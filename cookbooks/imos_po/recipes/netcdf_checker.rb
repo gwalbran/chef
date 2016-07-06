@@ -19,10 +19,10 @@ end
 
 # NOTE: the easy_install_package in 12.0.3 does not appear to work correctly, hence the not ideal option of executing
 #       via a shell command directly
-# TODO: (when Chef upgraded) check the behaviour of easy_install_package again in order to perform this action cleanly
+# TODO: (when Chef upgraded) check the behaviour of easy_install_package again in order to perform this action more cleanly
 execute "install compliance-checker" do
   user 'root'
-  command "easy_install --always-unzip #{netcdf_checker_full_path}"
+  command "easy_install --find-links=#{Chef::Config[:file_cache_path]} --always-unzip #{netcdf_checker_full_path}"
   not_if "test $(pip show compliance-checker | awk /^Version:/'{print $2}') = #{node['imos_po']['netcdf_checker']['version']}"
 end
 
@@ -43,6 +43,6 @@ end
 
 execute "install cc-plugin-imos" do
   user 'root'
-  command "easy_install --always-unzip #{cc_plugin_full_path}"
+  command "easy_install --find-links=#{Chef::Config[:file_cache_path]} --allow-hosts=None --always-unzip #{cc_plugin_full_path}"
   not_if "test $(pip show cc-plugin-imos | awk /^Version:/'{print $2}') = #{node['imos_po']['netcdf_checker']['cc_plugin_ver']}"
 end
