@@ -8,23 +8,41 @@
 #
 # Deploys the IOOS netcdf checker
 
-git node['imos_po']['netcdf_checker']['dir'] do
-  repository node['imos_po']['netcdf_checker']['repo']
-  revision   node['imos_po']['netcdf_checker']['branch']
-  action     :sync
-  user       'root'
-  group      node['imos_po']['data_services']['group']
+netcdf_checker_filename  = File.basename(node['imos_po']['netcdf_checker']['url'])
+netcdf_checker_full_path = File.join(Chef::Config[:file_cache_path], netcdf_checker_filename)
+
+remote_file netcdf_checker_full_path do
+  source   node['imos_po']['netcdf_checker']['url']
+  mode     0644
+  action   :create_if_missing
 end
 
+# NOTE: the easy_install_package in 12.0.3 does not appear to work correctly, hence the not ideal option of executing
+#       via a shell command directly
+# TODO: (when Chef upgraded) check the behaviour of easy_install_package again in order to perform this action more cleanly
+execute "install compliance-checker" do
+  user 'root'
+  command "easy_install --find-links=#{Chef::Config[:file_cache_path]} --always-unzip #{netcdf_checker_full_path}"
+  not_if "test $(pip show compliance-checker | awk /^Version:/'{print $2}') = #{node['imos_po']['netcdf_checker']['version']}"
+end
+
+# NOTE: despite the fact that the setup.py defines a console entry point, that does not appear to work, so this link has
+#       been retained to support the current expectation
 link node['imos_po']['netcdf_checker']['executable'] do
   to ::File.join(node['imos_po']['netcdf_checker']['dir'], "cchecker.py")
 end
 
-Chef::Log.info("Installing IMOS Compliance Checker Plugin")
-execute "install_cc_plugin_imos" do
-  cwd node['imos_po']['netcdf_checker']['cc_plugin_dir']
-  command "pip install -e ."
-  subscribes :run, 'git[data_services]', :immediately
-  user 'root'
+cc_plugin_filename  = File.basename(node['imos_po']['netcdf_checker']['cc_plugin_url'])
+cc_plugin_full_path = File.join(Chef::Config[:file_cache_path], cc_plugin_filename)
+
+remote_file cc_plugin_full_path do
+  source   node['imos_po']['netcdf_checker']['cc_plugin_url']
+  mode     0644
+  action   :create_if_missing
 end
-Chef::Log.info("Finished installing IMOS Compliance Checker Plugin")
+
+execute "install cc-plugin-imos" do
+  user 'root'
+  command "easy_install --find-links=#{Chef::Config[:file_cache_path]} --allow-hosts=None --always-unzip #{cc_plugin_full_path}"
+  not_if "test $(pip show cc-plugin-imos | awk /^Version:/'{print $2}') = #{node['imos_po']['netcdf_checker']['cc_plugin_ver']}"
+end
