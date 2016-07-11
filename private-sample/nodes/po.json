@@ -58,10 +58,6 @@
         }
     },
     "imos_po": {
-        "netcdf_checker": {
-            "repo": "https://github.com/aodn/compliance-checker.git",
-            "branch": "IMOS-Checker"
-        },
         "data_services": {
             "create_watched_directories": true,
             "user": "vagrant",
