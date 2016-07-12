@@ -1,6 +1,4 @@
 default['imos_po']['netcdf_checker']['dir']           = "/usr/local/bin"
-default['imos_po']['netcdf_checker']['repo']          = "https://github.com/ioos/compliance-checker.git"
-default['imos_po']['netcdf_checker']['branch']        = "master"
 default['imos_po']['netcdf_checker']['executable']    = "/usr/local/bin/netcdf-checker"
 default['imos_po']['netcdf_checker']['version'] = '2.2.0'
 default['imos_po']['netcdf_checker']['url'] = "https://ci.aodn.org.au/job/compliance_checker/lastSuccessfulBuild/artifact/dist/compliance_checker-#{default['imos_po']['netcdf_checker']['version']}-py2.7.egg"
