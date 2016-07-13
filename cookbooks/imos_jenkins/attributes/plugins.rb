@@ -10,6 +10,7 @@ default["imos_jenkins"]["plugins"] = %w{
   greenballs
   job-log-logger-plugin
   maven-plugin
+  postbuildscript
   repository
   role-strategy
   s3
