@@ -94,30 +94,28 @@ def main():
         rules = boto.s3.website.RoutingRules()
 
         try:
-            config.get('WebsiteConfiguration').get('RoutingRules').get('RoutingRule')
-            existing_rules = True
+            routes = config.get('WebsiteConfiguration').get('RoutingRules').get('RoutingRule')
         except AttributeError:
-            existing_rules = False
-        if existing_rules:
-            routes = config.get('WebsiteConfiguration').get('RoutingRules')
-            for k, v in routes.items():
-                prefix = v.get('Condition').get('KeyPrefixEquals')
-                if prefix == args.key and not args.update:
-                    alert(
-                        'There is already a redirect for "%s". Please use the --update option to use this key anyway.' %
-                        args.key)
-                    sys.exit(os.EX_UNAVAILABLE)
-                elif not prefix == args.key:
-                    if 'ReplaceKeyWith' in v.get('Redirect'):
-                        # redirect all sub-folder requests to specific path
-                        rules.add_rule(boto.s3.website.RoutingRule.when(key_prefix=prefix).then_redirect(
-                            hostname=v.get('Redirect').get('HostName'), protocol=v.get('Redirect').get('Protocol'),
-                            replace_key=v.get('Redirect').get('ReplaceKeyWith')))
-                    elif 'ReplaceKeyPrefixWith' in v.get('Redirect'):
-                        # redirect requests with relative sub-folder, replacing prefix only
-                        rules.add_rule(boto.s3.website.RoutingRule.when(key_prefix=prefix).then_redirect(
-                            hostname=v.get('Redirect').get('HostName'), protocol=v.get('Redirect').get('Protocol'),
-                            replace_key_prefix=v.get('Redirect').get('ReplaceKeyPrefixWith')))
+            routes = []
+
+        for route in routes:
+            prefix = route.get('Condition').get('KeyPrefixEquals')
+            if prefix == args.key and not args.update:
+                alert(
+                    'There is already a redirect for "%s". Please use the --update option to use this key anyway.' %
+                    args.key)
+                sys.exit(os.EX_UNAVAILABLE)
+            elif not prefix == args.key:
+                if 'ReplaceKeyWith' in route.get('Redirect'):
+                    # redirect all sub-folder requests to specific path
+                    rules.add_rule(boto.s3.website.RoutingRule.when(key_prefix=prefix).then_redirect(
+                        hostname=route.get('Redirect').get('HostName'), protocol=route.get('Redirect').get('Protocol'),
+                        replace_key=route.get('Redirect').get('ReplaceKeyWith')))
+                elif 'ReplaceKeyPrefixWith' in route.get('Redirect'):
+                    # redirect requests with relative sub-folder, replacing prefix only
+                    rules.add_rule(boto.s3.website.RoutingRule.when(key_prefix=prefix).then_redirect(
+                        hostname=route.get('Redirect').get('HostName'), protocol=route.get('Redirect').get('Protocol'),
+                        replace_key_prefix=route.get('Redirect').get('ReplaceKeyPrefixWith')))
 
         uri = urlparse(args.uri)
         path = uri.path or None
