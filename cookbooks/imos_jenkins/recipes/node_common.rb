@@ -22,6 +22,7 @@ include_recipe "imos_devel::compliance_checker"
 include_recipe "imos_devel::talend"
 include_recipe "imos_devel::vagrant"
 include_recipe "imos_jenkins::packages"
+include_recipe "imos_po::netcdf_checker"
 include_recipe "imos_po::packages"
 
 include_recipe "imos_postgresql::official_postgresql"
