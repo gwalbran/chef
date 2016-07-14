@@ -21,6 +21,14 @@ directory node['imos_jenkins']['slave']['directory'] do
   recursive true
 end
 
+# slave log directory
+directory node['imos_jenkins']['slave']['logdir'] do
+  owner     'root'
+  group     node['imos_jenkins']['user']
+  mode      00775
+  recursive true
+end
+
 # init.d service file
 cookbook_file "/etc/init.d/jenkins-slave" do
   source "jenkins-slave.init"
