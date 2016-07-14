@@ -62,11 +62,12 @@ def prepare_file(tmp_base, file, is_deletion = false)
       target_dir = File.join(tmp_base, File.dirname(index_as))
       target_file = File.join(tmp_base, index_as)
 
-      FileUtils.mkdir_p(target_dir)
-      FileUtils.symlink(real_file, target_file)
-      if ! File.exist?(target_file)
-        $logger.fatal "Could not create symlink '#{real_file}' => '#{index_as}'"
-        exit(1)
+      begin
+        FileUtils.mkdir_p(target_dir)
+        FileUtils.ln_s(real_file, target_file)
+      rescue Exception => e
+        $logger.fatal e.message
+        $logger.fatal "Error in symbolic linking '#{real_file}' => '#{target_file}'. Check to see if '#{target_file}' already exists'"
       end
     end
   end
