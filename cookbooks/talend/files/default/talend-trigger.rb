@@ -161,6 +161,7 @@ def handle_files(files, delete = false, max_files)
 
     Dir.mktmpdir { |tmp_base|
       files_slice.each do |file|
+        $logger.info "Preparing file '#{file}' in temp dir '#{tmp_base}'"
         files_to_index << prepare_file(tmp_base, file, delete)
       end
       retval = match_and_execute(tmp_base, files_to_index)
