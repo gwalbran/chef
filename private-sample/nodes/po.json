@@ -294,6 +294,8 @@
             "argo",
             "auv",
             "auv_viewer_track",
+            "cars_monthly",
+            "cars_weekly",
             "faimms",
             "future_reef_map",
             "gsla_dm00",
