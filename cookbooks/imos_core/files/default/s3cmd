@@ -11,7 +11,9 @@ bucket_uri_to_file_path() {
 main() {
     local cmd src dst
     while [ x"$1" != x ]; do
-        if [ "${1:0:1}" = "-" ]; then
+        if [ "$1" = "-m" ]; then
+            shift
+        elif [ "${1:0:1}" = "-" ]; then
             true
         elif [ x"$cmd" = x ]; then
             cmd=$1
