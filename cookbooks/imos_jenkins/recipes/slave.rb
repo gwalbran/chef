@@ -10,6 +10,7 @@
 #
 
 include_recipe 'imos_jenkins::node_common'
+include_recipe 'imos_po::netcdf_checker'
 
 package "daemon"
 gem_package "trollop"
