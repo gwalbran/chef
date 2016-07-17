@@ -898,6 +898,20 @@
             ]
         },
         {
+            "name": "generic_timestep",
+            "owner": "generic_timestep",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+       },
+       {
             "name": "future_reef_map",
             "owner": "future_reef_map",
             "permissions": [

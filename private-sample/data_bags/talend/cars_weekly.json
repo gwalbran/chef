@@ -1,0 +1,16 @@
+{
+    "id": "cars_weekly",
+    "artifact_filename": "GENERIC_TIMESTEP_harvester_Latest.zip",
+    "params": {
+        "timeVariable": "DAY_OF_YEAR",
+        "collection": "csiro_cars_weekly",
+        "Destination_Schema": "generic_timestep",
+        "Destination_Login": "generic_timestep",
+        "Destinaton_Password": "generic_timestep"
+    },
+    "event": {
+        "regex": [
+            "^CSIRO/Climatology/CARS/.*\\weekly.nc$"
+        ]
+    }
+}
