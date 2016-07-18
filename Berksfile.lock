@@ -8,7 +8,7 @@ DEPENDENCIES
   auditd
   awstats
   backup
-    git: git://github.com/danfruehauf/backup-cookbook.git
+    git: git://github.com/aodn/backup-cookbook.git
     revision: 35170c5a278abd573e3ec5d28fa136aaf8a50ead
   build-essential
   chef-solo-search
@@ -117,7 +117,7 @@ DEPENDENCIES
     revision: 7ce09ee37854b619a2f5c3e9500782ffdcab0429
   rsync
   rsync_chroot
-    git: git://github.com/danfruehauf/rsync_chroot.git
+    git: git://github.com/aodn/rsync_chroot.git
     revision: 0c52559f387a6361f1e7eb8f2cb025ef8800738e
   s3fs-fuse
     git: git://github.com/hw-cookbooks/s3fs-fuse.git
