@@ -9,6 +9,7 @@
     },
     "event": {
         "regex": [
+            "^IMOS/ABOS/.*[Rr]eal-?time.*\\.nc$",
             "^IMOS/ANMN/.*(REAL_TIME|realtime).*\\.nc$"
         ]
     }

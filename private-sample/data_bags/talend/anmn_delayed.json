@@ -9,6 +9,7 @@
     },
     "event": {
         "regex": [
+            "^IMOS/ABOS/.*(Temperature|_timeseries|_profiles|Velocity|Wave|CO2|Meteorology|Surface_[^/]+|Sub-surface_[^/]+|Sediment_traps|Pulse)/(non-QC/)?IMOS_ABOS-.*\\.nc$",
             "^IMOS/ANMN/AM/.*\\.nc$",
             "^IMOS/ANMN/NSW/.*\\.nc$",
             "^IMOS/ANMN/QLD/.*\\.nc$",
