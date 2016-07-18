@@ -1,1 +1,1 @@
-default['imos_core']['nco']['url'] = "https://ci.aodn.org.au/job/nco/lastSuccessfulBuild/artifact/web-app/resources/worker/nco_4.3.4-1_amd64.deb"
+default['imos_core']['nco']['url'] = "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/nco/nco-latest.deb"
