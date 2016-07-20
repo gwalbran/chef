@@ -95,20 +95,21 @@ end
 # Please note all variables here must be fully expanded to avoid scripts
 # needing to evaluate them at runtime
 data_services_vars = {
-  'ARCHIVE_DIR'       => node['imos_po']['data_services']['archive_dir'],
-  'INCOMING_DIR'      => node['imos_po']['data_services']['incoming_dir'],
-  'ERROR_DIR'         => node['imos_po']['data_services']['error_dir'],
-  'ARCHIVE_IMOS_DIR'  => node['imos_po']['data_services']['archive_dir'],
-  'WIP_DIR'           => node['imos_po']['data_services']['wip_dir'],
-  'EMAIL_ALIASES'     => node['imos_po']['email_aliases'],
-  'DATA_SERVICES_DIR' => data_services_dir,
-  'PYTHONPATH'        => File::join(data_services_dir, 'lib', 'python'),
-  'LOG_DIR'           => node['imos_po']['data_services']['log_dir'],
-  'DATA_DIR'          => node['imos_po']['data_services']['data_dir'],
-  'S3CMD'             => Chef::Recipe::WatchJobs.get_s3cmd(node),
-  'S3_BUCKET'         => node['imos_po']['s3']['bucket'],
-  'MAILX_CONFIG'      => node['imos_po']['mailx']['config_file'],
-  'HARVESTER_TRIGGER' => harvester_trigger_cmd
+  'ARCHIVE_DIR'           => node['imos_po']['data_services']['archive_dir'],
+  'INCOMING_DIR'          => node['imos_po']['data_services']['incoming_dir'],
+  'ERROR_DIR'             => node['imos_po']['data_services']['error_dir'],
+  'ARCHIVE_IMOS_DIR'      => node['imos_po']['data_services']['archive_dir'],
+  'WIP_DIR'               => node['imos_po']['data_services']['wip_dir'],
+  'DATA_SERVICES_TMP_DIR' => node['imos_po']['data_services']['tmp_dir'],
+  'EMAIL_ALIASES'         => node['imos_po']['email_aliases'],
+  'DATA_SERVICES_DIR'     => data_services_dir,
+  'PYTHONPATH'            => File::join(data_services_dir, 'lib', 'python'),
+  'LOG_DIR'               => node['imos_po']['data_services']['log_dir'],
+  'DATA_DIR'              => node['imos_po']['data_services']['data_dir'],
+  'S3CMD'                 => Chef::Recipe::WatchJobs.get_s3cmd(node),
+  'S3_BUCKET'             => node['imos_po']['s3']['bucket'],
+  'MAILX_CONFIG'          => node['imos_po']['mailx']['config_file'],
+  'HARVESTER_TRIGGER'     => harvester_trigger_cmd
 }
 data_services_vars.merge!(imos_po_credentials)
 

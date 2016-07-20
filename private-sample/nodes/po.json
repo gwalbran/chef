@@ -67,6 +67,7 @@
             "log_dir": "/vagrant/src/data-services/log",
             "public_dir": "/mnt/public",
             "archive_dir": "/mnt/archive",
+            "tmp_dir":     "/vagrant/src/data-services/tmp",
             "incoming_dir": "/var/incoming",
             "error_dir": "/vagrant/src/error",
             "data_dir": "/s3/imos-data",
