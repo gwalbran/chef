@@ -33,6 +33,30 @@ module ImosArtifacts
       filename = "#{Chef::Config[:file_cache_path]}/#{::File.basename(uri)}"
       username = artifact_manifest['username']
       password = artifact_manifest['password']
+
+      # Attempt to retrieve checksum from URI
+      remote_md5_file = "#{uri}.md5"
+      tmpfile = Tempfile.new('uri-artifact-md5')
+      if Fetcher.download_file(remote_md5_file, tmpfile.path)
+        if File.exists?(tmpfile.path)
+          entry = IO.readlines(tmpfile.path)[0]
+          if entry && entry.split(' ')
+            remote_checksum = entry.split('  ')[0]
+          end
+        end
+      else
+        Chef::Log.warn("Could not obtain md5 via md5 file at '#{artifact_md5_url}'")
+      end
+      tmpfile.unlink
+
+      # Compare remote checksum to local file (if applicable)
+      if not remote_checksum.nil? and File.exists?(filename)
+        local_checksum = Digest::MD5.file(filename).hexdigest
+        if remote_checksum == local_checksum
+          return filename
+        end
+      end
+
       return Fetcher.download_file(uri, filename, username, password)
     end
 
