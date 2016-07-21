@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
+import argparse
 import os
 import sys
-import argparse
-
+from collections import OrderedDict
 from urlparse import urlparse
 
 
@@ -95,6 +95,8 @@ def main():
 
         try:
             routes = config.get('WebsiteConfiguration').get('RoutingRules').get('RoutingRule')
+            if isinstance(routes, OrderedDict):
+                routes = [routes]
         except AttributeError:
             routes = []
 
