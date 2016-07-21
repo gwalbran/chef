@@ -64,6 +64,10 @@ s3cmd_config node['imos_jenkins']['s3cmd']['config_file'] do
 end
 
 # S3 redirect script
+python_package 'boto' do
+  version '2.41.0'
+end
+python_package 'xmltodict'
 cookbook_file "/usr/local/bin/s3redirect.py" do
   source "s3redirect.py"
   owner "root"
