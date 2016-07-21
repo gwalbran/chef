@@ -138,7 +138,7 @@ po_box_main() {
 talend_main() {
     declare -r TALEND_CUSTOM_COMPONENTS="src/talend-components"
     declare -r TALEND_WORKSPACE="src/talend-workspace"
-    declare -r TALEND_COMPONENTS_DOWNLOAD_URL="https://ci.aodn.org.au/job/talend_components_edge/lastSuccessfulBuild/artifact/directory-build/target/components-1.0.0-SNAPSHOT.zip"
+    declare -r TALEND_COMPONENTS_DOWNLOAD_URL="http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/talend_components_edge/talend_components_edge-latest.zip"
     declare -r HARVESTERS_GIT_REPO="git@github.com:aodn/harvesters.git"
 
     _clone_git_repo $HARVESTERS_GIT_REPO src/harvesters || return 1

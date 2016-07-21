@@ -16,8 +16,7 @@ Vagrant.configure("2") do |config|
     config.cache.enable :gem
   end
 
-  config.vm.box = ENV['VAGRANT_BOX'] || "precise-server-amd64-chef-12.3.0-1.1"
-  config.vm.box_url = ENV['VAGRANT_BOX_URL'] || "https://ci.aodn.org.au/job/chef_basebox_virtualbox/lastSuccessfulBuild/artifact/#{config.vm.box}.box"
+  config.vm.box_url = ENV['VAGRANT_BOX_URL'] || "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/chef_basebox_virtualbox/chef_basebox_virtualbox-latest.box"
 
   ENV['CHEF_VERSION'] and config.omnibus.chef_version = ENV['CHEF_VERSION']
 
