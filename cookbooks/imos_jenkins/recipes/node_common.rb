@@ -62,3 +62,11 @@ s3cmd_config node['imos_jenkins']['s3cmd']['config_file'] do
   access_key jenkins_user_data_bag['access_key_id']
   secret_key jenkins_user_data_bag['secret_access_key']
 end
+
+# S3 redirect script
+cookbook_file "/usr/local/bin/s3redirect.py" do
+  source "s3redirect.py"
+  owner "root"
+  group "root"
+  mode 00755
+end
