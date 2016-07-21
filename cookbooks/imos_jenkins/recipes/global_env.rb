@@ -16,9 +16,6 @@ jenkins_user_data_bag = Chef::EncryptedDataBagItem.load("users", node['imos_jenk
 global_environment['AWS_ACCESS_KEY'] = jenkins_user_data_bag['access_key_id']
 global_environment['AWS_SECRET_KEY'] = jenkins_user_data_bag['secret_access_key']
 
-global_environment['S3_PROFILE'] = node['imos_jenkins']['s3']['profile']
-global_environment['S3_ARTIFACT_BUCKET'] = node['imos_jenkins']['s3']['artifact_bucket']
-
 global_environment_groovy_code = ""
 global_environment.each do |k, v|
   global_environment_groovy_code += "envVars.put(\"#{k}\", \"#{v}\")" + "\n"
