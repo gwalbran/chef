@@ -159,7 +159,7 @@ if node['imos_po']['data_services']['watches']
 
   async_upload_max_tasks = node['imos_po']['data_services']['async_upload']['max_tasks']
   supervisor_service "async_upload_po" do
-    command    "celeryd --queues=async_upload --config=#{celery_config} -A tasks -c #{async_upload_max_tasks}"
+    command "celery worker --queues=async_upload --config=#{celery_config} -A tasks -c #{async_upload_max_tasks}"
     directory  node['imos_po']['data_services']['celeryd']['dir']
     user       po_user
     action     [:enable, :restart]
@@ -174,7 +174,7 @@ if node['imos_po']['data_services']['watches']
       Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir).each do |job_name, watchlist|
         f = Chef::Resource::SupervisorService.new("celery_po_#{job_name}", run_context)
         f.autostart true
-        f.command "celeryd --queues=#{job_name} --config=#{celery_config} -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
+        f.command "celery worker --queues=#{job_name} --config=#{celery_config} -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
         f.directory node['imos_po']['data_services']['celeryd']['dir']
         f.user po_user
         f.run_action :enable
