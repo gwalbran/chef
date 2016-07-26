@@ -18,6 +18,8 @@ BROKER_TRANSPORT_OPTIONS = {
 <% end %>
 }
 
+CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
+
 <%
 # Create automatic routing for all queues, kindly stolen from:
 # http://stackoverflow.com/questions/9167663/celery-per-task-concurrency-limits-of-workers-per-task
