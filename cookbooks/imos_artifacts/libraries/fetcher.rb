@@ -45,7 +45,7 @@ module ImosArtifacts
           end
         end
       else
-        Chef::Log.warn("Could not obtain md5 via md5 file at '#{artifact_md5_url}'")
+        Chef::Log.warn("Could not obtain md5 via md5 file at '#{remote_md5_file}'")
       end
       tmpfile.unlink
 
@@ -53,6 +53,7 @@ module ImosArtifacts
       if not remote_checksum.nil? and File.exists?(filename)
         local_checksum = Digest::MD5.file(filename).hexdigest
         if remote_checksum == local_checksum
+          Chef::Log.info "Using cached artifact #{filename}'"
           return filename
         end
       end
@@ -65,7 +66,8 @@ module ImosArtifacts
         begin
           IO.copy_stream(Fetcher.get_uri_retry(uri, username, password), output)
         rescue
-          Chef::Application.fatal!("Error downloading file from '#{uri}'")
+          Chef::Log.error "Error downloading file from '#{uri}'"
+          return nil
         end
 
         Chef::Log.info "Cached '#{uri}' at '#{filename}'"
@@ -98,7 +100,8 @@ module ImosArtifacts
         Chef::Log.warn "Retrying #{i}/#{retries} '#{uri}'"
         sleep 2
       end
-      Chef::Application.fatal! "Could not access '#{uri}'"
+      Chef::Log.error "Could not access '#{uri}'"
+      return nil
     end
 
   end
