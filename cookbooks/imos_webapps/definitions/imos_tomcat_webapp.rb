@@ -19,11 +19,6 @@ define :imos_tomcat_webapp do
   custom_parameters    = params[:custom_parameters]
   tomcat_instance_name = params[:tomcat_instance_name]
 
-  # Configuration file defined?
-  if node[application_name] && node[application_name]['config_file']
-    config_file = node[application_name]['config_file']
-  end
-
   jndi_resources = []
   # All jndi resources specifed in the 'jndis' entry in the webapp
   # The first one will be the "main" one from which we might create a local
@@ -38,11 +33,6 @@ define :imos_tomcat_webapp do
       end
       jndi_resources << jndi_resource
     end
-  end
-
-  # Data directory, may be mounted outside of the tomcat directory
-  if node[application_name] && node[application_name]['data_dir']
-    tomcat_data_directory = "#{node[application_name]['data_dir']}/#{application_name}"
   end
 
   # Install war & context xml into place
