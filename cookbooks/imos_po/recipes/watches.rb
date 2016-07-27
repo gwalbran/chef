@@ -162,6 +162,8 @@ if node['imos_po']['data_services']['watches']
     command "celery worker --queues=async_upload --config=#{celery_config} -A tasks -c #{async_upload_max_tasks}"
     directory  node['imos_po']['data_services']['celeryd']['dir']
     user       po_user
+    stdout_logfile ::File.join(node['imos_po']['data_services']['log_dir'], 'async_upload.log')
+    redirect_stderr true
     action     [:enable, :restart]
     subscribes :restart, 'git[data_services]', :delayed
   end
