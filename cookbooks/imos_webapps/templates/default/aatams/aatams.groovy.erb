@@ -20,7 +20,7 @@ grails {
     }
 }
 
-grails.serverURL  = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
+grails.serverURL  = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %><%= @custom_parameters['is_default_app'] == 'true' ? '' : "/#{@custom_parameters['name']}" %>"
 grails.serverHost = "<%= @custom_parameters['vhost'] %>"
 fileimport.path   = "<%= @custom_parameters['data_dir'] || @tomcat_data_directory %>/<%= @custom_parameters['fileimports'] || 'fileimports' %>"
 bulkimport.path   = "<%= @custom_parameters['data_dir'] || @tomcat_data_directory %>/<%= @custom_parameters['bulkimports'] || 'fileimports/bulkimports' %>"
