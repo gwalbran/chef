@@ -158,4 +158,13 @@ if @custom_parameters['term_vocabulary']
 end
 %>
 
+    <!-- add additional csw search filters -->
+
+    <file name=".*WEB-INF/config-csw\.xml">
+        <addXml xpath="operations/operation[@name='GetRecords']/parameters">
+            <parameter name="PointOfTruth" field="pointOfTruth" type="AdditionalQueryables" />
+            <parameter name="Category" field="_cat" type="AdditionalQueryables" />
+        </addXml>
+    </file>
+
 </overrides>
