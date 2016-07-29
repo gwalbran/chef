@@ -168,6 +168,10 @@ if node['imos_po']['data_services']['watches']
     subscribes :restart, 'git[data_services]', :delayed
   end
 
+  # Ensure that directory exists for supervisor child processes to create/append logs
+  supervisor_child_logdir = ::File.join(node['imos_po']['data_services']['log_dir'], 'celery')
+  directory supervisor_child_logdir
+
   # Why in a ruby_block? Because we need to be able to notify the resource
   # creation AFTER the data-services git repository was updated. This is the
   # only sane way unfortunately.
@@ -178,6 +182,12 @@ if node['imos_po']['data_services']['watches']
         f.autostart true
         f.command "celery worker --queues=#{job_name} --config=#{celery_config} -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
         f.directory node['imos_po']['data_services']['celeryd']['dir']
+        f.stdout_logfile ::File.join(supervisor_child_logdir, "#{job_name}-stdout.log")
+        f.stdout_logfile_maxbytes node['imos_po']['data_services']['supervisor']['stdout_logfile_maxbytes']
+        f.stdout_logfile_backups node['imos_po']['data_services']['supervisor']['stdout_logfile_backups']
+        f.stderr_logfile ::File.join(supervisor_child_logdir, "#{job_name}-stderr.log")
+        f.stderr_logfile_maxbytes node['imos_po']['data_services']['supervisor']['stderr_logfile_maxbytes']
+        f.stderr_logfile_backups node['imos_po']['data_services']['supervisor']['stderr_logfile_backups']
         f.user po_user
         f.run_action :enable
         f.run_action :restart

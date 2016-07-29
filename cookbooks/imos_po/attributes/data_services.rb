@@ -90,6 +90,12 @@ default['imos_po']['data_services']['celeryd']['inotify']           = ::File.joi
 default['imos_po']['data_services']['celeryd']['inotify_config']    = ::File.join(node['imos_po']['data_services']['celeryd']['dir'], "inotify-config.py")
 default['imos_po']['data_services']['celeryd']['max_tasks']         = 1
 
+# supervisor task log
+default['imos_po']['data_services']['supervisor']['stderr_logfile_maxbytes'] = '50MB'
+default['imos_po']['data_services']['supervisor']['stderr_logfile_backups'] = 2
+default['imos_po']['data_services']['supervisor']['stdout_logfile_maxbytes'] = '50MB'
+default['imos_po']['data_services']['supervisor']['stdout_logfile_backups'] = 2
+
 default['imos_po']['data_services']['create_watched_directories'] = false
 
 default['imos_po']['data_services']['credentials_pattern'] = "*"
