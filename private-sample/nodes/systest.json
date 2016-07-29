@@ -91,7 +91,7 @@
                     {
                         "name":                 "imos123",
                         "aliases":              [ "webportal", "imos" ],
-                        "artifact":             "portal_4_systest",
+                        "artifact":             "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/portal_4_systest/portal_4_systest-latest.war",
                         "config_file":          "Imos123.groovy",
                         "geonetwork_url":       "http://127.0.1.2/geonetwork",
                         "config_template_dir":  "portal",
@@ -119,7 +119,7 @@
                 "apps": [
                     {
                         "name":                  "geonetwork",
-                        "artifact":              "geonetwork_systest",
+                        "artifact":              "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/geonetwork_systest/geonetwork_systest-latest.war",
                         "config_file":           "config-overrides.xml",
                         "config_template_dir":   "geonetwork",
                         "custom_def":            "geonetwork",
@@ -150,7 +150,7 @@
                 "apps": [
                     {
                         "name":       "geoserver",
-                        "artifact":   "geoserver_systest",
+                        "artifact":   "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/geoserver_systest/geoserver_systest-latest.war",
                         "custom_def": "geoserver",
                         "data_bag":   "geoserver_123",
                         "jndis":      [ "harvest-systest" ],
