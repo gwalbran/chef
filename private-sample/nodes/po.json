@@ -273,6 +273,7 @@
             "anfog_dm",
             "anfog_rt",
             "anmn_acidification_nrt",
+            "anmn_acoustics",
             "anmn_adcp_timeseries",
             "anmn_am_dm",
             "anmn_burst_avg_timeseries",

@@ -1,0 +1,12 @@
+{
+    "id": "anmn_acoustics",
+    "artifact_filename": "ANMN_Acoustics_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "e850651b-d65d-495b-8182-5dde35919616"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/ANMN/Acoustic/metadata/update.*\\.csv$"
+        ]
+    }
+}
