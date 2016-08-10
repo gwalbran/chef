@@ -68,7 +68,7 @@ export JAVA_HOME
 CATALINA_HOME=<%= node['tomcat']['base'] %>/$NAME
 
 # Temporary directory for the JVM when running inside tomcat
-JVM_TMP=$CATALINA_HOME/temp
+JVM_TMP=<%= node['tomcat']['jvm_tmp'] || '$CATALINA_HOME/temp' %>
 
 # Directory for per-instance configuration files and webapps
 CATALINA_BASE=$CATALINA_HOME
