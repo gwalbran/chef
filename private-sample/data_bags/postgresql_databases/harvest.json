@@ -1550,6 +1550,20 @@
             ]
         },
         {
+            "name": "aodn_wamsi_sediment",
+            "owner": "aodn_wamsi_sediment",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
             "name": "anmn_wave",
             "owner": "anmn_wave",
             "permissions": [
