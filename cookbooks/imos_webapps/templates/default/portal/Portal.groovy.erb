@@ -1,7 +1,5 @@
 grails.serverURL = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %><%= @custom_parameters['is_default_app'] == 'true' ? '' : "/#{@custom_parameters['name']}" %>"
 spatialsearch.url = "<%= @custom_parameters['spatialsearch_url'] || 'http://search-123.aodn.org.au/search/search/index' %>"
-wmsScanner.url = "<%= @custom_parameters['wms_scanner_url'] || 'http://wmsscanner.aodn.org.au/wmsscanner/' %>"
-wfsScanner.url = "<%= @custom_parameters['wfs_scanner_url'] || 'http://wfsscanner.aodn.org.au/wfsscanner/' %>"
 gogoduck.url = "<%= @custom_parameters['gogoduck_url'] || 'https://gogoduck.aodn.org.au/gogoduck' %>"
 geonetwork.url = "<%= @custom_parameters['geonetwork_url'] || 'https://catalogue-123.aodn.org.au/geonetwork' %>"
 depthService.url = "<%= @custom_parameters['depth_service_url'] || 'https://depthservice.aodn.org.au/depth' %>"

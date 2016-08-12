@@ -5,7 +5,6 @@ module ImosArtifacts
     snapshot_war = Version.new("Portal2-2.0.0-SNAPSHOT-production.war")
     production_war = Version.new("Portal2-2.34.1-production.war")
     renamed_production_war = Version.new("Portal-2.34.1-production.war")
-    wfs_scanner_war = Version.new("wfsScanner-1.1.0.war")
 
     describe 'version compare' do
       it 'test_extracts_version_number_from_snapshot_portal' do
@@ -91,22 +90,6 @@ module ImosArtifacts
 
       it 'test_compare_version_special_absent' do
         expect(Version.new("geoserver-1.0.1.war")).to be < Version.new("geoserver-1.0.1-imos.war")
-      end
-
-      it 'test_extracts_version_number_from_wfs_scanner' do
-        expect("1.1.0").to eq(wfs_scanner_war.version)
-      end
-
-      it 'test_extracts_major_version_number_from_wfs_scanner' do
-        expect(1).to eq(wfs_scanner_war.major_version)
-      end
-
-      it 'test_extracts_minor_version_number_from_wfs_scanner' do
-        expect(1).to eq(wfs_scanner_war.minor_version)
-      end
-
-      it 'test_extracts_patch_version_number_from_wfs_scanner' do
-        expect(0).to eq(wfs_scanner_war.patch_version)
       end
 
     end
