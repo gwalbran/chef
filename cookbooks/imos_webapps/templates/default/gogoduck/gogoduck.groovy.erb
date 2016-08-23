@@ -1,6 +1,7 @@
 grails.serverURL = "<%= @custom_parameters['https'] ? 'https' : 'http' %>://<%= @custom_parameters['vhost'] %>/<%= @custom_parameters['name'] %>"
 
-grails.mail.default.from = "emiioffice@emii.org.au"
+// Change default email for IMOS
+grails.mail.default.from = "<%= @custom_parameters['default_email_from_address'] || 'aodnoffice@aodn.org.au' %>"
 
 <% if @custom_parameters['mail_credentials']
      mail_credentials = Chef::EncryptedDataBagItem.load('passwords', @custom_parameters['mail_credentials']).to_hash
