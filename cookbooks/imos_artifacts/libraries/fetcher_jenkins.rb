@@ -21,13 +21,21 @@ module ImosArtifacts
       @job_name = artifact_manifest['job']
 
       if artifact_manifest['jenkins_data_bag']
-        jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", artifact_manifest['jenkins_data_bag'])
+        if node.role?(node[:imos_artifacts][:jenkins_internal_role]) and not Chef::Config[:dev]
+          jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", node[:imos_artifacts][:jenkins_internal_data_bag])
+        else
+          jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", node[:imos_artifacts][:jenkins_data_bag])
+        end
         @url = FetcherJenkins::get_job_url(jenkins_creds['url'], @job_name, artifact_manifest['build_number'])
         @username = jenkins_creds['username']
         @password = jenkins_creds['password']
       else
         begin
-          jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", node[:imos_artifacts][:jenkins_data_bag])
+          if node.role?(node[:imos_artifacts][:jenkins_internal_role]) and not Chef::Config[:dev]
+            jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", node[:imos_artifacts][:jenkins_internal_data_bag])
+          else
+            jenkins_creds = Chef::EncryptedDataBagItem.load("passwords", node[:imos_artifacts][:jenkins_data_bag])
+          end
           @url = FetcherJenkins::get_job_url(jenkins_creds['url'], @job_name, artifact_manifest['build_number'])
           @username = jenkins_creds['username']
           @password = jenkins_creds['password']
