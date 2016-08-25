@@ -1,0 +1,10 @@
+{
+    "id": "aodn_wamsi_sediment",
+    "artifact_filename": "AODN_WAMSI_SEDIMENT_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "67984a64-c5bd-485d-8ace-7b0b22806ffa",
+        "Metadata_SpatialTable": "aodn_wamsi_sediment_data",
+        "include": ".*\\.shp",
+        "sourceDir": "/s3/imos-data/WAMSI/WAMSI1/Node3/3.4/3.4.2/Ningaloo_Inshore_Offshore_Sediment_Data"
+    }
+}

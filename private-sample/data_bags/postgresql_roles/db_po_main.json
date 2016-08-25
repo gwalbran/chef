@@ -724,6 +724,10 @@
             "password": "aodn_nt_sattag_oliveridley"
         },
         {
+            "name": "aodn_wamsi_sediment",
+            "password": "aodn_wamsi_sediment"
+        },
+        {
             "name": "anmn_wave",
             "password": "anmn_wave"
         }

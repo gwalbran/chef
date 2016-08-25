@@ -289,6 +289,7 @@
             "anmn_ts_timeseries",
             "anmn_wave",
             "aodn_imas_fluorometry",
+            "aodn_wamsi_sediment",
             "argo",
             "auv",
             "auv_viewer_track",
