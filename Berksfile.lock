@@ -120,8 +120,7 @@ DEPENDENCIES
     git: git://github.com/aodn/rsync_chroot.git
     revision: 0c52559f387a6361f1e7eb8f2cb025ef8800738e
   s3fs-fuse
-    git: git://github.com/hw-cookbooks/s3fs-fuse.git
-    revision: 1ee352c469a70bf35ba960c2b2e0afc3bbd6756d
+    path: cookbooks/s3fs-fuse
   squid
     git: git://github.com/opscode-cookbooks/squid.git
     revision: 0d8d278f1d75bed74657c1efd10809eb545e62a4
