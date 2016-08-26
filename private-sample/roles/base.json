@@ -4,6 +4,9 @@
     "json_class": "Chef::Role",
     "description": "Base role used by all nodes",
     "default_attributes": {
+      "s3fs_fuse": {
+         "version": "1.74"
+       },
         "authorization": {
             "sudo": {
                 "groups": ["admin","wheel","sysadmin"],
