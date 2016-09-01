@@ -57,6 +57,10 @@ end
 <%= "googleAnalytics.trackingId = '#{@custom_parameters['google_analytics_tracking_id']}'" =%>
 <% end %>
 
+<% if @custom_parameters['hotjar_tracking_id'] %>
+<%= "hotjar.trackingId = '#{@custom_parameters['hotjar_tracking_id']}'" =%>
+<% end %>
+
 downloadAuth {
     whitelistClients = [
         <%=
