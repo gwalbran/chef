@@ -178,9 +178,10 @@ if node['imos_po']['data_services']['watches']
   ruby_block "celery_po_supervisor" do
     block do
       Chef::Recipe::WatchJobs.get_watches(data_services_watch_dir).each do |job_name, watchlist|
+        pidfile = ::File.join(node['imos_po']['data_services']['log_dir'], "#{job_name}.pid")
         f = Chef::Resource::SupervisorService.new("celery_po_#{job_name}", run_context)
         f.autostart true
-        f.command "celery worker --queues=#{job_name} --config=#{celery_config} -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
+        f.command "celery worker --queues=#{job_name} --config=#{celery_config} --pidfile=#{pidfile}  -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
         f.directory node['imos_po']['data_services']['celeryd']['dir']
         f.stdout_logfile ::File.join(supervisor_child_logdir, "#{job_name}-stdout.log")
         f.stdout_logfile_maxbytes node['imos_po']['data_services']['supervisor']['stdout_logfile_maxbytes']
@@ -190,10 +191,10 @@ if node['imos_po']['data_services']['watches']
         f.stderr_logfile_backups node['imos_po']['data_services']['supervisor']['stderr_logfile_backups']
         f.user po_user
         f.run_action :enable
-        f.run_action :restart
+        f.run_action :start
       end
     end
-    subscribes :create, 'git[data_services]',     :delayed
+    subscribes :create, 'git[data_services]',         :delayed
     subscribes :create, 'python_package[supervisor]', :delayed
   end
 

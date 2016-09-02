@@ -28,7 +28,7 @@ watchlists.each do |job_name, watchlist|
     execute = ::File.join(@data_services_dir, watchlist['execute'])
     execute_params = watchlist['execute_params']
 %>
-@app.task(ignore_result=True)
+@app.task
 def <%= job_name %>(file_path):
     watch_exec_wrapper("<%= job_name %>", file_path, "<%= execute %>", "<%= execute_params %>")
 
