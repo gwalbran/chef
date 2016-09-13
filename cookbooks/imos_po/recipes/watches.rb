@@ -182,6 +182,8 @@ if node['imos_po']['data_services']['watches']
         f = Chef::Resource::SupervisorService.new("celery_po_#{job_name}", run_context)
         f.autostart true
         f.command "celery worker --queues=#{job_name} --config=#{celery_config} --pidfile=#{pidfile}  -A tasks -c #{node['imos_po']['data_services']['celeryd']['max_tasks']}"
+        # ie. one year. to avoid sigkill which will orphan child processes
+        f.stopwaitsecs 31536000
         f.directory node['imos_po']['data_services']['celeryd']['dir']
         f.stdout_logfile ::File.join(supervisor_child_logdir, "#{job_name}-stdout.log")
         f.stdout_logfile_maxbytes node['imos_po']['data_services']['supervisor']['stdout_logfile_maxbytes']
