@@ -60,7 +60,14 @@ define :geonetwork do
       end
       Chef::Log.info("Set ownership of '#{data_dir}' to '#{node['tomcat']['user']}:#{node['tomcat']['user']}'")
       FileUtils.chown_R node['tomcat']['user'], node['tomcat']['user'], data_dir
+
+      # Touch this file, so we will not run again unless geonetwork is deployed
+      FileUtils.touch core_schema_plugins_lock_file
     end
+    only_if {
+      ! File.exists?(core_schema_plugins_lock_file) ||
+          Dir.entries(data_dir).size == 2
+    }
   end
 
   # Deploy additional schema plugins via Jenkins
@@ -69,7 +76,7 @@ define :geonetwork do
     job_name = app_parameters['schema_plugins_build_job']
     schema_plugins = app_parameters['additional_schema_plugins']
     schema_plugins.each do | plugin_name |
-      download_url = URI::HTTP.build([nil, "jenkins.aodn.org.au", nil, "/job/#{job_name}/lastSuccessfulBuild/artifact/#{plugin_name}.gz", nil, nil])
+      download_url = URI::HTTP.build([nil, node['imos_webapps']['geonetwork']['schema_plugins']['base_url'], nil, "/job/#{job_name}/lastSuccessfulBuild/artifact/#{plugin_name}.gz", nil, nil])
 
       zip_file_cache_path = File.join("#{Chef::Config[:file_cache_path]}", "#{job_name}.gz")
       remote_file zip_file_cache_path do
@@ -84,7 +91,8 @@ define :geonetwork do
           destination core_schema_plugins_destination_path
           owner node['tomcat']['user']
           group node['tomcat']['user']
-          action :extract
+          action :nothing
+          subscribes :extract, 'remote_file[zip_file_cache_path]', :immediately
         end
       rescue StandardError => e
         Chef::Log.error("Cannot create schema_plugin directory for #{job_name} due to exception #{e}")
