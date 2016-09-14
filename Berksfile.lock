@@ -141,6 +141,9 @@ DEPENDENCIES
     revision: 5edc2518853244152d3067e9d36d3952744265b5
   talend
     path: cookbooks/talend
+  tarball
+    git: git://github.com/ooyala/tarball-chef-cookbook.git
+    revision: f83bed678bbde4997958d5de1093c65105a13118
   timezone-ii
     git: git://github.com/L2G/timezone-ii.git
     revision: 97ff6559a1d87b8db9b536bfc32195245aadcda7
@@ -449,6 +452,7 @@ GRAPH
     imos_artifacts (>= 0.0.0)
     imos_java (>= 0.0.0)
     imos_task_spooler (>= 0.0.0)
+  tarball (0.0.1)
   timezone-ii (0.2.0)
   tomcat (0.12.0)
     imos_java (>= 0.0.0)
