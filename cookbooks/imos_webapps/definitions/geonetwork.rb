@@ -76,26 +76,24 @@ define :geonetwork do
     job_name = app_parameters['schema_plugins_build_job']
     schema_plugins = app_parameters['additional_schema_plugins']
     schema_plugins.each do | plugin_name |
-      download_url = URI::HTTP.build([nil, node['imos_webapps']['geonetwork']['schema_plugins']['base_url'], nil, "/job/#{job_name}/lastSuccessfulBuild/artifact/#{plugin_name}.gz", nil, nil])
+      download_url = URI::HTTP.build([nil, node['imos_webapps']['geonetwork']['schema_plugins']['base_url'], nil, "/job/#{job_name}/lastSuccessfulBuild/artifact/#{plugin_name}.zip", nil, nil])
+      core_schema_plugins_base_path = File.join(data_dir, "config", "schema_plugins")
+      core_schema_plugins_destination_path = File.join(core_schema_plugins_base_path, plugin_name)
+      core_schema_plugins_destination_zip = File.join("#{Chef::Config[:file_cache_path]}", "#{plugin_name}.zip")
 
-      zip_file_cache_path = File.join("#{Chef::Config[:file_cache_path]}", "#{job_name}.gz")
-      remote_file zip_file_cache_path do
+      zip = remote_file core_schema_plugins_destination_zip do
         source download_url.to_s
       end
 
-      core_schema_plugins_relative_path = File.join("config", "schema_plugins")
-      core_schema_plugins_destination_path = File.join(data_dir, core_schema_plugins_relative_path)
+      directory core_schema_plugins_destination_path do
+        action :delete
+        only_if { zip.updated_by_last_action? }
+      end
 
-      begin
-        tarball zip_file_cache_path do
-          destination core_schema_plugins_destination_path
-          owner node['tomcat']['user']
-          group node['tomcat']['user']
-          action :nothing
-          subscribes :extract, 'remote_file[zip_file_cache_path]', :immediately
-        end
-      rescue StandardError => e
-        Chef::Log.error("Cannot create schema_plugin directory for #{job_name} due to exception #{e}")
+      execute 'extract_zip' do
+        command "unzip #{core_schema_plugins_destination_zip}"
+        cwd core_schema_plugins_base_path
+        only_if { zip.updated_by_last_action? }
       end
     end
   end
