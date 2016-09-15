@@ -72,21 +72,21 @@ define :geonetwork do
 
   # Deploy additional schema plugins via Jenkins
   if app_parameters['additional_schema_plugins']
-    require 'uri'
-    job_name = app_parameters['schema_plugins_build_job']
     schema_plugins = app_parameters['additional_schema_plugins']
-    schema_plugins.each do | plugin_name |
-      download_url = URI::HTTP.build([nil, node['imos_webapps']['geonetwork']['schema_plugins']['base_url'], nil, "/job/#{job_name}/lastSuccessfulBuild/artifact/#{plugin_name}.zip", nil, nil])
+    schema_plugins.each do | plugin_name, uri |
+      next if plugin_name.empty?
+
       core_schema_plugins_base_path = File.join(data_dir, "config", "schema_plugins")
       core_schema_plugins_destination_path = File.join(core_schema_plugins_base_path, plugin_name)
       core_schema_plugins_destination_zip = File.join("#{Chef::Config[:file_cache_path]}", "#{plugin_name}.zip")
 
       zip = remote_file core_schema_plugins_destination_zip do
-        source download_url.to_s
+        source uri
       end
 
       directory core_schema_plugins_destination_path do
         action :delete
+        recursive true
         only_if { zip.updated_by_last_action? }
       end
 
