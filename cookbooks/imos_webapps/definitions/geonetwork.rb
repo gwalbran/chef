@@ -58,8 +58,6 @@ define :geonetwork do
           end
         end
       end
-      Chef::Log.info("Set ownership of '#{data_dir}' to '#{node['tomcat']['user']}:#{node['tomcat']['user']}'")
-      FileUtils.chown_R node['tomcat']['user'], node['tomcat']['user'], data_dir
 
       # Touch this file, so we will not run again unless geonetwork is deployed
       FileUtils.touch core_schema_plugins_lock_file
@@ -97,6 +95,9 @@ define :geonetwork do
       end
     end
   end
+
+  Chef::Log.info("Set ownership of '#{data_dir}' to '#{node['tomcat']['user']}:#{node['tomcat']['user']}'")
+  FileUtils.chown_R node['tomcat']['user'], node['tomcat']['user'], data_dir
 
   # log4j override file
   log4j_override_file = File.join(config_dir, "log4j-overrides.cfg")
