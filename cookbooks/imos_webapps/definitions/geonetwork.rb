@@ -32,11 +32,6 @@ define :geonetwork do
   chef_gem 'equivalent-xml'
   chef_gem 'trollop'
 
-  # This solves https://github.com/aodn/chef/issues/809, so we clean and
-  # redeploy the core schema plugins if there is a new geonetwork deployment
-  # We prevent from re-deploying schema plugins if the lock file we placed
-  # after deploying exists. Re-deploying should remove this file and trigger
-  # the ruby_block below
   ruby_block "#{app_name}_initialize_geonetwork_data_directory" do
     block do
       require 'time'
@@ -48,29 +43,21 @@ define :geonetwork do
         Chef::Log.info("Copying '#{data_origin_dir}/*' -> '#{data_dir}'")
         FileUtils.cp_r Dir[ "#{data_origin_dir}/*" ], data_dir
       else
-        # If there is already stuff in the data directory, we'll only copy the
-        # core schema plugins
+        # Copy the defined core schema plugins
+        schema_plugins_relative_path = File.join("config", "schema_plugins")
+        schema_plugins_origin_dir = File.join(webapp_dir, "WEB-INF", "data", schema_plugins_relative_path)
+        schema_plugins_dir = File.join(data_dir, schema_plugins_relative_path)
 
-        # Initialize core schema plugins directory
-        core_schema_plugins_relative_path = File.join("config", "schema_plugins")
-        core_schema_plugins_origin_dir = File.join(webapp_dir, "WEB-INF", "data", core_schema_plugins_relative_path)
-        core_schema_plugins_dir = File.join(data_dir, core_schema_plugins_relative_path)
-
-        if File.exists?(core_schema_plugins_dir)
-          core_schema_plugins_dir_backup = "#{core_schema_plugins_dir}_#{Time.now.strftime('%Y%m%d-%H%M%S')}"
-          Chef::Log.info("Renaming '#{core_schema_plugins_dir}' -> '#{core_schema_plugins_dir_backup}'")
-          FileUtils.mv core_schema_plugins_dir, "#{core_schema_plugins_dir_backup}"
+        if app_parameters['core_schema_plugins']
+          core_schema_plugins = app_parameters['core_schema_plugins']
+          core_schema_plugins.each do | plugin_name |
+            plugin_origin_path = File.join(schema_plugins_origin_dir, plugin_name)
+            plugin_destination_path = File.join(schema_plugins_dir, plugin_name)
+            Chef::Log.info("Copying '#{plugin_origin_path}' -> '#{plugin_destination_path}'")
+            FileUtils.cp_r plugin_origin_path, plugin_destination_path
+          end
         end
-
-        Chef::Log.info("Copying '#{core_schema_plugins_origin_dir}' -> '#{core_schema_plugins_dir}'")
-        FileUtils.cp_r core_schema_plugins_origin_dir, core_schema_plugins_dir
-
-        # Remove schemaplugin-uri-catalog.xml
-        schema_plugin_catalog = File.join(data_dir, "config", "schemaplugin-uri-catalog.xml")
-        Chef::Log.info("Removing '#{schema_plugin_catalog}'")
-        FileUtils.rm_f schema_plugin_catalog
       end
-
       Chef::Log.info("Set ownership of '#{data_dir}' to '#{node['tomcat']['user']}:#{node['tomcat']['user']}'")
       FileUtils.chown_R node['tomcat']['user'], node['tomcat']['user'], data_dir
 
@@ -79,8 +66,36 @@ define :geonetwork do
     end
     only_if {
       ! File.exists?(core_schema_plugins_lock_file) ||
-      Dir.entries(data_dir).size == 2
+          Dir.entries(data_dir).size == 2
     }
+  end
+
+  # Deploy additional schema plugins via Jenkins
+  if app_parameters['additional_schema_plugins']
+    schema_plugins = app_parameters['additional_schema_plugins']
+    schema_plugins.each do | plugin_name, uri |
+      next if plugin_name.empty?
+
+      core_schema_plugins_base_path = File.join(data_dir, "config", "schema_plugins")
+      core_schema_plugins_destination_path = File.join(core_schema_plugins_base_path, plugin_name)
+      core_schema_plugins_destination_zip = File.join("#{Chef::Config[:file_cache_path]}", "#{plugin_name}.zip")
+
+      zip = remote_file core_schema_plugins_destination_zip do
+        source uri
+      end
+
+      directory core_schema_plugins_destination_path do
+        action :delete
+        recursive true
+        only_if { zip.updated_by_last_action? }
+      end
+
+      execute 'extract_zip' do
+        command "unzip #{core_schema_plugins_destination_zip}"
+        cwd core_schema_plugins_base_path
+        only_if { zip.updated_by_last_action? }
+      end
+    end
   end
 
   # log4j override file
