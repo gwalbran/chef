@@ -96,8 +96,12 @@ define :geonetwork do
     end
   end
 
-  Chef::Log.info("Set ownership of '#{data_dir}' to '#{node['tomcat']['user']}:#{node['tomcat']['user']}'")
-  FileUtils.chown_R node['tomcat']['user'], node['tomcat']['user'], data_dir
+  ruby_block "set permissions for #{app_name} data dir #{data_dir}" do
+    block do
+      require 'fileutils'
+      FileUtils.chown_R node['tomcat']['user'], node['tomcat']['user'], data_dir
+    end
+  end
 
   # log4j override file
   log4j_override_file = File.join(config_dir, "log4j-overrides.cfg")
