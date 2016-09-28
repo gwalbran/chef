@@ -140,6 +140,7 @@ portal {
     // Change default email for IMOS
     grails.mail.default.from = "<%= @custom_parameters['default_email_from_address'] || 'aodnoffice@aodn.org.au' %>"
     grails.mail.default.cc = "<%= @custom_parameters['default_email_cc_address'] || 'sys.admin@emii.org.au' %>"
+    grails.mail.default.bcc = "<%= @custom_parameters['default_email_bcc_address'] || 'sys.admin@emii.org.au' %>"
 
 <% if @custom_parameters['mail_credentials']
      mail_credentials = Chef::EncryptedDataBagItem.load('passwords', @custom_parameters['mail_credentials']).to_hash %>
