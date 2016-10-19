@@ -17,6 +17,8 @@ define :tomcat_instance do
   logging_properties  = ::File.join(instance_dir, 'conf', 'logging.properties')
   version_sh          = ::File.join(instance_dir, "bin", "version.sh")
 
+  setenv_file_path = ::File.join(instance_dir, "bin", "setenv.sh")
+
   server_info_properties_dir = ::File.join(instance_dir, "lib", "org", "apache", "catalina", "util")
   server_info_properties     = ::File.join(server_info_properties_dir, "ServerInfo.properties")
 
@@ -107,6 +109,30 @@ define :tomcat_instance do
     mode       0755
     recursive  true
     action     :create
+  end
+
+  # Conditionally set Tomcat environment variables via the setenv.sh mechanism
+  setenv_variables = {}
+  if instance['environment_variables']
+    setenv_variables.merge!(instance['environment_variables'])
+  end
+
+  if instance['aws_credentials']
+    data_bag = Chef::EncryptedDataBagItem.load("passwords", instance['aws_credentials']).to_hash
+    setenv_variables['AWS_ACCESS_KEY_ID'] = data_bag['access_key_id']
+    setenv_variables['AWS_SECRET_ACCESS_KEY'] = data_bag['secret_access_key']
+  end
+
+  template setenv_file_path do
+    cookbook 'tomcat'
+    source 'setenv.sh.erb'
+    owner user
+    group group
+    mode "0750"
+    variables(
+        :vars => setenv_variables
+    )
+    only_if { setenv_variables }
   end
 
   # Drop in a ServerInfo.properties (as described here: http://tomcat.apache.org/tomcat-7.0-doc/security-howto.html)

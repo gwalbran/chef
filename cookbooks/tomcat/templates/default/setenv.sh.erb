@@ -1,0 +1,4 @@
+<% @vars.each do |key, value| %>
+<% next if value.nil? -%>
+export <%= key %>=<%= value %>
+<% end %>
