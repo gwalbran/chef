@@ -17,7 +17,7 @@ when 'debian'
     build-essential
     libfuse-dev
     fuse-utils
-    libcurl4-openssl-dev
+    libcurl4-gnutls-dev
     libxml2-dev
     mime-support
   )
