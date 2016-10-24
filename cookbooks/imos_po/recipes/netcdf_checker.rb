@@ -36,7 +36,6 @@ end
 execute "install compliance-checker" do
   user 'root'
   command "easy_install --find-links=#{Chef::Config[:file_cache_path]} --always-unzip #{netcdf_checker_full_path}"
-  not_if "test $(pip show compliance-checker | awk /^Version:/'{print $2}') = #{node['imos_po']['netcdf_checker']['version']}"
 end
 
 # NOTE: despite the fact that the setup.py defines a console entry point, that does not appear to work, so this link has
