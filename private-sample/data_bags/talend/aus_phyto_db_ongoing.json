@@ -1,0 +1,14 @@
+{
+    "id": "aus_phyto_db_ongoing",
+    "artifact_filename": "AUS_PHYTO_DB_harvester_Latest.zip",
+    "params": {
+       "Metadata_UUID": "75f4f1fc-bee3-4498-ab71-aa1ab29ab2c0",
+       "Metadata_SpatialTable": "aus_phyto_db_map",
+       "Metadata_SpatialResolution" : "5",
+       "dataURL": "https://www.cmar.csiro.au/geoserver/imos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=imos:IMOS_APD_DATA&outputFormat=csv",
+       "metadataURL": "https://www.cmar.csiro.au/geoserver/imos/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=imos:IMOS_APD_METADATA&outputFormat=csv"
+    },
+    "event": {
+        "regex": [ "^TRIGGERED_MANUALLY$" ]
+    }
+}

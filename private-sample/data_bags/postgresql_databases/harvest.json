@@ -576,6 +576,20 @@
             ]
         },
         {
+            "name": "aus_phyto_db_ongoing",
+            "owner": "aus_phyto_db_ongoing",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
             "name": "auv_viewer_track",
             "owner": "auv_viewer_track",
             "permissions": [
