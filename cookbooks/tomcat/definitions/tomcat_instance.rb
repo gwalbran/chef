@@ -117,7 +117,8 @@ define :tomcat_instance do
     setenv_variables.merge!(instance['environment_variables'])
   end
 
-  if instance['aws_credentials']
+  # Insert AWS credentials into the Tomcat environment for
+  if instance['aws_credentials'] and ! Chef::Config[:dev]
     data_bag = Chef::EncryptedDataBagItem.load("passwords", instance['aws_credentials']).to_hash
     setenv_variables['AWS_ACCESS_KEY_ID'] = data_bag['access_key_id']
     setenv_variables['AWS_SECRET_ACCESS_KEY'] = data_bag['secret_access_key']
@@ -132,7 +133,7 @@ define :tomcat_instance do
     variables(
         :vars => setenv_variables
     )
-    only_if { setenv_variables }
+    not_if { setenv_variables.empty? }
   end
 
   # Drop in a ServerInfo.properties (as described here: http://tomcat.apache.org/tomcat-7.0-doc/security-howto.html)
