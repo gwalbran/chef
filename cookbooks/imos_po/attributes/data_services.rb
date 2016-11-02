@@ -50,6 +50,7 @@ default['imos_po']['data_services']['clone_repository'] = true
 # Required packages
 default['imos_po']['data_services']['packages'] = [
   'bc',
+  'curl',
   'heirloom-mailx',
   'imagemagick',
   'ipython',
