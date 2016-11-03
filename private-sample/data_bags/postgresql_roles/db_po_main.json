@@ -399,6 +399,13 @@
             ]
         },
         {
+            "name": "aatams_sattag_qc_ctd",
+            "password": "aatams_sattag_qc_ctd",
+            "memberof": [
+                "harvest_read_group"
+            ]
+        },
+        {
             "name": "anmn_acoustics",
             "password": "anmn_acoustics",
             "memberof": [

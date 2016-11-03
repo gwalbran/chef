@@ -366,6 +366,20 @@
             ]
         },
         {
+            "name": "aatams_sattag_qc_ctd",
+            "owner": "aatams_sattag_qc_ctd",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
             "name": "abos",
             "owner": "abos",
             "permissions": [
