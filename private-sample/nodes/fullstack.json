@@ -1,0 +1,178 @@
+{
+    "chef_environment": "_default",
+    "name": "fullstack",
+    "run_list": [
+        "role[base]",
+        "role[restore]",
+        "recipe[ssl]",
+        "recipe[imos_dns::etc_hosts]",
+        "recipe[imos_postgresql::official_postgresql]",
+        "recipe[imos_webapps::generic_webapp]"
+    ],
+    "aliases": [
+        "fullstack.aodn.org.au"
+    ],
+    "imos_dns": {
+        "etc_hosts": {
+            "10.11.12.13": "fullstack.aodn.org.au geoserver-123.aodn.org.au geoserver-rc.aodn.org.au thredds.aodn.org.au"
+        }
+    },
+    "tz": "Australia/Hobart",
+    "tomcat": {
+        "user":  "vagrant",
+        "group": "vagrant"
+    },
+    "imos_backup": {
+        "s3": {
+            "password_data_bag": "s3_imos_restore"
+        },
+        "restore": {
+            "allow": true,
+            "ssh_opts": "-o StrictHostKeyChecking=no",
+            "directives": [
+                {
+                    "from_host":  "6-aws-syd.emii.org.au",
+                    "from_model": "pgsql",
+                    "files":      [ "geonetwork/public.dump" ]
+                }
+            ]
+        }
+    },
+    "postgresql": {
+        "clusters": [{
+            "name": "main",
+            "roles": [
+                "db_po_main",
+                "marvl_data_atlas",
+                "geonetwork"
+            ],
+            "databases": [
+                "geonetwork"
+            ],
+            "config": {
+                "listen_addresses": "*"
+            },
+            "hba": [
+                {
+                    "type": "hostssl", "db": "all", "user": "postgres", "addr": "0.0.0.0/0", "method": "reject"
+                },
+                {
+                    "type": "local", "db": "all", "user": "postgres", "addr": "", "method": "ident"
+                },
+                {
+                    "type": "hostssl", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5"
+                },
+                {
+                    "type": "host", "db": "all", "user": "all", "addr": "0.0.0.0/0", "method": "md5"
+                }
+            ],
+            "postgresql_version": "9.4"
+        }]
+    },
+    "webapps": {
+        "instances": [
+            {
+                "name":          "default",
+                "vhost":         "fullstack.aodn.org.au",
+                "aliases":       [
+                    "10.11.12.13",
+                    "geoserver-123.aodn.org.au",
+                    "geoserver-rc.aodn.org.au",
+                    "thredds.aodn.org.au"
+                ],
+                "port":          "8080",
+                "java_options":  "-Xmx3G -Xms1G -XX:PermSize=512m -Duser.timezone=UTC -DGEOSERVER_DATA_DIR=/vagrant/src/geoserver -Dgeonetwork.jeeves.configuration.overrides.file=/var/lib/tomcat7/default/conf/geonetwork/config-overrides.xml -Dgeonetwork.dir=/var/lib/geonetwork -Dtds.content.root.path=$CATALINA_HOME/content",
+                "apps": [
+                    {
+                        "name":                 "portal",
+                        "artifact":             "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/portal_4_prod/portal_4_prod-latest.war",
+                        "config_template_dir":  "portal",
+                        "config_file":          "Portal.groovy",
+                        "geonetwork_url":       "http://10.11.12.13/geonetwork",
+                        "allow_any_host":       true,
+                        "feature_toggles":      {
+                            "hierarchicalFacets": true
+                        },
+                        "known_servers":        [
+                            "catami",
+                            "geoserver_123_ncwms",
+                            "geoserver_123_aodn",
+                            "geoserver_po_aodn",
+                            "geoserver_rc_aodn",
+                            "ncwms_aodn",
+                            "ncwms_csiro"
+                        ]
+                    },
+                    {
+                        "name":               "geoserver",
+                        "artifact":           "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/geoserver_prod/geoserver_prod-latest.war",
+                        "custom_def":         "geoserver",
+                        "data_dir":           "/vagrant/src/geoserver",
+                        "mock_jndis":         false,
+                        "jndis":              [
+                            "harvest-read-po",
+                            "harvest-read-po-rc",
+                            "local-harvest-read"
+                        ],
+                        "injected_variables": [
+                            [ "wps.xml",          "/wps/enabled",                      "true" ],
+                            [ "wps.xml",          "/wps/maxAsynchronousProcesses",     1 ],
+                            [ "wps.xml",          "/wps/maxAsynchronousExecutionTime", 600 ],
+                            [ "wps.xml",          "/wps/resourceExpirationTimeout",    86400 ],
+                            [ "wps/gogoduck.xml", "/gogoduck/threadCount",             1 ],
+                            [ "wps/gogoduck.xml", "/gogoduck/fileLimit",               1024 ],
+                            [ "ncwms.xml",        "/ncwms/wfsServer",                  "http://localhost:8080/geoserver/ows" ]
+                        ],
+                        "config_ftl":         {
+                            "data_bag": "default"
+                        }
+                    },
+                    {
+                        "name":                  "geonetwork",
+                        "artifact":              "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/geonetwork_prod/geonetwork_prod-latest.war",
+                        "config_file":           "config-overrides.xml",
+                        "config_template_dir":   "geonetwork",
+                        "geoserver":             "http://localhost/geonetwork",
+                        "jndis":                 [ "geonetwork" ],
+                        "config":                {
+                            "users":        [ "admin" ],
+                            "harvesters":   [ "catalogue_123" ],
+                            "vocabularies": [ "aodn_parameter" ]
+                        },
+                        "custom_def":            "geonetwork",
+                        "data_bag":              "catalogue_123_nogit",
+                        "data_dir":              "/var/lib/geonetwork",
+                        "concept_schemes": {
+                            "parameterCategories": {
+                                "vocabularyScheme": "http://vocab.aodn.org.au/def/discovery_parameter/1",
+                                "classificationScheme": "http://vocab.aodn.org.au/def/parameter_classes/1"
+                            },
+                            "platformCategories": {
+                                "vocabularyScheme": "http://vocab.aodn.org.au/def/platform/1",
+                                "classificationScheme": "http://vocab.aodn.org.au/def/platform_classes/1"
+                            }
+                        },
+                        "term_vocabulary": {
+                            "parameterName":                    "external.theme.pp_scheme_australiandiscoveryparametervocabulary",
+                            "parameterUnits":                   "external.theme.pp_scheme_aodnunitsofmeasurevocabulary",
+                            "parameterDeterminationInstrument": "external.theme.pp_scheme_aodninstrumentvocabulary",
+                            "platform":                         "external.theme.pp_scheme_aodnplatformvocabulary"
+                        }
+                    },
+                    {
+                        "name":         "thredds",
+                        "artifact":     "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/thredds_prod/thredds_prod-latest.war",
+                        "custom_def":   "thredds",
+                        "cache_dir":    "/tmp/thredds-cache",
+                        "root":         "/s3/imos-data",
+                        "catalog":      "imos.xml",
+                        "config_files": [
+                            "threddsConfig.xml",
+                            "wmsConfig.xml"
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
