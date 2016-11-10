@@ -14,6 +14,7 @@ tomcat_ports = []
       app_vhost       = webapp_instance['vhost']
       app_tomcat_port = webapp_instance['port']
       port            = webapp_instance['https'] ? 443 : 80
+      default_app     = webapp_instance['default_app']
 
       # add --ssl if this is running https
       extra_opts = port == 80 ? "" : "--ssl"
@@ -46,7 +47,7 @@ define service {
       monitored_links = []
 
       webapp_instance['apps'].each do |app|
-        monitored_links << {'url' => app['name']}
+        monitored_links << {'url' => app['name'] == default_app ? '' : app['name']}
         if app['aliases']
           app['aliases'].each do |_alias|
             monitored_links << {'url' => _alias}
