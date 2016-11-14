@@ -319,8 +319,7 @@
             "srs_oc_ljco_aeronet",
             "srs_oc_ljco_wws",
             "srs_oc_soop_rad",
-            "srs_sst",
-            "srs_sst_gridded"
+            "srs_sst"
         ]
     }
 }

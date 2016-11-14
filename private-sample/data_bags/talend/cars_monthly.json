@@ -6,7 +6,7 @@
         "collection": "csiro_cars_monthly",
         "Destination_Schema": "generic_timestep",
         "Destination_Login": "generic_timestep",
-        "Destination_Password": "generic_timestep"
+        "Destinaton_Password": "generic_timestep"
     },
     "event": {
         "regex": [
