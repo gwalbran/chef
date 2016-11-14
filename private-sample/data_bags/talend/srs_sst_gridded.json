@@ -1,16 +1,16 @@
 {
-    "id": "cars_monthly",
+    "id": "srs_sst_gridded",
     "artifact_filename": "GENERIC_TIMESTEP_harvester_Latest.zip",
     "params": {
-        "timeVariable": "DAY_OF_YEAR",
-        "collection": "csiro_cars_monthly",
+        "timeVariable": "time",
+        "collection": "srs_sst",
         "Destination_Schema": "generic_timestep",
         "Destination_Login": "generic_timestep",
         "Destination_Password": "generic_timestep"
     },
     "event": {
         "regex": [
-            "^CSIRO/Climatology/CARS/.*\\monthly.nc$"
+            "^IMOS/SRS/SST/ghrsst/.*\\.nc$"
         ]
     }
 }
