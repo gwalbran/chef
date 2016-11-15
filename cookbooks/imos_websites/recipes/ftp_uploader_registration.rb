@@ -24,6 +24,7 @@ node.set['git_ssh_wrapper'] = File.join("/root", ".ssh", "wrappers", "git_deploy
 git "ftp_uploader_registration" do
   destination node['imos_websites']['ftp_uploader_registration']['doc_root']
   repository  node['imos_websites']['ftp_uploader_registration']['git_repo']
+  revision    node['imos_websites']['ftp_uploader_registration']['git_branch']
   action      :sync
   user        'root'
   group       'root'
