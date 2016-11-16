@@ -265,6 +265,7 @@
         "jobs": [
             "aatams_sattag_dm",
             "aatams_sattag_nrt",
+            "aatams_sattag_qc_ctd",
             "abos_currents",
             "abos_sofs_fl",
             "abos_sofs_sp",

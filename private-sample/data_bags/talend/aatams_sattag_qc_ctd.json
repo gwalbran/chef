@@ -1,0 +1,16 @@
+{
+    "id": "aatams_sattag_qc_ctd",
+    "artifact_filename": "AATAMS_SATTAG_QC_CTD_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "95d6314c-cfc7-40ae-b439-85f14541db71",
+        "Metadata_SpatialTable": "profile_summary",
+        "Metadata_SpatialColumn": "position",
+        "Metadata_SpatialResolution": "2",
+        "jobName": "aatams_sattag_qc_ctd"
+    },
+    "event": {
+        "regex": [
+            "^IMOS/AATAMS/satellite_tagging/MEOP_QC_CTD/.*\\.nc$"
+        ]
+    }
+}
