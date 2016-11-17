@@ -229,6 +229,7 @@ GRAPH
     imos_users (>= 0.0.0)
     logrotate (>= 0.0.0)
   imos_chef_solo (0.1.0)
+    apt (>= 0.0.0)
     chef-solo-search (>= 0.0.0)
   imos_core (0.1.0)
     build-essential (>= 0.0.0)
