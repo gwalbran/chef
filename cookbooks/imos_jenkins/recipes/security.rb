@@ -2,73 +2,55 @@
 # authentication
 #
 
-def configure_jenkins_security
-  # Create the 'chef' user with the public key
-  public_key = Chef::Recipe::JenkinsHelper.get_key_pair()[:public_key]
-  jenkins_user 'chef' do
-    full_name 'chef system user'
-    public_keys [public_key]
-  end
-
-  admin_users = [ 'chef' ]
-  search('users', "jenkins_password:*").each do |data_bag|
-    admin_users << data_bag['id']
-  end
-
-  jenkins_script 'setup authentication' do
-    command <<-EOH.gsub(/^ {4}/, '')
-      import jenkins.model.*
-      import hudson.security.*
-      import com.michelin.cio.hudson.plugins.rolestrategy.*
-
-      def adminUsers = #{admin_users}
-
-      def createAdminRole(strategy) {
-          Set<Permission> permissions = new HashSet<Permission>()
-          for(PermissionGroup group : strategy.DESCRIPTOR.getGroups(strategy.GLOBAL)) {
-              for(Permission permission : group) {
-                  permissions.add(permission)
-              }
-          }
-          return new Role("admin", permissions)
-      }
-
-      def handleAnonymousRole(strategy) {
-          Set<Permission> permissions = new HashSet<Permission>()
-          permissions.add(PermissionGroup.get(hudson.model.Hudson).find("Read"))
-
-          // User anonymous should have global read access
-          def anonymousRole = new Role("anonymous", permissions)
-          strategy.addRole(strategy.GLOBAL, anonymousRole)
-          strategy.assignRole(strategy.GLOBAL, anonymousRole, "anonymous")
-      }
-
-      def instance = Jenkins.getInstance()
-      def realm = new HudsonPrivateSecurityRealm(false)
-      instance.setSecurityRealm(realm)
-      def strategy = new RoleBasedAuthorizationStrategy()
-
-      def adminRole = createAdminRole(strategy)
-      strategy.addRole(strategy.GLOBAL, adminRole)
-
-      adminUsers.each { user ->
-          strategy.assignRole(strategy.GLOBAL, adminRole, user)
-      }
-
-      handleAnonymousRole(strategy)
-
-      instance.setAuthorizationStrategy(strategy)
-
-      // Set SSH port
-      def sshExtension = instance.getExtensionList(org.jenkinsci.main.modules.sshd.SSHD.class)[0]
-      sshExtension.setPort(#{node['imos_jenkins']['master']['ssh_port'].to_i})
-
-      instance.save()
-    EOH
-  end
+deploy_key = Chef::EncryptedDataBagItem.load("deploy_keys", "github")['ssh_priv_key']
+git_ssh_wrapper "git" do
+  owner        node['imos_jenkins']['user']
+  group        node['imos_jenkins']['group']
+  ssh_key_data deploy_key
 end
 
-configure_jenkins_security
+jenkins_ssh_dir = File.join(node['jenkins']['master']['home'], ".ssh")
+
+# This is where the ssh wrapper will be
+node.set['git_ssh_wrapper'] = File.join("#{jenkins_ssh_dir}", "wrappers", "git_deploy_wrapper.sh")
+
+directory jenkins_ssh_dir do
+  user      node['imos_jenkins']['user']
+  group     node['imos_jenkins']['group']
+  recursive true
+end
+
+# Copy the private key
+jenkins_ssh_key = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])['ssh_priv_key']
+file ::File.join(node['jenkins']['master']['home'], '.ssh/id_rsa') do
+  content jenkins_ssh_key
+  user    node['imos_jenkins']['user']
+  group   node['imos_jenkins']['group']
+  mode    00400
+end
+
+public_key = Chef::Recipe::JenkinsHelper.get_key_pair()[:public_key]
+
+jenkins_user 'chef' do
+  full_name 'chef system user'
+  public_keys [public_key]
+end
+
+admin_users = [ 'chef' ]
+search('users', "jenkins_password:*").each do |data_bag|
+  admin_users << data_bag['id']
+end
+
+
+# Needed so that ssh logins to various places use the correct key (e.g. github).
+# Also, for nectar VMs, we want to accept news hosts automatically.
+template ::File.join(node['jenkins']['master']['home'], '.ssh/config') do
+  source "ssh_config.erb"
+  user   node['imos_jenkins']['user']
+  group  node['imos_jenkins']['group']
+  mode   00644
+  variables({:user => 'jenkins'})
+end
 
 # Define all jenkins users
 search('users', "jenkins_password:*").each do |data_bag|

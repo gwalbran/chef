@@ -1,6 +1,6 @@
 {
   "variables": {
-    "chef_version": "12.3.0",
+    "chef_version": "12.4.3",
     "disk_size": "10000",
     "iso_url": "http://releases.ubuntu.com/precise/ubuntu-12.04.5-server-amd64.iso",
     "iso_checksum": "769474248a3897f4865817446f9a4a53"
