@@ -1,0 +1,13 @@
+{
+    "id": "aodn_nsw_oeh",
+    "artifact_filename": "AODN_NSW_OEH_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "60160b01-8ffc-45ce-a6f4-ee70ce391ec6",
+        "Metadata_SpatialTable": "survey_metadata"
+    },
+    "event": {
+        "regex": [
+            "^NSW-OEH/.*"
+        ]
+    }
+}

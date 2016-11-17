@@ -293,6 +293,7 @@
             "anmn_ts_timeseries",
             "anmn_wave",
             "aodn_imas_fluorometry",
+            "aodn_nsw_oeh",
             "aodn_wamsi_sediment",
             "argo",
             "auv",
