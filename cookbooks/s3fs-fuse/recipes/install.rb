@@ -14,10 +14,12 @@ end
 prereqs = case node.platform_family
 when 'debian'
   %w(
+    automake
     build-essential
     libfuse-dev
     fuse-utils
     libcurl4-gnutls-dev
+    libssl-dev
     libxml2-dev
     mime-support
   )
