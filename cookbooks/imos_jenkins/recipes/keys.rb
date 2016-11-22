@@ -24,7 +24,7 @@ file ::File.join(node['jenkins']['master']['home'], '.ssh/id_rsa') do
   content jenkins_ssh_key
   user    node['imos_jenkins']['user']
   group   node['imos_jenkins']['group']
-  mode    00400
+  mode    00600
 end
 
 # Needed so that ssh logins to various places use the correct key (e.g. github).
