@@ -1564,6 +1564,20 @@
             ]
         },
         {
+            "name": "aodn_nsw_oeh",
+            "owner": "aodn_nsw_oeh",
+            "permissions": [
+                {
+                    "role": "harvest_read_group",
+                    "type": "read"
+                },
+                {
+                    "role": "harvest_write_group",
+                    "type": "write"
+                }
+            ]
+        },
+        {
             "name": "aodn_nt_sattag_oliveridley",
             "owner": "aodn_nt_sattag_oliveridley",
             "permissions": [
