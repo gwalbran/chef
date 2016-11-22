@@ -43,4 +43,21 @@ execute 'init_jenkins_scm' do
   cwd jenkins_home
   user node['imos_jenkins']['user']
   group node['imos_jenkins']['group']
+  notifies :run, "execute[set_git_username]", :immediately
+end
+
+#Set git global config for jenkins scm-sync-configuration plugin
+execute 'set_git_username' do
+  command "git config user.name #{node['imos_jenkins']['username']}"
+  cwd jenkins_home
+  user node['imos_jenkins']['user']
+  group node['imos_jenkins']['group']
+  notifies :run, "execute[set_git_email]", :immediately
+end
+
+execute 'set_git_email' do
+  command "git config user.email #{node['imos_jenkins']['email']}"
+  cwd jenkins_home
+  user node['imos_jenkins']['user']
+  group node['imos_jenkins']['group']
 end
