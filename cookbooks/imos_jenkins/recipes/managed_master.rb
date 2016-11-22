@@ -20,7 +20,13 @@ jenkins_home = node['imos_jenkins']['master']['home']
 scm_repo = node['imos_jenkins']['scm_repo']
 gitignore_path = File.join(jenkins_home, '.gitignore')
 
-ssh_wrapper = File.join("#{jenkins_home}", ".ssh", "wrappers", "git_deploy_wrapper.sh")
+ssh_wrapper = File.join("#{jenkins_home}", '.ssh', 'wrappers', 'git_deploy_wrapper.sh')
+
+node['imos_jenkins']['plugins'].each do |plugin_id|
+  jenkins_plugin plugin_id do
+    notifies :restart, 'service[jenkins]', :immediately
+  end
+end
 
 cookbook_file gitignore_path do
   source '.gitignore'

@@ -23,3 +23,26 @@ default['imos_jenkins']['scm_repo'] = 'git@github.com:aodn/ci-config.git'
 default['imos_jenkins']['s3cmd']['config_file'] = ::File.join(node['jenkins']['master']['home'], ".s3cfg")
 
 default['imos_jenkins']['monitored_jobs'] = []
+
+default['imos_jenkins']['plugins'] = [
+    'build-name-setter',
+    'build-pipeline-plugin',
+    'copyartifact',
+    'grails',
+    'envinject',
+    'git',
+    'git-client',
+    'repository',
+    'greenballs',
+    'postbuildscript',
+    'job-log-logger-plugin',
+    'maven-plugin',
+    'role-strategy',
+    's3',
+    'ssh-slaves',
+    'throttle-concurrents',
+    'xvfb',
+    'token-macro',
+    'scm-sync-configuration',
+    'validating-string-parameter'
+]

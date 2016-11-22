@@ -20,6 +20,7 @@ updates/
 fingerprints/
 config-history/
 talend/
+plugins/
 # Only get the config.xml from any Jobs directory
 jobs/*/builds
 jobs/*/modules
