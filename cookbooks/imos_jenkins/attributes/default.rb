@@ -32,6 +32,7 @@ default['imos_jenkins']['plugins'] = [
     'envinject',
     'git',
     'git-client',
+    'hipchat',
     'repository',
     'greenballs',
     'postbuildscript',
