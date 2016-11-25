@@ -9,6 +9,7 @@
 # Recipe to configure a fully-chef managed jenkins master node.
 
 include_recipe 'imos_java'
+include_recipe 'imos_jenkins::node_common'
 
 node.set['jenkins']['master']['runit']['sv_timeout'] = 240
 node.set['jenkins']['master']['jvm_options'] = node['imos_jenkins']['master']['jvm_options']
@@ -18,7 +19,6 @@ include_recipe 'imos_jenkins::keys'
 
 jenkins_home = node['imos_jenkins']['master']['home']
 scm_repo = node['imos_jenkins']['scm_repo']
-gitignore_path = File.join(jenkins_home, '.gitignore')
 
 ssh_wrapper = File.join("#{jenkins_home}", '.ssh', 'wrappers', 'git_deploy_wrapper.sh')
 
@@ -26,14 +26,6 @@ node['imos_jenkins']['plugins'].each do |plugin_id|
   jenkins_plugin plugin_id do
     notifies :restart, 'service[jenkins]', :immediately
   end
-end
-
-cookbook_file gitignore_path do
-  source '.gitignore'
-  mode '0755'
-  owner node['imos_jenkins']['user']
-  group node['imos_jenkins']['group']
-  notifies :run, "execute[git_ssh]", :immediately
 end
 
 execute 'git_ssh' do
