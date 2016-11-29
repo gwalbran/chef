@@ -44,6 +44,6 @@ default['imos_jenkins']['plugins'] = [
     'throttle-concurrents',
     'xvfb',
     'token-macro',
-    'scm-sync-configuration',
+    'ws-cleanup',
     'validating-string-parameter'
 ]
