@@ -421,10 +421,6 @@
             "password": "aatams_sattag_nrt"
         },
         {
-            "name": "abos",
-            "password": "abos"
-        },
-        {
             "name": "abos_sots",
             "password": "abos_sots",
             "memberof": [
