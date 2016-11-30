@@ -29,6 +29,10 @@ include_recipe "packer"
 
 jenkins_user_data_bag = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])
 
+node['imos_jenkins']['node_common']['packages'].each do |pkg|
+  package pkg
+end
+
 # S3 configuration
 s3cmd_config node['imos_jenkins']['s3cmd']['config_file'] do
   owner      node['imos_jenkins']['user']
