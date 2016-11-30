@@ -21,7 +21,6 @@ include_recipe "imos_devel::chef_dk"
 include_recipe "imos_devel::compliance_checker"
 include_recipe "imos_devel::talend"
 include_recipe "imos_devel::vagrant"
-include_recipe "imos_jenkins::packages"
 include_recipe "imos_po::packages"
 
 include_recipe "imos_postgresql::official_postgresql"
@@ -30,30 +29,8 @@ include_recipe "packer"
 
 jenkins_user_data_bag = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])
 
-directory node['jenkins']['master']['home'] do
-  user    node['imos_jenkins']['user']
-  group   node['imos_jenkins']['group']
-  mode    00755
-end
-
-# Copy the private key
-file "/home/jenkins/.ssh/id_rsa" do
-  content jenkins_user_data_bag['ssh_priv_key']
-  user    node['imos_jenkins']['user']
-  group   node['imos_jenkins']['group']
-  mode    00400
-end
-
-# Needed so that ssh logins to various places use the correct key (e.g. github).
-# Also, for nectar VMs, we want to accept news hosts automatically.
-template "/home/jenkins/.ssh/config" do
-  source "ssh_config.erb"
-  user   node['imos_jenkins']['user']
-  group  node['imos_jenkins']['group']
-  mode   00644
-  variables({
-    :user => 'jenkins'
-  })
+node['imos_jenkins']['node_common']['packages'].each do |pkg|
+  package pkg
 end
 
 # S3 configuration
