@@ -1,0 +1,16 @@
+{
+    "id": "oa_reconstruction",
+    "artifact_filename": "GENERIC_TIMESTEP_harvester_Latest.zip",
+    "params": {
+        "timeVariable": "TIME",
+        "collection": "oa_reconstruction",
+        "Destination_Schema": "generic_timestep",
+        "Destination_Login": "generic_timestep",
+        "Destination_Password": "generic_timestep"
+    },
+    "event": {
+        "regex": [
+            "^CSIRO/Climatology/Ocean_Acidification/OA_Reconstruction.nc$"
+        ]
+    }
+}
