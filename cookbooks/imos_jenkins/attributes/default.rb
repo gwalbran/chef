@@ -49,3 +49,8 @@ default['imos_jenkins']['plugins'] = [
     'ws-cleanup',
     'validating-string-parameter'
 ]
+
+default['imos_jenkins']['node_common']['python_packages'] = [
+  'awscli',
+  'xmltodict'
+]

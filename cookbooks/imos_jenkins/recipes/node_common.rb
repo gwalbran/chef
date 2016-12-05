@@ -46,7 +46,11 @@ end
 python_package 'boto' do
   version '2.41.0'
 end
-python_package 'xmltodict'
+
+node['imos_jenkins']['node_common']['python_packages'].each do |pkg|
+  python_package pkg
+end
+
 cookbook_file "/usr/local/bin/s3redirect.py" do
   source "s3redirect.py"
   owner "root"
