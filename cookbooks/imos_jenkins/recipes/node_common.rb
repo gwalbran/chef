@@ -15,6 +15,7 @@ include_recipe 'build-essential'
 
 include_recipe "imos_java"
 include_recipe "imos_core::jq"
+include_recipe "imos_core::nco"
 include_recipe "imos_core::xml_tools"
 include_recipe "imos_devel::nco_devel"
 include_recipe "imos_devel::chef_dk"
