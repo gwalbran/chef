@@ -17,6 +17,15 @@ node.set['jenkins']['master']['jvm_options'] = node['imos_jenkins']['master']['j
 include_recipe 'jenkins::master'
 include_recipe 'imos_jenkins::keys'
 
+# Give jenkins permission to run sudo commands - TODO: remove the need for sudo in jobs
+sudo 'jenkins' do
+  group 'jenkins'
+  runas    'ALL'
+  commands ['ALL']
+  host     'ALL'
+  nopasswd true
+end
+
 jenkins_home = node['imos_jenkins']['master']['home']
 scm_repo = node['imos_jenkins']['scm_repo']
 
