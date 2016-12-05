@@ -56,7 +56,7 @@ end
 # Hardcoded (for safety) allow admin group sudo
 sudo 'admin' do
   group    "admin"
-  runas    "root"
+  runas    "ALL"
   commands ["ALL"]
   host     "ALL"
   nopasswd true
