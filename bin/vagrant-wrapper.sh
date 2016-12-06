@@ -83,6 +83,34 @@ _handle_private_key() {
 }
 
 
+##########################
+# FULLSTACK BOX SPECIFIC #
+##########################
+
+declare -r FULLSTACK_VM_NAME=fullstack
+
+# main function for fullstack box
+# "$@" - arguments
+fullstack_box_main() {
+    declare -r GEOSERVER_GIT_REPO=git@github.com:aodn/geoserver-config
+    export VAGRANT_MEMORY=3072
+    export VAGRANT_STATIC_IP=10.11.12.14
+
+    _clone_git_repo $GEOSERVER_GIT_REPO src/geoserver || return 1
+
+    cat<<EOF> data_bags/passwords/s3_imos_restore.json
+{
+    "id": "s3_imos_restore",
+    "access_key_id": "dummy",
+    "secret_access_key": "dummy"
+}
+EOF
+
+    _mock_data_bag private-sample/data_bags/jndi_resources/harvest-systest.json || return 1
+
+    _run_vm $FULLSTACK_VM_NAME "$@" || return 1
+}
+
 ########################
 # SYSTEST BOX SPECIFIC #
 ########################

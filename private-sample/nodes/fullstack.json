@@ -14,7 +14,7 @@
     ],
     "imos_dns": {
         "etc_hosts": {
-            "10.11.12.13": "fullstack.aodn.org.au geoserver-123.aodn.org.au geoserver-rc.aodn.org.au thredds.aodn.org.au"
+            "10.11.12.14": "fullstack.aodn.org.au geoserver-123.aodn.org.au geoserver-rc.aodn.org.au thredds.aodn.org.au"
         }
     },
     "tz": "Australia/Hobart",
@@ -74,8 +74,9 @@
             {
                 "name":          "default",
                 "vhost":         "fullstack.aodn.org.au",
+                "default_app":   "portal",
                 "aliases":       [
-                    "10.11.12.13",
+                    "10.11.12.14",
                     "geoserver-123.aodn.org.au",
                     "geoserver-rc.aodn.org.au",
                     "thredds.aodn.org.au"
@@ -88,7 +89,7 @@
                         "artifact":             "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/portal_4_prod/portal_4_prod-latest.war",
                         "config_template_dir":  "portal",
                         "config_file":          "Portal.groovy",
-                        "geonetwork_url":       "http://10.11.12.13/geonetwork",
+                        "geonetwork_url":       "http://10.11.12.14/geonetwork",
                         "allow_any_host":       true,
                         "feature_toggles":      {
                             "hierarchicalFacets": true
@@ -110,8 +111,6 @@
                         "data_dir":           "/vagrant/src/geoserver",
                         "mock_jndis":         false,
                         "jndis":              [
-                            "harvest-read-po",
-                            "harvest-read-po-rc",
                             "local-harvest-read"
                         ],
                         "injected_variables": [
