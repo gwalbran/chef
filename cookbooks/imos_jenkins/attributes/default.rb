@@ -52,5 +52,7 @@ default['imos_jenkins']['plugins'] = [
 
 default['imos_jenkins']['node_common']['python_packages'] = [
   'awscli',
+  'boto3',
+  'click',
   'xmltodict'
 ]

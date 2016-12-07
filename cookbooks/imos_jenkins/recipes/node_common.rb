@@ -42,11 +42,6 @@ s3cmd_config node['imos_jenkins']['s3cmd']['config_file'] do
   secret_key jenkins_user_data_bag['secret_access_key']
 end
 
-# S3 redirect script
-python_package 'boto' do
-  version '2.41.0'
-end
-
 node['imos_jenkins']['node_common']['python_packages'].each do |pkg|
   python_package pkg
 end
