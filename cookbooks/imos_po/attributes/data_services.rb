@@ -65,6 +65,7 @@ default['imos_po']['data_services']['packages'] = [
   'python-dev',
   'python-pip',
   'python-psycopg2',
+  'screen',
   'sqlite3',
   'libxft-dev', 'libpng-dev', # For building matplotlib
   'libblas-dev', 'liblapack-dev', 'gfortran', # For building scipy
