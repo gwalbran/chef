@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/opt/chef/embedded/bin/ruby
 
 require 'nokogiri'
 require 'open-uri'
