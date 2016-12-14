@@ -42,29 +42,56 @@ describe 'talend trigger' do
   describe 'match_and_execute' do
     before :each do
       @files_processed = {}
-      def execute_for_files(name, item, tmp_base, files_to_process)
+      @executed_commands = []
+
+      def execute_for_files(name, exec, tmp_base, files_to_process)
         @files_processed[name] = files_to_process
+        @executed_commands << exec
         return 0
       end
 
       json = '
 {
     "harvester1": {
-        "regex": [
-            "^a/b/c/.*\\.nc$"
-        ]
+        "exec": "command_1",
+        "events": [{
+            "regex": [
+                "^a/b/c/.*\\.nc$"
+            ]
+        }]
     },
     "harvester2": {
-        "regex": [
-            "^b/c/d/.*\\.nc$",
-            "^c/d/e/.*\\.nc$"
-        ]
+        "exec": "command_2",
+        "events": [{
+            "regex": [
+                "^b/c/d/.*\\.nc$",
+                "^c/d/e/.*\\.nc$"
+            ],
+            "extra_params": "arg1 arg2"
+        }]
     },
     "harvester3": {
-        "regex": [
-            "^b/c/d/.*\\.nc$",
-            "^d/e/f/.*\\.nc$"
-        ]
+        "exec": "command_3",
+        "events": [{
+            "regex": [
+                "^b/c/d/.*\\.nc$",
+                "^d/e/f/.*\\.nc$"
+            ]
+        }]
+    },
+    "harvester4": {
+        "exec": "command_4",
+        "events": [{
+            "regex": [
+                "^e/f/g/.*\\.nc$"
+            ],
+            "extra_params": "arg3"
+        },{
+            "regex": [
+                "^f/g/h/.*\\.nc$"
+            ],
+            "extra_params": "arg4"
+        }]
     }
 }'
       @config = JSON.parse(json)
@@ -74,18 +101,21 @@ describe 'talend trigger' do
       files = ["a/b/c/something.nc"]
       match_and_execute("", files)
       expect(@files_processed).to eq("harvester1" => files)
+      expect(@executed_commands).to eq(['command_1'])
     end
 
     it 'single file, multi harvester' do
       files = ["b/c/d/something.nc"]
       match_and_execute("", files)
       expect(@files_processed).to eq({"harvester2" => files, "harvester3" => files})
+      expect(@executed_commands).to eq(['command_2 arg1 arg2', 'command_3'])
     end
 
     it 'multi file, single harvester' do
       files = ["a/b/c/something.nc", "a/b/c/something2.nc"]
       match_and_execute("", files)
       expect(@files_processed).to eq({"harvester1" => files})
+      expect(@executed_commands).to eq(['command_1'])
     end
 
     it 'multi file, multi harvester' do
@@ -96,6 +126,7 @@ describe 'talend trigger' do
         "harvester2" => [files[2]],
         "harvester3" => [files[2], files[3]]
       })
+      expect(@executed_commands).to eq(['command_1', 'command_2 arg1 arg2', 'command_3'])
     end
 
     it 'single file, no harvester executed' do
@@ -106,6 +137,20 @@ describe 'talend trigger' do
     it 'multi file, no harvester executed' do
       files = ["b/c/d/something.nc", "unmatched"]
       expect(match_and_execute("", files)).to be > 0
+    end
+
+    it 'multi event, single harvester selected' do
+      files = ["f/g/h/something.nc"]
+      match_and_execute("", files)
+      expect(@files_processed).to eq({"harvester4" => files})
+      expect(@executed_commands).to eq(['command_4 arg4'])
+    end
+
+    it 'multi event, multiple harvesters selected' do
+      files = ["f/g/h/something.nc", "e/f/g/something.nc"]
+      match_and_execute("", files)
+      expect(@files_processed).to eq({"harvester4" => [files[1]], "harvester4" => [files[0]]})
+      expect(@executed_commands).to eq(['command_4 arg3', 'command_4 arg4'])
     end
   end
 end

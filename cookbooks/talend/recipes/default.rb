@@ -53,14 +53,26 @@ node['talend']['jobs'].each do |job_name|
   bag_item[environment] && bag_item[environment]['cron'] and cron.merge!(bag_item[environment]['cron'])
 
   # Triggering can be enabled for talend job. If enabled, does not schedule as
-  # a cron job
-  event = {}
-  bag_item['event'] and event.merge!(bag_item['event'])
-  bag_item[environment] && bag_item[environment]['event'] and event.merge!(bag_item[environment]['event'])
+  # a cron job.  Can specify one event or multiple events which trigger the job
+  events = []
+
+  if bag_item[environment] && bag_item[environment]['events']
+    # use environment specific events
+    events.concat bag_item[environment]['events']
+  elsif bag_item[environment] && bag_item[environment]['event']
+    # use environment specific event
+    events << bag_item[environment]['event']
+  elsif bag_item['events']
+    # multiple events
+    events.concat bag_item['events']
+  elsif bag_item['event']
+    # single event
+    events << bag_item['event']
+  end
 
   trigger = {}
   trigger['cron'] = cron
-  trigger['event'] = event
+  trigger['events'] = events
 
   job_common_name = get_job_common_name(job_name, bag_item)
 

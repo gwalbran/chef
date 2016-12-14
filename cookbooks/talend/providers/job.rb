@@ -138,7 +138,7 @@ action :schedule do
   ::FileUtils.chmod(00755, Talend::JobHelper.job_script_path(new_resource))
   ::FileUtils.chown(new_resource.owner, new_resource.group, Talend::JobHelper.job_script_path(new_resource))
 
-  if new_resource.trigger['event'].empty?
+  if new_resource.trigger['events'].empty?
     # Schedule using cron
 
     wrapper_script = ::File.join(job_bin_dir, "#{job_name}.sh")
@@ -170,13 +170,17 @@ action :schedule do
 
   else
     # Trigger a job based on pattern matching
-    trigger_regex = new_resource.trigger['event']['regex'].dup
-    trigger_regex << "^___#{job_name}___$"
+
+    events = new_resource.trigger['events'].dup
+
+    # Add regexp used to trigger liquibase update only
+    events << { 'regex' => [ "^___#{job_name}___$" ] }
+
     Talend::JobHelper.add_trigger(
       node['talend']['trigger']['config'],
       new_resource.name,
       Talend::JobHelper.job_command_single_file(new_resource),
-      trigger_regex
+      Talend::JobHelper.get_trigger_events(events)
     )
   end
 

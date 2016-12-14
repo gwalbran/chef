@@ -12,21 +12,27 @@ describe 'talend job helper' do
   sample_config = '
 {
     "harvester1": {
-        "regex": [
-            "^a/b/c/.*\\.nc$"
-        ]
+        "events": [{
+            "regex": [
+                "^a/b/c/.*\\.nc$"
+            ]
+        }]
     },
     "harvester2": {
-        "regex": [
-            "^b/c/d/.*\\.nc$",
-            "^c/d/e/.*\\.nc$"
-        ]
+        "events": [{
+            "regex": [
+                "^b/c/d/.*\\.nc$",
+                "^c/d/e/.*\\.nc$"
+            ]
+        }]
     },
     "harvester3": {
-        "regex": [
-            "^b/c/d/.*\\.nc$",
-            "^d/e/f/.*\\.nc$"
-        ]
+        "events": [{
+            "regex": [
+                "^b/c/d/.*\\.nc$",
+                "^d/e/f/.*\\.nc$"
+            ]
+        }]
     }
 }'
 
@@ -39,7 +45,9 @@ describe 'talend job helper' do
 
       new_entry_config = {
         "exec" => "exec",
-        "regex" => [ "regex1", "regex2"]
+        "events" => [{
+          "regex" => [ "regex1", "regex2"]
+        }]
       }
     end
 
@@ -59,7 +67,7 @@ describe 'talend job helper' do
 
     it 'add_trigger non existing file' do
       FileUtils.rm_f(tmp_file)
-      Talend::JobHelper.add_trigger(tmp_file, "new_entry", new_entry_config['exec'], new_entry_config['regex'])
+      Talend::JobHelper.add_trigger(tmp_file, "new_entry", new_entry_config['exec'], new_entry_config['events'])
 
       expect(["new_entry"]).
         to eq(Talend::JobHelper.get_triggers(tmp_file))
@@ -69,7 +77,7 @@ describe 'talend job helper' do
 
     it 'add_trigger empty file' do
       File.truncate(tmp_file, 0)
-      Talend::JobHelper.add_trigger(tmp_file, "new_entry", new_entry_config['exec'], new_entry_config['regex'])
+      Talend::JobHelper.add_trigger(tmp_file, "new_entry", new_entry_config['exec'], new_entry_config['events'])
 
       expect(["new_entry"]).
         to eq(Talend::JobHelper.get_triggers(tmp_file))
@@ -78,7 +86,7 @@ describe 'talend job helper' do
     end
 
     it 'add_trigger existing file with valid json' do
-      Talend::JobHelper.add_trigger(tmp_file, "new_entry", new_entry_config['exec'], new_entry_config['regex'])
+      Talend::JobHelper.add_trigger(tmp_file, "new_entry", new_entry_config['exec'], new_entry_config['events'])
 
       expect(["harvester1", "harvester2", "harvester3", "new_entry"]).
         to eq(Talend::JobHelper.get_triggers(tmp_file))
@@ -90,6 +98,29 @@ describe 'talend job helper' do
       Talend::JobHelper.remove_trigger(tmp_file, "harvester2")
       expect(["harvester1", "harvester3"]).
         to eq(Talend::JobHelper.get_triggers(tmp_file))
+    end
+
+    it 'get_trigger_events with no parameters' do
+      expect(Talend::JobHelper.get_trigger_events([{"regex" => "*"}])).
+          to eq([{"regex" => "*"}])
+    end
+
+    it 'get_trigger_events with parameters' do
+      event_with_parameters = [{
+        "regex" => "*",
+        "extra_params" => {
+          "param_1" => "value_1",
+          "param_2" => "value_2"
+        }
+      }]
+
+      expected_result = [{
+        "regex" => "*",
+        "extra_params" => "--context_param param_1=value_1 --context_param param_2=value_2"
+      }]
+
+      expect(Talend::JobHelper.get_trigger_events(event_with_parameters)).
+          to eq(expected_result)
     end
   end
 end
