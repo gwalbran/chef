@@ -75,9 +75,7 @@ def prepare_file(tmp_base, file, is_deletion = false)
   return index_as
 end
 
-def execute_for_files(name, item, tmp_base, files_to_process)
-  exec = item['exec']
-
+def execute_for_files(name, exec, tmp_base, files_to_process)
   retval = 0
   Dir.mktmpdir { |tmp_log_dir|
     file_list = prepare_file_list(files_to_process)
@@ -121,19 +119,27 @@ def match_and_execute(tmp_base, files)
   # that one harvester need and potentially speed up things
 
   @config.each do |name, item|
-    files_to_process = []
+    item["events"].each do |event|
+      files_to_process = []
 
-    item['regex'].each do |regex|
-      files.each do |file|
-        if file =~ Regexp.new(regex)
-          files_to_process << file
+      event['regex'].each do |regex|
+        files.each do |file|
+          if file =~ Regexp.new(regex)
+            files_to_process << file
+          end
         end
       end
+
+      exec = item['exec']
+
+      if event['extra_params']
+        exec += " #{event['extra_params']}"
+      end
+
+      retval += execute_for_files(name, exec, tmp_base, files_to_process.uniq) unless files_to_process.empty?
+
+      files_processed += files_to_process
     end
-
-    retval += execute_for_files(name, item, tmp_base, files_to_process.uniq) unless files_to_process.empty?
-
-    files_processed += files_to_process
   end
 
   files_not_processed = files.uniq - files_processed.uniq
@@ -196,10 +202,12 @@ if __FILE__ == $0
     {
         "trigger_name": {
             "exec": "/usr/bin/executable --base %{base} --file_list %{file_list} --log_dir %{log_dir}",
-            "regex": [
-                "^something\\.nc$",
-                "^somethin.*\\.nc$"
-            ]
+            "events": [{
+                "regex": [
+                    "^something\\.nc$",
+                    "^somethin.*\\.nc$"
+                ]
+            }]
         }
     }
 

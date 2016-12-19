@@ -56,6 +56,33 @@ class Talend
       "#{job_script_path(resource)} --context_param paramFile=\"#{job_conf_file(resource)}\" --context_param base=%{base} --context_param fileList=%{file_list} --context_param logDir=%{log_dir}"
     end
 
+    def self.get_cmdline_params(params)
+      cmdline_params = []
+
+      params.each do |key, value|
+        cmdline_params << "--context_param #{key}=#{value}"
+      end
+
+      return cmdline_params.join(' ')
+    end
+
+    def self.get_trigger_events(events)
+      trigger_events = []
+
+      events.each do |event|
+        trigger_event = {}
+        trigger_event['regex'] = event['regex']
+
+        if event['extra_params']
+          trigger_event['extra_params'] = get_cmdline_params(event['extra_params'])
+        end
+
+        trigger_events << trigger_event
+      end
+
+      return trigger_events
+    end
+
     def self.get_job_parameters(resource, node)
       job_parameters = {}
 
@@ -89,12 +116,12 @@ class Talend
       return triggers
     end
 
-    def self.add_trigger(trigger_file, name, exec, regex)
+    def self.add_trigger(trigger_file, name, exec, events)
       config = json_as_hash_from_file(trigger_file)
 
       config[name] = {
         'exec'  => exec,
-        'regex' => regex
+        'events' => events
       }
 
       hash_as_json_to_file(trigger_file, config)
