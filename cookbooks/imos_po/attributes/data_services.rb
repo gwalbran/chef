@@ -50,6 +50,7 @@ default['imos_po']['data_services']['clone_repository'] = true
 # Required packages
 default['imos_po']['data_services']['packages'] = [
   'bc',
+  'curl',
   'heirloom-mailx',
   'imagemagick',
   'ipython',
@@ -67,6 +68,7 @@ default['imos_po']['data_services']['packages'] = [
   'python-psycopg2',
   'screen',
   'sqlite3',
+  'tmux',
   'libxft-dev', 'libpng-dev', # For building matplotlib
   'libblas-dev', 'liblapack-dev', 'gfortran', # For building scipy
   'zip'
