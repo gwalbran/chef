@@ -26,29 +26,29 @@ default['imos_jenkins']['node_common']['packages'] = [
     'zip'
 ]
 
-default['imos_jenkins']['plugins'] = [
-    'build-name-setter',
-    'build-pipeline-plugin',
-    'copyartifact',
-    'grails',
-    'envinject',
-    'git',
-    'git-client',
-    'hipchat',
-    'repository',
-    'greenballs',
-    'postbuildscript',
-    'job-log-logger-plugin',
-    'maven-plugin',
-    'role-strategy',
-    's3',
-    'ssh-slaves',
-    'throttle-concurrents',
-    'xvfb',
-    'token-macro',
-    'ws-cleanup',
-    'validating-string-parameter'
-]
+default['imos_jenkins']['plugins'] = {
+    'build-name-setter' => '1.6.5',
+    'build-pipeline-plugin' => '1.5.4',
+    'copyartifact' => '1.38.1',
+    'grails' => '1.7',
+    'envinject' => '1.93.1',
+    'git' => '3.0.1',
+    'git-client' => '2.1.0',
+    'hipchat' => '2.0.0',
+    'repository' => '1.3',
+    'greenballs' => '1.15',
+    'postbuildscript' => '0.17',
+    'job-log-logger-plugin' => '1.0',
+    'maven-plugin' => '2.7.1',
+    'role-strategy' => '2.3.2',
+    's3' => '0.10.10',
+    'ssh-slaves' => '1.9',
+    'throttle-concurrents' => '1.9.0',
+    'xvfb' => '1.1.3',
+    'token-macro' => '2.0',
+    'ws-cleanup' => '0.32',
+    'validating-string-parameter' => '2.3'
+}
 
 default['imos_jenkins']['node_common']['python_packages'] = [
   'awscli',
