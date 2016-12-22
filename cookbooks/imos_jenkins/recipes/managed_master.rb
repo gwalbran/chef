@@ -51,3 +51,29 @@ execute 'init_jenkins_scm' do
   user node['imos_jenkins']['user']
   group node['imos_jenkins']['group']
 end
+
+# AWS passwords
+envvars = {}
+
+if Chef::Config['dev']
+  credentials_databag_name = node['imos_jenkins']['s3']['credentials_databag_dev']
+else
+  credentials_databag_name = node['imos_jenkins']['s3']['credentials_databag']
+end
+
+credentials_databag = Chef::EncryptedDataBagItem.load("passwords", credentials_databag_name)
+
+envvars[:AWS_ACCESS_KEY] = credentials_databag['access_key_id']
+envvars[:AWS_SECRET_KEY] = credentials_databag['secret_access_key']
+envvars[:S3_ARTIFACT_BUCKET] = credentials_databag['artifact_bucket']
+
+template "#{jenkins_home}/env.properties" do
+  source   "env.properties.erb"
+  user node['imos_jenkins']['user']
+  group node['imos_jenkins']['group']
+  mode    00644
+  owner    node['imos_jenkins']['user']
+  variables ({
+      :vars => envvars
+  })
+end

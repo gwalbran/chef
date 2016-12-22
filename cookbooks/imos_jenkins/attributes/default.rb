@@ -18,6 +18,9 @@ default['imos_jenkins']['s3cmd']['config_file'] = ::File.join(node['jenkins']['m
 
 default['imos_jenkins']['monitored_jobs'] = []
 
+default['imos_jenkins']['s3']['credentials_databag'] = 'aws'
+default['imos_jenkins']['s3']['credentials_databag_dev'] = 'aws-dev'
+
 default['imos_jenkins']['node_common']['packages'] = [
     'checkinstall',
     'expat',
