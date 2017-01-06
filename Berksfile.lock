@@ -8,8 +8,7 @@ DEPENDENCIES
   auditd
   awstats
   backup
-    git: git://github.com/aodn/backup-cookbook.git
-    revision: 35170c5a278abd573e3ec5d28fa136aaf8a50ead
+    path: cookbooks/backup-cookbook
   build-essential
   chef-solo-search
     git: git://github.com/edelight/chef-solo-search.git
@@ -102,8 +101,7 @@ DEPENDENCIES
   ntp
   omnibus_updater
   packer
-    git: git://github.com/sit/chef-packer.git
-    revision: 60acb62ca2ecb656b3a2e28f76e97cccbccdd4c1
+    path: cookbooks/chef-packer
   poise-python
   postfix
   rabbitmq
@@ -117,8 +115,7 @@ DEPENDENCIES
     revision: 7ce09ee37854b619a2f5c3e9500782ffdcab0429
   rsync
   rsync_chroot
-    git: git://github.com/aodn/rsync_chroot.git
-    revision: 0c52559f387a6361f1e7eb8f2cb025ef8800738e
+    path: cookbooks/rsync_chroot
   s3fs-fuse
     path: cookbooks/s3fs-fuse
   squid
