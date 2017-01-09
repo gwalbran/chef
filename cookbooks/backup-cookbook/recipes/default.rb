@@ -59,7 +59,7 @@ end
 [
   node[:backup][:base_dir],
   node[:backup][:models_dir],
-  node[:backup][:bin_dir],
+  node[:backup][:repo_dir],
   node[:backup][:log_dir]
 ].each do |directory|
   directory directory do
@@ -71,10 +71,21 @@ end
 end
 
 # Sync git repository
-git node[:backup][:bin_dir] do
-  repository node[:backup][:git_url]    || "https://github.com/danfruehauf/backup.git"
+git node[:backup][:repo_dir] do
+  repository node[:backup][:git_url]    || "https://github.com/aodn/utilities.git"
   revision   node[:backup][:git_branch] || "master"
   action     :sync
   user       node[:backup][:username]
   group      node[:backup][:group]
+end
+
+directory node[:backup][:bin_dir] do
+  action :delete
+  recursive true
+  not_if { File.symlink?(node[:backup][:bin_dir]) }
+end
+
+link node[:backup][:bin_dir] do
+  to ::File.join(node[:backup][:repo_dir], 'backup')
+  not_if { File.exists?(node[:backup][:bin_dir]) }
 end

@@ -17,7 +17,7 @@
 #
 
 # Backup rock location
-default[:backup][:git_url]      = "https://github.com/danfruehauf/backup.git"
+default[:backup][:git_url]      = "https://github.com/aodn/utilities.git"
 default[:backup][:git_branch]   = "master"
 
 # Base directory for backup
@@ -28,6 +28,7 @@ default[:backup][:base_dir]     = "/home/backup"
 default[:backup][:backup_dir]   = "#{node[:backup][:base_dir]}/backup"
 default[:backup][:models_dir]   = "#{node[:backup][:base_dir]}/models"
 default[:backup][:bin_dir]      = "#{node[:backup][:base_dir]}/bin"
+default[:backup][:repo_dir]     = "#{node[:backup][:base_dir]}/repo"
 default[:backup][:log_dir]      = "/var/log/backup"
 
 # Backup username and group
