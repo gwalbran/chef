@@ -13,6 +13,8 @@ default['imos_jenkins']['username']  = "jenkins"
 
 # SCM repo settings
 default['imos_jenkins']['scm_repo'] = 'git@github.com:aodn/ci-config.git'
+default['imos_jenkins']['scm_username'] = 'aodn-ci'
+default['imos_jenkins']['scm_email'] = 'developers@emii.org.au'
 
 default['imos_jenkins']['s3cmd']['config_file'] = ::File.join(node['jenkins']['master']['home'], ".s3cfg")
 

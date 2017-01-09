@@ -28,6 +28,8 @@ end
 
 jenkins_home = node['imos_jenkins']['master']['home']
 scm_repo = node['imos_jenkins']['scm_repo']
+git_email = node['imos_jenkins']['scm_email']
+git_username = node['imos_jenkins']['scm_username']
 
 ssh_wrapper = File.join("#{jenkins_home}", '.ssh', 'wrappers', 'git_deploy_wrapper.sh')
 
@@ -42,12 +44,36 @@ execute 'git_ssh' do
   command "GIT_SSH=#{ssh_wrapper}"
   user node['imos_jenkins']['user']
   group node['imos_jenkins']['group']
+  notifies :run, "execute[do_overwrite]", :immediately
+end
+
+if Chef::Config[:dev]
+  execute 'reset_jenkins_home' do
+    command "git init && git remote add origin #{scm_repo} && git fetch && git reset --hard origin/master;"
+    cwd jenkins_home
+    user node['imos_jenkins']['user']
+    group node['imos_jenkins']['group']
+  end
+end
+
+execute 'do_overwrite' do
+  command '! { git rev-parse --is-inside-work-tree }'
+  cwd jenkins_home
+  user node['imos_jenkins']['user']
+  group node['imos_jenkins']['group']
   notifies :run, "execute[init_jenkins_scm]", :immediately
 end
 
 # Overwrite local files with those present in SCM
 execute 'init_jenkins_scm' do
-  command "git rev-parse --is-inside-work-tree || { git init && git remote add origin #{scm_repo} && git fetch && git reset --hard origin/master; }"
+  command "git init && git remote add origin #{scm_repo} && git fetch && git reset --hard origin/master;"
+  cwd jenkins_home
+  user node['imos_jenkins']['user']
+  group node['imos_jenkins']['group']
+end
+
+execute 'config_git' do
+  command "git config --global user.email #{git_email} && git config --global user.name #{git_username};"
   cwd jenkins_home
   user node['imos_jenkins']['user']
   group node['imos_jenkins']['group']
