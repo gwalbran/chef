@@ -22,3 +22,7 @@ imageFileServer {
 mest {
     url = "<%= @custom_parameters['mest_url'] || 'http://imosmest.emii.org.au/geonetwork' %>"
 }
+
+<% if @custom_parameters['google_analytics_tracking_id'] %>
+<%= "googleAnalytics.trackingId = '#{@custom_parameters['google_analytics_tracking_id']}'" =%>
+<% end %>
