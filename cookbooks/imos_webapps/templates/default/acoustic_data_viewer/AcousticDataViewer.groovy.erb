@@ -3,5 +3,8 @@ environments {
         dataSource {
             hibernate.default_schema = "anmn_acoustics"
         }
+        <% if @custom_parameters['google_analytics_tracking_id'] %>
+        <%= "googleAnalytics.trackingId = '#{@custom_parameters['google_analytics_tracking_id']}'" =%>
+        <% end %>
     }
 }
