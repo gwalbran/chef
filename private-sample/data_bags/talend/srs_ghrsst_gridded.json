@@ -1,0 +1,766 @@
+{
+    "id": "srs_ghrsst_gridded",
+    "artifact_filename": "GENERIC_TIMESTEP_harvester_Latest.zip",
+    "params": {
+        "Destination_Schema": "generic_timestep",
+        "Destination_Login": "generic_timestep",
+        "Destination_Password": "generic_timestep"
+    },
+    "events": [
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U-S/n09.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_S_n09"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U-S/n11.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_S_n11"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U-S/n12.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_S_n12"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U-S/n14.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_S_n14"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U-S/n15.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_S_n15"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U-S/n16.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_S_n16"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U-S/n17.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_S_n17"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U-S/n18.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_S_n18"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U-S/n19.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_S_n19"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/day/n11.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_day_n11"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/day/n12.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_day_n12"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/day/n14.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_day_n14"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/day/n15.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_day_n15"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/day/n16.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_day_n16"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/day/n17.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_day_n17"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/day/n18.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_day_n18"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/day/n19.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_day_n19"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/ngt/n11.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_ngt_n11"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/ngt/n12.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_ngt_n12"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/ngt/n14.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_ngt_n14"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/ngt/n15.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_ngt_n15"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/ngt/n16.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_ngt_n16"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/ngt/n17.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_ngt_n17"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/ngt/n18.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_ngt_n18"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/ngt/n19.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_ngt_n19"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U/n09.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_n09"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U/n11.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_n11"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U/n12.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_n12"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U/n14.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_n14"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U/n15.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_n15"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U/n16.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_n16"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U/n17.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_n17"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U/n18.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_n18"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3U/n19.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3u_n19"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/ngt/n11.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_ngt_n11"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/ngt/n12.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_ngt_n12"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/ngt/n14.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_ngt_n14"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/ngt/n15.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_ngt_n15"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/ngt/n16.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_ngt_n16"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/ngt/n17.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_ngt_n17"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/ngt/n18.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_ngt_n18"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/ngt/n19.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_ngt_n19"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/ngt/n11.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_ngt_n11"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/ngt/n12.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_ngt_n12"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/ngt/n14.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_ngt_n14"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/ngt/n15.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_ngt_n15"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/ngt/n16.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_ngt_n16"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/ngt/n17.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_ngt_n17"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/ngt/n18.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_ngt_n18"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1dS/ngt/n19.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_S_ngt_n19"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/day/n11.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_day_n11"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/day/n12.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_day_n12"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/day/n14.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_day_n14"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/day/n15.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_day_n15"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/day/n16.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_day_n16"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/day/n17.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_day_n17"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/day/n18.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_day_n18"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-3d/day/n19.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_3d_day_n19"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/day/n11.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_day_n11"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/day/n12.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_day_n12"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/day/n14.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_day_n14"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/day/n15.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_day_n15"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/day/n16.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_day_n16"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/day/n17.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_day_n17"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/day/n18.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_day_n18"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3C-1d/day/n19.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3c_1d_day_n19"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-14d/day.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_14d_day"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-3d/ngt.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_3d_ngt"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-3d/day.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_3d_day"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-1d/ngt.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_1d_ngt"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3P/14d.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3p_14d"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-1dS/dn.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_1dS_dn"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-6d/ngt.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_6d_ngt"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-1mS/dn.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_1mS_dn"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-1d/dn.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_1d_dn"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-1d/day.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_1d_day"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-14d/dn.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_14d_dn"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-3d/dn.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_3d_dn"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-14d/ngt.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_14d_ngt"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-1m/day.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_1m_day"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-6d/day.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_6d_day"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-6d/dn.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_6d_dn"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-1m/ngt.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_1m_ngt"
+        }
+        },
+        
+        {
+        "regex": [
+            "^IMOS/SRS/SST/ghrsst/L3S-1m/dn.*\\.nc$"
+        ],
+        "extra_params": {
+            "collection": "srs_ghrsst_l3s_1m_dn"
+        }
+        }
+    ]
+}
