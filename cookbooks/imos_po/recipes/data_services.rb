@@ -56,7 +56,7 @@ end
 
 # Workaround strange bug causing these packages to only have some of their files installed. This will reinstall them if they are a) installed and b) in a corrupt state. Using workaround in short term due to imminent change in library handling (i.e. using virtual environment via Conda etc.)
 # TODO: remove once virtualenv in place
-execute "if (pip show python-datetime 1>/dev/null && ! python -c 'import datetime' 1>/dev/null 2>&1);then pip install --upgrade --no-deps --force-reinstall python-datetime; else /bin/true; fi"
+execute "if (pip show python-dateutil 1>/dev/null && ! python -c 'import dateutil' 1>/dev/null 2>&1);then pip install --upgrade --no-deps --force-reinstall python-dateutil; else /bin/true; fi"
 execute "if (pip show pytz 1>/dev/null && ! python -c 'import pytz' 1>/dev/null 2>&1);then pip install --upgrade --no-deps --force-reinstall pytz; else /bin/true; fi"
 
 node['imos_po']['data_services']['owned_dirs'].each do |dir|
