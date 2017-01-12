@@ -24,10 +24,9 @@ node[:backup][:packages].each do |package|
   package package
 end
 
-# Create backup user but only if it doesn't exist
-if ! User(node[:backup][:username])
-  group node[:backup][:group]
-
+# Create backup user/group
+group node[:backup][:group]
+if !node['etc']['passwd'][node[:backup][:username]]
   user node[:backup][:username] do
     home node[:backup][:base_dir]
     gid  node[:backup][:group]
