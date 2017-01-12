@@ -87,14 +87,14 @@
                 "apps":         [
                     {
                         "name":       "geoserver",
-                        "artifact":   "geoserver_edge",
+                        "artifact":   "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/geoserver_edge/geoserver_edge-latest.war",
                         "custom_def": "geoserver",
                         "data_dir":   "/vagrant/src/geoserver",
                         "jndis":      [ "harvest-read-po", "local-harvest-read" ]
                     },
                     {
                         "name":                  "geonetwork",
-                        "artifact":              "geonetwork_edge",
+                        "artifact":              "http://imos-binary.s3-website-ap-southeast-2.amazonaws.com/jobs/geonetwork_edge/geonetwork_edge-latest.war",
                         "config_file":           "config-overrides.xml",
                         "config_template_dir":   "geonetwork",
                         "schema_plugins":        [ "iso19135", "iso19139-anzlic", "iso19139-mcp-1-4", "iso19139-mcp-1-5", "iso19139-mcp-2-0" ],
