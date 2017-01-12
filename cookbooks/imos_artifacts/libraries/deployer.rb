@@ -24,10 +24,10 @@ module ImosArtifacts
         Chef::Application.fatal!("Cannot deploy null artifact id")
       end
 
-      if databag_exists?('imos_artifacts', artifact_id)
-        artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_id).to_hash
+      #if databag_exists?('imos_artifacts', artifact_id)
+      #  artifact_manifest = Chef::EncryptedDataBagItem.load("imos_artifacts", artifact_id).to_hash
 
-      elsif is_uri(artifact_id)
+      if is_uri(artifact_id)
         artifact_manifest = { 'id' => ::File.basename(artifact_id), 'uri' => artifact_id }
 
       else

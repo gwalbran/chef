@@ -20,7 +20,7 @@
 
 # Searches data bag "users" for groups attribute "backups".
 # Places returned users in Unix group "sysadmin" with GID 2306.
-users_manage "backups" do
-  group_id 2306
-  action   [ :remove, :create ]
-end
+#users_manage "backups" do
+#  group_id 2306
+#  action   [ :remove, :create ]
+#end

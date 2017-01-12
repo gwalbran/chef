@@ -45,3 +45,10 @@ Unattended-Upgrade::MailOnlyOnError "true";
 // Automatically reboot *WITHOUT CONFIRMATION* if a
 // the file /var/run/reboot-required is found after the upgrade
 Unattended-Upgrade::Automatic-Reboot "false";
+
+// Accept the *old* configuration file when dpkg encounters a config file conflict
+Dpkg::Options {
+   "--force-confdef";
+   "--force-confold";
+}
+
