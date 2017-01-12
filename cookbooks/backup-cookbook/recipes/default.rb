@@ -24,14 +24,11 @@ node[:backup][:packages].each do |package|
   package package
 end
 
-# Create backup user but only if it doesn't exist
-if ! User(node[:backup][:username])
-  group node[:backup][:group]
-
-  user node[:backup][:username] do
-    home node[:backup][:base_dir]
-    gid  node[:backup][:group]
-  end
+# Create backup user/group
+group node[:backup][:group]
+user node[:backup][:username] do
+  home node[:backup][:base_dir]
+  gid  node[:backup][:group]
 end
 
 # Honour the fact that sometimes the backup directory may be on a NFS volume or
