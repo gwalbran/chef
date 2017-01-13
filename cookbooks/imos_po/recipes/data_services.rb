@@ -151,7 +151,7 @@ if ! node['imos_po']['data_services']['cronjobs'].empty?
   ruby_block "data_services_cronjobs" do
     block do
       allowed_cronjob_users = node['imos_po']['data_services']['cron_allowed_users'].dup
-      Users.find_users_in_groups(node['imos_po']['data_services']['cron_allowed_groups']).each do |user|
+      UsersQueryHelper.find_users_in_groups(node['imos_po']['data_services']['cron_allowed_groups']).each do |user|
         allowed_cronjob_users << user['id']
       end
       Chef::Log.info "Allowing cronjobs from '#{allowed_cronjob_users}'"

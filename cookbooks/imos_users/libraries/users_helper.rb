@@ -1,6 +1,6 @@
 require "chef/search/query"
 
-class Users
+class UsersQueryHelper
   def self.find_users_in_groups(groups)
     users_search_term = ""
     groups.each do |group|
