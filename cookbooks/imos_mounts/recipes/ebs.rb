@@ -17,6 +17,7 @@ mount "/mnt/ebs" do
   fstype "ext4"
   options "defaults"
   action [:mount, :enable]
+  only_if { File.exist?(node['mounts']['ebs_device']) }
 end
 
 # Mock apache log directory on dev boxes
