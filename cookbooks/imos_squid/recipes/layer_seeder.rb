@@ -8,7 +8,11 @@
 #
 
 # Ruby deps
-package     'ruby1.9.1'
+ruby_pkg = 'ruby'
+if node[:lsb]['codename'].include?("precise")
+   ruby_pkg = 'ruby1.9.1'
+end
+package     ruby_pkg
 package     'ruby-nokogiri'
 gem_package 'trollop'
 
