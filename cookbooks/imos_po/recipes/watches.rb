@@ -79,6 +79,15 @@ ruby_block "verify_watched_directories" do
 end
 
 if node['imos_po']['data_services']['watches']
+
+  if node[:lsb]['codename'].include?("precise")
+    node.override['rabbitmq']['version'] = node['imos_po']['watches']['rabbitmq_version_precise']
+    node.override['rabbitmq']['deb_package'] = "rabbitmq-server_#{node['rabbitmq']['version']}-1_all.deb"
+    node.override['rabbitmq']['deb_package_url'] = "https://www.rabbitmq.com/releases/rabbitmq-server/v#{node['rabbitmq']['version']}/"
+  else
+    node.override['rabbitmq']['use_distro_version'] = true
+  end
+
   include_recipe 'rabbitmq'
   package 'lsof'
   package 'python-pyinotify'
