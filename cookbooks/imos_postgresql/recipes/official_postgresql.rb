@@ -111,10 +111,18 @@ if node['postgresql'] && node['postgresql']['clusters']
 
   node['postgresql']['clusters'].each do |cluster|
 
+    default_postgres_version = node[:imos_postgresql][:postgresql_version]
+    default_postgis_version = node[:imos_postgresql][:postgis_version]
+
+    # precise only has older versions available
+    if node[:lsb]['codename'].include?("precise")
+      default_postgres_version = node[:imos_postgresql][:postgresql_version_precise]
+      default_postgis_version = node[:imos_postgresql][:postgis_version_precise]
+    end
 
     # determine postgres version required by cluster
-    postgresql_version = cluster['postgresql_version'] || node[:imos_postgresql][:postgresql_version]
-    postgis_version = cluster['postgis_version'] || node[:imos_postgresql][:postgis_version]
+    postgresql_version = cluster['postgresql_version'] || default_postgres_version
+    postgis_version = cluster['postgis_version'] || default_postgis_version
 
     # install postgres
     # TODO refactor package deployment into the imos_postgresql_cluster definition
