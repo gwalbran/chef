@@ -2,7 +2,7 @@ default['imos_jenkins']['user']                  = 'jenkins'
 default['imos_jenkins']['group']                 = 'jenkins'
 default['imos_jenkins']['ajp_port']              = 49187
 default['imos_jenkins']['master_url']            = "https://jenkins.aodn.org.au/"
-default['imos_jenkins']['master']['jvm_options'] = '-Xmx2G'
+default['imos_jenkins']['master']['jvm_options'] = '-Xmx2G -Dhudson.model.ParametersAction.keepUndefinedParameters=true'
 default['imos_jenkins']['master']['ssh_port']    = 2222
 default['imos_jenkins']['master']['home']        = '/home/jenkins'
 default['imos_jenkins']['git']['clone_timeout'] = 20
