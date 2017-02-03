@@ -24,6 +24,9 @@ module TriggerOperations
 
   class FileProcessingFailureException < FileTriggerException
   end
+
+  class TalendHarvesterException < FileTriggerException
+  end
 end
 
 def prepare_file_list(objects)
@@ -81,7 +84,7 @@ def prepare_file(tmp_base, file, is_deletion = false)
   return index_as
 rescue => e
   $logger.fatal e.message
-  raise TriggerOperations::SymbolicLinkException, "Error in symbolic linking '#{real_file}' => '#{target_file}'. Aborting talend trigger operation'"
+  raise TriggerOperations::SymbolicLinkException, "Error in symbolic linking '#{real_file}' => '#{target_file}'"
 end
 
 def execute_for_files(name, exec, tmp_base, files_to_process)
@@ -110,7 +113,7 @@ def execute_for_files(name, exec, tmp_base, files_to_process)
     if 0 == retval
       $logger.info "#{msg} OK"
     else
-      $logger.info "#{msg} FAILED"
+      raise TriggerOperations::TalendHarvesterException, "#{msg} FAILED"
     end
 
     File.unlink(file_list)
@@ -153,16 +156,12 @@ def match_and_execute(tmp_base, files)
 
   files_not_processed = files.uniq - files_processed.uniq
   if ! files_not_processed.empty?
-    $logger.info "Files not processed:"
-    $logger.info "--------------------"
-    $logger.info files_not_processed
-    $logger.info "--------------------"
-    raise TriggerOperations::FileProcessingFailureException, "Files failed to process, aborting talend_trigger operation"
+    raise TriggerOperations::FileProcessingFailureException, "Files failed to process: ''#{files_not_processed}''"
   end
   return retval
 rescue => e
   $logger.fatal e.message
-  return 1
+  raise TriggerOperations::FileTriggerException, "Aborting operation"
 end
 
 def handle_files(files, delete = false, max_files)
