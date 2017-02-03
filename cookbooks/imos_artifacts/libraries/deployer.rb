@@ -9,6 +9,8 @@
 # Logic for deploying (unzipping) an artifact
 #
 
+require 'chef/search/query'
+
 module ImosArtifacts
   class Deployer
 
