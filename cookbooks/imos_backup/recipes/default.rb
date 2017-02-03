@@ -55,10 +55,9 @@ end
 logrotate_app "backups" do
   cookbook "logrotate"
   path "#{node[:backup][:log_dir]}/*.log"
-  options ["missingok", "compress", "notifempty"]
+  options ["missingok", "compress", "notifempty", "nocreate"]
   frequency "daily"
   rotate 7
-  nocreate
 end
 
 # Script to run all backups
