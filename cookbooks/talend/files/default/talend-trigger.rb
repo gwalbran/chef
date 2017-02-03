@@ -15,6 +15,17 @@ end
 @config = nil
 @noop = false
 
+module TriggerOperations
+  class FileTriggerException < RuntimeError
+  end
+
+  class SymbolicLinkException < FileTriggerException
+  end
+
+  class FileProcessingFailureException < FileTriggerException
+  end
+end
+
 def prepare_file_list(objects)
   file_list = Tempfile.new('harvester_file_list')
   objects.each do |object|
@@ -62,17 +73,15 @@ def prepare_file(tmp_base, file, is_deletion = false)
       target_dir = File.join(tmp_base, File.dirname(index_as))
       target_file = File.join(tmp_base, index_as)
 
-      begin
-        FileUtils.mkdir_p(target_dir)
-        FileUtils.ln_s(real_file, target_file)
-      rescue Exception => e
-        $logger.fatal e.message
-        $logger.fatal "Error in symbolic linking '#{real_file}' => '#{target_file}'. Check to see if '#{target_file}' already exists'"
+      FileUtils.mkdir_p(target_dir)
+      FileUtils.ln_s(real_file, target_file)
       end
-    end
   end
 
   return index_as
+rescue => e
+  $logger.fatal e.message
+  raise TriggerOperations::SymbolicLinkException, "Error in symbolic linking '#{real_file}' => '#{target_file}'. Aborting talend trigger operation'"
 end
 
 def execute_for_files(name, exec, tmp_base, files_to_process)
@@ -97,7 +106,7 @@ def execute_for_files(name, exec, tmp_base, files_to_process)
       end
     end
 
-    msg = "#{name}: #{files_to_process.count} file(s) "
+    msg = "Talend harvester #{name}: #{files_to_process.count} file(s) "
     if 0 == retval
       $logger.info "#{msg} OK"
     else
@@ -148,15 +157,16 @@ def match_and_execute(tmp_base, files)
     $logger.info "--------------------"
     $logger.info files_not_processed
     $logger.info "--------------------"
-    retval += 1
+    raise TriggerOperations::FileProcessingFailureException, "Files failed to process, aborting talend_trigger operation"
   end
-
   return retval
+rescue => e
+  $logger.fatal e.message
+  return 1
 end
 
 def handle_files(files, delete = false, max_files)
   retval = 0
-
   $logger.info "Going to process a total of '#{files.size}' files"
 
   # Limit number of files in every iteration
@@ -170,11 +180,15 @@ def handle_files(files, delete = false, max_files)
         $logger.info "Preparing file '#{file}' in temp dir '#{tmp_base}'"
         files_to_index << prepare_file(tmp_base, file, delete)
       end
-      retval = match_and_execute(tmp_base, files_to_index)
+
+      retval += match_and_execute(tmp_base, files_to_index)
     }
   end
-
   return retval
+rescue => e
+  # Rescue ALL file handling exceptions raised, log and EXIT the trigger operation here. Return value 1 (fail) is fed back to Trollop
+  $logger.fatal e.message
+  return 1
 end
 
 if __FILE__ == $0
