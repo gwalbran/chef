@@ -31,6 +31,8 @@ scm_repo = node['imos_jenkins']['scm_repo']
 
 ssh_wrapper = File.join("#{jenkins_home}", '.ssh', 'wrappers', 'git_deploy_wrapper.sh')
 
+gem_package 'trollop'
+
 node['imos_jenkins']['plugins'].each do |plugin_id, version|
   jenkins_plugin plugin_id do
     version version
