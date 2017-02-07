@@ -7,6 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recipe "application"
 include_recipe "git"
 include_recipe "imos_apache2::vhosts"
 include_recipe "imos_core::lftp"
