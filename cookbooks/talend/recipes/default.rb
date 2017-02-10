@@ -78,6 +78,7 @@ node['talend']['jobs'].each do |job_name|
 
   artifact_manifest = nil
   if bag_item['artifact_id']
+    artifact_id = job_name
     artifact_manifest = ImosArtifacts::Deployer.get_artifact_manifest(bag_item['artifact_id'])
   elsif bag_item['artifact_filename']
     artifact_id = job_name
