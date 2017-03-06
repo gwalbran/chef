@@ -10,8 +10,7 @@
     "event": {
         "regex": [
             "^IMOS/ANMN/.*/Temperature/.*_FV01_.*\\.nc$",
-            "^IMOS/ANMN/.*/CTD_timeseries/.*_FV01_.*(SBE|XR-420).*_END-.*\\.nc$",
-            "^IMOS/ANMN/.*/Velocity/.*_FV01_.*\\.nc$"
+            "^IMOS/ANMN/.*/CTD_timeseries/.*_FV01_.*(SBE|XR-420).*_END-.*\\.nc$"
         ]
     }
 }
