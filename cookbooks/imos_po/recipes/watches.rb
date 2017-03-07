@@ -224,7 +224,6 @@ file ::File.join(node['rsyslog']['config_prefix'], "rsyslog.d", "60-project-offi
 end
 
 logrotate_app "project-officer-processing" do
-  rotate     node['logrotate']['global']['rotate']
   create     "644 #{po_user} #{po_group}"
   path       log_file
   frequency  'daily'
@@ -233,7 +232,6 @@ logrotate_app "project-officer-processing" do
 end
 
 logrotate_app "project-officer-processing-file-reports" do
-  rotate     node['logrotate']['global']['rotate']
   create     "644 #{po_user} #{po_group}"
   path       ::File.join(log_dir, "*", "*.log")
   frequency  'daily'
