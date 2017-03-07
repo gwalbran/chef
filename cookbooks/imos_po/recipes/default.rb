@@ -13,5 +13,3 @@ if ! node['imos_users'] ||
   ! node['imos_users']['groups'].include?("projectofficer")
   Chef::Application.fatal!("Must have projectofficer group defined in your node")
 end
-
-include_recipe "imos_po::netcdf_nco"

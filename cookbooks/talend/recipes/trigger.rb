@@ -12,7 +12,12 @@ package 'ruby1.8' do
   action :remove
 end
 
-package 'ruby1.9.3'
+ruby_pkg = 'ruby'
+if node[:lsb]['codename'].include?("precise")
+  ruby_pkg = 'ruby1.9.3'
+end
+package ruby_pkg
+
 gem_package 'trollop'
 
 cookbook_file node['talend']['trigger']['bin'] do
