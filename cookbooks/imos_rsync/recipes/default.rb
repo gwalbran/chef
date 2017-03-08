@@ -30,7 +30,6 @@ template rsyncd_secrets_path do
   owner    "root"
   group    "root"
   mode     00600
-  notifies :reload, "service[#{node['rsyncd']['service']}]"
   variables(:rsync_users => rsync_users)
 end
 
