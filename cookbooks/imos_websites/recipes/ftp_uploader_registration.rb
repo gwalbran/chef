@@ -11,7 +11,14 @@ include_recipe "git"
 include_recipe "imos_apache2::vhosts"
 include_recipe "imos_apache2::php"
 
-package "php5-pgsql"
+php_pgsql_pkg = "php-pgsql"
+php_curl_pkg = "php-curl"
+if node[:lsb]['codename'].include?("precise")
+  php_pgsql_pkg = "php5-pgsql"
+  php_curl_pkg = "php5-curl"
+end
+package php_pgsql_pkg
+package php_curl_pkg
 
 deploy_key = Chef::EncryptedDataBagItem.load("deploy_keys", "github_ftp_uploader_registration")['ssh_priv_key']
 git_ssh_wrapper "git" do
