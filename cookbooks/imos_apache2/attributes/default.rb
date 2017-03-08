@@ -17,3 +17,5 @@ default['imos_apache2']['directory_index'] = "index.htm index.html"
 
 # Default options for STS (Strict Transport Security)
 default['imos_apache2']['sts']['options'] = "max-age=15768000;includeSubDomains"
+
+default['apache']['mpm'] = "prefork"
