@@ -6,6 +6,7 @@ end
 
 # Logs
 error_log     = File.join(node['apache']['log_dir'], "#{@params[:name]}-error.log")
+rewrite_log   = File.join(node['apache']['log_dir'], "#{@params[:name]}-rewrite.log")
 # Have the same access log for both http and https hosts, so use the vhost which
 # will not include the '_ssl' suffix, so awstats and friends can parse it
 access_log    = File.join(node['apache']['log_dir'], "#{@params[:vhost]}-access.log")
@@ -36,17 +37,20 @@ end
     DirectoryIndex <%= @params[:directory_index] %>
     Options <%= @params[:docroot_options] || "+Indexes +FollowSymLinks" %>
     AllowOverride None
-    Require all granted
+    Order allow,deny
+    Allow from all
   </Directory>
 <% end -%>
 
 <% if @params[:content_repo] %>
   <Directorymatch "^/.*/\.git/">
-    Require all denied
+    Order deny,allow
+    Deny from all
   </Directorymatch>
 
   <FilesMatch "^README.md">
-    Require all denied
+    Order allow,deny
+    Deny from all
   </FilesMatch>
 <% end %>
 
@@ -106,7 +110,9 @@ end if @params[:proxy_pass]
 
   # Enable proxying (disabled by default)
   <Proxy *>
-    Require all granted
+    Order deny,allow
+    Deny from all
+    Allow from all
   </Proxy>
 <% end %>
 
@@ -142,6 +148,8 @@ end if @params[:proxy_pass]
 
   RewriteEngine On
   RewriteOptions inherit
+  RewriteLog <%= rewrite_log %>
+  RewriteLogLevel 0
 
 <% if @params[:rules] %>
   <% @params[:rules].each do |rule| %>

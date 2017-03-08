@@ -41,9 +41,14 @@ define :apache_for_webapp do
   # Strip domain name from vhost, so we know which certificate to use
   domain = vhost.split(".")[1..-1].join(".")
 
+  web_app_template = "webapp.conf.erb"
+  if node[:lsb]['codename'].include?("precise")
+    web_app_template = "webapp.conf.22.erb"
+  end
+
   web_app vhost do
     vhost             vhost
-    template          "webapp.conf.erb"
+    template          web_app_template
     cookbook          "imos_apache2"
     apps              apps
     app_port          tomcat_port
@@ -63,7 +68,7 @@ define :apache_for_webapp do
 
   web_app "#{vhost}_ssl" do
     vhost           vhost
-    template        "webapp.conf.erb"
+    template        web_app_template
     cookbook        "imos_apache2"
     apps            apps
     app_port        tomcat_port
