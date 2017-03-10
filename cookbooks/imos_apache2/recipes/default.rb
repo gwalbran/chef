@@ -19,3 +19,16 @@ include_recipe 'apache2'
 include_recipe 'imos_apache2::fix_awstats_conf_file'
 include_recipe 'imos_apache2::static_content'
 include_recipe 'imos_apache2::vhosts'
+
+# Disable unwanted confs on xenial
+if node[:lsb]['codename'].include?("xenial")
+  apache_config 'localized-error-pages' do
+    enable false
+  end
+  apache_config 'other-vhosts-access-log' do
+    enable false
+  end
+  apache_config 'serve-cgi-bin' do
+    enable false
+  end
+end
