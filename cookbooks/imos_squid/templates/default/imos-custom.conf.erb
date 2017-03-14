@@ -1,0 +1,10 @@
+####################################
+# IMOS specific stuff squid config #
+####################################
+httpd_suppress_version_string on
+maximum_object_size <%= node['squid']['maximum_object_size'] %> KB
+strip_query_terms off
+<% @refresh_patterns.each do |refresh_pattern| %>
+refresh_pattern <%= refresh_pattern['regex'] %> <%= refresh_pattern['min'] || node['squid']['cache_min'] %> <%= refresh_pattern['percent'] || node['squid']['cache_percent'] %> <%= refresh_pattern['max'] || node['squid']['cache_max'] %> <%= refresh_pattern['extra_opts'] || node['squid']['extra_opts'] %>
+<% end %>
+

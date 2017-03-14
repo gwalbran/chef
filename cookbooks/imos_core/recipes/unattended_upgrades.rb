@@ -9,10 +9,10 @@
 
 include_recipe "unattended_upgrades"
 
-# Override the original cookbook with our new template
-begin
-  r = resources(:template => "/etc/apt/apt.conf.d/50unattended-upgrades")
-  r.cookbook "imos_core"
-rescue Chef::Exceptions::ResourceNotFound
-  Chef::Log.warn "imos_core::unattended_upgrades could not find template to override!"
+# Add additional MOS configuration for unattended upgrades
+template node['imos_core']['unattended_upgrade_conf_file'] do
+  source '51imos-unattended-upgrades.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
 end

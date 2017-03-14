@@ -60,12 +60,28 @@ if node['webapps'] && node['webapps']['instances']
   end
 end
 
-# Override the original cookbook with our new template
-begin
-  r = resources(:template => node['squid']['config_file'])
-  r.cookbook "imos_squid"
-  r.variables[:refresh_patterns] = refresh_patterns
-  r.variables[:custom_config]    = node['squid']['custom_config']
-rescue Chef::Exceptions::ResourceNotFound
-  Chef::Log.warn "imos_squid could not find template to override!"
+# squid config include dir
+# will only create directory if config_include_dir attribute is not nil
+directory 'squid_config_include_dir' do
+  path node['squid']['config_include_dir']
+  action :create
+  recursive true
+  owner 'root'
+  mode '755'
+  only_if defined?(node['squid']['config_include_dir']).nil?
+end
+
+# custom squid config
+custom_config_file = ::File.join(node['squid']['config_include_dir'], 'imos-custom.conf')
+template custom_config_file do
+  source 'imos-custom.conf.erb'
+  notifies :reload, "service[#{node['squid']['service_name']}]"
+  mode '644'
+  variables(
+    lazy do
+      {
+        refresh_patterns: refresh_patterns
+      }
+    end
+  )
 end
