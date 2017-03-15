@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
     config.vm.network :private_network, type: "dhcp"
   end
 
-  node_file_path = ENV['VAGRANT_NODE_FILE_PATH'] || 'nodes'
+  node_file_path = 'nodes'
   chef_log_level = ENV.fetch("CHEF_LOG", "info").downcase.to_sym
 
   node_file_extension = '.json'
