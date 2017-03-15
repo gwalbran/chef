@@ -3,4 +3,5 @@
 
 <% Apache2::Listen.merge_listen_attributes(node).each do |addr| -%>
 Listen <%= addr %>
+NameVirtualHost <%= addr %>
 <% end -%>
