@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "apache2::mod_php5"
+include_recipe "apache2::mod_php"
 
 node['imos_apache2']['php']['packages'].each do |php_package|
   package php_package do

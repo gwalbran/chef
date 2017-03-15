@@ -1,0 +1,180 @@
+<%
+main_app_path = nil
+if @params[:apps] && @params[:apps].any?  && !@params[:apps].detect {|p| p[:is_default_app] == 'true'}
+  main_app_path = @params[:apps].first[:name]
+end
+
+# Logs
+error_log     = File.join(node['apache']['log_dir'], "#{@params[:name]}-error.log")
+rewrite_log   = File.join(node['apache']['log_dir'], "#{@params[:name]}-rewrite.log")
+# Have the same access log for both http and https hosts, so use the vhost which
+# will not include the '_ssl' suffix, so awstats and friends can parse it
+access_log    = File.join(node['apache']['log_dir'], "#{@params[:vhost]}-access.log")
+
+if @params[:https]
+  protocol = "https"
+  port     = 443
+else
+  protocol = "http"
+  port     = 80
+end
+%>
+
+# HTTP vhost
+<VirtualHost *:<%= port %>>
+<% if @params[:server_admin] %>
+  ServerAdmin <%= @params[:server_admin] %>
+<% end %>
+  ServerName <%= @params[:vhost] %>
+<% if @params[:server_aliases] %>
+  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
+<% end %>
+
+<% if @params[:docroot] %>
+  DocumentRoot <%= @params[:docroot] %>
+
+  <Directory <%= @params[:docroot] %>>
+    DirectoryIndex <%= @params[:directory_index] %>
+    Options <%= @params[:docroot_options] || "+Indexes +FollowSymLinks" %>
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+<% end -%>
+
+<% if @params[:content_repo] %>
+  <Directorymatch "^/.*/\.git/">
+    Order deny,allow
+    Deny from all
+  </Directorymatch>
+
+  <FilesMatch "^README.md">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+<% end %>
+
+<%
+if @params[:cached]
+  @params[:apps].each do |app|
+    app_name = app[:name]
+%>
+  ProxyRemote http://localhost:<%= @params[:app_port] %>/<%= app_name %> http://localhost:3128
+<%
+  end if @params[:apps]
+end
+-%>
+
+  TraceEnable off
+  LogLevel info
+  ErrorLog <%= error_log %>
+  CustomLog <%= access_log %> combined
+
+<% if main_app_path %>
+  # redirects, use first app for that
+  RewriteRule ^/index.html$ <%= protocol %>://<%= @params[:vhost] %>/<%= main_app_path %>
+  RewriteRule ^/$ <%= protocol %>://<%= @params[:vhost] %>/<%= main_app_path %>
+<% end %>
+
+<% if @params[:redirects] %>
+  # http redirects
+  <% @params[:redirects].each do |redirect_pair|
+       redirect_to = redirect_pair['to']
+       redirect_from = redirect_pair['from']
+  %>
+  RewriteRule ^/<%= redirect_from %>$ http://<%= @params[:vhost] %>/<%= redirect_to %>
+  <% end %>
+<% end %>
+
+<%
+proxied_apps = []
+@params[:apps].each do |app|
+
+  app_name = app[:name]
+  aliases  = app[:aliases]
+  is_default_app = app[:is_default_app] ? app[:is_default_app] : 'false'
+  proxy_exclusions = @params[:proxy_exclusions] ? @params[:proxy_exclusions] : []
+  proxied_apps << [ app_name, @params[:app_port], aliases, is_default_app, proxy_exclusions ]
+end if @params[:apps]
+
+@params[:proxy_pass].each do |proxy_pair|
+   app_name = proxy_pair['from']
+   app_port = proxy_pair['to_port']
+   proxied_apps << [ app_name, app_port, [] ]
+end if @params[:proxy_pass]
+%>
+
+<% if ! proxied_apps.empty? %>
+  # proxy and reverse proxy handling
+  ProxyPreserveHost On
+
+  # Enable proxying (disabled by default)
+  <Proxy *>
+    Order deny,allow
+    Deny from all
+    Allow from all
+  </Proxy>
+<% end %>
+
+<% proxied_apps.each do |proxied_app|
+     app_name    = proxied_app[0]
+     app_port    = proxied_app[1]
+     app_aliases = proxied_app[2]
+     is_default_app = proxied_app[3]
+     proxy_exclusions = proxied_app[4]
+
+     # set URL paths to either / or /app_name depending on is_default_app flag
+     is_default_app == 'true' ? app_path = '' : app_path = "#{app_name}"
+
+     # generate a proxy exclusion line for each exception in the list
+     proxy_exclusions.each do |exclusion| %>
+  ProxyPassMatch      <%= exclusion %> !
+     <% end if proxy_exclusions %>
+  ProxyPass           /<%= app_path %> http://localhost:<%= app_port %>/<%= app_path %> retry=0
+  ProxyPassReverse    /<%= app_path %> http://localhost:<%= app_port %>/<%= app_path %>
+
+  # take care of extra aliases per app
+  # forward all aliases to /name
+<%   app_aliases.each do |_alias| %>
+  RewriteRule ^/<%= _alias %>/*$ http://%{HTTP_HOST}/<%= app_path %>
+<%   end if app_aliases -%>
+<% end %>
+
+<% if @params[:full_config] && @params[:full_config][:deny_robots] %>
+  Alias /robots.txt <%= node['imos_apache2']['static_dir'] %>/robots.txt
+<% elsif main_app_path %>
+  Redirect /robots.txt /<%= main_app_path %>/robots.txt
+<% end %>
+
+  RewriteEngine On
+  RewriteOptions inherit
+  RewriteLog <%= rewrite_log %>
+  RewriteLogLevel 0
+
+<% if @params[:rules] %>
+  <% @params[:rules].each do |rule| %>
+  <%= rule %>
+  <% end %>
+<% end %>
+
+<% if @params[:redirect_to_https] %>
+  RewriteCond %{SERVER_PORT} !^443$
+  RewriteRule ^/(.*) https://%{HTTP_HOST}/$1 [NC,NE,R,L]
+<% end %>
+
+<% if protocol && protocol == "https" %>
+  SSLEngine On
+  SSLCertificateFile /etc/ssl/certs/<%= @params[:domain] %>.crt
+  SSLCertificateKeyFile /etc/ssl/private/<%= @params[:domain] %>.key
+  SSLCertificateChainFile /etc/ssl/certs/<%= @params[:domain] %>.chain.crt
+  <% if @params[:sts]
+       sts_options = node['imos_apache2']['sts']['options']
+       if @params[:sts].kind_of? Hash and @params[:sts][:options]
+         sts_options = @params[:sts][:options]
+       end
+  %>
+  Header add Strict-Transport-Security "<%= sts_options %>"
+  <% end %>
+<% end %>
+
+</VirtualHost>

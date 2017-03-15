@@ -29,8 +29,8 @@ cookbook_file "/etc/apache2/conf.d/awstats" do
 end
 
 cookbook_file ::File.join(node['apache']['dir'], "conf-enabled", "awstats.conf") do
-  source   "awstats"
-  cookbook "awstats"
+  source   "awstats.conf"
+  cookbook "imos_apache2"
   owner    "root"
   group    "root"
   mode     00644

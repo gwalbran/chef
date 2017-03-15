@@ -1,6 +1,5 @@
 source 'https://supermarket.chef.io'
 
-cookbook 'apache2'
 cookbook 'application', '= 4.1.6' # pinned for Chef 12.3.0 compatibility
 cookbook 'application_ruby'
 cookbook 'apt'
@@ -39,6 +38,7 @@ cookbook 'vsftpd'
 cookbook 'windows'
 cookbook 'xvfb'
 
+cookbook 'apache2', :path=> 'cookbooks/apache2-cookbook' # Forked GitHub version required due to mod_php 7 support being "in progress" upstream
 cookbook 'backup', :path => 'cookbooks/backup-cookbook'
 cookbook 'git_ssh_wrapper', :path => 'cookbooks/chef-git_ssh_wrapper'
 cookbook 'imos_apache2', :path => 'cookbooks/imos_apache2'

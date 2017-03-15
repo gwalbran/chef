@@ -1,5 +1,6 @@
 DEPENDENCIES
   apache2
+    path: cookbooks/apache2-cookbook
   application (= 4.1.6)
   application_ruby
   apt
@@ -99,9 +100,7 @@ DEPENDENCIES
   xvfb
 
 GRAPH
-  apache2 (3.0.1)
-    iptables (>= 0.0.0)
-    logrotate (>= 0.0.0)
+  apache2 (3.2.2)
   application (4.1.6)
   application_ruby (1.0.8)
     apache2 (>= 0.0.0)
@@ -153,7 +152,7 @@ GRAPH
   iis (5.0.5)
     windows (>= 1.34.6)
   imos_apache2 (0.1.0)
-    apache2 (~> 3.0.0)
+    apache2 (>= 0.0.0)
     awstats (>= 0.0.0)
     logrotate (>= 0.0.0)
   imos_artifacts (1.0.0)
@@ -252,8 +251,6 @@ GRAPH
     git (>= 0.0.0)
     imos_apache2 (>= 0.0.0)
     imos_core (>= 0.0.0)
-  iptables (3.1.0)
-    compat_resource (>= 12.14.3)
   java (1.47.0)
     apt (>= 0.0.0)
     homebrew (>= 0.0.0)

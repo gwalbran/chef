@@ -9,4 +9,4 @@ version          '0.1.0'
 %w{ awstats logrotate }.each do |cookbook|
   depends cookbook
 end
-depends "apache2", "~> 3.0.0"
+depends "apache2"
