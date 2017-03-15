@@ -223,8 +223,15 @@ file ::File.join(node['rsyslog']['config_prefix'], "rsyslog.d", "60-project-offi
   notifies :restart, "service[#{node['rsyslog']['service_name']}]"
 end
 
+# create process.log file owned by syslog (since rsyslogd no longer runs as root on Ubuntu 16.04)
+file log_file do
+  owner node['rsyslog']['user']
+  group po_group
+  mode '0644'
+end
+
 logrotate_app "project-officer-processing" do
-  create     "644 #{po_user} #{po_group}"
+  create     "644 #{node['rsyslog']['user']} #{po_group}"
   path       log_file
   frequency  'daily'
   options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
@@ -232,7 +239,7 @@ logrotate_app "project-officer-processing" do
 end
 
 logrotate_app "project-officer-processing-file-reports" do
-  create     "644 #{po_user} #{po_group}"
+  create     "664 #{node['rsyslog']['user']} #{po_group}"
   path       ::File.join(log_dir, "*", "*.log")
   frequency  'daily'
   options    [ "compress", "delaycompress", "missingok", "sharedscripts" ]
