@@ -5,13 +5,13 @@ default['imos_devel']['talend']['user'] = "root"
 
 default['imos_devel']['talend']['packages'] = [
     {
-        "source_url" => "http://binary.aodn.org.au/static/talend/TOS_DI-r96646-V5.1.3.zip",
+        "source_url" => "https://s3-ap-southeast-2.amazonaws.com/imos-binary/static/talend/TOS_DI-r96646-V5.1.3.zip",
         "unzip_filter" => "TOS_DI-r96646-V5.1.3/*",
         "install_to" => "",
         "unzip" => true
     },
     {
-        "source_url" => "http://binary.aodn.org.au/static/talend/TOS-Spatial-5.4.1.zip",
+        "source_url" => "https://s3-ap-southeast-2.amazonaws.com/imos-binary/static/talend/TOS-Spatial-5.4.1.zip",
         "unzip_filter" => "TOS-Spatial-5.4.1/plugins/*",
         "install_to" => "plugins",
         "unzip" => true
@@ -21,7 +21,7 @@ default['imos_devel']['talend']['packages'] = [
         "install_to" => "plugins"
     },
     {
-        "source_url" => "http://binary.aodn.org.au/static/talend/stels_mdb_pack.zip",
+        "source_url" => "https://s3-ap-southeast-2.amazonaws.com/imos-binary/static/talend/stels_mdb_pack.zip",
         "unzip_filter" => "mdbdriver/*.jar",
         "install_to" => "lib/java",
         "unzip" => true

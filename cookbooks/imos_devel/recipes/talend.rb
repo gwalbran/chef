@@ -16,7 +16,6 @@ def install_talend_pkg(pkg_desc)
   remote_file talend_pkg_cache_file do
     source   pkg_desc['source_url']
     mode     0644
-    action   :create_if_missing
     notifies :run, "execute[deploy_talend_pkg_#{talend_pkg_basename}]", :immediately
   end
 
