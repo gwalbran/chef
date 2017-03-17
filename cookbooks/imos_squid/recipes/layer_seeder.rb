@@ -16,6 +16,8 @@ package     ruby_pkg
 package     'ruby-nokogiri'
 gem_package 'trollop'
 
+package 'squidclient'
+
 # Download geoserver_seeder.rb from utilities repo
 %w{ geoserver_seeder.rb }.each do |file|
   remote_file "/usr/local/bin/#{file}" do
