@@ -84,6 +84,7 @@ DEPENDENCIES
     path: cookbooks/s3fs-fuse
   smf
   squid
+    path: forked_cookbooks/squid
   ssl
   sudo
   supervisor
@@ -356,14 +357,11 @@ GRAPH
     yum-epel (>= 0.0.0)
   s3fs-fuse (0.1.4)
     rc_mon (>= 0.0.0)
-  selinux_policy (1.0.0)
-    yum (~> 3.9)
   seven_zip (2.0.2)
     windows (>= 1.2.2)
   smf (2.2.8)
     rbac (>= 1.0.1)
-  squid (3.0.0)
-    selinux_policy (1.0.0)
+  squid (3.1.0)
   ssl (1.1.1)
   sudo (3.3.1)
   supervisor (0.4.12)
