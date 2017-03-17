@@ -11,4 +11,5 @@ default['squid']['cache_min']     = 60
 default['squid']['cache_percent'] = "100%"
 default['squid']['cache_max']     = 60
 default['squid']['extra_opts']    = ""
+
 default['squid']['config_include_dir'] = '/etc/squid/conf.d'

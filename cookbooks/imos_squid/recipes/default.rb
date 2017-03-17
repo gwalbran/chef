@@ -75,13 +75,17 @@ end
 custom_config_file = ::File.join(node['squid']['config_include_dir'], 'imos-custom.conf')
 template custom_config_file do
   source 'imos-custom.conf.erb'
-  notifies :reload, "service[#{node['squid']['service_name']}]"
+  notifies :reload, "service[#{squid_service_name}]"
   mode '644'
   variables(
-    lazy do
-      {
-        refresh_patterns: refresh_patterns
-      }
-    end
+      refresh_patterns: refresh_patterns
   )
+end
+
+# Override the original cookbook with our new template
+begin
+  r = resources(:template => node['squid']['config_file'])
+  r.cookbook "imos_squid"
+rescue Chef::Exceptions::ResourceNotFound
+  Chef::Log.warn "imos_squid could not find template to override!"
 end
