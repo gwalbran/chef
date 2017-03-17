@@ -1,0 +1,14 @@
+#!/usr/bin/ruby
+
+class Geowebcache
+
+  attr_reader :url
+  attr_reader :username
+  attr_reader :password
+
+  def initialize()
+    @url = "http://geowebcache-dev-geowebcache.ap-southeast-2.elasticbeanstalk.com/geowebcache"
+    @username = "geowebcache"
+    @password = "password"
+  end
+end
