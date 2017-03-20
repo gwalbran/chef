@@ -7,7 +7,6 @@
     },
     "event": {
         "regex": [
-            "^IMOS/ABOS/.*/Velocity/.*FV01.*\\.nc$",
             "^IMOS/ABOS/.*/Temperature/.*FV01.*\\.nc$",
             "^IMOS/ABOS/.*/CTD_timeseries/.*FV01.*\\.nc$",
             "^IMOS/ABOS/.*/Biogeochem_timeseries/.*FV01.*\\.nc$",
