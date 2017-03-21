@@ -25,6 +25,7 @@ default[:imos_postgresql][:config] = {
 default[:imos_postgresql][:hba] = [
   {:type => 'hostssl', :db => 'all', :user => 'postgres', :addr => '0.0.0.0/0', :method => 'reject' },
   {:type => 'local', :db => 'all', :user => 'postgres', :addr => nil, :method => 'peer'},
+  {:type => 'hostssl', :db => 'all', :user => 'all', :addr => '::1/128', :method => 'md5'},
   {:type => 'hostssl', :db => 'all', :user => 'all', :addr => '0.0.0.0/0', :method => 'md5'},
 ]
 
