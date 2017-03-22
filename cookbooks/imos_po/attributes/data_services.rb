@@ -60,6 +60,7 @@ default['imos_po']['data_services']['packages'] = [
   'libnetcdf-dev',
   'libproj-dev', # For Python/GDAL
   'mdbtools',
+  'netcdf-bin',
   'p7zip',
   'python-beautifulsoup',
   'python-boto',
