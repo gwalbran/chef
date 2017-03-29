@@ -27,7 +27,7 @@
         "recipe[poise-python]",
         "recipe[git]",
         "recipe[ntp]",
-        "recipe[timezone-ii]",
+        "recipe[timezone_lwrp]",
         "recipe[imos_core::locale]",
         "recipe[imos_core::email_forward]",
         "recipe[imos_core::environment]",
