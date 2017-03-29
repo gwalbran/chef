@@ -20,7 +20,7 @@ nagios_nrpecheck "check_disks" do
   command "#{node['nagios']['plugin_dir']}/check_disk"
   warning_condition "8%"
   critical_condition "5%"
-  parameters "-A -x /dev/shm -X nfs -X fuse.sshfs -i /boot"
+  parameters "-A -x /dev/shm -X nfs -X fuse.sshfs -X tracefs -i /boot"
   action :add
 end
 
