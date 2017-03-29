@@ -91,7 +91,7 @@ DEPENDENCIES
   sysctl
   talend
     path: cookbooks/talend
-  timezone-ii
+  timezone_lwrp
   tomcat
     path: cookbooks/tomcat
   unattended_upgrades
@@ -372,7 +372,7 @@ GRAPH
     imos_artifacts (>= 0.0.0)
     imos_java (>= 0.0.0)
     imos_task_spooler (>= 0.0.0)
-  timezone-ii (0.2.0)
+  timezone_lwrp (0.1.10)
   tomcat (0.12.0)
     imos_java (>= 0.0.0)
     logrotate (>= 0.0.0)
