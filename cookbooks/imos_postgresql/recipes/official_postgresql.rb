@@ -17,6 +17,15 @@
 # limitations under the License.
 #
 
+# Required for Postgres versions prior to 9.6 running under systemd
+# Ref: https://wiki.postgresql.org/wiki/Systemd
+if node['init_package'].eql?('systemd')
+  include_recipe 'systemd'
+  systemd_logind 'postgres-removeipc-fix' do
+    remove_ipc false
+  end
+end
+
 # Repositories
 apt_repository 'official_postgres' do
   uri 'http://apt.postgresql.org/pub/repos/apt/'

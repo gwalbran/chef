@@ -89,6 +89,7 @@ DEPENDENCIES
   sudo
   supervisor
   sysctl
+  systemd
   talend
     path: cookbooks/talend
   timezone_lwrp
@@ -223,6 +224,7 @@ GRAPH
     postfix (>= 0.0.0)
   imos_postgresql (0.2.0)
     backup (>= 0.0.0)
+    systemd (>= 0.0.0)
   imos_rsync (0.1.0)
     imos_po (>= 0.0.0)
     logrotate (>= 0.0.0)
@@ -368,6 +370,7 @@ GRAPH
     python (>= 0.0.0)
   sysctl (0.8.1)
     ohai (>= 4.0)
+  systemd (2.1.3)
   talend (1.0.0)
     imos_artifacts (>= 0.0.0)
     imos_java (>= 0.0.0)
