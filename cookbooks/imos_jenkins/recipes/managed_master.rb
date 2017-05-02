@@ -57,6 +57,17 @@ end
    environment ({"GIT_SSH" => "#{ssh_wrapper}"})
  end
 
+git_config_email = node['imos_jenkins']['scm_email']
+git_config_user = node['imos_jenkins']['scm_user']
+
+execute 'init_git_global_conf' do
+  command %{git config --global user.email "#{git_config_email}" ; git config --global user.name "#{git_config_user}"}
+  cwd jenkins_home
+  user node['imos_jenkins']['user']
+  group node['imos_jenkins']['group']
+  environment ({"HOME" => "#{jenkins_home}"})
+end
+
 # AWS passwords
 envvars = {}
 

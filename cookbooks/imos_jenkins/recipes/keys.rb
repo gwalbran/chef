@@ -1,10 +1,8 @@
 Chef::Recipe::JenkinsHelper.authenticate node
 
-if Chef::Config['dev']
-  deploy_key = Chef::EncryptedDataBagItem.load("deploy_keys", "github_ci_config_write")['ssh_priv_key']
-else
-  deploy_key = Chef::EncryptedDataBagItem.load("deploy_keys", "github_ci_config")['ssh_priv_key']
-end
+key_databag = Chef::Config['dev'] ? "github_ci_config_write" : "github_ci_config"
+deploy_key = Chef::EncryptedDataBagItem.load("deploy_keys", key_databag)['ssh_priv_key']
+
 git_ssh_wrapper "git" do
   owner        node['imos_jenkins']['user']
   group        node['imos_jenkins']['group']
@@ -20,11 +18,7 @@ directory jenkins_ssh_dir do
 end
 
 # Copy the private key (mock if in development mode)
-if Chef::Config['dev']
-  jenkins_ssh_key = 'MOCKED SSH KEY'
-else
-  jenkins_ssh_key = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])['ssh_priv_key']
-end
+jenkins_ssh_key = Chef::Config['dev'] ? 'MOCKED SSH KEY' : Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])['ssh_priv_key']
 
 file ::File.join(node['jenkins']['master']['home'], '.ssh/id_rsa') do
   content jenkins_ssh_key
