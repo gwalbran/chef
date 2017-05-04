@@ -1,0 +1,57 @@
+{
+  "variables": {
+    "region": "ap-southeast-2",
+    "instance_type": "t2.small",
+    "source_ami": "ami-4e686b2d",
+    "ami_name": "xenial-server-amd64",
+    "version": "0.0",
+    "chef_version": "12.3.0",
+    "ssh_username": "ubuntu"
+  },
+  "builders": [
+    {
+      "access_key": "{{user `access_key`}}",
+      "secret_key": "{{user `secret_key`}}",
+      "type": "amazon-ebs",
+      "region": "{{user `region`}}",
+      "instance_type": "{{user `instance_type`}}",
+      "source_ami": "{{user `source_ami`}}",
+      "ami_name": "{{user `ami_name`}} {{user `version`}} {{timestamp}}",
+      "ami_description": "{{user `ami_name`}} {{user `version`}} {{timestamp}}",
+      "tags": {
+          "Name": "{{user `ami_name`}} {{user `version`}} {{timestamp}}"
+      },
+      "ssh_username": "{{user `ssh_username`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "sudo {{.Vars}} -S sh '{{.Path}}'",
+      "scripts": [
+        "scripts/imos.sh",
+        "scripts/aws.sh",
+        "scripts/chef-omnibus.sh"
+      ],
+      "environment_vars": [
+        "SSH_USERNAME={{user `ssh_username`}}",
+        "SSH_KEY={{user `ssh_key`}}",
+        "CHEF_VERSION={{user `chef_version`}}"
+      ]
+    },
+    {
+      "type": "chef-solo",
+      "cookbook_paths": [
+        "cookbooks1",
+        "cookbooks2"
+      ],
+      "data_bags_path": "../data_bags",
+      "roles_path": "../roles",
+      "run_list": [
+        "role[base]",
+        "recipe[imos_java]"
+      ],
+      "skip_install": true
+    }
+  ]
+}
