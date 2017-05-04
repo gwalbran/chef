@@ -66,25 +66,27 @@ define :apache_for_webapp do
     directory_index   directory_index
   end
 
-  web_app "#{vhost}_ssl" do
-    vhost           vhost
-    template        web_app_template
-    cookbook        "imos_apache2"
-    apps            apps
-    app_port        tomcat_port
-    server_aliases  server_aliases
-    cached          cached
-    redirects       redirects
-    https           true
-    sts             sts
-    domain          domain
-    rules           rules
-    full_config     full_config
-    proxy_exclusions proxy_exclusions
-    proxy_pass      proxy_pass
-    docroot         docroot
-    content_repo    content_repo
-    directory_index directory_index
+  if https
+    web_app "#{vhost}_ssl" do
+      vhost           vhost
+      template        web_app_template
+      cookbook        "imos_apache2"
+      apps            apps
+      app_port        tomcat_port
+      server_aliases  server_aliases
+      cached          cached
+      redirects       redirects
+      https           true
+      sts             sts
+      domain          domain
+      rules           rules
+      full_config     full_config
+      proxy_exclusions proxy_exclusions
+      proxy_pass      proxy_pass
+      docroot         docroot
+      content_repo    content_repo
+      directory_index directory_index
+    end
   end
 
   # Setup awstats
