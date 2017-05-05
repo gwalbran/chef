@@ -150,6 +150,12 @@
                prefix="localhost_access_log." suffix=".txt"
                pattern="%h %l %u %t &quot;%r&quot; %s %b" />
         -->
+
+        <Valve className="org.apache.catalina.valves.RemoteIpValve"
+           internalProxies="127\.0\.0\.1|0:0:0:0:0:0:0:1|::1"
+           remoteIpHeader="x-forwarded-for"
+        />
+
       </Host>
     </Engine>
   </Service>
