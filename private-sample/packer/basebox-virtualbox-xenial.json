@@ -79,7 +79,6 @@
         }
       },
       "scripts": [
-        "scripts/imos.sh",
         "scripts/virtualbox.sh",
         "scripts/chef-omnibus.sh"
       ],
