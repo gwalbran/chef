@@ -48,6 +48,6 @@ nagios_conf "aggregated" do
 end
 
 # Finally, we'll need ruby for check_nagios_monitors plugin, so...
-package     'ruby1.9.1'
+package     'ruby'
 package     'ruby-nokogiri'
 gem_package 'trollop'
