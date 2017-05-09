@@ -368,13 +368,6 @@ template "#{node['nagios']['nsca']['conf_dir']}/nsca.cfg" do
   variables(:nsca_password => nsca_password)
 end
 
-# Since we're using (at IMOS) check_tcp for check-host-alive, we'll
-# need to alter the check-host-alive.php template for pnp4nagios
-# so it'll actually show a nice graph
-link "#{node['nagios']['server']['pnp4nagios_dir']}/templates.dist/check-host-alive.php" do
-  to "check_tcp.php"
-end
-
 # Add the NRPE check to monitor the Nagios server
 nagios_nrpecheck "check_nagios" do
   command "#{node['nagios']['plugin_dir']}/check_nagios"
@@ -401,6 +394,5 @@ end
 # IMOS recipes!
 include_recipe "nagios::imos_sql"
 include_recipe "nagios::imos_aggregated"
-include_recipe "nagios::imos_pnp4nagios"
 
 package 'curl'

@@ -42,7 +42,7 @@ define service {
   check_command check_http!<%= vhost_name %>!<%= vhost_port %>!<%= vhost_uri %>!<%= vhost_extra_options %>
   host_name <%= host_name %>
   servicegroups apache
-  use default-service-pnp
+  use default-service
 }
 <%
       end
@@ -69,7 +69,7 @@ define service {
   check_command check_http!<%= vhost_name %>!<%= vhost_port %>!<%= vhost_uri %>
   host_name <%= host_name %>
   servicegroups apache
-  use default-service-pnp
+  use default-service
 }
 <%
     end

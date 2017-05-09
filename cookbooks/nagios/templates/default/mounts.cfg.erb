@@ -20,7 +20,7 @@ define service {
   check_command check_disk_<%= mount_point_normalized %>
   host_name <%= host_name %>
   servicegroups system
-  use default-service-pnp
+  use default-service
 }
 <%
         # collect all ports, so we can define commands

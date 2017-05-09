@@ -19,21 +19,6 @@
   Alias /nagios3/stylesheets /etc/nagios3/stylesheets
   Alias /nagios3 <%= node['nagios']['docroot'] %>
 
-  # pnp4nagios configuration
-  Alias /pnp4nagios <%= node['nagios']['server']['pnp4nagios_dir'] %>
-  <Directory "<%= node['nagios']['server']['pnp4nagios_dir'] %>">
-    AllowOverride None
-    Order allow,deny
-    Allow from all
-    RewriteEngine On
-    Options FollowSymLinks
-    RewriteBase /pnp4nagios/
-    RewriteRule ^(application|modules|system) - [F,L]
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule .* index.php/$0 [PT,L]
-  </Directory>
-
   <% if @https -%>
   SSLEngine On
   SSLCertificateFile <%= @ssl_cert_file %>
