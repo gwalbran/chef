@@ -39,6 +39,9 @@ define :geoserver do
   if app_parameters['data_bag']
     # Load given data bag for instance
     geoserver_data_bag = Chef::DataBagItem.load("geoserver", app_parameters['data_bag']).to_hash
+    require 'securerandom'
+    temp_file_name = SecureRandom.uuid
+    auto_commit_msg = 'Automatic commit to trigger SCM update of local files'
 
     git_depth = geoserver_data_bag['git_deep_clone'] ? nil : 1
 
@@ -48,8 +51,37 @@ define :geoserver do
       depth      git_depth
       action     :sync
       notifies   :create, "ruby_block[#{data_dir}_geoserver_injected_variables]", :immediately
+      notifies   :create, "file[#{data_dir}_create_temp]", :immediately
       user       geoserver_data_bag['git_user']   || node['tomcat']['user']
       group      geoserver_data_bag['git_group']  || node['tomcat']['user']
+    end
+
+    # HACK: this is to make sure that locally modified files get overwritten by Chef.
+    # Behaviour in git cookbook means that sync action does not do this by default.
+    # The sync action simply compares the SHA of the local HEAD commit with the remote HEAD - y u do dis
+    file "#{data_dir}_create_temp" do
+      path File.join(data_dir, temp_file_name)
+      notifies :run, "execute[#{data_dir}_git_add]", :immediately
+      user geoserver_data_bag['git_user']
+      group geoserver_data_bag['git_group']
+      action :nothing
+    end
+
+    execute "#{data_dir}_git_add" do
+      command "git add #{temp_file_name}"
+      cwd data_dir
+      user geoserver_data_bag['git_user']
+      group geoserver_data_bag['git_group']
+      notifies :run, "execute[#{data_dir}_git_commit]", :immediately
+      action :nothing
+    end
+
+    execute "#{data_dir}_git_commit" do
+      command "git commit -m \"#{auto_commit_msg}\""
+      cwd data_dir
+      user geoserver_data_bag['git_user']
+      group geoserver_data_bag['git_group']
+      action :nothing
     end
 
     # Inject proxyBaseUrl to global.xml at /global/settings/proxyBaseUrl
