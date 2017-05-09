@@ -38,8 +38,6 @@ else
   default['nagios']['server']['service_name']   = 'nagios'
   default['nagios']['server']['mail_command']   = '/bin/mail'
 end
-default['nagios']['server']['pnp4nagios_dir']       = '/usr/share/pnp4nagios/html'
-default['nagios']['server']['pnp4nagios_local_dir'] = '/etc/pnp4nagios'
 
 # Used for DNS checks
 default['nagios']['server']['dns_server']   = '8.8.8.8'

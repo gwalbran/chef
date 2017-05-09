@@ -24,7 +24,7 @@ define service {
   check_command check_tomcat_<%= app_tomcat_port %>
   host_name <%= host_name %>
   servicegroups tomcat
-  use default-service-pnp
+  use default-service
 <% if webapp_instance['nagios_restart_handler'] %>
   event_handler restart_tomcat_<%= app_tomcat_port %>
 <% end %>
@@ -35,7 +35,7 @@ define service {
   check_command check_jmx_heap_mem_usage_<%= app_tomcat_port %>
   host_name <%= host_name %>
   servicegroups tomcat
-  use default-service-pnp
+  use default-service
 }
 
 
@@ -73,7 +73,7 @@ define service {
   service_description <%= monitor_name %> apache <%= app_vhost %>:<%= port %>/<% monitored_url[0..15] %>
   check_command check_http!<%= app_vhost %>!<%= port %>!/<%= monitored_url %>!<%= extra_opts %>
   host_name <%= host_name %>
-  use default-service-pnp
+  use default-service
   servicegroups http
 }
 <%

@@ -10,7 +10,7 @@ define service {
   check_command check_nagios_monitors!"<%= agg_monitor[:url] %>"!"<%= @nagios_username %>"!"<%= @nagios_password %>"!<%= agg_monitor[:monitors] %>
   host_name aggregated-monitors-pseudo-host
   servicegroups aggregated
-  use default-service-pnp
+  use default-service
 }
 <%
 end
@@ -18,7 +18,7 @@ end
 
 # Pseudo host for aggregated monitors
 define host {
-  use server-pnp
+  use server
   address 127.0.0.1
   host_name aggregated-monitors-pseudo-host
   hostgroups all

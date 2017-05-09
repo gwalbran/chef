@@ -60,7 +60,7 @@ end
 
 # Pseudo host for unmanaged DNS records, just a host to attach the checks to...
 define host {
-  use server-pnp
+  use server
   address 127.0.0.1
   host_name unmanaged-dns-pseudo-host
   hostgroups all
