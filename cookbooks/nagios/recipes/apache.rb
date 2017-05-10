@@ -48,4 +48,4 @@ file "#{node['apache']['dir']}/conf.d/nagios3.conf" do
   action :delete
 end
 
-apache_site "nagios3.conf"
+apache_site "nagios3"
