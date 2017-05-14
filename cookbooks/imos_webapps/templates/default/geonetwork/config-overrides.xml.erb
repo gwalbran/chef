@@ -18,12 +18,12 @@
 
     <file name=".*WEB-INF/config-gui\.xml">
         <replaceXML xpath="mapSearch/layers">
-            <layer server="<%= geoserver_url %>/wms" tocName="Borders"  params="{layers: 'gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline', transparent: 'true', format: 'image/png'}"  options="{}" />
-            <layer server="<%= geoserver_url %>/wms" tocName="Ortophoto" params="{layers: 'gn:world', format: 'image/jpeg'}" options="{isBaseLayer: true}" />
+            <layer server="http://geoserver-static.aodn.org.au/geoserver/wms" tocName="Borders"  params="{layers: 'gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline', transparent: 'true', format: 'image/png'}"  options="{}" />
+            <layer server="http://geoserver-static.aodn.org.au/geoserver/wms" tocName="Ortophoto" params="{layers: 'gn:world', format: 'image/jpeg'}" options="{isBaseLayer: true}" />
         </replaceXML>
         <replaceXML xpath="mapViewer/layers">
-            <layer server="<%= geoserver_url %>/wms" tocName="Borders"  params="{layers: 'gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline', transparent: 'true', format: 'image/png'}"  options="{}" />
-            <layer server="<%= geoserver_url %>/wms" tocName="Ortophoto" params="{layers: 'gn:world', format: 'image/jpeg'}" options="{isBaseLayer: true}" />
+            <layer server="http://geoserver-static.aodn.org.au/geoserver/wms" tocName="Borders"  params="{layers: 'gn:ne_50m_boundary_da,gn:ne_50m_boundary_lines_land,gn:ne_50m_coastline', transparent: 'true', format: 'image/png'}"  options="{}" />
+            <layer server="http://geoserver-static.aodn.org.au/geoserver/wms" tocName="Ortophoto" params="{layers: 'gn:world', format: 'image/jpeg'}" options="{isBaseLayer: true}" />
         </replaceXML>
     </file>
 
