@@ -1,0 +1,8 @@
+{
+    "id": "aodn_instrument",
+    "key": "external.theme.aodn_aodn-instrument-vocabulary",
+    "url": "http://vocabs.ands.org.au/repository/api/download/905/aodn_aodn-instrument-vocabulary_version-2-0.rdf",
+    "dir": "theme",
+    "type": "external",
+    "mode": "file"
+}

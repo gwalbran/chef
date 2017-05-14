@@ -1,0 +1,8 @@
+{
+    "id": "aodn_organisation-category",
+    "key": "external.theme.aodn_aodn-organisation-category-vocabulary",
+    "url": "http://vocabs.ands.org.au/repository/api/download/477/aodn_aodn-organisation-category-vocabulary_version-1-5.rdf",
+    "dir": "theme",
+    "type": "external",
+    "mode": "file"
+}

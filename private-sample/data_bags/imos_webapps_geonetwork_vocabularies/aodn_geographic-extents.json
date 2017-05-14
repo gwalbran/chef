@@ -1,0 +1,8 @@
+{
+    "id": "aodn_geographic-extents",
+    "key": "external.theme.aodn_aodn-geographic-extents-vocabulary",
+    "url": "http://vocabs.ands.org.au/repository/api/download/397/aodn_aodn-geographic-extents-vocabulary_version-1-0.rdf",
+    "dir": "theme",
+    "type": "external",
+    "mode": "file"
+}

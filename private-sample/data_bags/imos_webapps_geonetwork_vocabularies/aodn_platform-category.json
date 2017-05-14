@@ -1,0 +1,8 @@
+{
+    "id": "aodn_platform-category",
+    "key": "external.theme.aodn_aodn-platform-category-vocabulary",
+    "url": "http://vocabs.ands.org.au/repository/api/download/112/aodn_aodn-platform-category-vocabulary_version-1-0.rdf",
+    "dir": "theme",
+    "type": "external",
+    "mode": "file"
+}

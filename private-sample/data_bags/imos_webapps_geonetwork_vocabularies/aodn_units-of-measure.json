@@ -1,0 +1,8 @@
+{
+    "id": "aodn_units-of-measure",
+    "key": "external.theme.aodn_aodn-units-of-measure-vocabulary",
+    "url": "http://vocabs.ands.org.au/repository/api/download/85/aodn_aodn-units-of-measure-vocabulary_version-1-0.rdf",
+    "dir": "theme",
+    "type": "external",
+    "mode": "file"
+}
