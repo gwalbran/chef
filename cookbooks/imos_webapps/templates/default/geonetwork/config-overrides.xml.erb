@@ -78,19 +78,19 @@
             </resource>
         </replaceXML>
 
-<% if @custom_parameters['link_monitor'] && @custom_parameters['link_monitor']['enabled'] != false %>
+<% if @custom_parameters['online_resource_monitor'] && @custom_parameters['online_resource_monitor']['enabled'] != false %>
         <addXML xpath="appHandler" attName="class" value="org.fao.geonet.Geonetwork">
-            <param name="LinkMonitorEnabled" value="true"/>
-            <param name="LinkMonitorClass" value="org.fao.geonet.monitor.link.LinkMonitorService"/>
-            <param name="LinkMonitorInitialDelaySeconds" value="<%= @custom_parameters['link_monitor']['initial_delay_seconds'] || 5 %>"/>
-            <param name="LinkMonitorFixedDelaySeconds" value="<%= @custom_parameters['link_monitor']['fixed_delay_seconds'] || 600 %>"/>
-            <param name="LinkMonitorServiceReindexIntervalSeconds" value="<%= @custom_parameters['link_monitor']['reindex_interval_seconds'] || 1800 %>"/>
-            <param name="LinkMonitorServiceMaxFailureRate" value="<%= @custom_parameters['link_monitor']['max_failure_rate'] || 0.1 %>"/>
-            <param name="LinkMonitorServiceMaxChecks" value="<%= @custom_parameters['link_monitor']['max_checks'] || 10 %>"/>
-            <param name="LinkMonitorServiceTimeout" value="<%= @custom_parameters['link_monitor']['timeout'] || 15 %>"/>
-            <param name="LinkMonitorServiceFreshness" value="<%= @custom_parameters['link_monitor']['freshness'] || 3600 %>"/>
-            <param name="LinkMonitorServiceUnknownAsWorking" value="<%= @custom_parameters['link_monitor']['unknown_as_working'] || "true" %>"/>
-            <param name="LinkMonitorServiceBetweenChecksIntervalMs" value="<%= @custom_parameters['link_monitor']['between_checks_interval_ms'] || "2000" %>"/>
+            <param name="OnlineResourceMonitorEnabled" value="true"/>
+            <param name="OnlineResourceMonitorClass" value="org.fao.geonet.monitor.link.OnlineResourceMonitorService"/>
+            <param name="OnlineResourceMonitorInitialDelaySeconds" value="<%= @custom_parameters['online_resource_monitor']['initial_delay_seconds'] || 5 %>"/>
+            <param name="OnlineResourceMonitorFixedDelaySeconds" value="<%= @custom_parameters['online_resource_monitor']['fixed_delay_seconds'] || 600 %>"/>
+            <param name="OnlineResourceMonitorServiceReindexIntervalSeconds" value="<%= @custom_parameters['online_resource_monitor']['reindex_interval_seconds'] || 1800 %>"/>
+            <param name="OnlineResourceMonitorServiceMaxFailureRate" value="<%= @custom_parameters['online_resource_monitor']['max_failure_rate'] || 0.1 %>"/>
+            <param name="OnlineResourceMonitorServiceMaxChecks" value="<%= @custom_parameters['online_resource_monitor']['max_checks'] || 10 %>"/>
+            <param name="OnlineResourceMonitorServiceTimeout" value="<%= @custom_parameters['online_resource_monitor']['timeout'] || 15 %>"/>
+            <param name="OnlineResourceMonitorServiceFreshness" value="<%= @custom_parameters['online_resource_monitor']['freshness'] || 3600 %>"/>
+            <param name="OnlineResourceMonitorServiceUnknownAsWorking" value="<%= @custom_parameters['online_resource_monitor']['unknown_as_working'] || "true" %>"/>
+            <param name="OnlineResourceMonitorServiceBetweenChecksIntervalMs" value="<%= @custom_parameters['online_resource_monitor']['between_checks_interval_ms'] || "2000" %>"/>
         </addXML>
 <% end %>
     </file>
