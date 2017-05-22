@@ -48,7 +48,14 @@ if node['postgresql']['known_hosts']
     # Deploy the private key
     postgres_ssh_key = Chef::EncryptedDataBagItem.load("users", node[:imos_postgresql][:postgresql_service_user])['ssh_priv_key']
     if postgres_ssh_key
-      file "#{node[:imos_postgresql][:postgresql_service_user_home]}/.ssh/id_rsa" do
+      ssh_dir = "#{node[:imos_postgresql][:postgresql_service_user_home]}/.ssh"
+
+      directory ssh_dir do
+        owner     node[:imos_postgresql][:postgresql_service_user]
+        group     node[:imos_postgresql][:postgresql_service_group]
+      end
+
+      file "#{ssh_dir}/id_rsa" do
         content   postgres_ssh_key
         owner     node[:imos_postgresql][:postgresql_service_user]
         group     node[:imos_postgresql][:postgresql_service_group]
@@ -89,7 +96,7 @@ if node['postgresql']['known_hosts']
     node['postgresql']['known_hosts'].each do |host|
       execute "known-hosts-#{host}" do
         command <<-EOS
-          ssh-keyscan -H #{host} >> #{known_hosts} 2>&1
+          ssh-keyscan -H #{host} >> #{known_hosts}
         EOS
         not_if {
           File.exist?(known_hosts) and
