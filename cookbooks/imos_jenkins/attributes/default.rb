@@ -13,6 +13,8 @@ default['imos_jenkins']['username']  = "jenkins"
 
 # SCM repo settings
 default['imos_jenkins']['scm_repo'] = 'git@github.com:aodn/ci-config.git'
+default['imos_jenkins']['scm_email'] = 'developers@emii.org.au'
+default['imos_jenkins']['scm_user'] = 'aodn-ci'
 
 default['imos_jenkins']['s3cmd']['config_file'] = ::File.join(node['jenkins']['master']['home'], ".s3cfg")
 
@@ -49,13 +51,13 @@ default['imos_jenkins']['plugins'] = {
     'build-pipeline-plugin' => '1.5.6',
     'copyartifact' => '1.38.1',
     'envinject' => '1.93.1',
-    'git' => '3.0.1',
-    'git-client' => '2.2.1',
+    'git' => '3.3.0',
+    'git-client' => '2.4.5',
     'hipchat' => '2.0.0',
     'repository' => '1.3',
     'greenballs' => '1.15',
     'job-log-logger-plugin' => '1.0',
-    'maven-plugin' => '2.14',
+    'maven-plugin' => '2.15.1',
     'role-strategy' => '2.3.2',
     's3' => '0.10.11',
     'throttle-concurrents' => '1.9.0',

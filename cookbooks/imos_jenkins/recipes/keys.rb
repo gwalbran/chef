@@ -1,6 +1,8 @@
 Chef::Recipe::JenkinsHelper.authenticate node
 
-deploy_key = Chef::EncryptedDataBagItem.load("deploy_keys", "github")['ssh_priv_key']
+key_databag = Chef::Config['dev'] ? "github_ci_config_write" : "github_ci_config"
+deploy_key = Chef::EncryptedDataBagItem.load("deploy_keys", key_databag)['ssh_priv_key']
+
 git_ssh_wrapper "git" do
   owner        node['imos_jenkins']['user']
   group        node['imos_jenkins']['group']
@@ -9,17 +11,15 @@ end
 
 jenkins_ssh_dir = File.join(node['jenkins']['master']['home'], ".ssh")
 
-# This is where the ssh wrapper will be
-node.set['git_ssh_wrapper'] = File.join("#{jenkins_ssh_dir}", "wrappers", "git_deploy_wrapper.sh")
-
 directory jenkins_ssh_dir do
   user      node['imos_jenkins']['user']
   group     node['imos_jenkins']['group']
   recursive true
 end
 
-# Copy the private key
-jenkins_ssh_key = Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])['ssh_priv_key']
+# Copy the private key (mock if in development mode)
+jenkins_ssh_key = Chef::Config['dev'] ? 'MOCKED SSH KEY' : Chef::EncryptedDataBagItem.load("users", node['imos_jenkins']['user'])['ssh_priv_key']
+
 file ::File.join(node['jenkins']['master']['home'], '.ssh/id_rsa') do
   content jenkins_ssh_key
   user    node['imos_jenkins']['user']
@@ -35,11 +35,4 @@ template ::File.join(node['jenkins']['master']['home'], '.ssh/config') do
   group  node['imos_jenkins']['group']
   mode   00644
   variables({:user => 'jenkins'})
-end
-
-# Add the github.com key to known_hosts
-execute "add-github-ssh-key" do
-  command "su - #{node['imos_jenkins']['user']} -c 'ssh github.com -o StrictHostKeyChecking=no; true'"
-  action  :run
-  not_if  "su - #{node['imos_jenkins']['user']} -c 'test -f .ssh/known_hosts'"
 end
