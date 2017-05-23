@@ -13,7 +13,6 @@ include_recipe 'imos_jenkins::node_common'
 
 jenkins_home = node['imos_jenkins']['master']['home']
 scm_repo = node['imos_jenkins']['scm_repo']
-ssh_wrapper = File.join("#{jenkins_home}", '.ssh', 'wrappers', 'git_deploy_wrapper.sh')
 
 node.set['jenkins']['master']['runit']['sv_timeout'] = 240
 node.set['jenkins']['master']['jvm_options'] = node['imos_jenkins']['master']['jvm_options']
@@ -54,7 +53,7 @@ end
    cwd jenkins_home
    user node['imos_jenkins']['user']
    group node['imos_jenkins']['group']
-   environment ({"GIT_SSH" => "#{ssh_wrapper}"})
+   environment ({"GIT_SSH" => File.join(jenkins_home, '.ssh', 'wrappers', 'git_deploy_wrapper.sh')})
  end
 
 git_config_email = node['imos_jenkins']['scm_email']
@@ -65,7 +64,7 @@ execute 'init_git_global_conf' do
   cwd jenkins_home
   user node['imos_jenkins']['user']
   group node['imos_jenkins']['group']
-  environment ({"HOME" => "#{jenkins_home}"})
+  environment ({"HOME" => jenkins_home})
 end
 
 # AWS passwords
