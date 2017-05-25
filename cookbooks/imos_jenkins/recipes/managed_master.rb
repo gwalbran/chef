@@ -29,6 +29,39 @@ sudo 'jenkins' do
   nopasswd true
 end
 
+sdkman_script_path = File.join(Chef::Config[:file_cache_path], 'sdkman_installer.sh')
+
+remote_file sdkman_script_path do
+  source node['imos_jenkins']['sdkman_install_url']
+  user node['imos_jenkins']['user']
+  group node['imos_jenkins']['group']
+  mode 0700
+  notifies :run, 'bash[install_sdkman]', :immediately
+end
+
+bash 'install_sdkman' do
+  code <<-EOH
+   sh #{sdkman_script_path}
+  EOH
+  user node['imos_jenkins']['user']
+  environment ({ 'HOME' => ::Dir.home(node['imos_jenkins']['user']), 'USER' => node['imos_jenkins']['user']})
+  action :nothing
+  not_if { ::File.exist?(::File.join(jenkins_home, '.sdkman', 'bin', 'sdkman-init.sh'))}
+end
+
+node['imos_jenkins']['managed_master']['grails_installations'].each do |grails_version|
+  bash 'install_grails' do
+    code <<-EOH
+    source "#{jenkins_home}/.sdkman/bin/sdkman-init.sh"
+    sdk install grails #{grails_version}
+    EOH
+    user node['imos_jenkins']['user']
+    action :nothing
+    environment ({ 'HOME' => ::Dir.home(node['imos_jenkins']['user']), 'USER' => node['imos_jenkins']['user']})
+    subscribes :run, 'bash[install_sdkman]', :delayed
+  end
+end
+
 require 'openssl'
 require 'net/ssh'
 
