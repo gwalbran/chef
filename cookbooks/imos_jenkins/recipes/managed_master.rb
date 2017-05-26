@@ -13,7 +13,6 @@ include_recipe 'imos_jenkins::node_common'
 
 jenkins_home = node['imos_jenkins']['master']['home']
 scm_repo = node['imos_jenkins']['scm_repo']
-ssh_wrapper = File.join("#{jenkins_home}", '.ssh', 'wrappers', 'git_deploy_wrapper.sh')
 
 node.set['jenkins']['master']['runit']['sv_timeout'] = 240
 node.set['jenkins']['master']['jvm_options'] = node['imos_jenkins']['master']['jvm_options']
@@ -28,6 +27,39 @@ sudo 'jenkins' do
   commands ['ALL']
   host     'ALL'
   nopasswd true
+end
+
+sdkman_script_path = File.join(Chef::Config[:file_cache_path], 'sdkman_installer.sh')
+
+remote_file sdkman_script_path do
+  source node['imos_jenkins']['sdkman_install_url']
+  user node['imos_jenkins']['user']
+  group node['imos_jenkins']['group']
+  mode 0700
+  notifies :run, 'bash[install_sdkman]', :immediately
+end
+
+bash 'install_sdkman' do
+  code <<-EOH
+   sh #{sdkman_script_path}
+  EOH
+  user node['imos_jenkins']['user']
+  environment ({ 'HOME' => ::Dir.home(node['imos_jenkins']['user']), 'USER' => node['imos_jenkins']['user']})
+  action :nothing
+  not_if { ::File.exist?(::File.join(jenkins_home, '.sdkman', 'bin', 'sdkman-init.sh'))}
+end
+
+node['imos_jenkins']['managed_master']['grails_installations'].each do |grails_version|
+  bash 'install_grails' do
+    code <<-EOH
+    source "#{jenkins_home}/.sdkman/bin/sdkman-init.sh"
+    sdk install grails #{grails_version}
+    EOH
+    user node['imos_jenkins']['user']
+    action :nothing
+    environment ({ 'HOME' => ::Dir.home(node['imos_jenkins']['user']), 'USER' => node['imos_jenkins']['user']})
+    subscribes :run, 'bash[install_sdkman]', :delayed
+  end
 end
 
 require 'openssl'
@@ -54,7 +86,7 @@ end
    cwd jenkins_home
    user node['imos_jenkins']['user']
    group node['imos_jenkins']['group']
-   environment ({"GIT_SSH" => "#{ssh_wrapper}"})
+   environment ({"GIT_SSH" => File.join(jenkins_home, '.ssh', 'wrappers', 'git_deploy_wrapper.sh')})
  end
 
 git_config_email = node['imos_jenkins']['scm_email']
@@ -65,7 +97,7 @@ execute 'init_git_global_conf' do
   cwd jenkins_home
   user node['imos_jenkins']['user']
   group node['imos_jenkins']['group']
-  environment ({"HOME" => "#{jenkins_home}"})
+  environment ({"HOME" => jenkins_home})
 end
 
 # AWS passwords
