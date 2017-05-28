@@ -8,10 +8,10 @@
 #
 # Sets up a server to allow project officers to do data manipulation
 
-include_recipe "imos_po::packages"
+include_recipe 'imos_po::packages'
 
 data_services_dir = node['imos_po']['data_services']['dir']
-data_services_cron_dir = File.join(data_services_dir, "cron.d")
+data_services_cron_dir = File.join(data_services_dir, 'cron.d')
 
 def imos_po_credentials
   creds = {}
@@ -35,9 +35,9 @@ end
 
 if node['imos_po']['data_services']['clone_repository']
   # Use this so we can deploy private repositories
-  include_recipe "imos_core::git_deploy_key"
+  include_recipe 'imos_core::git_deploy_key'
 
-  git "data_services" do
+  git 'data_services' do
     destination data_services_dir
     repository  node['imos_po']['data_services']['repo']
     revision    node['imos_po']['data_services']['branch']
@@ -48,8 +48,8 @@ if node['imos_po']['data_services']['clone_repository']
   end
 end
 
-python_requirements = ::File.join(data_services_dir, "requirements.txt")
-execute "python_requirements" do
+python_requirements = ::File.join(data_services_dir, 'requirements.txt')
+execute 'python_requirements' do
   command    "cat #{python_requirements} | xargs -n 1 -L 1 pip install"
   subscribes :run, 'git[data_services]', :delayed
 end
@@ -78,22 +78,22 @@ end
 
 # Allow anyone in 'projectofficer' group to sudo to user 'projectofficer'
 sudo 'data_services' do
-  group    "projectofficer"
+  group 'projectofficer'
   runas    node['imos_po']['data_services']['user']
-  commands [ "ALL" ]
-  host     "ALL"
+  commands ['ALL']
+  host 'ALL'
   nopasswd true
 end
 
 # Allow projectofficer user to sudo as talend
 
-harvester_trigger_cmd = "/bin/true"
+harvester_trigger_cmd = '/bin/true'
 if node['talend']
   sudo 'projectofficer_talend' do
     group    node['imos_po']['data_services']['group']
     runas    node['talend']['user']
-    commands [ "ALL" ]
-    host     "ALL"
+    commands ['ALL']
+    host 'ALL'
     nopasswd true
   end
 
@@ -122,7 +122,7 @@ data_services_vars = {
 }
 data_services_vars.merge!(imos_po_credentials)
 
-file "/etc/profile.d/data-services.sh" do
+file '/etc/profile.d/data-services.sh' do
   mode    00644
   user    'root'
   group   'root'
@@ -136,7 +136,7 @@ end
 
 # plant env file in data-services repo with all related variables
 template node['imos_po']['data_services']['env'] do
-  source  "env.erb"
+  source 'env.erb'
   user    node['imos_po']['data_services']['user']
   group   node['imos_po']['data_services']['group']
   mode    00644
@@ -148,7 +148,7 @@ end
 
 if ! node['imos_po']['data_services']['cronjobs'].empty?
   # Install cron jobs for project officers
-  ruby_block "data_services_cronjobs" do
+  ruby_block 'data_services_cronjobs' do
     block do
       allowed_cronjob_users = node['imos_po']['data_services']['cron_allowed_users'].dup
       UsersQueryHelper.find_users_in_groups(node['imos_po']['data_services']['cron_allowed_groups']).each do |user|
@@ -184,7 +184,7 @@ if ! node['imos_po']['data_services']['cronjobs'].empty?
             cronjob_sanitizer.sanitize_cronjob_file(cronjob_full_path, cronjob_dest, data_services_dir, data_services_vars)
           end
 
-          crond_base = "/etc/cron.d"
+          crond_base = '/etc/cron.d'
           existing_cronjobs = Dir.chdir(crond_base)   { Dir.glob("#{cronjob_prefix}*") }
           new_cronjobs =      Dir.chdir(tmp_cronjobs) { Dir.glob("#{cronjob_prefix}*") }
 
@@ -199,12 +199,12 @@ if ! node['imos_po']['data_services']['cronjobs'].empty?
     subscribes :create, 'git[data_services]', :immediately
   end
 else
-  ruby_block "data_services_cronjobs" do
+  ruby_block 'data_services_cronjobs' do
     block do
-      Chef::Log.info("data-services cronjobs are disabled")
+      Chef::Log.info('data-services cronjobs are disabled')
     end
   end
 end
 
-include_recipe "imos_po::watches"
-include_recipe "imos_po::mailx"
+include_recipe 'imos_po::watches'
+include_recipe 'imos_po::mailx'
