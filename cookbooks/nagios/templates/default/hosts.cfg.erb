@@ -5,7 +5,7 @@
 <% current_host_name = node['nagios']['server']['normalize_hostname'] ? node[node['nagios']['host_name_attribute']].downcase : node[node['nagios']['host_name_attribute']] -%>
 <%# handle the nagios node differently than others to prevent failures in bootstrap scenarios %>
 define host {
-  use server-pnp
+  use server
   address <%= node['ipaddress'] %>
   host_name <%= current_host_name %>
   hostgroups <% if node['nagios']['multi_environment_monitoring'] -%><%= node.chef_environment %>,<% end -%>all,<%= node['roles'].join(",") %><% if !node['roles'].include?(node['nagios']['server_role']) %>,<%= node['nagios']['server_role'] %><% end -%>
@@ -15,7 +15,6 @@ define host {
 <% host_name = node['nagios']['server']['normalize_hostname'] ? n[node['nagios']['host_name_attribute']].downcase : n[node['nagios']['host_name_attribute']] %>
 <% unless host_name == current_host_name -%>
 define host {
-  use server-pnp
   <%
   ip = ""
   if n['network'] && n['network']['public_ipv4']
@@ -23,8 +22,10 @@ define host {
   else
     Chef::Application.fatal!("Node '#{n['fqdn']}' does not have a network/public_ipv4 address!")
   end %>
+  use server
   address <%= ip %>
   host_name <%= host_name %>
+
   <% if node['nagios']['multi_environment_monitoring'] -%>
   <% if n['roles'].nil? || n['roles'].length == 0 -%>
   hostgroups all,<%= n.os %>, <%= n.chef_environment %>
@@ -45,7 +46,7 @@ define host {
 <% unless @unmanaged_hosts.nil? -%>
 <% @unmanaged_hosts.each do |n| -%>
 define host {
-  use server-pnp
+  use server
   address <%= n['address'] %>
   host_name <%= node['nagios']['server']['normalize_hostname'] ? n['fqdn'].downcase : n['fqdn'] %>
   hostgroups all,<%= n['hostgroups'].join(",") %>

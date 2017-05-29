@@ -17,7 +17,7 @@ define service {
   host_name <%= host_name %>
   check_command check_input_error_<%= input_job %>
   servicegroups input
-  use default-service-pnp
+  use default-service
 }
 
 define service {
@@ -25,7 +25,7 @@ define service {
   host_name <%= host_name %>
   check_command check_input_incoming_<%= input_job %>
   servicegroups input
-  use default-service-pnp
+  use default-service
 }
 <%
       input_jobs << input_job
