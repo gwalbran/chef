@@ -33,7 +33,6 @@
         "recipe[imos_core::environment]",
         "recipe[imos_postfix]",
         "recipe[imos_core::motd]",
-        "recipe[imos_core::unattended_upgrades]",
         "recipe[imos_core::logrotate]",
         "recipe[imos_core::xml_tools]",
         "recipe[sysctl]"
