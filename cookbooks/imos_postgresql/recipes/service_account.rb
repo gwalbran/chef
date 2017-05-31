@@ -37,13 +37,12 @@ directory ssh_dir do
 end
 
 postgres_pub_key = Chef::EncryptedDataBagItem.load("passwords", node[:imos_postgresql][:postgresql_service_user])['ssh_pub_key']
-if postgres_pub_key
-  file "#{ssh_dir}/id_rsa.pub" do
-    content   postgres_pub_key
-    owner     node[:imos_postgresql][:postgresql_service_user]
-    group     node[:imos_postgresql][:postgresql_service_group]
-    mode      00400
-  end
+file "#{ssh_dir}/authorized_keys" do
+  content   postgres_pub_key
+  owner     node[:imos_postgresql][:postgresql_service_user]
+  group     node[:imos_postgresql][:postgresql_service_group]
+  mode      00400
+  only_if { postgres_pub_key }
 end
 
 # Support for replication connections
@@ -51,14 +50,14 @@ if node['postgresql']['known_hosts']
 
   # Deploy the private key
   postgres_priv_key = Chef::EncryptedDataBagItem.load("passwords", node[:imos_postgresql][:postgresql_service_user])['ssh_priv_key']
-  if postgres_priv_key
-    file "#{ssh_dir}/id_rsa" do
-      content   postgres_priv_key
-      owner     node[:imos_postgresql][:postgresql_service_user]
-      group     node[:imos_postgresql][:postgresql_service_group]
-      mode      00400
-    end
+  file "#{ssh_dir}/id_rsa" do
+    content   postgres_priv_key
+    owner     node[:imos_postgresql][:postgresql_service_user]
+    group     node[:imos_postgresql][:postgresql_service_group]
+    mode      00400
+    only_if { postgres_priv_key }
   end
+
 
   # TODO - Couldn't get this working in vagrant, for localhost, since not enough of the networking configuration is mocked
   #
