@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe 'imos_postgresql::service_account'
+
 # Required for Postgres versions prior to 9.6 running under systemd
 # Ref: https://wiki.postgresql.org/wiki/Systemd
 if node['init_package'].eql?('systemd')
@@ -41,70 +43,6 @@ end if node['postgresql']['packages']
 
 # Install package now, so postgres user is created
 package 'postgresql-common'
-
-# Support for replication connections
-if node['postgresql']['known_hosts']
-
-    # Deploy the private key
-    postgres_ssh_key = Chef::EncryptedDataBagItem.load("users", node[:imos_postgresql][:postgresql_service_user])['ssh_priv_key']
-    if postgres_ssh_key
-      ssh_dir = "#{node[:imos_postgresql][:postgresql_service_user_home]}/.ssh"
-
-      directory ssh_dir do
-        owner     node[:imos_postgresql][:postgresql_service_user]
-        group     node[:imos_postgresql][:postgresql_service_group]
-      end
-
-      file "#{ssh_dir}/id_rsa" do
-        content   postgres_ssh_key
-        owner     node[:imos_postgresql][:postgresql_service_user]
-        group     node[:imos_postgresql][:postgresql_service_group]
-        mode      00400
-      end
-    end
-
-    # TODO - Couldn't get this working in vagrant, for localhost, since not enough of the networking configuration is mocked
-    #
-    # known_hosts_tuples   = []
-    #
-    # # All the backup nodes
-    # all_nodes = search(:node, "fqdn:*")
-    #
-    # # Iterate on all nodes, configure a pulling rsync backup for them
-    # all_nodes.each do |n|
-    #   host_name = n['fqdn'].downcase
-    # if n.contains node['postgresql']['known_hosts'] && ...
-    #   if n['keys'] && n['keys']['ssh'] && n['keys']['ssh']['host_rsa_public']
-    #     ipaddress = n['network']['public_ipv4']
-    #     known_hosts_tuples.push([ ipaddress, host_name, n['keys']['ssh']['host_rsa_public'] ])
-    #   end
-    # end
-    #
-    # # Add all host keys to known hosts
-    # template "#{node[:imos_postgresql][:postgresql_service_user]}/.ssh/known_hosts" do
-    #   source "known_hosts.erb"
-    #   cookbook "imos_backup"
-    #   owner  "#{node[:backup][:username]}"
-    #   group  "#{node[:backup][:group]}"
-    #   mode   0644
-    #   variables(:items => known_hosts_tuples.sort!)
-    # end
-
-    # HACK for the moment
-    known_hosts="#{node[:imos_postgresql][:postgresql_service_user_home]}/.ssh/known_hosts"
-
-    node['postgresql']['known_hosts'].each do |host|
-      execute "known-hosts-#{host}" do
-        command <<-EOS
-          ssh-keyscan -H #{host} >> #{known_hosts}
-        EOS
-        not_if {
-          File.exist?(known_hosts) and
-            File.open(known_hosts) { |file| file.grep(/#{host}/) }.any?
-        }
-      end
-    end
-end
 
 # Directories
 node['postgresql']['directories'].each do |dir|
