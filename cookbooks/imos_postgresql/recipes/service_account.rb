@@ -29,21 +29,31 @@ group node['imos_postgresql']['postgresql_service_group'] do
   system true
 end
 
+# SSH public key
+ssh_dir = "#{node[:imos_postgresql][:postgresql_service_user_home]}/.ssh"
+directory ssh_dir do
+  owner     node[:imos_postgresql][:postgresql_service_user]
+  group     node[:imos_postgresql][:postgresql_service_group]
+end
+
+postgres_pub_key = Chef::EncryptedDataBagItem.load("passwords", node[:imos_postgresql][:postgresql_service_user])['ssh_pub_key']
+if postgres_pub_key
+  file "#{ssh_dir}/id_rsa.pub" do
+    content   postgres_pub_key
+    owner     node[:imos_postgresql][:postgresql_service_user]
+    group     node[:imos_postgresql][:postgresql_service_group]
+    mode      00400
+  end
+end
+
 # Support for replication connections
 if node['postgresql']['known_hosts']
 
   # Deploy the private key
-  postgres_ssh_key = Chef::EncryptedDataBagItem.load("passwords", node[:imos_postgresql][:postgresql_service_user])['ssh_priv_key']
-  if postgres_ssh_key
-    ssh_dir = "#{node[:imos_postgresql][:postgresql_service_user_home]}/.ssh"
-
-    directory ssh_dir do
-      owner     node[:imos_postgresql][:postgresql_service_user]
-      group     node[:imos_postgresql][:postgresql_service_group]
-    end
-
+  postgres_priv_key = Chef::EncryptedDataBagItem.load("passwords", node[:imos_postgresql][:postgresql_service_user])['ssh_priv_key']
+  if postgres_priv_key
     file "#{ssh_dir}/id_rsa" do
-      content   postgres_ssh_key
+      content   postgres_priv_key
       owner     node[:imos_postgresql][:postgresql_service_user]
       group     node[:imos_postgresql][:postgresql_service_group]
       mode      00400
