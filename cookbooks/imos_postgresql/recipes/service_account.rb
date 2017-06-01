@@ -22,26 +22,28 @@ user node['imos_postgresql']['postgresql_service_user'] do
   home '/var/lib/postgresql'
   system true
   shell '/bin/bash'
+  not_if { node['etc']['passwd'].key?([node['imos_postgresql']['postgresql_service_user']]) }
 end
 
 group node['imos_postgresql']['postgresql_service_group'] do
   members node['imos_postgresql']['postgresql_service_user']
   system true
+  not_if { node['etc']['passwd'].key?([node['imos_postgresql']['postgresql_service_group']]) }
 end
 
 # SSH public key
-ssh_dir = "#{node[:imos_postgresql][:postgresql_service_user_home]}/.ssh"
+ssh_dir = "#{node['imos_postgresql']['postgresql_service_user_home']}/.ssh"
 directory ssh_dir do
-  owner     node[:imos_postgresql][:postgresql_service_user]
-  group     node[:imos_postgresql][:postgresql_service_group]
+  owner node['imos_postgresql']['postgresql_service_user']
+  group node['imos_postgresql']['postgresql_service_group']
 end
 
-postgres_pub_key = Chef::EncryptedDataBagItem.load("passwords", node[:imos_postgresql][:postgresql_service_user])['ssh_pub_key']
+postgres_pub_key = Chef::EncryptedDataBagItem.load('passwords', node['imos_postgresql']['postgresql_service_user'])['ssh_pub_key']
 file "#{ssh_dir}/authorized_keys" do
-  content   postgres_pub_key
-  owner     node[:imos_postgresql][:postgresql_service_user]
-  group     node[:imos_postgresql][:postgresql_service_group]
-  mode      00400
+  content postgres_pub_key
+  owner node['imos_postgresql']['postgresql_service_user']
+  group node['imos_postgresql']['postgresql_service_group']
+  mode 00400
   only_if { postgres_pub_key }
 end
 
@@ -49,12 +51,12 @@ end
 if node['postgresql']['known_hosts']
 
   # Deploy the private key
-  postgres_priv_key = Chef::EncryptedDataBagItem.load("passwords", node[:imos_postgresql][:postgresql_service_user])['ssh_priv_key']
+  postgres_priv_key = Chef::EncryptedDataBagItem.load('passwords', node['imos_postgresql']['postgresql_service_user'])['ssh_priv_key']
   file "#{ssh_dir}/id_rsa" do
-    content   postgres_priv_key
-    owner     node[:imos_postgresql][:postgresql_service_user]
-    group     node[:imos_postgresql][:postgresql_service_group]
-    mode      00400
+    content postgres_priv_key
+    owner node['imos_postgresql']['postgresql_service_user']
+    group node['imos_postgresql']['postgresql_service_group']
+    mode 00400
     only_if { postgres_priv_key }
   end
 
@@ -87,17 +89,14 @@ if node['postgresql']['known_hosts']
   # end
 
   # HACK for the moment
-  known_hosts="#{node[:imos_postgresql][:postgresql_service_user_home]}/.ssh/known_hosts"
+  known_hosts="#{node['imos_postgresql']['postgresql_service_user_home']}/.ssh/known_hosts"
 
   node['postgresql']['known_hosts'].each do |host|
     execute "known-hosts-#{host}" do
       command <<-EOS
           ssh-keyscan -H #{host} >> #{known_hosts}
       EOS
-      not_if {
-        File.exist?(known_hosts) and
-            File.open(known_hosts) { |file| file.grep(/#{host}/) }.any?
-      }
+      not_if { File.exist?(known_hosts) and File.open(known_hosts) { |file| file.grep(/#{host}/) }.any? }
     end
   end
 end
