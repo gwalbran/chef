@@ -1,0 +1,14 @@
+{
+    "id": "aodn_dsto",
+    "artifact_filename": "AODN_DSTO_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "9cb44921-91a0-4a17-bdd0-3225bc47346c",
+        "Metadata_SpatialTable": "aodn_dsto_trajectory_map",
+        "Metadata_SpatialResolution": "2"
+    },
+    "event": {
+        "regex": [
+            "^Department_of_Defence/DSTG/slocum_glider/.*FV01.*\\.nc$"
+        ]
+    }
+}
