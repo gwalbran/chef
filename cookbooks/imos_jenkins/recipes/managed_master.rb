@@ -12,7 +12,10 @@ include_recipe 'imos_java'
 include_recipe 'imos_jenkins::node_common'
 
 jenkins_home = node['imos_jenkins']['master']['home']
+jenkins_user = node['imos_jenkins']['user']
 scm_repo = node['imos_jenkins']['scm_repo']
+
+sdkman_script_path = File.join(Chef::Config[:file_cache_path], 'sdkman_installer.sh')
 
 node.set['jenkins']['master']['runit']['sv_timeout'] = 240
 node.set['jenkins']['master']['jvm_options'] = node['imos_jenkins']['master']['jvm_options']
@@ -29,22 +32,19 @@ sudo 'jenkins' do
   nopasswd true
 end
 
-sdkman_script_path = File.join(Chef::Config[:file_cache_path], 'sdkman_installer.sh')
-
 remote_file sdkman_script_path do
   source node['imos_jenkins']['sdkman_install_url']
-  user node['imos_jenkins']['user']
+  user jenkins_user
   group node['imos_jenkins']['group']
   mode 0700
-  notifies :run, 'bash[install_sdkman]', :immediately
+  notifies :run, 'bash[install_sdkman]', :delayed
 end
 
 bash 'install_sdkman' do
   code <<-EOH
-   sh #{sdkman_script_path}
+  sudo -u #{jenkins_user} -H sh -c '#{sdkman_script_path}'
   EOH
-  user node['imos_jenkins']['user']
-  environment ({ 'HOME' => ::Dir.home(node['imos_jenkins']['user']), 'USER' => node['imos_jenkins']['user']})
+  user jenkins_user
   action :nothing
   not_if { ::File.exist?(::File.join(jenkins_home, '.sdkman', 'bin', 'sdkman-init.sh'))}
 end
@@ -52,12 +52,11 @@ end
 node['imos_jenkins']['managed_master']['grails_installations'].each do |grails_version|
   bash 'install_grails' do
     code <<-EOH
-    source "#{jenkins_home}/.sdkman/bin/sdkman-init.sh"
-    sdk install grails #{grails_version}
+    sudo -u #{jenkins_user} -H bash -c 'source "#{jenkins_home}/.sdkman/bin/sdkman-init.sh" \
+    && sdk install grails #{grails_version}'
     EOH
-    user node['imos_jenkins']['user']
+    user jenkins_user
     action :nothing
-    environment ({ 'HOME' => ::Dir.home(node['imos_jenkins']['user']), 'USER' => node['imos_jenkins']['user']})
     subscribes :run, 'bash[install_sdkman]', :delayed
   end
 end
@@ -84,7 +83,7 @@ end
  execute 'init_jenkins_scm' do
    command "git rev-parse --is-inside-work-tree || { git init && git remote add origin #{scm_repo} && git fetch && git reset --hard origin/master; }"
    cwd jenkins_home
-   user node['imos_jenkins']['user']
+   user jenkins_user
    group node['imos_jenkins']['group']
    environment ({"GIT_SSH" => File.join(jenkins_home, '.ssh', 'wrappers', 'git_deploy_wrapper.sh')})
  end
@@ -95,7 +94,7 @@ git_config_user = node['imos_jenkins']['scm_user']
 execute 'init_git_global_conf' do
   command %{git config --global user.email "#{git_config_email}" ; git config --global user.name "#{git_config_user}"}
   cwd jenkins_home
-  user node['imos_jenkins']['user']
+  user jenkins_user
   group node['imos_jenkins']['group']
   environment ({"HOME" => jenkins_home})
 end
@@ -117,7 +116,7 @@ envvars[:S3_ARTIFACT_BUCKET] = credentials_databag['artifact_bucket']
 
 template "#{jenkins_home}/env.properties" do
   source   "env.properties.erb"
-  user node['imos_jenkins']['user']
+  user jenkins_user
   group node['imos_jenkins']['group']
   mode    00644
   owner    node['imos_jenkins']['user']
