@@ -73,6 +73,7 @@ default['imos_jenkins']['plugins'] = {
     'ssh-slaves' => '1.17',
     'build-name-setter' => '1.6.5',
     'build-pipeline-plugin' => '1.5.6',
+    'postbuild-task' => '1.8',
     'copyartifact' => '1.38.1',
     'envinject' => '2.1',
     'git' => '3.3.0',
