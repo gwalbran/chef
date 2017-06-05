@@ -56,7 +56,6 @@ node['imos_jenkins']['managed_master']['grails_installations'].each do |grails_v
     && sdk install grails #{grails_version}'
     EOH
     user jenkins_user
-    action :nothing
     subscribes :run, 'bash[install_sdkman]', :delayed
   end
 end

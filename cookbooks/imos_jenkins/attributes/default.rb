@@ -88,7 +88,7 @@ default['imos_jenkins']['plugins'] = {
     'validating-string-parameter' => '2.3'
 }
 
-default['imos_jenkins']['managed_master']['grails_installations'] = %w(2.4.4 1.3.7)
+default['imos_jenkins']['managed_master']['grails_installations'] = %w(2.4.4 2.1.0 1.3.7)
 
 default['imos_jenkins']['node_common']['python_packages'] = %w(awscli xmltodict)
 
