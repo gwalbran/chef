@@ -31,6 +31,12 @@ group node['imos_postgresql']['postgresql_service_group'] do
   not_if { node['etc']['passwd'].key?([node['imos_postgresql']['postgresql_service_group']]) }
 end
 
+group 'ssl-cert' do
+  action :modify
+  members node['imos_postgresql']['postgresql_service_user']
+  append true
+end
+
 # SSH public key
 ssh_dir = "#{node['imos_postgresql']['postgresql_service_user_home']}/.ssh"
 directory ssh_dir do
