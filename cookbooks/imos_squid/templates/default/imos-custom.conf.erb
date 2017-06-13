@@ -8,3 +8,12 @@ strip_query_terms off
 refresh_pattern <%= refresh_pattern['regex'] %> <%= refresh_pattern['min'] || node['squid']['cache_min'] %> <%= refresh_pattern['percent'] || node['squid']['cache_percent'] %> <%= refresh_pattern['max'] || node['squid']['cache_max'] %> <%= refresh_pattern['extra_opts'] || node['squid']['extra_opts'] %>
 <% end %>
 
+# HTTP accelerator configuration
+acl our_sites dstdomain <% node['webapps']['instances'].each do |instance| %><%= instance['vhost'] %> <% end -%>
+http_access allow our_sites
+
+<% node['webapps']['instances'].each do |instance| %>
+cache_peer localhost parent <%= instance['port'] %> 0 no-query originserver name=<%= instance['vhost'] %>
+cache_peer_access <%= instance['vhost'] %> allow our_sites
+cache_peer_access <%= instance['vhost'] %> deny all
+<% end -%>
