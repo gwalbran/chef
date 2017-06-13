@@ -37,7 +37,7 @@ remote_file sdkman_script_path do
   user jenkins_user
   group node['imos_jenkins']['group']
   mode 0700
-  notifies :run, 'bash[install_sdkman]', :delayed
+  notifies :run, 'bash[install_sdkman]', :immediately
 end
 
 bash 'install_sdkman' do
@@ -50,13 +50,15 @@ bash 'install_sdkman' do
 end
 
 node['imos_jenkins']['managed_master']['grails_installations'].each do |grails_version|
-  bash 'install_grails' do
+  bash "install_grails_#{grails_version}" do
     code <<-EOH
     sudo -u #{jenkins_user} -H bash -c 'source "#{jenkins_home}/.sdkman/bin/sdkman-init.sh" \
     && sdk install grails #{grails_version}'
     EOH
     user jenkins_user
-    subscribes :run, 'bash[install_sdkman]', :delayed
+    not_if {
+      ::File.exist?(::File.join(jenkins_home, '.sdkman', 'candidates', 'grails', grails_version, 'bin', 'grails'))
+    }
   end
 end
 

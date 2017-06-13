@@ -25,7 +25,6 @@ include_recipe "imos_devel::vagrant"
 include_recipe "imos_po::packages"
 include_recipe "imos_po::netcdf_checker"
 
-include_recipe "imos_postgresql::official_postgresql"
 include_recipe "git"
 include_recipe "packer"
 
