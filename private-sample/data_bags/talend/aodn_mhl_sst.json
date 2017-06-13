@@ -1,0 +1,13 @@
+{
+    "id": "aodn_mhl_sst",
+    "artifact_filename": "AODN_MHL_SST_harvester_Latest.zip",
+    "params": {
+        "Metadata_UUID": "81c5f192-d4af-4dfe-a660-af15ae46a22a",
+        "Metadata_SpatialResolution": "2"
+    },
+    "event": {
+        "regex": [
+            "^NSW-OEH/Manly_Hydraulics_Laboratory/SST/.*\\.nc$"
+        ]
+    }
+}
