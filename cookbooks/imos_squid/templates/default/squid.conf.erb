@@ -35,6 +35,14 @@ acl Safe_ports port <%= port %>
 acl purge method PURGE
 acl CONNECT method CONNECT
 
+<% if node['squid']['port'].kind_of?(Array) %>
+  <% node['squid']['port'].each do |port| %>
+http_port <%= port %>
+  <% end %>
+<% else %>
+http_port <%= node['squid']['port'] %> accel allow-direct vhost
+<% end %>
+
 # Managed with Chef
 <% @host_acl.each do |host| %>
 acl <%= host[0] %> <%= host[1] %> <%= host[2] %>
@@ -58,13 +66,7 @@ http_access allow localhost
 
 <%= "icp_access allow localnet" if !@localnets.empty? %>
 <%= "icp_access deny all" if node['squid']['icp_access_deny_all'] %>
-<% if node['squid']['port'].kind_of?(Array) %>
-  <% node['squid']['port'].each do |port| %>
-http_port <%= port %>
-  <% end %>
-<% else %>
-http_port <%= node['squid']['port'] %>
-<% end %>
+
 
 <% node['squid']['logformats'].each do |name, format| %>
 logformat <%= name %> <%= format %>
