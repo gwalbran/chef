@@ -114,6 +114,7 @@ credentials_databag = Chef::EncryptedDataBagItem.load("passwords", credentials_d
 envvars[:AWS_ACCESS_KEY] = credentials_databag['access_key_id']
 envvars[:AWS_SECRET_KEY] = credentials_databag['secret_access_key']
 envvars[:S3_ARTIFACT_BUCKET] = credentials_databag['artifact_bucket']
+envvars[:PATH] = node['imos_jenkins']['path_additions']
 
 template "#{jenkins_home}/env.properties" do
   source   "env.properties.erb"
