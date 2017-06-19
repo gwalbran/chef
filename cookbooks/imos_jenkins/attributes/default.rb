@@ -1,7 +1,7 @@
 default['imos_jenkins']['user']                  = 'jenkins'
 default['imos_jenkins']['group']                 = 'jenkins'
 default['imos_jenkins']['ajp_port']              = 49187
-default['imos_jenkins']['master_url']            = "https://jenkins.aodn.org.au/"
+default['imos_jenkins']['master_url']            = 'https://jenkins.aodn.org.au/'
 default['imos_jenkins']['master']['jvm_options'] = '-Xmx2G -Dhudson.model.ParametersAction.keepUndefinedParameters=true -Djenkins.install.runSetupWizard=false'
 default['imos_jenkins']['master']['ssh_port']    = 2222
 default['imos_jenkins']['master']['home']        = '/home/jenkins'
@@ -9,7 +9,7 @@ default['imos_jenkins']['git']['clone_timeout'] = 20
 default['imos_jenkins']['xvfb']['path']         = '/usr/bin'
 
 # Global environment settings for master
-default['imos_jenkins']['username']  = "jenkins"
+default['imos_jenkins']['username']  = 'jenkins'
 
 # SCM repo settings
 default['imos_jenkins']['scm_repo'] = 'git@github.com:aodn/ci-config.git'
@@ -18,7 +18,7 @@ default['imos_jenkins']['scm_user'] = 'aodn-ci'
 
 default['imos_jenkins']['sdkman_install_url'] = 'https://get.sdkman.io'
 
-default['imos_jenkins']['s3cmd']['config_file'] = ::File.join(node['jenkins']['master']['home'], ".s3cfg")
+default['imos_jenkins']['s3cmd']['config_file'] = ::File.join(node['jenkins']['master']['home'], '.s3cfg')
 
 default['imos_jenkins']['monitored_jobs'] = []
 
@@ -38,7 +38,7 @@ default['imos_jenkins']['node_common']['packages'] = [
 class Chef::Provider::JenkinsPlugin
   alias old_plugin_version plugin_version
   def plugin_version(version)
-    return version if version == "1.0-beta-1"
+    return version if version == '1.0-beta-1'
 
     old_plugin_version(version)
   end
