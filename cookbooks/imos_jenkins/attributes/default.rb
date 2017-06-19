@@ -11,6 +11,9 @@ default['imos_jenkins']['xvfb']['path']         = '/usr/bin'
 # Global environment settings for master
 default['imos_jenkins']['username']  = "jenkins"
 
+# Set here so default chefdk ruby and gem are used
+default['imos_jenkins']['path_additions'] = '/opt/chefdk/embedded/bin/:$PATH'
+
 # SCM repo settings
 default['imos_jenkins']['scm_repo'] = 'git@github.com:aodn/ci-config.git'
 default['imos_jenkins']['scm_email'] = 'developers@emii.org.au'
