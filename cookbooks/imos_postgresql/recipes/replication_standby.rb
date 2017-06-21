@@ -20,7 +20,7 @@
 ssh_dir = "#{node['imos_postgresql']['postgresql_service_user_home']}/.ssh"
 authorized_keys_file = ::File.join(ssh_dir, 'authorized_keys')
 
-postgres_pub_key = Chef::EncryptedDataBagItem.load('passwords', node['imos_postgresql']['postgresql_service_user'])['ssh_pub_key']
+postgres_pub_key = Chef::EncryptedDataBagItem.load('passwords', node['imos_postgresql']['postgresql_service_user_databag'])['ssh_pub_key']
 
 file authorized_keys_file do
   content postgres_pub_key

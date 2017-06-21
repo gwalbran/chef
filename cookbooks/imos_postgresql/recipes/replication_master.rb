@@ -24,7 +24,7 @@ known_hosts = ::File.join(ssh_dir, 'known_hosts')
 if node['postgresql']['known_hosts']
 
   # Deploy the private key
-  postgres_priv_key = Chef::EncryptedDataBagItem.load('passwords', node['imos_postgresql']['postgresql_service_user'])['ssh_priv_key']
+  postgres_priv_key = Chef::EncryptedDataBagItem.load('passwords', node['imos_postgresql']['postgresql_service_user_databag'])['ssh_priv_key']
   file "#{ssh_dir}/id_rsa" do
     content postgres_priv_key
     owner node['imos_postgresql']['postgresql_service_user']
