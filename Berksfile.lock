@@ -200,7 +200,6 @@ GRAPH
     imos_devel (>= 0.0.0)
     imos_java (>= 0.0.0)
     imos_po (>= 0.0.0)
-    imos_postgresql (>= 0.0.0)
     jenkins (>= 0.0.0)
     packer (>= 0.0.0)
     rbenv (>= 0.0.0)
