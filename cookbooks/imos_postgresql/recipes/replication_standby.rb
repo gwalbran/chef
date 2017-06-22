@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: imos_postgresql
-# Recipe:: service_account
+# Recipe:: replication_standby
 #
 # Copyright 2013, IMOS
 #
@@ -17,22 +17,15 @@
 # limitations under the License.
 #
 
-user node['imos_postgresql']['postgresql_service_user'] do
-  comment 'Postgres'
-  home '/var/lib/postgresql'
-  system true
-  shell '/bin/bash'
-  not_if { node['etc']['passwd'].key?([node['imos_postgresql']['postgresql_service_user']]) }
-end
+ssh_dir = "#{node['imos_postgresql']['postgresql_service_user_home']}/.ssh"
+authorized_keys_file = ::File.join(ssh_dir, 'authorized_keys')
 
-group node['imos_postgresql']['postgresql_service_group'] do
-  members node['imos_postgresql']['postgresql_service_user']
-  system true
-  not_if { node['etc']['passwd'].key?([node['imos_postgresql']['postgresql_service_group']]) }
-end
+postgres_pub_key = Chef::EncryptedDataBagItem.load('passwords', node['imos_postgresql']['postgresql_service_user'])['ssh_pub_key']
 
-group 'ssl-cert' do
-  action :modify
-  members node['imos_postgresql']['postgresql_service_user']
-  append true
+file authorized_keys_file do
+  content postgres_pub_key
+  owner node['imos_postgresql']['postgresql_service_user']
+  group node['imos_postgresql']['postgresql_service_group']
+  mode 00400
+  only_if { postgres_pub_key }
 end

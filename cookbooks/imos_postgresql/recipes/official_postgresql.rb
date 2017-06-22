@@ -44,6 +44,20 @@ end if node['postgresql']['packages']
 # Install package now, so postgres user is created
 package 'postgresql-common'
 
+ssh_dir = "#{node['imos_postgresql']['postgresql_service_user_home']}/.ssh"
+directory ssh_dir do
+  owner node['imos_postgresql']['postgresql_service_user']
+  group node['imos_postgresql']['postgresql_service_group']
+end
+
+include_recipe 'imos_postgresql::replication_master' do
+  only_if { node['postgresql']['known_hosts'] }
+end
+
+include_recipe 'imos_postgresql::replication_standby' do
+  only_if { node['postgresql']['clusters']['basebackup'] }
+end
+
 # Directories
 node['postgresql']['directories'].each do |dir|
   # substitute attributes
