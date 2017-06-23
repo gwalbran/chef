@@ -50,12 +50,13 @@ directory ssh_dir do
   group node['imos_postgresql']['postgresql_service_group']
 end
 
-include_recipe 'imos_postgresql::replication_master' do
-  only_if { node['postgresql']['known_hosts'] }
+if node['postgresql'] && node['postgresql']['known_hosts']
+  include_recipe 'imos_postgresql::replication_master'
 end
 
-include_recipe 'imos_postgresql::replication_standby' do
-  only_if { node['postgresql']['clusters']['basebackup'] }
+if node['postgresql'] && node['postgresql']['clusters']
+  standby = node['postgresql']['clusters'].select { |c| c.include?('basebackup') }.length > 0
+  include_recipe 'imos_postgresql::replication_standby' if standby
 end
 
 # Directories
