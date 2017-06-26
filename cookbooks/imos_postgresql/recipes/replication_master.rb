@@ -23,6 +23,8 @@ known_hosts = ::File.join(ssh_dir, 'known_hosts')
 # Support for replication connections
 if node['postgresql']['known_hosts']
 
+  require 'resolv'
+
   # Deploy the private key
   postgres_priv_key = Chef::EncryptedDataBagItem.load('passwords', node['imos_postgresql']['postgresql_service_user_databag'])['ssh_priv_key']
   file "#{ssh_dir}/id_rsa" do
@@ -63,9 +65,18 @@ if node['postgresql']['known_hosts']
 
   # HACK for the moment
   node['postgresql']['known_hosts'].each do |host|
+
+    keyscan_hosts = host
+    begin
+      host_ip = Resolv.getaddress host
+      keyscan_hosts = "#{host},#{host_ip}"
+    rescue Resolv::ResolvError => e
+      Chef::Log.warn "Unable to resolve IP address for host #{host}. Error: #{e.message}"
+    end
+
     execute "known-hosts-#{host}" do
       command <<-EOS
-          ssh-keyscan -H #{host} >> #{known_hosts}
+          ssh-keyscan #{keyscan_hosts} >> #{known_hosts}
       EOS
       not_if { File.exist?(known_hosts) and File.open(known_hosts) { |file| file.grep(/#{host}/) }.any? }
     end
