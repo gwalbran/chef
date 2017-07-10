@@ -80,6 +80,7 @@ if node['webapps'] && node['webapps']['instances']
       aliases     instance_aliases
       proxy_exclusions instance_proxy_exclusions
       rules       instance_httpd_rules
+      docroot     instance['docroot'] || false
       cached      instance['cached'] || false
       https       instance['https']  || false
       sts         instance['sts']    || false

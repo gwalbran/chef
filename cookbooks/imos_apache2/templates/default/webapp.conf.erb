@@ -3,6 +3,8 @@ main_app_path = nil
 if @params[:apps] && @params[:apps].any?  && !@params[:apps].detect {|p| p[:is_default_app] == 'true'}
   main_app_path = @params[:apps].first[:name]
 end
+# NIWA Don't use the first app as main app.
+main_app_path = nil
 
 # Logs
 error_log     = File.join(node['apache']['log_dir'], "#{@params[:name]}-error.log")
@@ -35,7 +37,7 @@ end
   <Directory <%= @params[:docroot] %>>
     DirectoryIndex <%= @params[:directory_index] %>
     Options <%= @params[:docroot_options] || "+Indexes +FollowSymLinks" %>
-    AllowOverride None
+    AllowOverride All
     Require all granted
   </Directory>
 <% end -%>
